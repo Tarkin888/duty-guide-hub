@@ -5,7 +5,7 @@ import { ArrowLeft, FileDown, Printer, CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LucideIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { getModuleStatus, updateModuleStatus, addActivity } from "@/lib/storage";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -27,8 +27,19 @@ export default function ModulePage({ title, description, icon: Icon, moduleId, c
 
   const handleStatusChange = (newStatus: string) => {
     const validStatus = newStatus as "not-started" | "in-progress" | "completed";
+    const oldStatus = status;
     setStatus(validStatus);
     updateModuleStatus(moduleId, validStatus);
+    
+    // Track activity
+    if (validStatus === "completed" && oldStatus !== "completed") {
+      addActivity("module_completed", title);
+    } else if (validStatus === "in-progress" && oldStatus === "not-started") {
+      addActivity("module_started", title);
+    } else {
+      addActivity("status_updated", title);
+    }
+    
     toast.success("Module status updated", {
       description: `Status changed to ${newStatus.replace("-", " ")}`,
     });

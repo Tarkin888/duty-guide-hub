@@ -1,118 +1,437 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { ModuleCard } from "@/components/ModuleCard";
-import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon } from "lucide-react";
-import { getModuleStatus, calculateOverallProgress } from "@/lib/storage";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CircularProgress } from "@/components/CircularProgress";
+import { PhaseProgressCard } from "@/components/PhaseProgressCard";
+import { ActivityTimeline } from "@/components/ActivityTimeline";
+import { 
+  BookOpen, 
+  Download, 
+  Calendar, 
+  Clock, 
+  Target, 
+  CheckCircle2, 
+  FileText,
+  TrendingUp,
+  BarChart3,
+  Shield,
+  ListChecks,
+  Users,
+  GraduationCap,
+  AlertCircle,
+  Play,
+  FolderOpen,
+  Bell,
+  BookMarked
+} from "lucide-react";
+import { 
+  calculateOverallProgress, 
+  getPhaseProgress, 
+  getActivities, 
+  getDaysSinceStart,
+  getCompletedModulesCount,
+  getInProgressModules,
+  getUserData
+} from "@/lib/storage";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { resetAllProgress } from "@/lib/storage";
+import { toast } from "sonner";
 
 export default function Dashboard() {
   const [overallProgress, setOverallProgress] = useState(0);
+  const [phaseProgress, setPhaseProgress] = useState<any>(null);
+  const [activities, setActivities] = useState<any[]>([]);
+  const [daysSinceStart, setDaysSinceStart] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [inProgressModules, setInProgressModules] = useState<any[]>([]);
+  const [lastUpdated, setLastUpdated] = useState("");
 
   useEffect(() => {
+    const userData = getUserData();
     setOverallProgress(calculateOverallProgress());
+    setPhaseProgress(getPhaseProgress());
+    setActivities(getActivities());
+    setDaysSinceStart(getDaysSinceStart());
+    setCompletedCount(getCompletedModulesCount());
+    setInProgressModules(getInProgressModules());
+    setLastUpdated(format(new Date(), "PPP"));
   }, []);
 
-  const featuredModules = [
-    {
-      title: "Readiness Assessment",
-      description: "Evaluate your organization's current state and readiness for Consumer Duty implementation",
-      icon: ClipboardCheck,
-      status: getModuleStatus("readiness-assessment"),
-      url: "/foundation/readiness",
-    },
-    {
-      title: "Governance Framework",
-      description: "Establish governance structures and accountability mechanisms",
-      icon: Shield,
-      status: getModuleStatus("governance-framework"),
-      url: "/governance/framework",
-    },
-    {
-      title: "Products & Services",
-      description: "Ensure products and services meet customer needs and deliver fair value",
-      icon: ListChecks,
-      status: getModuleStatus("products-services"),
-      url: "/outcomes/products-services",
-    },
-    {
-      title: "Consumer Support",
-      description: "Provide effective support throughout the customer journey",
-      icon: HeadphonesIcon,
-      status: getModuleStatus("consumer-support"),
-      url: "/outcomes/consumer-support",
-    },
+  const handleReset = () => {
+    resetAllProgress();
+    window.location.reload();
+  };
+
+  const totalModules = 20;
+  const totalTemplates = 40;
+
+  const estimatedDaysRemaining = overallProgress > 0 
+    ? Math.ceil((daysSinceStart / overallProgress) * (100 - overallProgress))
+    : 0;
+
+  const mostUsedTemplates = [
+    "Consumer Duty Assessment Template",
+    "Risk Assessment Matrix",
+    "Governance Framework Template",
+    "Policy Document Template",
+    "Implementation Roadmap Template"
+  ];
+
+  const recommendedReading = [
+    { title: "FCA Consumer Duty Guidance", url: "#" },
+    { title: "Final Rules and Guidance", url: "#" },
+    { title: "Questions and Answers", url: "#" }
   ];
 
   return (
     <div className="container mx-auto px-6 py-8 max-w-7xl">
+      {/* Hero Section */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Consumer Duty Implementation Playbook</h1>
-        <p className="text-lg text-muted-foreground">
-          A comprehensive guide to implementing Consumer Duty requirements across your organization
-        </p>
-      </div>
-
-      <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-            Overall Progress
-          </CardTitle>
-          <CardDescription>Track your implementation journey across all modules</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Implementation Completion</span>
-              <span className="text-2xl font-bold text-primary">{overallProgress}%</span>
-            </div>
-            <Progress value={overallProgress} className="h-3" />
-            <p className="text-sm text-muted-foreground">
-              Continue working through the modules to improve your compliance readiness
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <h1 className="text-4xl font-bold text-foreground mb-2">
+              Consumer Duty Implementation Playbook
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-3xl">
+              Your comprehensive guide to FCA Consumer Duty compliance - from assessment through ongoing monitoring
             </p>
           </div>
-        </CardContent>
-      </Card>
+          <Badge variant="outline" className="shrink-0">
+            <Calendar className="h-3 w-3 mr-1" />
+            {lastUpdated}
+          </Badge>
+        </div>
 
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Getting Started</h2>
-        <p className="text-muted-foreground">
-          Begin with these essential modules to build a strong foundation
-        </p>
+        <div className="flex flex-wrap gap-3 mt-6">
+          {inProgressModules.length > 0 && (
+            <Button asChild size="lg" className="gap-2">
+              <Link to={`/${inProgressModules[0].id.replace(/-/g, "/")}`}>
+                <Play className="h-4 w-4" />
+                Resume Where You Left Off
+              </Link>
+            </Button>
+          )}
+          <Button asChild variant="outline" size="lg" className="gap-2">
+            <Link to="/resources/templates">
+              <FolderOpen className="h-4 w-4" />
+              View All Templates
+            </Link>
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" size="lg" className="gap-2">
+                <Download className="h-4 w-4" />
+                Export Progress Report
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Export Coming Soon</AlertDialogTitle>
+                <AlertDialogDescription>
+                  PDF export functionality will be available in the next update.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction>Got it</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        {featuredModules.map((module) => (
-          <ModuleCard key={module.url} {...module} />
-        ))}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Progress Overview Card */}
+        <Card className="lg:col-span-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-accent" />
+              Progress Overview
+            </CardTitle>
+            <CardDescription>Your implementation journey across all phases</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex items-center justify-center">
+                <CircularProgress value={overallProgress} />
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  {phaseProgress && (
+                    <>
+                      <PhaseProgressCard 
+                        title="Foundation" 
+                        completed={phaseProgress.foundation.completed}
+                        total={phaseProgress.foundation.total}
+                        icon={BookOpen}
+                      />
+                      <PhaseProgressCard 
+                        title="Governance & Planning" 
+                        completed={phaseProgress.governance.completed}
+                        total={phaseProgress.governance.total}
+                        icon={Shield}
+                      />
+                      <PhaseProgressCard 
+                        title="Four Outcomes" 
+                        completed={phaseProgress.outcomes.completed}
+                        total={phaseProgress.outcomes.total}
+                        icon={ListChecks}
+                      />
+                      <PhaseProgressCard 
+                        title="Cross-Cutting" 
+                        completed={phaseProgress.crossCutting.completed}
+                        total={phaseProgress.crossCutting.total}
+                        icon={Users}
+                      />
+                      <PhaseProgressCard 
+                        title="Enablement" 
+                        completed={phaseProgress.enablement.completed}
+                        total={phaseProgress.enablement.total}
+                        icon={GraduationCap}
+                      />
+                      <PhaseProgressCard 
+                        title="Monitoring & Assurance" 
+                        completed={phaseProgress.monitoring.completed}
+                        total={phaseProgress.monitoring.total}
+                        icon={BarChart3}
+                      />
+                    </>
+                  )}
+                </div>
+
+                {estimatedDaysRemaining > 0 && (
+                  <div className="pt-4 border-t">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>
+                        Estimated {estimatedDaysRemaining} days to completion at current pace
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Key Metrics */}
+        <div className="space-y-4">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-primary/10">
+                  <Target className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{totalModules}</p>
+                  <p className="text-sm text-muted-foreground">Total Modules</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-success/10">
+                  <CheckCircle2 className="h-6 w-6 text-success" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{completedCount}</p>
+                  <p className="text-sm text-muted-foreground">Completed Modules</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-accent/10">
+                  <FileText className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{totalTemplates}+</p>
+                  <p className="text-sm text-muted-foreground">Templates Available</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-info/10">
+                  <Calendar className="h-6 w-6 text-info" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{daysSinceStart}</p>
+                  <p className="text-sm text-muted-foreground">Days Since Started</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      <Card className="border-accent/30">
-        <CardHeader>
-          <CardTitle>About This Playbook</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground">
-            This implementation playbook provides a structured approach to achieving Consumer Duty compliance.
-            Each module contains detailed guidance, templates, and best practices to help your organization
-            meet regulatory requirements while improving customer outcomes.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-            <div className="p-4 rounded-lg bg-muted">
-              <div className="text-2xl font-bold text-primary mb-1">7</div>
-              <div className="text-sm text-muted-foreground">Module Categories</div>
+      {/* Current Priorities & Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-warning" />
+              Current Priorities
+            </CardTitle>
+            <CardDescription>Modules in progress and recommended next steps</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {inProgressModules.length > 0 ? (
+              <div className="space-y-4">
+                {inProgressModules.slice(0, 3).map((module) => (
+                  <div key={module.id} className="p-4 rounded-lg border border-warning/20 bg-warning/5">
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="font-medium">
+                        {module.id.split("-").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                      </h4>
+                      <Badge variant="outline" className="bg-warning/10 text-warning">
+                        In Progress
+                      </Badge>
+                    </div>
+                    <Button asChild variant="link" className="p-0 h-auto">
+                      <Link to={`/${module.id.replace(/-/g, "/")}`}>
+                        Continue module →
+                      </Link>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <TrendingUp className="h-12 w-12 mx-auto mb-3 opacity-50 text-muted-foreground" />
+                <p className="text-muted-foreground mb-4">No modules in progress</p>
+                <Button asChild>
+                  <Link to="/foundation/readiness">Start with Readiness Assessment</Link>
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5 text-primary" />
+              Recent Activity
+            </CardTitle>
+            <CardDescription>Your latest actions and progress</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ActivityTimeline activities={activities.slice(0, 5)} />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Access Sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <FileText className="h-5 w-5 text-accent" />
+              Most Used Templates
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {mostUsedTemplates.map((template, index) => (
+                <li key={index}>
+                  <Button asChild variant="link" className="h-auto p-0 text-left">
+                    <Link to="/resources/templates" className="text-sm">
+                      {template}
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Bell className="h-5 w-5 text-info" />
+              Regulatory Updates
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-muted-foreground">
+              <p className="mb-4">Stay informed about the latest FCA guidance and regulatory changes.</p>
+              <Button variant="outline" size="sm" className="w-full">
+                View Updates
+              </Button>
             </div>
-            <div className="p-4 rounded-lg bg-muted">
-              <div className="text-2xl font-bold text-primary mb-1">20+</div>
-              <div className="text-sm text-muted-foreground">Implementation Modules</div>
-            </div>
-            <div className="p-4 rounded-lg bg-muted">
-              <div className="text-2xl font-bold text-primary mb-1">100+</div>
-              <div className="text-sm text-muted-foreground">Resources & Templates</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <BookMarked className="h-5 w-5 text-primary" />
+              Recommended Reading
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {recommendedReading.map((item, index) => (
+                <li key={index}>
+                  <Button asChild variant="link" className="h-auto p-0 text-left">
+                    <a href={item.url} className="text-sm">
+                      {item.title}
+                    </a>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Reset Progress Button */}
+      <div className="mt-8 pt-8 border-t">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" className="text-destructive border-destructive hover:bg-destructive/10">
+              Reset All Progress
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete all your progress data and activity history.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleReset} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Yes, reset everything
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 }
