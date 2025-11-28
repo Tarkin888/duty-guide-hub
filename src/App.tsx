@@ -8,6 +8,8 @@ import { AppSidebar } from "@/components/AppSidebar";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
+import CDF1ReadinessAssessment from "./pages/modules/CD-F1-ReadinessAssessment";
+import CDF2RequirementsMapping from "./pages/modules/CD-F2-RequirementsMapping";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -30,24 +32,8 @@ const App = () => (
                   <Route path="/" element={<Dashboard />} />
                   
                   {/* Foundation Modules */}
-                  <Route path="/foundation/readiness" element={
-                    <ModulePage 
-                      title="Readiness Assessment" 
-                      description="Evaluate your organization's current state and readiness for Consumer Duty implementation"
-                      icon={ClipboardCheck}
-                      moduleId="readiness-assessment"
-                      category="Foundation Modules"
-                    />
-                  } />
-                  <Route path="/foundation/requirements" element={
-                    <ModulePage 
-                      title="Requirements Mapping" 
-                      description="Map Consumer Duty requirements to your business processes and products"
-                      icon={Map}
-                      moduleId="requirements-mapping"
-                      category="Foundation Modules"
-                    />
-                  } />
+                  <Route path="/foundation/readiness" element={<CDF1ReadinessAssessment />} />
+                  <Route path="/foundation/requirements" element={<CDF2RequirementsMapping />} />
                   <Route path="/foundation/risk-impact" element={
                     <ModulePage 
                       title="Risk & Impact" 
