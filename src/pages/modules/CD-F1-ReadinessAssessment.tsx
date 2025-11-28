@@ -11,7 +11,7 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
 export default function CDf1ReadinessAssessment() {
@@ -21,12 +21,18 @@ export default function CDf1ReadinessAssessment() {
   const handleMarkComplete = () => {
     updateModuleStatus("cd-f1-readiness", "completed");
     setStatus("completed");
-    toast.success("Module marked as complete!");
+    toast({
+      title: "Module Complete",
+      description: "Module marked as complete!",
+    });
   };
 
   const handlePrint = () => window.print();
   const handleDownload = (templateName: string) => {
-    toast.info(`Downloading ${templateName}...`);
+    toast({
+      title: "Downloading Template",
+      description: `${templateName} will download shortly...`,
+    });
   };
 
   return (
@@ -565,7 +571,7 @@ export default function CDf1ReadinessAssessment() {
                   description="5-level maturity assessment framework covering 8 key capability areas with scoring guidance"
                   format="Excel"
                   onDownload={() => handleDownload("Maturity Assessment")}
-                  onPreview={() => toast.info("Preview functionality coming soon")}
+                  onPreview={() => toast({ title: "Preview", description: "Preview functionality coming soon" })}
                 />
                 <TemplateCard
                   title="Gap Analysis Framework"

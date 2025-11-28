@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
 import CDF1ReadinessAssessment from "./pages/modules/CD-F1-ReadinessAssessment";
 import CDF2RequirementsMapping from "./pages/modules/CD-F2-RequirementsMapping";
+import CDI1ProductsServices from "./pages/modules/CD-I1-ProductsServices";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -74,15 +75,7 @@ const App = () => (
                   } />
 
                   {/* Four Outcomes */}
-                  <Route path="/outcomes/products-services" element={
-                    <ModulePage 
-                      title="Products & Services" 
-                      description="Ensure products and services meet customer needs and deliver fair value"
-                      icon={ListChecks}
-                      moduleId="products-services"
-                      category="Four Outcomes"
-                    />
-                  } />
+                  <Route path="/outcomes/products-services" element={<CDI1ProductsServices />} />
                   <Route path="/outcomes/price-value" element={
                     <ModulePage 
                       title="Price & Value" 

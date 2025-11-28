@@ -12,7 +12,7 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
 export default function CDF2RequirementsMapping() {
@@ -22,12 +22,18 @@ export default function CDF2RequirementsMapping() {
   const handleMarkComplete = () => {
     updateModuleStatus("cd-f2-requirements", "completed");
     setStatus("completed");
-    toast.success("Module marked as complete!");
+    toast({
+      title: "Module Complete",
+      description: "Module marked as complete!",
+    });
   };
 
   const handlePrint = () => window.print();
   const handleDownload = (templateName: string) => {
-    toast.info(`Downloading ${templateName}...`);
+    toast({
+      title: "Downloading Template",
+      description: `${templateName} will download shortly...`,
+    });
   };
 
   return (
