@@ -42,17 +42,17 @@ export default function CDI5VulnerableCustomers() {
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <Badge variant="outline">Cross-Cutting</Badge>
-                  <Badge>Part 1 of 2</Badge>
+                  <Badge>Complete Framework</Badge>
                 </div>
                 <h1 className="text-4xl font-bold mb-2">
                   CD-I5: Vulnerable Customer Framework Implementation
                 </h1>
                 <p className="text-xl text-muted-foreground mb-4">
-                  Part 1: Foundation, Identification & Recording
+                  Complete: Foundation, Identification, Adaptations, Training & Monitoring
                 </p>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span>⏱️ Duration: 6 weeks</span>
-                  <span>📋 Foundation Phase</span>
+                  <span>⏱️ Duration: 8-12 weeks</span>
+                  <span>📋 Complete Implementation</span>
                   <span>🎯 All Four Outcomes</span>
                 </div>
               </div>
@@ -64,11 +64,13 @@ export default function CDI5VulnerableCustomers() {
       {/* Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
             <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
             <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="success">Success Criteria</TabsTrigger>
+            <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1068,6 +1070,353 @@ export default function CDI5VulnerableCustomers() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Phase 3: Product & Service Adaptations (Weeks 4-8)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={6}
+                  title="Review Products for Vulnerability Impact"
+                  items={[
+                    {
+                      id: "product-1",
+                      label: "Assess each product for features that may harm vulnerable customers",
+                      details: "Complex structures, high exit fees, digital-only, tight timelines, stable income assumption, complex claims, auto-renewals, hidden charges"
+                    },
+                    {
+                      id: "product-2",
+                      label: "Assess whether product meets needs of vulnerable in target market",
+                      details: "Review target market definition and vulnerability prevalence",
+                      responsible: "Product Managers"
+                    },
+                    {
+                      id: "product-3",
+                      label: "Identify necessary adaptations or alternative versions",
+                      details: "By driver: Extended cooling-off (health), payment holidays (resilience), simplified versions (capability)"
+                    },
+                    {
+                      id: "product-4",
+                      label: "Implement product changes or create vulnerable customer versions",
+                      details: "Fee waivers, flexible processes, non-digital alternatives",
+                      duration: "4-8 weeks"
+                    },
+                    {
+                      id: "product-5",
+                      label: "Test adaptations with vulnerable customers before launch",
+                      details: "Recruit from each driver category, validate effectiveness",
+                      responsible: "Head of Product"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "Vulnerability Product Impact Assessment Template",
+                    onClick: () => handlePreview("Product Impact Assessment")
+                  }}
+                />
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={7}
+                  title="Adapt Communications for Vulnerable Customers"
+                  items={[
+                    {
+                      id: "comms-1",
+                      label: "Review all communications for accessibility",
+                      details: "Plain language (Flesch >60), readability, clear structure, visual clarity (12pt min), info density",
+                      responsible: "Head of Marketing"
+                    },
+                    {
+                      id: "comms-2",
+                      label: "Create alternative formats available on request",
+                      details: "Large print (16pt), braille, audio, easy read, video with BSL, translations",
+                      duration: "2-3 weeks"
+                    },
+                    {
+                      id: "comms-3",
+                      label: "Test communications with vulnerable customers",
+                      details: "Comprehension, usability, accessibility, behavioral testing"
+                    },
+                    {
+                      id: "comms-4",
+                      label: "Make alternative formats easily available",
+                      details: "Prominent on website, mentioned in all comms, fast provision (5 days max), no justification required"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "Accessible Communications Checklist",
+                    onClick: () => handlePreview("Accessible Communications")
+                  }}
+                />
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={8}
+                  title="Enhance Support for Vulnerable Customers"
+                  items={[
+                    {
+                      id: "support-1",
+                      label: "Create Specialist Vulnerable Customer Support Team",
+                      details: "Enhanced training, empowered authority, manageable caseloads, supervision support",
+                      responsible: "Head of Customer Service",
+                      duration: "3-4 weeks"
+                    },
+                    {
+                      id: "support-2",
+                      label: "Define support adjustments by driver",
+                      details: "Health: extra time, memory aids. Life events: empathy, flexibility. Resilience: payment arrangements. Capability: plain language, non-digital options"
+                    },
+                    {
+                      id: "support-3",
+                      label: "Enable third-party support (PoA, carers, advocates)",
+                      details: "Verification process, digital access, consent management, safeguarding protocols"
+                    },
+                    {
+                      id: "support-4",
+                      label: "Implement safeguarding procedures",
+                      details: "Train staff to recognize abuse/exploitation, escalation procedures, information sharing protocols",
+                      responsible: "Safeguarding Lead"
+                    }
+                  ]}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Phase 4: Staff Training & Capability (Weeks 6-10)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={9}
+                  title="Develop Vulnerability Training Programme"
+                  items={[
+                    {
+                      id: "train-1",
+                      label: "ALL STAFF: Foundation training (2 hours e-learning + facilitated)",
+                      details: "What is vulnerability, recognition, response with empathy, recording, escalation, case studies"
+                    },
+                    {
+                      id: "train-2",
+                      label: "CUSTOMER-FACING: Advanced training (4 hours classroom)",
+                      details: "Deep dive on four drivers, recognition skills, adjustments, difficult conversations, mental health, debt, safeguarding, role plays",
+                      responsible: "Head of L&D",
+                      duration: "2 weeks to develop"
+                    },
+                    {
+                      id: "train-3",
+                      label: "SPECIALIST TEAM: Enhanced training (8+ hours over 2 days)",
+                      details: "Advanced mental health, debt specialist knowledge, safeguarding adults, crisis support, complex vulnerabilities, reflective practice"
+                    },
+                    {
+                      id: "train-4",
+                      label: "PRODUCT/DESIGN TEAM: Workshop (3 hours)",
+                      details: "Inclusive design, vulnerability in target markets, testing with vulnerable customers, fair value"
+                    },
+                    {
+                      id: "train-5",
+                      label: "LEADERSHIP: Executive session (2 hours)",
+                      details: "Board responsibilities, culture, MI interpretation, resource allocation, regulatory expectations"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "Vulnerability Training Curriculum",
+                    onClick: () => handlePreview("Training Curriculum")
+                  }}
+                />
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={10}
+                  title="Deliver Training and Assess Competency"
+                  items={[
+                    {
+                      id: "deliver-1",
+                      label: "Roll out training to all audiences (phased, customer-facing first)",
+                      details: "Track completion rates by role",
+                      duration: "4-6 weeks"
+                    },
+                    {
+                      id: "deliver-2",
+                      label: "Assess competency (tests, role plays, call monitoring)",
+                      details: "Knowledge tests (80% pass), role plays (competent rating), ongoing quality monitoring",
+                      responsible: "Head of L&D & Quality"
+                    },
+                    {
+                      id: "deliver-3",
+                      label: "Refresher training annually",
+                      details: "Policy updates, regulatory changes, lessons learned"
+                    },
+                    {
+                      id: "deliver-4",
+                      label: "Ongoing reinforcement (team meetings, case studies, coaching)",
+                      details: "Recognition and rewards for excellent vulnerable customer support"
+                    }
+                  ]}
+                />
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={11}
+                  title="Build Specialist Capabilities and Partnerships"
+                  items={[
+                    {
+                      id: "partner-1",
+                      label: "Recruit or develop vulnerable customer specialists",
+                      details: "Values-based recruitment, empathy assessment, ongoing supervision",
+                      responsible: "Head of HR"
+                    },
+                    {
+                      id: "partner-2",
+                      label: "Build external partnerships with support organizations",
+                      details: "StepChange, Samaritans, Age UK, RNIB, CAB, local services",
+                      duration: "2-3 weeks"
+                    },
+                    {
+                      id: "partner-3",
+                      label: "Formalize partnerships (MOUs, training, referral pathways)",
+                      details: "Information sharing agreements, joint training, liaison meetings"
+                    },
+                    {
+                      id: "partner-4",
+                      label: "Create referral materials (leaflets, guides, tracking)",
+                      details: "Customer-facing materials, staff guides on when/how to refer"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "External Support Organizations Directory",
+                    onClick: () => handlePreview("External Support Directory")
+                  }}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Phase 5: Monitoring & Continuous Improvement (Weeks 8-12, ongoing)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={12}
+                  title="Establish Vulnerability Monitoring Framework"
+                  items={[
+                    {
+                      id: "monitor-1",
+                      label: "Define vulnerability metrics (identification, outcomes, process)",
+                      details: "Customers flagged, breakdown by driver, outcome parity analysis, adjustments provided, training completion",
+                      responsible: "Head of Data & Analytics"
+                    },
+                    {
+                      id: "monitor-2",
+                      label: "Calculate differential outcomes (vulnerable vs all customers)",
+                      details: "Variance for: CSAT, complaints, fair value, comprehension, FCR, resolution time. Set thresholds for action.",
+                      duration: "2-3 weeks to build"
+                    },
+                    {
+                      id: "monitor-3",
+                      label: "Build Vulnerability Monitoring Dashboard (5 views)",
+                      details: "Identification overview, outcome parity analysis (CRITICAL), support provision, quality & compliance, issues & actions"
+                    },
+                    {
+                      id: "monitor-4",
+                      label: "Automate data feeds and create visualizations",
+                      details: "Monthly to management, quarterly to board, automated alerts"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "Vulnerability Monitoring Dashboard Specification",
+                    onClick: () => handlePreview("Monitoring Dashboard")
+                  }}
+                />
+
+                <Alert className="bg-destructive/5 border-destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Critical FCA Requirement: Outcome Parity</AlertTitle>
+                  <AlertDescription>
+                    Must monitor outcomes for vulnerable vs non-vulnerable customers and take action when significant variance identified. No monitoring = direct Consumer Duty breach.
+                  </AlertDescription>
+                </Alert>
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={13}
+                  title="Conduct Periodic Vulnerability Reviews"
+                  items={[
+                    {
+                      id: "review-1",
+                      label: "Quarterly Review: Compile dashboard, conduct committee meeting",
+                      details: "Review identification, analyze outcome parity, root cause analysis, case studies, improvement actions",
+                      responsible: "Vulnerable Customer Champion"
+                    },
+                    {
+                      id: "review-2",
+                      label: "Document Quarterly Review Report for Board/Executive",
+                      details: "Executive summary, identification performance, outcome parity analysis by outcome, actions"
+                    },
+                    {
+                      id: "review-3",
+                      label: "Annual Review: Consumer panels with vulnerable customers",
+                      details: "Lived experience input, recruitment via charities, themes and recommendations"
+                    },
+                    {
+                      id: "review-4",
+                      label: "Annual Accessibility Audit (premises, digital, communications)",
+                      details: "WCAG 2.1 AA compliance check, wheelchair access, hearing loops"
+                    },
+                    {
+                      id: "review-5",
+                      label: "Policy review and update (Board approval)",
+                      details: "Regulatory developments, lessons learned, best practice evolution"
+                    },
+                    {
+                      id: "review-6",
+                      label: "Annual Board Report section on vulnerable customers",
+                      details: "Identification rates, outcome parity trends, improvement actions, forward plan"
+                    }
+                  ]}
+                  templateLink={{
+                    name: "Vulnerability Quarterly Review Template",
+                    onClick: () => handlePreview("Quarterly Review")
+                  }}
+                />
+
+                <ChecklistSection
+                  moduleId="cd-i5"
+                  stepNumber={14}
+                  title="Embed Continuous Improvement"
+                  items={[
+                    {
+                      id: "improve-1",
+                      label: "Capture lessons from individual cases (good practice library)",
+                      details: "What worked well? What could improve? Systemic issues?"
+                    },
+                    {
+                      id: "improve-2",
+                      label: "Share good practice across organization",
+                      details: "Case study library, team meetings, knowledge base"
+                    },
+                    {
+                      id: "improve-3",
+                      label: "Identify and remediate systemic issues",
+                      details: "Product design flaws, communication gaps, support barriers, policy gaps"
+                    },
+                    {
+                      id: "improve-4",
+                      label: "Recognize and reward excellent vulnerable customer support",
+                      details: "Performance reviews, recognition schemes, career development, celebrate in comms"
+                    },
+                    {
+                      id: "improve-5",
+                      label: "Iterate products/communications/support based on feedback",
+                      details: "Enhancement pipeline, continuous testing, customer feedback loops"
+                    }
+                  ]}
+                />
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Templates & Tools Tab */}
@@ -1119,6 +1468,53 @@ export default function CDI5VulnerableCustomers() {
                     description="Process document detailing when and how to record vulnerability in CRM. Includes step-by-step recording process, customer consent scripts, mandatory/optional fields, periodic review process, data protection compliance, and quality standards. Sections: When to record vulnerability, How to record - step-by-step with scripts, Periodic review process, Data protection compliance (lawful basis, security, retention), Quality standards (good vs poor recording), Escalation procedures for complex cases."
                     format="Word"
                     onPreview={() => handlePreview("Vulnerability Recording Procedures")}
+                  />
+                </div>
+
+                <Separator className="my-6" />
+
+                <h3 className="font-semibold text-lg mb-4">Additional Templates (Part 2)</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <TemplateCard
+                    title="7. Vulnerability Product Impact Assessment"
+                    description="Document template for assessing product features against vulnerability impact. Sections: Product details and target market, Vulnerability prevalence in target market, Feature analysis table (feature, impact, driver affected, severity, mitigation), Overall assessment and adaptations required, Testing methodology with vulnerable customers, Governance sign-off. Enables inclusive product design from the start."
+                    format="Word"
+                    onPreview={() => handlePreview("Product Impact Assessment")}
+                  />
+
+                  <TemplateCard
+                    title="8. Accessible Communications Checklist"
+                    description="Comprehensive checklist for communication creators covering plain language (Flesch >60, active voice, jargon-free), structure (headings, bullets, key info first), visual design (12pt min, good contrast, white space), accessibility (screen reader compatible, WCAG 2.1 AA, alternative formats), content quality, and testing with vulnerable customers. Ensures all communications meet accessibility standards."
+                    format="PDF"
+                    onPreview={() => handlePreview("Accessible Communications")}
+                  />
+
+                  <TemplateCard
+                    title="9. Vulnerability Training Curriculum"
+                    description="Detailed training program specifications for 5 audiences (all staff, customer-facing, specialist team, product/design, leadership). Each module includes: learning objectives, content outline, delivery method, materials required, facilitator requirements, assessment method, pass criteria, refresher frequency. Includes role play scenarios and competency assessment tools. Full customer-facing module specification provided as example."
+                    format="Word"
+                    onPreview={() => handlePreview("Training Curriculum")}
+                  />
+
+                  <TemplateCard
+                    title="10. External Support Organizations Directory"
+                    description="Comprehensive directory of referral partners organized by support type (debt advice, mental health, financial capability, age-related, domestic abuse, disability). For each organization: services description, contact details, when to refer (indicators), referral procedure, materials available, partnership status, special notes (safeguarding, eligibility). Includes staff guidance on how to signpost effectively and safely."
+                    format="Excel"
+                    onPreview={() => handlePreview("External Support Directory")}
+                  />
+
+                  <TemplateCard
+                    title="11. Vulnerability Monitoring Dashboard Specification"
+                    description="Comprehensive dashboard design with 5 views: (1) Identification Overview (total flags, driver breakdown, identification sources, coverage vs prevalence), (2) Outcome Parity Analysis (CRITICAL - variance for each Consumer Duty outcome metric with RAG status), (3) Support Provision (adjustments provided, specialist team activity, external referrals), (4) Quality & Compliance (training completion, recording quality, call quality scores), (5) Issues & Actions (red RAG items, root cause analysis, improvement actions). Monthly/quarterly review cadence."
+                    format="PowerPoint"
+                    onPreview={() => handlePreview("Monitoring Dashboard")}
+                  />
+
+                  <TemplateCard
+                    title="12. Vulnerability Quarterly Review Template"
+                    description="Structured quarterly review document with 8 sections: (1) Executive summary with RAG, (2) Identification performance vs targets, (3) Outcome parity analysis by each outcome with variance calculations and root cause analysis, (4) Product/service adaptations implemented, (5) Staff capability and training, (6) Case studies (good practice and learning opportunities), (7) Governance and compliance, (8) Forward plan for next quarter. Appendices include detailed dashboard data and customer feedback verbatims."
+                    format="Word"
+                    onPreview={() => handlePreview("Quarterly Review")}
                   />
                 </div>
               </CardContent>
@@ -1249,18 +1645,19 @@ export default function CDI5VulnerableCustomers() {
               <CardContent className="space-y-4">
                 <Alert>
                   <AlertDescription>
-                    <strong>For Implementation Teams:</strong> This is Part 1 of the Vulnerable Customer Framework module. It establishes policy foundation, understanding of your customer base, proactive identification, and recording systems.
+                    <strong>For Implementation Teams:</strong> This complete Vulnerable Customer Framework module covers all phases from foundation through monitoring. It includes policy, identification, product adaptations, training, and continuous improvement.
                   </AlertDescription>
                 </Alert>
 
                 <div className="space-y-3">
-                  <h4 className="font-semibold">Next Steps (Part 2 will cover):</h4>
+                  <h4 className="font-semibold">Implementation Timeline:</h4>
                   <ul className="space-y-1 text-sm text-muted-foreground ml-4 list-disc">
-                    <li>Product and service adaptations for vulnerable customers</li>
-                    <li>Enhanced support mechanisms and adjustments</li>
-                    <li>Comprehensive training programme</li>
-                    <li>Monitoring dashboard and outcome parity analysis</li>
-                    <li>Continuous improvement framework</li>
+                    <li>Weeks 1-3: Foundation and policy (Board approval, population analysis)</li>
+                    <li>Weeks 3-6: Identification and recording systems</li>
+                    <li>Weeks 4-8: Product and service adaptations</li>
+                    <li>Weeks 6-10: Staff training programme</li>
+                    <li>Weeks 8-12: Monitoring dashboard and continuous improvement</li>
+                    <li>Week 12+: Embedded business-as-usual with ongoing monitoring</li>
                   </ul>
                 </div>
 
@@ -1325,6 +1722,409 @@ export default function CDI5VulnerableCustomers() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Success Criteria Tab */}
+          <TabsContent value="success" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Success Criteria</CardTitle>
+                <CardDescription>Clear, measurable criteria for vulnerable customer framework implementation</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Identification & Recording (Weeks 1-12)</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Vulnerability identification rate reaches estimated prevalence in customer base (target: 80%+ coverage within 24 months)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;90% of identified customers have specific driver(s) recorded (not vague "vulnerable" flag)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;90% of recorded vulnerabilities include preferred adjustments</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;95% of recorded vulnerabilities have appropriate review dates set</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Multiple identification methods operational: data analytics scoring, staff recognition, self-declaration prompts, life event detection</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Overdue vulnerability reviews &lt;5% of total flags</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Outcome Parity (Ongoing)</h3>
+                  <Alert className="bg-primary/5 border-primary">
+                    <AlertDescription>
+                      <strong>Critical FCA Requirement:</strong> No significant negative variance in outcomes for vulnerable vs non-vulnerable customers
+                    </AlertDescription>
+                  </Alert>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>CSAT variance &lt;0.2 points (target: vulnerable customers as satisfied as others)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Complaint rate variance &lt;2 percentage points</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Fair value score variance &lt;0.3 points</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Comprehension test pass rate variance &lt;5 percentage points</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>FCR rate variance &lt;5 percentage points</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Complaint resolution time variance &lt;10%</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Where variance exists, root cause identified and documented remediation plan in place with owner and deadline</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Quarterly trend shows variance reducing (continuous improvement)</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Product & Service Adaptations (Weeks 4-16)</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>100% of products assessed for vulnerability impact using standardized template</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Vulnerability explicitly considered in all new product target market definitions</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Alternative communication formats available for all key documents: large print (16pt), audio, braille, easy read</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Digital services have effective non-digital alternatives (phone, post, face-to-face) for those who cannot use digital</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Product features that disproportionately harm vulnerable customers identified and mitigated or removed</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Support Capability (Weeks 6-20)</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Dedicated vulnerable customer specialist team operational with enhanced training</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;95% of all staff completion of foundation vulnerability training (2 hours)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;90% of customer-facing staff completion of advanced vulnerability training (4 hours)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>&gt;90% of specialist team completion of enhanced training (8+ hours)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Call quality monitoring scores for vulnerable customer interactions average &gt;4/5 on: empathy, appropriateness of adjustments, recording quality, overall handling</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Governance & Monitoring (Weeks 8-16, then ongoing)</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Vulnerability monitoring dashboard operational with all 5 views populated with accurate, timely data</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Dashboard reviewed monthly by Vulnerable Customer Committee, quarterly by Executive Committee</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Quarterly vulnerability reviews conducted, documented, and shared with Board</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Annual Board report includes dedicated vulnerable customer section with outcome parity analysis</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Consumer panels with vulnerable customers held at least annually, insights documented and acted upon</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Regulatory Compliance (Ongoing)</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Comprehensive vulnerable customer policy approved by Board, reviewed annually</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Evidence of proactive identification approach using multiple methods (not reactive only)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Evidence of outcome monitoring and parity analysis (dashboard, quarterly reviews)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Evidence of adjustments provided and effectiveness monitored</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600">✓</span>
+                      <span>Readiness for FCA regulatory examination: documentation, evidence, governance in place</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Timeline Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {[
+                    { period: "Weeks 1-3", phase: "Foundation and policy", outcome: "Policy approved, population analysis complete" },
+                    { period: "Weeks 3-6", phase: "Identification and recording", outcome: "Multiple identification methods operational, recording procedures in place" },
+                    { period: "Weeks 4-8", phase: "Product and service adaptations", outcome: "All products assessed, adaptations implemented" },
+                    { period: "Weeks 6-10", phase: "Staff training", outcome: "Training rolled out to all audiences, competency assessed" },
+                    { period: "Weeks 8-12", phase: "Monitoring implementation", outcome: "Dashboard operational, first quarterly review complete" },
+                    { period: "Week 12+", phase: "Ongoing monitoring and continuous improvement", outcome: "Embedded business-as-usual" }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-start gap-4 p-3 border rounded-lg">
+                      <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold">{item.period}: {item.phase}</div>
+                        <div className="text-sm text-muted-foreground mt-1">→ {item.outcome}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Common Pitfalls Tab */}
+          <TabsContent value="pitfalls" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Common Pitfalls to Avoid</CardTitle>
+                <CardDescription>Based on FCA multi-firm review findings and implementation experience</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Alert className="mb-4">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    These pitfalls have been identified in FCA reviews of firms' vulnerable customer approaches. Avoid them to ensure Consumer Duty compliance.
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
+
+            {[
+              {
+                number: 1,
+                title: "Reactive Identification Only",
+                finding: "Firms waiting for customers to self-declare vulnerability rather than proactively identifying",
+                problem: "Most vulnerable customers (especially low capability, resilience) won't self-declare. Firm misses majority of vulnerable population.",
+                impact: "Vulnerable customers don't receive appropriate support, experience worse outcomes, firm fails Consumer Duty outcome parity requirement",
+                prevention: "Implement multiple identification methods: data analytics, staff recognition, life events, AND self-declaration. Set identification targets based on estimated prevalence. Train staff to recognize indicators. Monitor identification rate vs estimated prevalence.",
+                risk: "HIGH",
+                example: "Firm only flags 3% of customers as vulnerable despite 25%+ estimated prevalence in customer base. FCA review identifies missed vulnerable customers experiencing poor outcomes."
+              },
+              {
+                number: 2,
+                title: "Vague 'Vulnerable' Flag Without Specifics",
+                finding: "Recording 'vulnerable' without specific driver, circumstances, or adjustments needed",
+                problem: "Generic flag doesn't tell staff what support customer needs. Health vulnerability needs different support than capability vulnerability.",
+                impact: "Staff don't know how to help. Customer has to repeatedly explain circumstances. Support is generic and ineffective.",
+                prevention: "Record specific driver(s): Health/Life Events/Resilience/Capability. Record specific circumstances in free text. Record preferred adjustments. Make information visible and actionable for all staff.",
+                risk: "MEDIUM",
+                example: "Customer flagged as 'vulnerable' but no details. New staff member doesn't know customer has visual impairment, sends standard 10pt letter customer can't read, customer misses critical deadline."
+              },
+              {
+                number: 3,
+                title: "Recording Without Consent or Transparency",
+                finding: "Recording vulnerability data without explaining to customer or obtaining consent",
+                problem: "UK GDPR violation (lack of transparency). Customer may feel stigmatized or worried about data use.",
+                impact: "Data protection breach, customer loss of trust, reputational damage, ICO enforcement risk",
+                prevention: "Always explain WHY recording. Get consent. Reassure data will be used ONLY to help, never to disadvantage. Document consent obtained. Update privacy notice.",
+                risk: "HIGH",
+                example: "Staff records customer has mental health condition without explaining. Customer discovers during data subject access request, complains to ICO about lack of transparency."
+              },
+              {
+                number: 4,
+                title: "Vulnerability Flag Not Visible to All Staff",
+                finding: "Vulnerability recorded in case notes but not visible to frontline staff who interact with customer",
+                problem: "Customer has to repeat their circumstances every time they contact firm. Support isn't consistent.",
+                impact: "Customer frustration, poor experience, having to 'prove' vulnerability repeatedly, inconsistent support, worse outcomes",
+                prevention: "Prominent vulnerability alert on customer summary screen (red flag icon, banner). Alert visible to ALL customer-facing staff. No need to search buried notes. Alert includes key info: driver, preferred adjustments, review date.",
+                risk: "MEDIUM",
+                example: "Customer with hearing impairment flagged in notes. New contact center agent doesn't see flag, speaks quickly without checking understanding, customer doesn't understand and makes poor decision."
+              },
+              {
+                number: 5,
+                title: "One-Size-Fits-All Generic Approach",
+                finding: "Generic 'vulnerable customer process' applied to all regardless of actual circumstances or driver",
+                problem: "Different vulnerabilities need different support. Health driver ≠ capability driver ≠ resilience driver. Generic approach doesn't meet individual needs.",
+                impact: "Support is inappropriate and ineffective, customer still experiences poor outcomes, wasted resources on wrong interventions",
+                prevention: "Train staff on different drivers and appropriate adjustments for each. Record specific driver(s) to enable tailored support. Empower staff to use judgment and tailor approach. Use adjustments library matched to driver(s).",
+                risk: "MEDIUM",
+                example: "Customer in bereavement (life events driver) needs empathy and flexibility. Firm's generic process offers large print documents (health driver adjustment). Doesn't help customer."
+              },
+              {
+                number: 6,
+                title: "No Outcome Monitoring or Parity Analysis",
+                finding: "No analysis of whether vulnerable customers achieve outcomes as good as other customers",
+                problem: "Can't comply with FCA requirement to ensure outcome parity. Don't know if approach is working. Can't identify where vulnerable customers are disadvantaged.",
+                impact: "Regulatory breach of Consumer Duty. Firm doesn't know if causing systematic harm to vulnerable customers. No basis for improvement.",
+                prevention: "Mandatory differential outcome analysis: compare vulnerable vs all customers across key metrics. Calculate variance for each Consumer Duty outcome. Set variance thresholds that trigger investigation. Dashboard with outcome parity view reviewed monthly/quarterly. Root cause analysis when significant variance identified.",
+                risk: "CRITICAL",
+                example: "FCA multi-firm review finds firm has no data on whether vulnerable customers receive same quality outcomes. Complaint rates, CSAT scores, fair value for vulnerable customers unknown. FCA requires immediate remediation."
+              },
+              {
+                number: 7,
+                title: "Training Focused on Compliance Awareness, Not Skills",
+                finding: "Training tells staff WHAT vulnerability is but not HOW to support vulnerable customers in practice",
+                problem: "Staff know the theory but can't apply it. Can recognize vulnerability but don't know what adjustments to offer. Awareness without skills doesn't improve outcomes.",
+                impact: "Vulnerable customers identified but not supported effectively, poor customer experience, staff frustration",
+                prevention: "Skills-based training with extensive practice: role plays, scenarios, coaching. Focus on recognition AND response (not just recognition). Train on specific adjustments by driver. Ongoing coaching through call quality monitoring. Competency assessment.",
+                risk: "MEDIUM",
+                example: "Staff complete 1-hour e-learning on vulnerability. Know four drivers. In real call with distressed bereaved customer, don't know how to respond with empathy, offer appropriate flexibility, or signpost to bereavement support."
+              },
+              {
+                number: 8,
+                title: "Stigmatizing or Patronizing Treatment",
+                finding: "Well-intentioned staff using patronizing language or creating stigma around vulnerability",
+                problem: "Customers feel demeaned, don't want to disclose vulnerability in future, damages trust, poor customer experience",
+                impact: "Customers reluctant to share circumstances, firm can't identify vulnerability, customers don't get needed support, reputational damage",
+                prevention: "Train on respectful, dignity-preserving language. Use customer's own words, not labels. Empathy not sympathy (partnership approach, not pity). Focus on 'what support helps' not 'what's wrong with you'.",
+                risk: "LOW (regulatory) but HIGH (reputational)",
+                example: "Elderly customer mentions difficulty with smartphone banking. Staff says 'Oh bless, at your age technology is so confusing isn't it?' Customer feels patronized, complains."
+              },
+              {
+                number: 9,
+                title: "Vulnerability Considered Only After Product Design Complete",
+                finding: "Products designed for 'average' customer, then vulnerability considered as afterthought or exception process",
+                problem: "Product may be inherently unsuitable for vulnerable customers in target market. Bolt-on adjustments don't fix design flaws. Excludes vulnerable customers.",
+                impact: "Mis-selling risk, product doesn't meet needs of vulnerable in target market, poor value, poor outcomes, regulatory breach",
+                prevention: "Inclusive design from the START of product development. Vulnerability explicitly considered in target market definition. Product features assessed for impact on vulnerable customers BEFORE launch. Testing with vulnerable customers DURING design phase. 'Vulnerability impact assessment' mandatory step in product approval.",
+                risk: "HIGH",
+                example: "Firm designs digital-only current account, launches, then realizes 15% of target market has low digital capability and can't use product. Vulnerable customers excluded or struggle, poor outcomes."
+              },
+              {
+                number: 10,
+                title: "Using Vulnerability Data Detrimentally",
+                finding: "Firms using vulnerability data to limit product access, charge higher prices, or deny services",
+                problem: "DIRECT breach of Consumer Duty. Exploits customers the Duty is designed to protect. May also breach Equality Act if overlaps with protected characteristics.",
+                impact: "Serious regulatory enforcement risk, potential FCA fines, reputational catastrophe, customer harm, possible Equality Act legal action",
+                prevention: "Clear policy: Vulnerability data used ONLY for support, NEVER detrimentally. Staff training on appropriate use. Monitoring for inappropriate use. Whistleblowing protections. Regular audits of vulnerability data usage.",
+                risk: "CRITICAL",
+                example: "Firm identifies customer has mental health condition (vulnerability flag). Debt collection team sees flag, uses aggressive tactics assuming customer won't complain. FCA enforcement action."
+              },
+              {
+                number: 11,
+                title: "No Periodic Review of Vulnerability Status",
+                finding: "Vulnerability flag set and never reviewed or updated - temporary vulnerabilities become permanent records",
+                problem: "Customer circumstances change. Temporary vulnerability (broken leg) resolves but flag remains forever. Permanent vulnerability may need different adjustments over time.",
+                impact: "Unnecessary data retention (GDPR issue), out-of-date adjustments offered, customer annoyed by irrelevant support",
+                prevention: "Mandatory review dates for all vulnerability flags. System generates review prompts. Staff contact customer at review date. Update, remove, or extend flag as appropriate. Temporary = 3-6 month review, permanent = 12 month review. Delete data when no longer relevant.",
+                risk: "LOW (Consumer Duty) but MEDIUM (UK GDPR)",
+                example: "Customer breaks leg, firm flags for mobility adjustments. 2 years later, leg long healed, firm still sending large print due to old flag. Customer confused and annoyed."
+              },
+              {
+                number: 12,
+                title: "Staff Not Empowered to Make Adjustments",
+                finding: "Rigid processes prevent staff from providing appropriate adjustments even when they want to help",
+                problem: "Staff recognize vulnerability, want to support customer, but procedures/systems/authority don't allow them to make needed exceptions.",
+                impact: "Staff frustration, poor vulnerable customer experience, vulnerable customers face barriers, outcome parity not achieved",
+                prevention: "Empower frontline staff with authority to make reasonable adjustments without manager approval. Clear guidance on what adjustments are authorized. Specialist team for complex cases. Remove rigid process barriers. Culture of 'how can we help?' not 'computer says no'.",
+                risk: "MEDIUM",
+                example: "Customer with ADHD needs extra time to make decision. Call center script requires decision within call. Agent wants to give customer time but system won't allow, must close call. Customer feels pressured."
+              }
+            ].map((pitfall) => (
+              <Card key={pitfall.number} className="border-l-4 border-l-destructive">
+                <CardHeader>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-destructive text-destructive-foreground rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                      {pitfall.number}
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg mb-2">⚠️ {pitfall.title}</CardTitle>
+                      <Badge variant="destructive">{pitfall.risk} RISK</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-1">FCA Finding:</h4>
+                    <p className="text-sm text-muted-foreground italic">"{pitfall.finding}"</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm mb-1">Why it's a problem:</h4>
+                    <p className="text-sm">{pitfall.problem}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm mb-1">Impact:</h4>
+                    <p className="text-sm text-destructive">{pitfall.impact}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-sm mb-1">How to avoid:</h4>
+                    <p className="text-sm">{pitfall.prevention}</p>
+                  </div>
+                  <div className="p-3 bg-muted rounded-lg">
+                    <h4 className="font-semibold text-sm mb-1">Example:</h4>
+                    <p className="text-sm text-muted-foreground">{pitfall.example}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </TabsContent>
         </Tabs>
       </div>
