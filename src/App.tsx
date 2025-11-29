@@ -14,6 +14,7 @@ import CDI1ProductsServices from "./pages/modules/CD-I1-ProductsServices";
 import CDI2PriceValue from "./pages/modules/CD-I2-PriceValue";
 import CDI3ConsumerUnderstanding from "./pages/modules/CD-I3-ConsumerUnderstanding";
 import CDI4ConsumerSupport from "./pages/modules/CD-I4-ConsumerSupport";
+import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -81,7 +82,8 @@ const App = () => (
                   <Route path="/outcomes/products-services" element={<CDI1ProductsServices />} />
                   <Route path="/outcomes/price-value" element={<CDI2PriceValue />} />
                   <Route path="/outcomes/consumer-understanding" element={<CDI3ConsumerUnderstanding />} />
-                  <Route path="/outcomes/consumer-support" element={<CDI4ConsumerSupport />} />
+          <Route path="/outcomes/consumer-support" element={<CDI4ConsumerSupport />} />
+          <Route path="/cross-cutting/vulnerable-customers" element={<CDI5VulnerableCustomers />} />
 
                   {/* Cross-Cutting */}
                   <Route path="/cross-cutting/vulnerable-customers" element={
