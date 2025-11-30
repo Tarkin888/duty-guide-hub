@@ -12,20 +12,20 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
-import { updateModuleStatus, logActivity } from "@/lib/storage";
+import { updateModuleStatus, addActivity } from "@/lib/storage";
 import { toast } from "sonner";
 
 export default function CDI6DistributionChain() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(() => {
+  const [status, setStatus] = useState<"not-started" | "in-progress" | "completed">(() => {
     const stored = localStorage.getItem("module-cd-i6-status");
-    return stored || "not-started";
+    return (stored as "not-started" | "in-progress" | "completed") || "not-started";
   });
 
-  const handleStatusChange = (newStatus: string) => {
+  const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
     updateModuleStatus("cd-i6", newStatus);
-    logActivity(`Module CD-I6 status updated to: ${newStatus}`);
+    addActivity("status_updated", "CD-I6: Distribution Chain Management");
     toast.success(`Module status updated to ${newStatus}`);
   };
 
@@ -99,7 +99,7 @@ export default function CDI6DistributionChain() {
             <div className="flex items-center gap-2">
               <select
                 value={status}
-                onChange={(e) => handleStatusChange(e.target.value)}
+                onChange={(e) => handleStatusChange(e.target.value as "not-started" | "in-progress" | "completed")}
                 className="px-3 py-2 border rounded-md text-sm"
               >
                 <option value="not-started">Not Started</option>
@@ -1316,6 +1316,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={1}
                     title="PHASE 1: MAPPING & ASSESSMENT (Weeks 1-3)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-1-1",
@@ -1352,6 +1353,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={2}
                     title="PHASE 2: MANUFACTURER FRAMEWORK (Weeks 2-5)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-2-1",
@@ -1388,6 +1390,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={3}
                     title="PHASE 3: DISTRIBUTOR FRAMEWORK (Weeks 3-6)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-3-1",
@@ -1424,6 +1427,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={4}
                     title="PHASE 4: APPOINTED REPRESENTATIVE OVERSIGHT (Weeks 4-7)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-4-1",
@@ -1453,6 +1457,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={5}
                     title="PHASE 5: OUTSOURCING ARRANGEMENTS (Weeks 5-8)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-5-1",
@@ -1489,6 +1494,7 @@ export default function CDI6DistributionChain() {
                   <ChecklistSection
                     stepNumber={6}
                     title="PHASE 6: GOVERNANCE & CONTINUOUS IMPROVEMENT (Weeks 6-10, then ongoing)"
+                    moduleId="cd-i6"
                     items={[
                       {
                         id: "cd-i6-step-6-1",
@@ -1773,7 +1779,7 @@ export default function CDI6DistributionChain() {
                         <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="font-medium">Enhanced AR oversight</p>
-                          <p className="text-sm text-muted-foreground">All AR agreements updated with Consumer Duty obligations, all ARs trained (>90% completion), outcome data collected monthly, performance monitored against principals, issues addressed, annual audits conducted</p>
+                          <p className="text-sm text-muted-foreground">All AR agreements updated with Consumer Duty obligations, all ARs trained (greater than 90% completion), outcome data collected monthly, performance monitored against principals, issues addressed, annual audits conducted</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
