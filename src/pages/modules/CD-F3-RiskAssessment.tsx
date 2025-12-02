@@ -848,19 +848,89 @@ export default function CDRiskAssessment() {
                 </Alert>
               </Card>
 
-              <Alert className="border-primary/50 bg-primary/5">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <AlertTitle>Next Steps (Part 2)</AlertTitle>
-                <AlertDescription>
-                  After completing Steps 1-3, you'll have identified all material consumer harm risks across the four outcomes. 
-                  Part 2 will cover:
-                  <ul className="list-disc list-inside mt-2 space-y-1">
-                    <li><strong>Step 4:</strong> Impact Assessment & Risk Scoring (Week 4)</li>
-                    <li><strong>Step 5:</strong> Mitigation Strategy Development (Week 5)</li>
-                    <li><strong>Step 6:</strong> Board Reporting & Approval (Week 6)</li>
-                  </ul>
-                </AlertDescription>
-              </Alert>
+              {/* Phase 3 */}
+              <Card className="p-6 border-secondary">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <span className="bg-secondary text-secondary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm">
+                    3
+                  </span>
+                  Phase 3: Risk Scoring & Prioritisation (Weeks 3-4)
+                </h3>
+
+                <ChecklistSection
+                  stepNumber={4}
+                  title="Step 4: Conduct Impact Assessment & Risk Scoring"
+                  items={[
+                    { id: "likelihood", label: "Define 5-point likelihood scale with clear criteria (Rare <20%, Unlikely 20-40%, Possible 40-60%, Likely 60-80%, Almost Certain >80%)" },
+                    { id: "assess-likelihood", label: "For each risk, assess likelihood considering: Historical data, current controls effectiveness, market conditions, regulatory focus, complexity, customer characteristics" },
+                    { id: "impact-dimensions", label: "Define impact dimensions: Customer financial harm (£ per customer, total exposure), Number affected, Severity of harm, Duration, Vulnerable customer impact, Firm financial impact, Regulatory consequences" },
+                    { id: "impact-scale", label: "Define 5-point impact scale with financial thresholds: Negligible (<£10k), Minor (£10k-£100k), Moderate (£100k-£1m), Major (£1m-£10m), Catastrophic (>£10m)" },
+                    { id: "calculate-score", label: "Calculate inherent risk score (before controls): Risk Score = Likelihood × Impact. EXTREME (20-25), HIGH (12-19), MEDIUM (6-11), LOW (3-5), MINIMAL (1-2)" },
+                    { id: "controls", label: "Assess control effectiveness: Strong (40-60% reduction), Adequate (20-40%), Weak (10-20%), Absent (0%). Calculate residual risk score" },
+                    { id: "heatmap", label: "Create risk heat map: Plot all risks on likelihood/impact matrix, color code by rating, identify concentration areas, present to governance" }
+                  ]}
+                  moduleId="cd-f3-step4"
+                />
+              </Card>
+
+              {/* Phase 4 */}
+              <Card className="p-6 border-accent">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <span className="bg-accent text-accent-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm">
+                    4
+                  </span>
+                  Phase 4: Mitigation Strategy Development (Weeks 4-5)
+                </h3>
+
+                <ChecklistSection
+                  stepNumber={5}
+                  title="Step 5: Develop Risk Mitigation Strategies"
+                  items={[
+                    { id: "treatment", label: "Determine risk treatment for each risk: AVOID (eliminate activity), REDUCE (implement controls), TRANSFER (share with third party), ACCEPT (monitor without action)" },
+                    { id: "preventive", label: "Identify preventive controls to stop risk occurring: Process changes, system enhancements, policy updates, training, QA checks, approval gates" },
+                    { id: "detective", label: "Identify detective controls to identify if risk occurs: Monitoring/MI, testing/sampling, customer feedback, complaints analysis, audits, oversight" },
+                    { id: "mitigation-detail", label: "Specify each mitigation: Action description, rationale, owner (named individual), resources, timeline with milestones, expected risk reduction, success criteria, dependencies" },
+                    { id: "prioritise", label: "Prioritise mitigations: EXTREME/HIGH risks first, quick wins (low effort/high impact), regulatory deadlines, dependencies, resource constraints" },
+                    { id: "resources", label: "Calculate total resources: Staff time (FTE), budget (£), technology/systems, external support. Secure commitments from business units and governance approval" },
+                    { id: "kris", label: "Define Key Risk Indicators for HIGH/EXTREME risks: Leading indicators (early warning), lagging indicators (harm occurred), thresholds (Green/Amber/Red), reporting frequency" }
+                  ]}
+                  moduleId="cd-f3-step5"
+                />
+
+                <Alert className="mt-4 border-accent/50 bg-accent/5">
+                  <Target className="h-4 w-4 text-accent" />
+                  <AlertTitle className="text-sm">Example Risk Appetite Statement</AlertTitle>
+                  <AlertDescription className="text-xs mt-2">
+                    "We have ZERO appetite for conduct causing material consumer harm. EXTREME risks (≥20) maintained at zero through avoidance or immediate mitigation. LIMITED appetite for MEDIUM risks (6-11) where mitigation would be disproportionate to customer benefit."
+                  </AlertDescription>
+                </Alert>
+              </Card>
+
+              {/* Phase 5 */}
+              <Card className="p-6 border-primary">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm">
+                    5
+                  </span>
+                  Phase 5: Board Reporting & ERM Integration (Weeks 5-6)
+                </h3>
+
+                <ChecklistSection
+                  stepNumber={6}
+                  title="Step 6: Integrate with ERM & Board Reporting"
+                  items={[
+                    { id: "erm-align", label: "Align with Enterprise Risk Management: Map Consumer Duty risks to existing categories (Strategic, Operational, Compliance, Reputational, Financial), position in risk taxonomy, integrate into corporate risk register" },
+                    { id: "risk-appetite", label: "Align risk appetite statements: Define appetite for consumer harm risk, set tolerance levels for poor outcomes, link to existing conduct risk appetite" },
+                    { id: "governance", label: "Establish governance linkages: Consumer Duty oversight committee → Risk Committee → Board, three lines of defence alignment, internal audit coverage plan" },
+                    { id: "board-report", label: "Develop Board Risk Report: Executive summary (overall profile, key risks, Board attention items), risk heat map, EXTREME/HIGH risks deep dive, risk movement analysis, emerging risks, forward look" },
+                    { id: "reporting-freq", label: "Define reporting frequency: Full report quarterly to Board, summary dashboard monthly to Risk Committee, exception reports when thresholds breached" },
+                    { id: "board-prep", label: "Prepare Board for oversight: Board training on Consumer Duty risks, explain framework and terminology, clarify Board vs management roles, set challenge expectations" },
+                    { id: "document", label: "Document Board decisions: Formal minuting of risk appetite, recording of challenge/debate, action log with owners/deadlines, evidence of oversight retained in repository" },
+                    { id: "integrate", label: "Link to other reporting: Annual Consumer Duty Board Report, financial reporting and audit, operational risk reports, compliance monitoring, internal audit plans" }
+                  ]}
+                  moduleId="cd-f3-step6"
+                />
+              </Card>
             </div>
           </TabsContent>
 
@@ -964,20 +1034,77 @@ export default function CDRiskAssessment() {
               </Card>
             </div>
 
-            <Card className="p-6 bg-accent/5 border-accent">
+            <div className="grid md:grid-cols-2 gap-6 mt-6">
+              <TemplateCard
+                title="Template 4: Impact Assessment Matrix"
+                description="Structured assessment of risk impact across multiple dimensions including customer financial harm, numbers affected, vulnerable customer impact, duration, regulatory impact, reputational damage, and strategic consequences. Excel workbook with scoring guides, individual risk assessments, and automated heat map generation."
+                format="Excel"
+                onDownload={() => console.log("Download Impact Assessment Matrix")}
+              />
+
+              <TemplateCard
+                title="Template 5: Risk Mitigation Action Plan"
+                description="Detailed plan for reducing each identified risk with action tracking, resource summary, risk score progression tracking, and monitoring dashboard. Includes action details (type, owner, resources, timeline, expected impact, success criteria), resource allocation summary, and governance reporting views."
+                format="Excel"
+                onDownload={() => console.log("Download Mitigation Action Plan")}
+              />
+
+              <TemplateCard
+                title="Template 6: Risk Appetite Statement"
+                description="Board-approved statement defining acceptable levels of Consumer Duty risk. Includes overarching risk appetite, appetite by outcome, quantitative risk appetite metrics, scenario-specific appetite, breach management protocols, governance framework, and Board attestation with signatures."
+                format="Word"
+                onDownload={() => console.log("Download Risk Appetite Statement")}
+              />
+
+              <TemplateCard
+                title="Template 7: Board Risk Report Template"
+                description="Quarterly Board report on Consumer Duty risk profile. PowerPoint presentation with executive summary dashboard, risk heat map, EXTREME/HIGH risks deep dives (one slide each), risk movement analysis, emerging risks horizon scan, risk culture indicators, and forward look with priorities and Board decisions required."
+                format="PowerPoint"
+                onDownload={() => console.log("Download Board Risk Report Template")}
+              />
+
+              <TemplateCard
+                title="Template 8: Key Risk Indicators Dashboard"
+                description="Real-time monitoring of risk indicators with thresholds and alerts. Excel workbook with KRI master list, threshold definitions (Green/Amber/Red), current values dashboard with conditional formatting, breach log tracking all threshold violations, trend analysis charts, and automated alerting specifications."
+                format="Excel"
+                onDownload={() => console.log("Download KRI Dashboard Template")}
+              />
+            </div>
+
+            <Card className="p-6 bg-accent/5 border-accent mt-6">
               <h3 className="font-semibold text-lg mb-3">How to Use These Templates</h3>
               <ol className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="font-semibold text-accent">1.</span>
-                  <span><strong>Project Charter:</strong> Complete before starting risk identification workshops. Obtain sponsor approval. Use to communicate scope and expectations to all stakeholders.</span>
+                  <span><strong>Project Charter (T1):</strong> Complete before starting. Obtain sponsor approval. Communicate scope to stakeholders.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-semibold text-accent">2.</span>
-                  <span><strong>Risk Worksheets:</strong> Use one worksheet per outcome workshop. Facilitate live documentation during discussions. Consolidate all four worksheets afterward.</span>
+                  <span><strong>Risk Worksheets (T2):</strong> One per outcome workshop. Facilitate live documentation. Consolidate all four afterward.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-semibold text-accent">3.</span>
-                  <span><strong>Scenario Library:</strong> Review scenarios before workshops as preparation. Reference during workshops when participants need examples. Adapt scenarios to your firm's specific products and context.</span>
+                  <span><strong>Scenario Library (T3):</strong> Review before workshops. Reference during discussions. Adapt to firm context.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold text-accent">4.</span>
+                  <span><strong>Impact Assessment (T4):</strong> Use after risk identification. Score each dimension systematically. Generate heat map for governance.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold text-accent">5.</span>
+                  <span><strong>Mitigation Plan (T5):</strong> Detail every HIGH/EXTREME risk action. Track resources. Monitor progress monthly.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold text-accent">6.</span>
+                  <span><strong>Risk Appetite (T6):</strong> Draft with CRO. Board workshop to refine. Formal Board approval. Annual review cycle.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold text-accent">7.</span>
+                  <span><strong>Board Report (T7):</strong> Quarterly preparation. Pre-read 5-7 days ahead. Board meeting discussion 30-45 mins.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold text-accent">8.</span>
+                  <span><strong>KRI Dashboard (T8):</strong> Automated data refresh. Monthly review. Immediate escalation on Red thresholds.</span>
                 </li>
               </ol>
             </Card>
@@ -1157,6 +1284,65 @@ export default function CDRiskAssessment() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
+
+                <AccordionItem value="assessment-quality" className="border rounded-lg px-4 bg-muted/50">
+                  <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+                    Risk Assessment Quality Criteria
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-4 space-y-3">
+                    <div className="space-y-2">
+                      <p className="font-semibold flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-secondary" />
+                        Impact Assessment:
+                      </p>
+                      <ul className="text-sm space-y-1 ml-6">
+                        <li>✓ All EXTREME/HIGH risks have detailed impact assessments across multiple dimensions</li>
+                        <li>✓ Customer harm quantified financially where possible</li>
+                        <li>✓ Vulnerable customer disproportionate impact explicitly assessed</li>
+                        <li>✓ Duration and scale of potential harm documented</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-secondary" />
+                        Mitigation Effectiveness:
+                      </p>
+                      <ul className="text-sm space-y-1 ml-6">
+                        <li>✓ All EXTREME risks (≥20) reduced to HIGH or below within 3 months</li>
+                        <li>✓ All HIGH risks (12-19) have approved mitigation plans with owners and timelines</li>
+                        <li>✓ &gt;80% of mitigation actions completed on time</li>
+                        <li>✓ Target residual risk scores achieved for priority risks</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-secondary" />
+                        Board & Governance:
+                      </p>
+                      <ul className="text-sm space-y-1 ml-6">
+                        <li>✓ Risk Appetite Statement approved by Board</li>
+                        <li>✓ Quarterly Board Risk Reports submitted on time (100% compliance)</li>
+                        <li>✓ Board minutes demonstrate effective challenge and scrutiny</li>
+                        <li>✓ All Board actions from risk reports completed within deadlines</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="font-semibold flex items-center gap-2">
+                        <Scale className="h-4 w-4 text-secondary" />
+                        Monitoring & Reporting:
+                      </p>
+                      <ul className="text-sm space-y-1 ml-6">
+                        <li>✓ KRI dashboard operational with monthly updates</li>
+                        <li>✓ All KRIs within Green or Amber thresholds (no RED breaches &gt;30 days)</li>
+                        <li>✓ Breach escalation process tested and functioning</li>
+                        <li>✓ Risk reporting schedule maintained (100% on-time submission)</li>
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
             </Card>
 
@@ -1171,17 +1357,17 @@ export default function CDRiskAssessment() {
                   <span>Weeks 2-3: Risk identification workshops completed</span>
                   <Badge variant="outline">✓</Badge>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-muted rounded">
-                  <span>Week 4: Impact assessment and scoring (Part 2)</span>
-                  <Badge variant="secondary">Upcoming</Badge>
+                <div className="flex items-center justify-between p-2 bg-background rounded">
+                  <span>Week 4: Impact assessment and scoring</span>
+                  <Badge variant="outline">✓</Badge>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-muted rounded">
-                  <span>Week 5: Mitigation strategies developed (Part 2)</span>
-                  <Badge variant="secondary">Upcoming</Badge>
+                <div className="flex items-center justify-between p-2 bg-background rounded">
+                  <span>Week 5: Mitigation strategies developed</span>
+                  <Badge variant="outline">✓</Badge>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-muted rounded">
-                  <span>Week 6: Board reporting and approval (Part 2)</span>
-                  <Badge variant="secondary">Upcoming</Badge>
+                <div className="flex items-center justify-between p-2 bg-background rounded">
+                  <span>Week 6: Board reporting and approval</span>
+                  <Badge variant="outline">✓</Badge>
                 </div>
               </div>
             </Card>
@@ -1260,38 +1446,52 @@ export default function CDRiskAssessment() {
               />
 
               <PitfallCard
-                title="Pitfall 6: Confusing Inherent and Residual Risk"
-                description="Inherent risk is risk before any controls applied. Residual risk is risk after controls applied. Need both to understand control effectiveness. Common mistake: Only assessing residual risk ('We have controls so risk is Low') without recognizing inherent risk remains High."
-                impact="Complacency about controls. False sense of security. If controls fail (human error, process breakdown), inherent risk materializes and firm unprepared. Cannot justify control investment decisions."
-                prevention="Always assess inherent risk first (what's the risk with no controls?). Then assess current control effectiveness. Calculate residual risk based on control quality. Monitor controls to ensure residual risk stays acceptable. Example: Product: High-risk investment. Inherent Risk: HIGH (complex, volatile, potential for significant loss). Current Controls: Target market definition, suitability assessment, risk warnings. Residual Risk: MEDIUM (controls reduce but don't eliminate risk). Key Point: Even with good controls, some inherent risk remains. If controls fail, inherent risk materializes."
+                title="Pitfall 6: Generic Risk Descriptions"
+                description="FCA Finding: 'Risk registers with vague descriptions like Consumer Duty compliance risk.' Cannot identify specific mitigations when risk is too broad to manage. Doesn't tell you what customer harm to prevent or how to prevent it."
+                impact="MI fails to provide insight. Cannot evidence compliance. Risk register becomes meaningless checklist exercise rather than management tool."
+                prevention="Be specific: 'Fair value assessments not conducted for Product X resulting in potential £10m customer harm' not 'Consumer Duty compliance risk.' Start with customer harm, not firm risk. Use detailed risk description format in Risk Register template."
               />
 
               <PitfallCard
-                title="Pitfall 7: Ignoring Implementation and Operational Risks"
-                description="FCA Observation: 'Firms assess product design risks but miss implementation and operational execution risks.' Examples: Resource constraints (understaffed call centre → long waits → poor support), System failures (website down → digital customers can't access), Training gaps (staff don't understand vulnerability → no tailored support), Change management (new system poorly implemented → customer confusion)."
-                impact="Product may be well-designed but poorly delivered. Operational failures cause customer harm despite good intentions. Cannot evidence good outcomes if execution fails. Staff cannot deliver Consumer Duty without proper resources and training."
-                prevention="Specifically assess operational delivery, not just design. Consider people, process, systems, and data. Think about 'failure modes' (what could go wrong in execution?). Include front-line staff in risk assessment workshops. Ask: Are we adequately resourced? Are systems reliable? Are staff trained? Can processes handle exceptions? What if something breaks?"
+                title="Pitfall 7: Impact Assessment Based on Averages"
+                description="FCA Finding: 'Firms assessing impact using average customer detriment without considering worst-case or vulnerable customers.' Underestimation of true risk. Vulnerable customers disproportionately harmed but masked in averages."
+                impact="Vulnerable customers experiencing poor outcomes not identified. Breach of outcome parity requirement. Problems identified too late."
+                prevention="Assess impact using ranges: average, worst-case, vulnerable customers. Example: Average detriment £50, but vulnerable customers £500 loss. Always segment analysis by customer type. Use Differential Outcomes Analysis template."
               />
 
               <PitfallCard
-                title="Pitfall 8: Treating This as One-Off Exercise"
-                description="FCA Expectation: Risk assessment should be dynamic, not static annual review. Risks change as products, customers, and markets evolve. New risks emerge (technology, regulations, economic conditions). Controls degrade over time without monitoring. Consumer Duty is ongoing obligation."
-                impact="Risk register becomes outdated and irrelevant. New risks not identified until harm occurs. Controls fail without being monitored. Cannot demonstrate proactive compliance."
-                prevention="Continuous monitoring: Establish Key Risk Indicators (KRIs) for material risks, Monitor KRIs monthly/quarterly, Set triggers for review (e.g., complaint rate increases 20%). Event-driven reviews: New product launch → risk assessment required, Product change → re-assess impacted risks, Significant complaint theme → investigate root cause risk, External event (economic shock, regulatory change) → scenario analysis. Annual formal review: Full risk register review annually minimum, Update likelihood/impact scores, Reassess control effectiveness, Update mitigation plans, Board re-approval. Lessons learned integration: Near misses/incidents → add to risk register, Complaints root cause → update risk description, FOS upholds → assess whether foreseeable, FCA findings (multi-firm reviews) → benchmark risks."
+                title="Pitfall 8: Mitigation Actions Without Ownership"
+                description="FCA Finding: 'Action plans with vague responsibilities like Product team to review.' Nothing gets done when responsibility diffused. No accountability for completion."
+                impact="Actions delayed. Risk remains unmitigated. Loss of Board confidence. Regulatory criticism for inaction despite identification."
+                prevention="Every action must have named individual owner with authority. Include in Risk Mitigation Action Plan: Owner name, Resources required, Timeline with milestones, Success criteria. Not 'Product team' but 'Jane Smith, Head of Product.'"
               />
 
               <PitfallCard
-                title="Pitfall 9: Insufficient Evidence Trail"
-                description="FCA Expectation: Firms must demonstrate 'reasonable grounds' for decisions. Regulators will ask: 'How did you identify this risk?', 'What evidence did you consider?', 'Why did you rate likelihood/impact as you did?', 'What alternatives did you consider for mitigation?'."
-                impact="Cannot defend decisions to regulators. Enforcement action if cannot demonstrate reasonable grounds. Audit trail missing for key decisions. Cannot replicate or update assessment."
-                prevention="Document for risk identification: Workshop attendance lists, Notes from discussions, Data sources used (complaints, MI, customer feedback), Examples or case studies considered. Document for risk scoring: Scoring criteria definitions, Data supporting likelihood assessment (frequency, customer numbers), Data supporting impact assessment (financial quantification, customer harm), Rationale for scores assigned. Document for mitigation decisions: Options considered, Cost-benefit analysis, Why chosen approach selected, Resource allocation justification, Timeline rationale. Evidence repository: Central storage location for all risk assessment documentation, Version control (track changes over time), Accessible to Board, SMFs, Internal Audit, Regulators, Cross-referenced to other frameworks (ERM, compliance, audit)."
+                title="Pitfall 9: Unrealistic Timelines"
+                description="FCA Finding: 'Firms setting aggressive mitigation timelines that cannot be achieved.' Actions delayed. Risk remains unmitigated. Loss of Board confidence."
+                impact="Credibility damaged when deadlines missed. Risk exposure continues longer than expected. Board loses trust in risk management."
+                prevention="Build in buffer time. Sequence actions considering dependencies and resource constraints. Don't commit to 2 weeks if IT change needs 6-week lead time. Test timeline realism with delivery teams before committing to Board."
               />
 
               <PitfallCard
-                title="Pitfall 10: Proportionality Misunderstood"
-                description="FCA Clarification: Proportionality relates to method/evidence detail, NOT to obligation. Common misunderstanding: 'We're a small firm so we don't need to worry as much about consumer harm.' Correct understanding: 'We're a small firm so our risk assessment can be simpler/less detailed, but we still must identify material risks and mitigate them.'"
-                impact="Small firms underestimate their Consumer Duty obligations. Harm occurs to customers despite firm size. FCA enforcement regardless of firm size. No 'small firm exemption' from foreseeable harm rule."
-                prevention="Proportionate approach for small firms: Simpler risk register (20-30 risks vs 100), Basic scoring (High/Medium/Low vs 5×5 matrix), Less documentation detail, Streamlined workshops (half-day vs multi-day), Combined outcomes assessment (not separate workshops per outcome). But still required: Comprehensive coverage of all outcomes, Specific risk descriptions (not generic), Vulnerable customer consideration, Board approval and oversight, Evidence of mitigation actions. Regulatory message: Size affects HOW you assess (method), not WHETHER you assess (obligation)."
+                title="Pitfall 10: No Monitoring of Residual Risk"
+                description="FCA Finding: 'Firms treating risk assessment as one-off; no monitoring whether mitigations working.' Risk resurfaces. False sense of security. Controls degrade over time without monitoring."
+                impact="Risk materializes despite apparent mitigation. Cannot demonstrate proactive compliance. Surprised by issues that should have been monitored."
+                prevention="Implement KRI dashboard with regular reporting. Revalidate risk scores quarterly. Monitor control effectiveness. Set up event-driven reviews (new products, market changes, incidents). Include in ongoing MI framework."
+              />
+
+              <PitfallCard
+                title="Pitfall 11: Board Reports Too Operational"
+                description="FCA Finding: '100-slide Board packs with operational detail; Board unable to exercise strategic oversight.' Board overwhelmed. Superficial review. Fails to provide effective challenge."
+                impact="Board doesn't understand true risk profile. Cannot provide strategic direction. Material issues buried in detail. Time wasted on low-value information."
+                prevention="Board pack max 20 slides: Executive summary + heat map + deep dive on EXTREME/HIGH risks only. Detailed appendices available if Board requests. Focus on 'So What?' narrative not raw data. Use Board Report Template."
+              />
+
+              <PitfallCard
+                title="Pitfall 12: Proportionality Misunderstood"
+                description="FCA Clarification: 'Proportionality relates to method/evidence detail, NOT to obligation.' Common mistake: Small firms thinking they don't need to worry as much. Correct: Simpler method but same obligation."
+                impact="Small firms underestimate obligations. Harm occurs despite firm size. FCA enforcement regardless of size. No small firm exemption from foreseeable harm rule."
+                prevention="Proportionate approach for small firms: Simpler risk register (20-30 vs 100 risks), Basic scoring (High/Medium/Low vs 5×5 matrix), Less documentation. BUT still required: All outcomes coverage, Specific risks, Vulnerable customer consideration, Board oversight, Mitigation actions. Size affects HOW you assess, not WHETHER."
               />
             </div>
 
