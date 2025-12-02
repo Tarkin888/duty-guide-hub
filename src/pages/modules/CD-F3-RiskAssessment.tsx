@@ -786,33 +786,29 @@ export default function CDRiskAssessment() {
                 </h3>
 
                 <ChecklistSection
+                  stepNumber={1}
                   title="Step 1: Establish Risk Assessment Governance"
                   items={[
-                    "Define assessment scope: All products/services, customer segments, distribution channels, four outcomes, and touchpoints",
-                    "Form cross-functional risk assessment team: Risk function (lead), Compliance, Product owners, Customer service heads, Data/MI team, Business line representatives",
-                    "Assign roles and responsibilities: Overall owner (CRO/Head of Compliance), Outcome leads (one per outcome), Business line risk owners, Data analysis lead, Documentation lead",
-                    "Set timelines and milestones: Week 1 (Preparation), Weeks 2-3 (Risk identification), Week 4 (Impact assessment), Week 5 (Mitigation strategy), Week 6 (Board reporting)",
-                    "Secure necessary resources: Dedicated time from key personnel, Access to data and MI, Workshop facilitation support, Documentation tools"
+                    { id: "scope", label: "Define assessment scope: All products/services, customer segments, distribution channels, four outcomes, and touchpoints" },
+                    { id: "team", label: "Form cross-functional risk assessment team: Risk function (lead), Compliance, Product owners, Customer service heads, Data/MI team, Business line representatives" },
+                    { id: "roles", label: "Assign roles and responsibilities: Overall owner (CRO/Head of Compliance), Outcome leads (one per outcome), Business line risk owners, Data analysis lead, Documentation lead" },
+                    { id: "timeline", label: "Set timelines and milestones: Week 1 (Preparation), Weeks 2-3 (Risk identification), Week 4 (Impact assessment), Week 5 (Mitigation strategy), Week 6 (Board reporting)" },
+                    { id: "resources", label: "Secure necessary resources: Dedicated time from key personnel, Access to data and MI, Workshop facilitation support, Documentation tools" }
                   ]}
-                  storageKey="cd-f3-step1"
-                  responsible="CRO / Head of Risk"
-                  duration="3-5 days"
-                  deliverable="Risk Assessment Project Charter with governance structure, roles, and timeline"
+                  moduleId="cd-f3-step1"
                 />
 
                 <ChecklistSection
+                  stepNumber={2}
                   title="Step 2: Conduct Risk Assessment Training"
                   items={[
-                    "Consumer Duty fundamentals: Cross-cutting rule (avoid foreseeable harm), Four outcomes, What constitutes 'foreseeable harm', 'Reasonable grounds' test, Proportionality principles",
-                    "Risk assessment methodology: How to identify consumer harm risks, Likelihood vs impact scoring, Inherent vs residual risk concepts, Root cause identification, Mitigation strategy development",
-                    "Examples of consumer harm: Real-world scenarios from FCA enforcement, Good practice from multi-firm reviews, Sector-specific harm examples relevant to your firm",
-                    "Documentation requirements: What evidence needed for 'reasonable grounds', Recording decision-making rationale, Audit trail best practices",
-                    "Deliver 2-hour workshop: Include interactive exercises, Use firm-specific examples, Provide reference materials (FCA guidance, templates)"
+                    { id: "fundamentals", label: "Consumer Duty fundamentals: Cross-cutting rule (avoid foreseeable harm), Four outcomes, What constitutes 'foreseeable harm', 'Reasonable grounds' test, Proportionality principles" },
+                    { id: "methodology", label: "Risk assessment methodology: How to identify consumer harm risks, Likelihood vs impact scoring, Inherent vs residual risk concepts, Root cause identification, Mitigation strategy development" },
+                    { id: "examples", label: "Examples of consumer harm: Real-world scenarios from FCA enforcement, Good practice from multi-firm reviews, Sector-specific harm examples relevant to your firm" },
+                    { id: "documentation", label: "Documentation requirements: What evidence needed for 'reasonable grounds', Recording decision-making rationale, Audit trail best practices" },
+                    { id: "workshop", label: "Deliver 2-hour workshop: Include interactive exercises, Use firm-specific examples, Provide reference materials (FCA guidance, templates)" }
                   ]}
-                  storageKey="cd-f3-step2"
-                  responsible="Head of Compliance / Training Team"
-                  duration="1 week (prep + delivery)"
-                  deliverable="Trained risk assessment team, attendance records, training materials"
+                  moduleId="cd-f3-step2"
                 />
               </Card>
 
@@ -826,19 +822,17 @@ export default function CDRiskAssessment() {
                 </h3>
 
                 <ChecklistSection
+                  stepNumber={3}
                   title="Step 3: Conduct Risk Identification Workshops"
                   items={[
-                    "Products & Services Workshop (3 hours): Target market risks (45 mins), Product design risks (45 mins), Distribution strategy risks (45 mins), Closed product risks (45 mins)",
-                    "Price & Value Workshop (3 hours): Pricing structures (45 mins), Fair value assessment risks (45 mins), Value delivery risks (45 mins), Differential outcomes (45 mins)",
-                    "Consumer Understanding Workshop (3 hours): Communication clarity risks (45 mins), Testing & evidence risks (45 mins), Marketing & promotion risks (45 mins), Decision-making support risks (45 mins)",
-                    "Consumer Support Workshop (3 hours): Service channel risks (45 mins), Service quality risks (45 mins), 'Sludge' and barriers (45 mins), Vulnerable customer support (45 mins)",
-                    "Document workshop outputs: Risk description, source/trigger, potential harm, affected segments, current controls, control adequacy, notes",
-                    "Consolidate all workshops: Remove duplicates across outcomes, Categorize by theme and segment, Identify quick wins and major concerns"
+                    { id: "ps-workshop", label: "Products & Services Workshop (3 hours): Target market risks (45 mins), Product design risks (45 mins), Distribution strategy risks (45 mins), Closed product risks (45 mins)" },
+                    { id: "pv-workshop", label: "Price & Value Workshop (3 hours): Pricing structures (45 mins), Fair value assessment risks (45 mins), Value delivery risks (45 mins), Differential outcomes (45 mins)" },
+                    { id: "cu-workshop", label: "Consumer Understanding Workshop (3 hours): Communication clarity risks (45 mins), Testing & evidence risks (45 mins), Marketing & promotion risks (45 mins), Decision-making support risks (45 mins)" },
+                    { id: "cs-workshop", label: "Consumer Support Workshop (3 hours): Service channel risks (45 mins), Service quality risks (45 mins), 'Sludge' and barriers (45 mins), Vulnerable customer support (45 mins)" },
+                    { id: "document", label: "Document workshop outputs: Risk description, source/trigger, potential harm, affected segments, current controls, control adequacy, notes" },
+                    { id: "consolidate", label: "Consolidate all workshops: Remove duplicates across outcomes, Categorize by theme and segment, Identify quick wins and major concerns" }
                   ]}
-                  storageKey="cd-f3-step3"
-                  responsible="Risk Team Leads (one per outcome)"
-                  duration="2 weeks"
-                  deliverable="Comprehensive risk list (50-100+ risks), Risk Identification Worksheets completed for all four outcomes"
+                  moduleId="cd-f3-step3"
                 />
 
                 <Alert className="mt-4">
@@ -884,47 +878,23 @@ export default function CDRiskAssessment() {
             <div className="grid md:grid-cols-2 gap-6">
               <TemplateCard
                 title="Template 1: Risk Assessment Project Charter"
-                description="Comprehensive project charter defining governance, scope, methodology, timeline, and resources for the risk assessment."
-                sections={[
-                  "Executive Summary",
-                  "Governance Structure (team composition, decision authority, meeting schedule)",
-                  "Scope Definition (in-scope: all products/services/segments, out-of-scope if any)",
-                  "Assessment Methodology",
-                  "Timeline and Milestones (6-week plan)",
-                  "Resource Requirements",
-                  "Success Criteria",
-                  "Communication Plan",
-                  "Approvals (Project Sponsor, Risk Owner, CRO)"
-                ]}
-                downloadText="Download Project Charter Template (Word)"
+                description="Comprehensive project charter defining governance, scope, methodology, timeline, and resources for the risk assessment. Includes executive summary, governance structure, scope definition, assessment methodology, timeline, resource requirements, success criteria, communication plan, and approvals."
+                format="Word"
+                onDownload={() => console.log("Download Project Charter Template")}
               />
 
               <TemplateCard
                 title="Template 2: Risk Identification Worksheet"
-                description="Structured worksheet for systematically capturing risks during outcome-specific workshops."
-                sections={[
-                  "Workshop metadata (date, facilitator, participants)",
-                  "Risk identification table (Risk ID, Description, Source/Trigger, Potential Harm, Affected Segments, Current Controls, Control Adequacy, Notes)",
-                  "Risk categorization (by theme and customer segment)",
-                  "Workshop summary (total risks, breakdown by severity, quick wins, major concerns)",
-                  "Next steps"
-                ]}
-                downloadText="Download Risk Worksheet Template (Excel)"
+                description="Structured worksheet for systematically capturing risks during outcome-specific workshops. Includes workshop metadata, risk identification table, risk categorization by theme and customer segment, workshop summary with breakdown by severity, and next steps."
+                format="Excel"
+                onDownload={() => console.log("Download Risk Worksheet Template")}
               />
 
               <TemplateCard
                 title="Template 3: Foreseeable Harm Scenario Library"
-                description="Reference library of realistic harm scenarios with detailed analysis to guide risk identification across all four outcomes."
-                sections={[
-                  "Scenario format: Context, Potential Harm, Why Foreseeable, Customer Impact, Current Controls, Control Gaps, Mitigation Strategies, Regulatory View, Evidence Required",
-                  "Scenario 1: Loyalty Penalty in Insurance",
-                  "Scenario 2: Vulnerable Customer Data Not Used",
-                  "Scenario 3: Digital-Only Exclusion",
-                  "Scenario 4: Complex Exit Fees Trapping Customers",
-                  "Scenario 5: Automated Decisions Without Human Override",
-                  "10-15 additional scenarios covering all outcomes and common harm patterns"
-                ]}
-                downloadText="Download Scenario Library (PDF)"
+                description="Reference library of realistic harm scenarios with detailed analysis to guide risk identification across all four outcomes. Includes 5 detailed scenarios (Loyalty Penalty, Vulnerable Customer Data, Digital-Only Exclusion, Complex Exit Fees, Automated Decisions) plus 10-15 additional scenarios covering all outcomes and common harm patterns."
+                format="PDF"
+                onDownload={() => console.log("Download Scenario Library")}
               />
 
               <Card className="p-6 border-primary">
