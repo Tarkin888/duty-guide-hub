@@ -17,6 +17,7 @@ import CDI3ConsumerUnderstanding from "./pages/modules/CD-I3-ConsumerUnderstandi
 import CDI4ConsumerSupport from "./pages/modules/CD-I4-ConsumerSupport";
 import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
+import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
 
                   {/* Governance & Planning */}
                   <Route path="/governance/framework" element={<CDP1GovernanceFramework />} />
+                  <Route path="/governance/framework-part2" element={<CDP1GovernanceFrameworkPart2 />} />
                   <Route path="/governance/policy" element={
                     <ModulePage 
                       title="Policy Development" 
