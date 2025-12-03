@@ -19,6 +19,7 @@ import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
+import CDP2PolicyFrameworkPart2 from "./pages/modules/CD-P2-PolicyFrameworkPart2";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
                   <Route path="/governance/framework" element={<CDP1GovernanceFramework />} />
                   <Route path="/governance/framework-part2" element={<CDP1GovernanceFrameworkPart2 />} />
                   <Route path="/governance/policy" element={<CDP2PolicyFrameworkPart1 />} />
+                  <Route path="/governance/policy-part2" element={<CDP2PolicyFrameworkPart2 />} />
                   <Route path="/governance/policy-old" element={
                     <ModulePage 
                       title="Policy Development" 
