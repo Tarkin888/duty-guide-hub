@@ -10,11 +10,13 @@ import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
 import CDF1ReadinessAssessment from "./pages/modules/CD-F1-ReadinessAssessment";
 import CDF2RequirementsMapping from "./pages/modules/CD-F2-RequirementsMapping";
+import CDF3RiskAssessment from "./pages/modules/CD-F3-RiskAssessment";
 import CDI1ProductsServices from "./pages/modules/CD-I1-ProductsServices";
 import CDI2PriceValue from "./pages/modules/CD-I2-PriceValue";
 import CDI3ConsumerUnderstanding from "./pages/modules/CD-I3-ConsumerUnderstanding";
 import CDI4ConsumerSupport from "./pages/modules/CD-I4-ConsumerSupport";
 import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
+import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -39,26 +41,10 @@ const App = () => (
                   {/* Foundation Modules */}
                   <Route path="/foundation/readiness" element={<CDF1ReadinessAssessment />} />
                   <Route path="/foundation/requirements" element={<CDF2RequirementsMapping />} />
-                  <Route path="/foundation/risk-impact" element={
-                    <ModulePage 
-                      title="Risk & Impact" 
-                      description="Assess risks and potential impacts of Consumer Duty on your operations"
-                      icon={AlertTriangle}
-                      moduleId="risk-impact"
-                      category="Foundation Modules"
-                    />
-                  } />
+                  <Route path="/foundation/risk-impact" element={<CDF3RiskAssessment />} />
 
                   {/* Governance & Planning */}
-                  <Route path="/governance/framework" element={
-                    <ModulePage 
-                      title="Governance Framework" 
-                      description="Establish governance structures and accountability mechanisms"
-                      icon={Shield}
-                      moduleId="governance-framework"
-                      category="Governance & Planning"
-                    />
-                  } />
+                  <Route path="/governance/framework" element={<CDP1GovernanceFramework />} />
                   <Route path="/governance/policy" element={
                     <ModulePage 
                       title="Policy Development" 
