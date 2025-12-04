@@ -20,6 +20,7 @@ import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
 import CDP2PolicyFrameworkPart2 from "./pages/modules/CD-P2-PolicyFrameworkPart2";
+import CDP3ImplementationRoadmapPart1 from "./pages/modules/CD-P3-ImplementationRoadmapPart1";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -60,15 +61,7 @@ const App = () => (
                       category="Governance & Planning"
                     />
                   } />
-                  <Route path="/governance/roadmap" element={
-                    <ModulePage 
-                      title="Implementation Roadmap" 
-                      description="Create a comprehensive roadmap for Consumer Duty implementation"
-                      icon={Target}
-                      moduleId="implementation-roadmap"
-                      category="Governance & Planning"
-                    />
-                  } />
+                  <Route path="/governance/roadmap" element={<CDP3ImplementationRoadmapPart1 />} />
 
                   {/* Four Outcomes */}
                   <Route path="/outcomes/products-services" element={<CDI1ProductsServices />} />
