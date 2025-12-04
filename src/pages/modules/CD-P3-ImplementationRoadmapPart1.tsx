@@ -955,6 +955,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                     </AccordionTrigger>
                     <AccordionContent className="px-4 pb-4 space-y-6">
                       <ChecklistSection
+                        stepNumber={4}
                         title="Step 4: Design Phase Structure"
                         moduleId="cd-p3-part1"
                         items={[
@@ -999,6 +1000,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={5}
                         title="Step 5: Map Dependencies and Critical Path"
                         moduleId="cd-p3-part1"
                         items={[
@@ -1013,6 +1015,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                       />
 
                       <ChecklistSection
+                        stepNumber={6}
                         title="Step 6: Identify Quick Wins"
                         moduleId="cd-p3-part1"
                         items={[
@@ -1067,6 +1070,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                     </AccordionTrigger>
                     <AccordionContent className="px-4 pb-4 space-y-6">
                       <ChecklistSection
+                        stepNumber={7}
                         title="Step 7: Estimate Resource Requirements"
                         moduleId="cd-p3-part1"
                         items={[
@@ -1106,6 +1110,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={8}
                         title="Step 8: Build Business Case and Budget"
                         moduleId="cd-p3-part1"
                         items={[
@@ -1150,6 +1155,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={9}
                         title="Step 9: Develop High-Level Timeline (Gantt Chart)"
                         moduleId="cd-p3-part1"
                         items={[
