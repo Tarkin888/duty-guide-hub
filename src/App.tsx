@@ -16,6 +16,8 @@ import CDI2PriceValue from "./pages/modules/CD-I2-PriceValue";
 import CDI3ConsumerUnderstanding from "./pages/modules/CD-I3-ConsumerUnderstanding";
 import CDI4ConsumerSupport from "./pages/modules/CD-I4-ConsumerSupport";
 import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
+import CDI7ADataEvidenceManagementPart1 from "./pages/modules/CD-I7A-DataEvidenceManagementPart1";
+import CDI7BDataEvidenceManagementPart2 from "./pages/modules/CD-I7B-DataEvidenceManagementPart2";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
