@@ -92,15 +92,9 @@ const App = () => (
                       category="Cross-Cutting"
                     />
                   } />
-                  <Route path="/cross-cutting/data-evidence" element={
-                    <ModulePage 
-                      title="Data & Evidence" 
-                      description="Collect and analyze data to evidence good customer outcomes"
-                      icon={Database}
-                      moduleId="data-evidence"
-                      category="Cross-Cutting"
-                    />
-                  } />
+                  <Route path="/cross-cutting/data-evidence" element={<CDI7ADataEvidenceManagementPart1 />} />
+                  <Route path="/cross-cutting/data-evidence-part1" element={<CDI7ADataEvidenceManagementPart1 />} />
+                  <Route path="/cross-cutting/data-evidence-part2" element={<CDI7BDataEvidenceManagementPart2 />} />
 
                   {/* Enablement */}
                   <Route path="/enablement/training" element={

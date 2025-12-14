@@ -283,7 +283,8 @@ export default function CDI7BDataEvidenceManagementPart2() {
 
             <RegulatoryQuote
               quote="Senior managers must be able to attest to compliance, supported by robust evidence. The board must review and approve an assessment of whether the firm is delivering good outcomes at least annually."
-              source="FCA FG22/5 & SM&CR Requirements"
+              source="FCA"
+              reference="FG22/5 & SM&CR Requirements"
             />
           </TabsContent>
 
@@ -299,7 +300,8 @@ export default function CDI7BDataEvidenceManagementPart2() {
               <CardContent className="space-y-6">
                 <RegulatoryQuote
                   quote="A senior manager responsible for a function has a duty of responsibility. If there's a breach in their area and they don't have reasonable steps evidence, they can be held personally accountable."
-                  source="SM&CR Requirements"
+                  source="FCA"
+                  reference="SM&CR Requirements"
                 />
 
                 <div className="space-y-4">
@@ -387,7 +389,8 @@ export default function CDI7BDataEvidenceManagementPart2() {
                     <AccordionContent className="space-y-4">
                       <RegulatoryQuote
                         quote="The board must review and approve an assessment of whether the firm is delivering good outcomes at least annually."
-                        source="FCA FG22/5 para 10.1"
+                        source="FCA"
+                        reference="FG22/5 para 10.1"
                       />
                       
                       <div className="space-y-4">
@@ -454,7 +457,8 @@ export default function CDI7BDataEvidenceManagementPart2() {
                     <AccordionContent className="space-y-4">
                       <RegulatoryQuote
                         quote="SMF holders must be able to demonstrate reasonable steps taken in their areas."
-                        source="SM&CR Requirement"
+                        source="FCA"
+                        reference="SM&CR Requirement"
                       />
                       
                       <div className="space-y-4">
@@ -1785,50 +1789,50 @@ export default function CDI7BDataEvidenceManagementPart2() {
               <PitfallCard
                 title="Attestation Without Evidence Review"
                 description="SMF signs attestation without reviewing underlying evidence - cannot demonstrate 'reasonable steps'; personally accountable if breach occurs"
+                impact="Personal accountability risk; regulatory enforcement; inability to defend actions"
                 prevention="Mandatory evidence review before attestation. Document what you reviewed and when. Never sign without personally reviewing key evidence."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="Board Papers Lack Substantive Content"
                 description="Board papers are high-level summaries without data or detail - Board cannot make informed decisions or properly challenge"
+                impact="Inadequate governance; Board attestation not credible; regulatory criticism"
                 prevention="Evidence pack with comprehensive data, MI, and analysis. Board members must read in advance. Include specific metrics and trends."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="No Evidence of Board Challenge"
                 description="Board minutes show approval but no discussion or questioning - suggests Board is rubber-stamping, not providing oversight"
+                impact="Governance failure; cannot demonstrate Board oversight; regulatory enforcement risk"
                 prevention="Substantive discussion minuted. Questions and answers recorded. Decisions with rationale. Require pre-read and challenge."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="Evidence Pack Assembled Last Minute"
                 description="Evidence pack created shortly before Board meeting, not maintained continuously - suggests reactive compliance, not ongoing oversight"
+                impact="Evidence rushed, quality poor, gaps undetected; suggests lack of continuous oversight"
                 prevention="Continuous evidence collection and organisation. Board pack assembly is compilation, not creation. Regular updates throughout year."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="Inconsistency Between Report and Evidence"
                 description="Board report asserts good outcomes but underlying evidence shows issues - credibility failure; may be misleading Board"
+                impact="Credibility destroyed; potential misleading governance; regulatory enforcement"
                 prevention="Evidence review and challenge process before Board. Cross-reference checking mandatory. Ensure narrative matches data."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="Unprepared for Regulatory Examination"
                 description="Firm cannot produce requested documents; staff unsure how to respond - suggests poor governance and record-keeping"
+                impact="Extended examination; regulatory concern; potential enforcement action"
                 prevention="Annual regulatory readiness assessment. Mock examinations. Document retrieval tested. Interview preparation for all key individuals."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="SMF Cannot Demonstrate Oversight"
                 description="SMF cannot show evidence of regular MI review or active oversight - cannot demonstrate reasonable steps; personal accountability risk"
+                impact="Personal accountability action likely if breach in SMF's area; prohibition risk"
                 prevention="Formal MI review meetings with minutes. Sign-off of key evidence. Document review activities. Personal oversight folder maintained."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
               <PitfallCard
                 title="No Evidence Governance"
                 description="No oversight of evidence quality; gaps and issues undetected - evidence deteriorates over time; not fit for purpose when needed"
+                impact="Evidence inadequate when examination happens; systemic governance failure"
                 prevention="Evidence Governance Committee. Quality monitoring. Spot-checks. Issue escalation. Regular reporting on evidence health."
-                icon={<AlertTriangle className="h-5 w-5" />}
               />
             </div>
 
