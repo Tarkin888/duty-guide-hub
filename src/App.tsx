@@ -19,6 +19,7 @@ import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
 import CDI7ADataEvidenceManagementPart1 from "./pages/modules/CD-I7A-DataEvidenceManagementPart1";
 import CDI7BDataEvidenceManagementPart2 from "./pages/modules/CD-I7B-DataEvidenceManagementPart2";
 import CDT1TrainingProgrammePart1 from "./pages/modules/CD-T1-TrainingProgrammePart1";
+import CDT1TrainingProgrammePart2 from "./pages/modules/CD-T1-TrainingProgrammePart2";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
@@ -98,15 +99,9 @@ const App = () => (
                   <Route path="/cross-cutting/data-evidence-part2" element={<CDI7BDataEvidenceManagementPart2 />} />
 
                   {/* Enablement */}
-                  <Route path="/enablement/training" element={
-                    <ModulePage 
-                      title="Training" 
-                      description="Develop training programs for Consumer Duty implementation"
-                      icon={GraduationCap}
-                      moduleId="training"
-                      category="Enablement"
-                    />
-                  } />
+                  <Route path="/enablement/training" element={<CDT1TrainingProgrammePart1 />} />
+                  <Route path="/enablement/training-part1" element={<CDT1TrainingProgrammePart1 />} />
+                  <Route path="/enablement/training-part2" element={<CDT1TrainingProgrammePart2 />} />
                   <Route path="/enablement/change-management" element={
                     <ModulePage 
                       title="Change Management" 
