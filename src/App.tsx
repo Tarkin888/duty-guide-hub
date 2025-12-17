@@ -20,6 +20,7 @@ import CDI7ADataEvidenceManagementPart1 from "./pages/modules/CD-I7A-DataEvidenc
 import CDI7BDataEvidenceManagementPart2 from "./pages/modules/CD-I7B-DataEvidenceManagementPart2";
 import CDT1TrainingProgrammePart1 from "./pages/modules/CD-T1-TrainingProgrammePart1";
 import CDT1TrainingProgrammePart2 from "./pages/modules/CD-T1-TrainingProgrammePart2";
+import CDT2CommunicationsChangePart1 from "./pages/modules/CD-T2-CommunicationsChangePart1";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
@@ -102,15 +103,9 @@ const App = () => (
                   <Route path="/enablement/training" element={<CDT1TrainingProgrammePart1 />} />
                   <Route path="/enablement/training-part1" element={<CDT1TrainingProgrammePart1 />} />
                   <Route path="/enablement/training-part2" element={<CDT1TrainingProgrammePart2 />} />
-                  <Route path="/enablement/change-management" element={
-                    <ModulePage 
-                      title="Change Management" 
-                      description="Manage organizational change for Consumer Duty"
-                      icon={RefreshCw}
-                      moduleId="change-management"
-                      category="Enablement"
-                    />
-                  } />
+                  <Route path="/enablement/communications" element={<CDT2CommunicationsChangePart1 />} />
+                  <Route path="/enablement/communications-part1" element={<CDT2CommunicationsChangePart1 />} />
+                  <Route path="/enablement/change-management" element={<CDT2CommunicationsChangePart1 />} />
                   <Route path="/enablement/technology" element={
                     <ModulePage 
                       title="Technology" 
