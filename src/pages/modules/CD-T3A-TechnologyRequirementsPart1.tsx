@@ -35,6 +35,8 @@ import {
   Network
 } from "lucide-react";
 
+const MODULE_ID = "cd-t3a";
+
 const CDT3ATechnologyRequirementsPart1 = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -104,69 +106,105 @@ const CDT3ATechnologyRequirementsPart1 = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Module Title */}
+        {/* Module Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
-              <Server className="h-8 w-8 text-primary" />
+            <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+              <Settings className="h-8 w-8" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                CD-T3A: Technology Requirements & System Configuration
-              </h1>
-              <p className="text-lg text-muted-foreground mt-1">
-                Part 1: Requirements, Architecture & Development
-              </p>
+              <h1 className="text-3xl font-bold">CD-T3A: Technology Requirements & System Configuration</h1>
+              <p className="text-muted-foreground mt-1">Part 1: Requirements Definition, Solution Design & Development</p>
             </div>
           </div>
-          <p className="text-muted-foreground max-w-3xl">
-            Specify, configure, and deploy technology systems to support Consumer Duty monitoring, 
-            evidence collection, and reporting. This module covers requirements definition through 
-            system configuration and testing.
-          </p>
-          <div className="flex flex-wrap gap-4 mt-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              <span>12-20 weeks (requirements through deployment)</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="h-4 w-4" />
-              <span>CTO/CIO, Technology Team, Data Architects</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Target className="h-4 w-4" />
-              <span>8 Key Deliverables</span>
-            </div>
+
+          {/* Key Info Cards */}
+          <div className="grid md:grid-cols-4 gap-4 mt-6">
+            <Card className="bg-gradient-to-br from-primary/5 to-transparent border-primary/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Duration</p>
+                    <p className="font-semibold">12-20 weeks</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-info/5 to-transparent border-info/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Users className="h-5 w-5 text-info" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Accountable</p>
+                    <p className="font-semibold">CTO/CIO</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-warning/5 to-transparent border-warning/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Target className="h-5 w-5 text-warning" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Key Focus</p>
+                    <p className="font-semibold">MI Dashboard & Data</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-success/5 to-transparent border-success/20">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Server className="h-5 w-5 text-success" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Deliverables</p>
+                    <p className="font-semibold">8 Key Outputs</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-2 md:grid-cols-6 gap-2 h-auto p-2 bg-muted/50">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="regulatory" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Regulatory
-            </TabsTrigger>
-            <TabsTrigger value="implementation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Implementation
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Templates
-            </TabsTrigger>
-            <TabsTrigger value="success" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Success Criteria
-            </TabsTrigger>
-            <TabsTrigger value="pitfalls" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Pitfalls
-            </TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 h-auto gap-2 bg-transparent p-0">
+            {[
+              { value: "overview", label: "Overview" },
+              { value: "regulatory", label: "Regulatory Foundation" },
+              { value: "steps", label: "Implementation Steps" },
+              { value: "templates", label: "Templates & Tools" },
+              { value: "success", label: "Success Criteria" },
+              { value: "pitfalls", label: "Common Pitfalls" },
+            ].map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-lg border border-border/50 bg-card hover:bg-muted transition-colors"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Purpose</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-lg leading-relaxed">
+                  Specify, configure, and deploy technology systems to support Consumer Duty monitoring, 
+                  evidence collection, and reporting. This module provides a comprehensive framework for 
+                  building the technology infrastructure needed to evidence good customer outcomes.
+                </p>
+              </CardContent>
+            </Card>
+
             {/* Regulatory Context */}
-            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
@@ -175,22 +213,17 @@ const CDT3ATechnologyRequirementsPart1 = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                    <span>Consumer Duty requires robust MI and data analytics (FG22/5 Section 10)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                    <span>Technology underpins outcome monitoring across all four outcomes</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                    <span>Board reporting depends on quality data infrastructure</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                    <span>FCA expectation: "High-quality, contextualized MI" to evidence compliance</span>
-                  </li>
+                  {[
+                    "Consumer Duty requires robust MI and data analytics (FG22/5 Section 10)",
+                    "Technology underpins outcome monitoring across all four outcomes",
+                    "Board reporting depends on quality data infrastructure",
+                    "FCA expectation: 'High-quality, contextualized MI' to evidence compliance",
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -202,213 +235,127 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                   <Network className="h-5 w-5 text-warning" />
                   Critical Dependencies
                 </CardTitle>
-                <CardDescription>
-                  Complete these modules before starting technology implementation
-                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg border border-border/50 bg-muted/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <BarChart3 className="h-4 w-4 text-primary" />
-                      <span className="font-medium">CD-M1: MI & Outcome Monitoring Framework</span>
+                  {[
+                    { module: "CD-M1", title: "MI & Outcome Monitoring Framework", desc: "Defines what to measure" },
+                    { module: "CD-I1 to CD-I4", title: "Four Outcomes Modules", desc: "Define data collection points" },
+                    { module: "CD-I7", title: "Data & Evidence Management", desc: "Defines evidence requirements" },
+                    { module: "CD-M3", title: "Board & Executive Reporting", desc: "Defines reporting outputs" },
+                  ].map((dep, index) => (
+                    <div key={index} className="p-3 rounded-lg bg-muted/30 border border-border/50">
+                      <Badge variant="outline" className="mb-2">{dep.module}</Badge>
+                      <p className="font-medium">{dep.title}</p>
+                      <p className="text-sm text-muted-foreground">{dep.desc}</p>
                     </div>
-                    <p className="text-sm text-muted-foreground">Defines what to measure (18 essential KPIs)</p>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border/50 bg-muted/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Target className="h-4 w-4 text-primary" />
-                      <span className="font-medium">CD-I1 through CD-I4: Four Outcomes</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Define data collection points for each outcome</p>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border/50 bg-muted/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Database className="h-4 w-4 text-primary" />
-                      <span className="font-medium">CD-I7: Data & Evidence Management</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Defines evidence requirements and retention</p>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border/50 bg-muted/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <FileText className="h-4 w-4 text-primary" />
-                      <span className="font-medium">CD-M3: Board & Executive Reporting</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Defines reporting outputs and formats</p>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
 
             {/* Scope */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="border-success/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-success">
-                    <CheckCircle2 className="h-5 w-5" />
-                    In Scope
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>MI dashboard and reporting platforms</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>Customer data platforms and analytics</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>Outcome monitoring and tracking systems</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>Evidence repository and document management</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>Integration with existing systems (CRM, policy admin, claims)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>Automation of data collection and reporting</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-success">✓</span>
-                      <span>User access and training systems</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-destructive/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-destructive">
-                    <AlertTriangle className="h-5 w-5" />
-                    Out of Scope
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-start gap-2">
-                      <span className="text-destructive">✗</span>
-                      <span>Core banking/insurance system replacements</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-destructive">✗</span>
-                      <span>Complete digital transformation programmes</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-destructive">✗</span>
-                      <span>Customer-facing channel development</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-destructive">✗</span>
-                      <span>Product administration system overhauls</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Layers className="h-5 w-5 text-info" />
+                  Scope of Technology Enablement
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold mb-3 text-success">In Scope:</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "MI dashboard and reporting platforms",
+                        "Customer data platforms and analytics",
+                        "Outcome monitoring and tracking systems",
+                        "Evidence repository and document management",
+                        "Integration with existing systems (CRM, policy admin, claims)",
+                        "Automation of data collection and reporting",
+                        "User access and training systems",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-success mt-0.5 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-3 text-destructive">Out of Scope (Separate Projects):</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Core banking/insurance system replacements",
+                        "Complete digital transformation programmes",
+                        "Customer-facing channel development",
+                        "Product administration system overhauls",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Key Deliverables */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  Key Deliverables - Part 1 (CD-T3A)
+                  Key Deliverables
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    { title: "Technology Requirements Specification", desc: "Comprehensive requirements for all dashboards and systems" },
-                    { title: "System Architecture Design", desc: "High-level and detailed architecture documentation" },
-                    { title: "Vendor Evaluation Framework", desc: "Criteria and scoring for technology procurement" },
-                    { title: "Integration Architecture Diagram", desc: "Visual mapping of all system connections" },
-                    { title: "Data Flow Mapping", desc: "Source-to-dashboard data lineage documentation" },
-                    { title: "System Configuration Plan", desc: "Detailed build/configure specifications" },
-                    { title: "User Acceptance Testing Strategy", desc: "UAT scenarios and test scripts" },
-                    { title: "Go-Live Readiness Checklist", desc: "Pre-deployment verification criteria" },
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-muted/10">
-                      <div className="p-1.5 rounded-full bg-primary/10">
-                        <CheckCircle2 className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Stakeholder Map */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  Stakeholder Map (RACI)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20">
-                    <p className="font-semibold text-destructive mb-2">Accountable</p>
-                    <p className="text-sm">CTO/CIO or Head of Technology</p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                    <h4 className="font-semibold mb-3">Part 1 (CD-T3A - This Module):</h4>
+                    <ul className="space-y-2 text-sm">
+                      {[
+                        "Technology requirements specification",
+                        "System architecture design",
+                        "Vendor evaluation framework (if procurement needed)",
+                        "Integration architecture diagram",
+                        "Data flow mapping",
+                        "System configuration plan",
+                        "User acceptance testing strategy",
+                        "Go-live readiness checklist",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="p-4 rounded-lg bg-warning/10 border border-warning/20">
-                    <p className="font-semibold text-warning mb-2">Responsible</p>
-                    <p className="text-sm">Technology delivery team, Data architects, Business analysts</p>
+                  <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
+                    <h4 className="font-semibold mb-3">Part 2 (CD-T3B - Next Module):</h4>
+                    <ul className="space-y-2 text-sm">
+                      {[
+                        "Dashboard implementation and customization",
+                        "User training delivery",
+                        "Data migration and validation",
+                        "Performance optimization",
+                        "Support and maintenance framework",
+                      ].map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-muted-foreground">○</span>
+                          <span className="text-muted-foreground">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="p-4 rounded-lg bg-info/10 border border-info/20">
-                    <p className="font-semibold text-info mb-2">Consulted</p>
-                    <p className="text-sm">Compliance, Risk, Product, Operations, Customer Service</p>
-                  </div>
-                  <div className="p-4 rounded-lg bg-muted border border-border">
-                    <p className="font-semibold mb-2">Informed</p>
-                    <p className="text-sm">Board Technology Committee, Executive Committee, Internal Audit</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Technology Investment Considerations */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Settings className="h-5 w-5 text-primary" />
-                  Technology Investment Considerations
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {[
-                    { icon: Layers, title: "Build vs Buy", desc: "Decision framework for solution approach" },
-                    { icon: Cloud, title: "Cloud vs On-Premise", desc: "Infrastructure deployment strategy" },
-                    { icon: Network, title: "Integration Complexity", desc: "Assessment of system connections" },
-                    { icon: BarChart3, title: "Total Cost of Ownership", desc: "TCO analysis over 5 years" },
-                    { icon: Zap, title: "Scalability", desc: "Future-proofing and growth capacity" },
-                    { icon: Lock, title: "Vendor Lock-in", desc: "Risk assessment and mitigation" },
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-border/50">
-                      <item.icon className="h-5 w-5 text-primary shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
 
             {/* Critical Success Factors */}
-            <Card className="border-success/20 bg-gradient-to-br from-success/5 to-transparent">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-success" />
@@ -426,7 +373,7 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                     "Robust security and data protection",
                     "Clear support and maintenance model",
                   ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
+                    <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-success/5 border border-success/20">
                       <CheckCircle2 className="h-4 w-4 text-success shrink-0" />
                       <span className="text-sm">{item}</span>
                     </div>
@@ -439,7 +386,8 @@ const CDT3ATechnologyRequirementsPart1 = () => {
           {/* Regulatory Foundation Tab */}
           <TabsContent value="regulatory" className="space-y-6">
             <RegulatoryQuote
-              source="FG22/5 Section 10"
+              source="FCA"
+              reference="FG22/5 Section 10"
               quote="Firms should use appropriate data and MI to understand whether they are delivering good outcomes for their customers. This should be supported by appropriate governance to review the data and MI, identify areas of concern, and take action to address risks and issues."
             />
 
@@ -453,9 +401,9 @@ const CDT3ATechnologyRequirementsPart1 = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <RegulatoryQuote
-                  source="FCA Board Reports Review, November 2024"
+                  source="FCA"
+                  reference="Board Reports Review, November 2024"
                   quote="Poor data quality undermines firms' ability to conduct robust assessments and provide adequate assurance to the board"
-                  variant="warning"
                 />
                 
                 <div className="grid md:grid-cols-2 gap-4 mt-4">
@@ -748,17 +696,17 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                     { icon: BarChart3, layer: "B. Analytics Layer", name: "Business Intelligence (BI)", purpose: "Data analysis, segmentation, trend identification", data: "SQL queries, statistical analysis, predictive modeling" },
                     { icon: MonitorCheck, layer: "C. Visualization Layer", name: "Dashboard & Reporting", purpose: "Present insights to different audiences", data: "Interactive, drill-down, export, mobile-friendly" },
                     { icon: FileText, layer: "D. Evidence Repository", name: "Document Management (DMS)", purpose: "Store policies, assessments, meeting minutes", data: "Version control, audit trail, retention management" },
-                    { icon: Workflow, layer: "E. Workflow Automation", name: "Case Management & Workflow", purpose: "Automate data collection, approvals, tracking", data: "Task assignment, notifications, escalation" },
-                    { icon: Network, layer: "F. Integration Middleware", name: "API Gateway & ETL", purpose: "Connect systems, transform data, ensure flows", data: "Real-time and batch integration, validation" },
+                    { icon: Workflow, layer: "E. Workflow Automation", name: "Case Management", purpose: "Automate data collection, approvals, tracking", data: "Task assignment, notifications, escalation" },
+                    { icon: Network, layer: "F. Integration Middleware", name: "API Gateway & ETL", purpose: "Connect systems, transform data", data: "Real-time and batch integration, validation" },
                   ].map((item, index) => (
-                    <div key={index} className="p-4 rounded-lg border border-border/50 bg-muted/10">
+                    <div key={index} className="p-4 rounded-lg border border-border bg-card hover:bg-muted/20 transition-colors">
                       <div className="flex items-center gap-2 mb-2">
                         <item.icon className="h-5 w-5 text-primary" />
                         <span className="text-xs font-medium text-muted-foreground">{item.layer}</span>
                       </div>
-                      <p className="font-semibold text-sm mb-1">{item.name}</p>
-                      <p className="text-xs text-muted-foreground mb-2">{item.purpose}</p>
-                      <p className="text-xs text-muted-foreground italic">{item.data}</p>
+                      <h4 className="font-semibold mb-1">{item.name}</h4>
+                      <p className="text-sm text-muted-foreground mb-2">{item.purpose}</p>
+                      <p className="text-xs text-muted-foreground">{item.data}</p>
                     </div>
                   ))}
                 </div>
@@ -767,7 +715,7 @@ const CDT3ATechnologyRequirementsPart1 = () => {
           </TabsContent>
 
           {/* Implementation Steps Tab */}
-          <TabsContent value="implementation" className="space-y-6">
+          <TabsContent value="steps" className="space-y-6">
             {/* Phase 1 */}
             <Card>
               <CardHeader className="bg-gradient-to-r from-primary/10 to-transparent">
@@ -782,204 +730,79 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                <Accordion type="multiple" className="space-y-4">
-                  <AccordionItem value="step1" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <MonitorCheck className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Step 1: Define MI and Dashboard Requirements</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Board Dashboard Requirements"
-                        storageKey="cdt3a-step1-board"
-                        items={[
-                          "Overall Consumer Duty status (RAG rating)",
-                          "Progress overview (four outcomes)",
-                          "Key metrics summary (18 essential KPIs from CD-M1)",
-                          "Vulnerable customer outcome parity indicators",
-                          "Top issues requiring attention",
-                          "Action tracker (remediation plans)",
-                          "Export to PDF functionality",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Executive Dashboard Requirements"
-                        storageKey="cdt3a-step1-exec"
-                        items={[
-                          "Detailed metrics by outcome",
-                          "Trend analysis over time",
-                          "Segmentation (product, channel, customer type)",
-                          "Drill-down to underlying data",
-                          "Threshold breaches and alerts",
-                          "Detailed action plans",
-                          "Real-time updates capability",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Operational Dashboards Requirements"
-                        storageKey="cdt3a-step1-ops"
-                        items={[
-                          "Team-specific metrics (product, service, compliance)",
-                          "Granular data with full detail",
-                          "Filtering and custom views",
-                          "Data export for analysis",
-                          "Integration with operational systems",
-                          "Role-based access controls",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={1}
+                  title="Define MI and Dashboard Requirements"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "1-1", label: "Document Board Dashboard Requirements (RAG status, outcomes overview, KPIs summary)" },
+                    { id: "1-2", label: "Document Executive Dashboard Requirements (detailed metrics, trends, segmentation)" },
+                    { id: "1-3", label: "Document Operational Dashboard Requirements (team-specific, granular data)" },
+                    { id: "1-4", label: "Define vulnerable customer outcome parity indicators" },
+                    { id: "1-5", label: "Specify action tracker and remediation plan displays" },
+                    { id: "1-6", label: "Define export functionality requirements (PDF, Excel)" },
+                    { id: "1-7", label: "Obtain stakeholder approval on dashboard requirements" },
+                  ]}
+                />
 
-                  <AccordionItem value="step2" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Database className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Step 2: Define Data Collection Requirements</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Leading Indicators (8 KPIs)"
-                        storageKey="cdt3a-step2-leading"
-                        items={[
-                          "KPI 1: Communication Clarity Score - Content management system source",
-                          "KPI 2: Pre-Launch Product Testing Success Rate - Product management source",
-                          "KPI 3: Target Market Definition Accuracy - Product governance source",
-                          "KPI 4: Price-to-Benefit Benchmark Ratio - Pricing system + market data",
-                          "KPI 5: Sludge Audit Score - Process audit system",
-                          "KPI 6: Staff Training Completion Rate - LMS source",
-                          "KPI 7: Vulnerable Customer Identification Rate - CRM source",
-                          "KPI 8: Change Initiative Risk Assessment Score - Change management system",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Lagging Indicators (10 KPIs)"
-                        storageKey="cdt3a-step2-lagging"
-                        items={[
-                          "KPI 9: Fair Value Assessment Outcome (RAG) - Product system",
-                          "KPI 10: Complaints Root Cause Ratio - Complaints system",
-                          "KPI 11: First Contact Resolution Rate - Customer service system",
-                          "KPI 12: Average Complaint Resolution Time - Complaints system",
-                          "KPI 13: Customer Satisfaction Score (CSAT) - Survey platform",
-                          "KPI 14: Post-Sale Product Engagement Rate - Product usage analytics",
-                          "KPI 15: Customer Understanding Assessment Score - Testing platform",
-                          "KPI 16: Outcome Variance for Vulnerable Customers - Multiple systems",
-                          "KPI 17: Customer Churn/Lapse Rate - Policy admin system",
-                          "KPI 18: Net Promoter Score (NPS) - Survey platform",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={2}
+                  title="Define Data Collection Requirements"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "2-1", label: "Map 8 Leading Indicators (Communication Clarity, Pre-Launch Testing, Target Market Accuracy, Price-to-Benefit, Sludge Audit, Training Completion, Vulnerable ID Rate, Change Risk)" },
+                    { id: "2-2", label: "Map 10 Lagging Indicators (FVA Outcome, Complaints Ratio, FCR, Resolution Time, CSAT, Engagement, Understanding, Outcome Variance, Churn, NPS)" },
+                    { id: "2-3", label: "Document calculation formulas for each KPI" },
+                    { id: "2-4", label: "Identify data source systems for each KPI" },
+                    { id: "2-5", label: "Define collection frequency (real-time, daily, weekly, monthly)" },
+                    { id: "2-6", label: "Specify segmentation dimensions (product, channel, vulnerability)" },
+                  ]}
+                />
 
-                  <AccordionItem value="step3" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <HardDrive className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Step 3: Map Data Sources and Availability</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Inventory Existing Systems"
-                        storageKey="cdt3a-step3-inventory"
-                        items={[
-                          "CRM system (customer data, interactions, vulnerable flags)",
-                          "Policy administration (product holdings, transactions)",
-                          "Complaints system (case details, root causes, resolution times)",
-                          "Customer service platform (call logs, interactions, CSAT)",
-                          "Product management system (product details, target markets, FVAs)",
-                          "Marketing/communications system (campaigns, testing results)",
-                          "Survey platforms (NPS, satisfaction, comprehension testing)",
-                          "Learning management system (LMS) for training data",
-                          "Document management for policies and assessments",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Assess Data Availability and Quality"
-                        storageKey="cdt3a-step3-quality"
-                        items={[
-                          "Document which required data elements exist in current systems",
-                          "Identify data quality issues (completeness, accuracy, timeliness)",
-                          "Identify data gaps (not currently captured)",
-                          "Document system enhancements needed to capture missing data",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={3}
+                  title="Map Data Sources and Availability"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "3-1", label: "Inventory CRM system (customer data, interactions, vulnerability flags)" },
+                    { id: "3-2", label: "Inventory Policy Administration (product holdings, transactions)" },
+                    { id: "3-3", label: "Inventory Complaints System (case details, root causes, resolution times)" },
+                    { id: "3-4", label: "Inventory Customer Service Platform (call logs, CSAT)" },
+                    { id: "3-5", label: "Inventory Product Management System (target markets, FVAs)" },
+                    { id: "3-6", label: "Inventory Survey Platforms (NPS, satisfaction, comprehension)" },
+                    { id: "3-7", label: "Inventory LMS (training completion data)" },
+                    { id: "3-8", label: "Assess data quality for each source (completeness, accuracy, timeliness)" },
+                    { id: "3-9", label: "Document data gaps and enhancement requirements" },
+                  ]}
+                />
 
-                  <AccordionItem value="step4" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Network className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Step 4: Define Integration Architecture</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Integration Architecture"
-                        storageKey="cdt3a-step4-integration"
-                        items={[
-                          "Design integration approach (real-time API vs batch ETL vs manual)",
-                          "Document data flows (source → staging → warehouse → BI → dashboard)",
-                          "Define data transformation rules at each stage",
-                          "Document error handling and data validation processes",
-                          "Define reconciliation and quality checks",
-                          "Specify APIs required (endpoint, authentication, format)",
-                          "Define ETL job schedules and dependencies",
-                          "Document disaster recovery and business continuity requirements",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={4}
+                  title="Define Integration Architecture"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "4-1", label: "Design integration approach (real-time API vs batch ETL vs manual)" },
+                    { id: "4-2", label: "Document data flows (source → staging → warehouse → BI → dashboard)" },
+                    { id: "4-3", label: "Define transformation rules and validation processes" },
+                    { id: "4-4", label: "Specify API requirements (endpoints, authentication, format)" },
+                    { id: "4-5", label: "Define ETL schedules and dependencies" },
+                    { id: "4-6", label: "Document disaster recovery and business continuity requirements" },
+                  ]}
+                />
 
-                  <AccordionItem value="step5" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Lock className="h-5 w-5 text-primary" />
-                        <span className="font-semibold">Step 5: Specify Security and Access Requirements</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Role-Based Access Control"
-                        storageKey="cdt3a-step5-rbac"
-                        items={[
-                          "Board members: View board dashboard only",
-                          "Executive team: View board + executive dashboards",
-                          "Compliance team: View all dashboards, edit configuration",
-                          "Product teams: View product-specific operational dashboards",
-                          "Customer service: View support-related metrics only",
-                          "IT administrators: Full system access for maintenance",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Data Protection Requirements"
-                        storageKey="cdt3a-step5-protection"
-                        items={[
-                          "Personal data minimization in reports (aggregate where possible)",
-                          "Pseudonymization for case-level analysis",
-                          "Encryption in transit and at rest",
-                          "Audit logging of all access and changes",
-                          "Data retention and deletion protocols",
-                          "Compliance with UK GDPR",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Information Security Controls"
-                        storageKey="cdt3a-step5-security"
-                        items={[
-                          "Multi-factor authentication (MFA) for all users",
-                          "Single sign-on (SSO) integration with corporate identity",
-                          "Regular security testing and vulnerability assessments",
-                          "Incident response procedures for data breaches",
-                          "Third-party vendor security assessment (if external platform)",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <ChecklistSection
+                  stepNumber={5}
+                  title="Specify Security and Access Requirements"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "5-1", label: "Define RBAC matrix (Board, Executive, Compliance, Product, Service, IT)" },
+                    { id: "5-2", label: "Specify data protection controls (pseudonymization, encryption, minimization)" },
+                    { id: "5-3", label: "Document audit logging requirements" },
+                    { id: "5-4", label: "Define authentication requirements (SSO, MFA)" },
+                    { id: "5-5", label: "Specify retention and deletion protocols" },
+                    { id: "5-6", label: "Plan security testing and vulnerability assessments" },
+                  ]}
+                />
               </CardContent>
             </Card>
 
@@ -997,78 +820,49 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                <Accordion type="multiple" className="space-y-4">
-                  <AccordionItem value="step6" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Settings className="h-5 w-5 text-info" />
-                        <span className="font-semibold">Step 6: Define Build vs Buy Decision</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Build vs Buy Assessment"
-                        storageKey="cdt3a-step6-buildvsbuy"
-                        items={[
-                          "Assess in-house capability (dev resources, BI expertise, support capacity)",
-                          "Evaluate build option (pros: customization, control; cons: time, resources)",
-                          "Evaluate buy option (pros: speed, proven, support; cons: cost, dependency)",
-                          "Evaluate configure option (pros: leverage existing, faster; cons: limitations)",
-                          "Document recommended approach with rationale",
-                          "Obtain Board approval if significant investment required",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={6}
+                  title="Define Build vs Buy Decision"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "6-1", label: "Assess in-house capability (development resources, BI expertise, support capacity)" },
+                    { id: "6-2", label: "Evaluate build option (customization vs time/cost)" },
+                    { id: "6-3", label: "Evaluate buy option (speed, proven solutions, vendor support)" },
+                    { id: "6-4", label: "Evaluate configure option (leverage existing platforms)" },
+                    { id: "6-5", label: "Document recommended approach with rationale" },
+                    { id: "6-6", label: "Obtain Board approval if significant investment required" },
+                  ]}
+                />
 
-                  <AccordionItem value="step7" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Users className="h-5 w-5 text-info" />
-                        <span className="font-semibold">Step 7: Conduct Vendor Evaluation (if buying)</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Vendor Evaluation Process"
-                        storageKey="cdt3a-step7-vendor"
-                        items={[
-                          "Create vendor evaluation criteria (functionality, FCA alignment, integration, usability, vendor strength, pricing, security)",
-                          "Shortlist 3-5 vendors based on market research",
-                          "Request information and schedule demos",
-                          "Conduct vendor demonstrations with real requirements",
-                          "Test usability with potential end users (board, executive, operational)",
-                          "Conduct proof of concept with top 1-2 vendors (2-4 weeks)",
-                          "Score vendors using evaluation matrix",
-                          "Make selection and obtain approval",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={7}
+                  title="Conduct Vendor Evaluation (if buying)"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "7-1", label: "Create evaluation criteria (functionality, FCA alignment, integration, usability, security, pricing)" },
+                    { id: "7-2", label: "Shortlist 3-5 vendors based on market research" },
+                    { id: "7-3", label: "Request information and schedule demos" },
+                    { id: "7-4", label: "Conduct vendor demonstrations with real requirements" },
+                    { id: "7-5", label: "Test usability with potential end users (board, executive, operational)" },
+                    { id: "7-6", label: "Conduct proof of concept with top 1-2 vendors (2-4 weeks)" },
+                    { id: "7-7", label: "Score vendors using evaluation matrix" },
+                    { id: "7-8", label: "Make selection and obtain approval" },
+                  ]}
+                />
 
-                  <AccordionItem value="step8" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Layers className="h-5 w-5 text-info" />
-                        <span className="font-semibold">Step 8: Design System Architecture</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Architecture Documentation"
-                        storageKey="cdt3a-step8-architecture"
-                        items={[
-                          "Create high-level architecture diagram (all systems, data flows, user access, security)",
-                          "Document technology stack specification (infrastructure, databases, middleware, BI platform)",
-                          "Define scalability and performance design (volumes, concurrency, response times)",
-                          "Document growth projections and optimization strategies",
-                          "Define disaster recovery strategy (backup frequency, RTO, RPO)",
-                          "Document failover mechanisms if high availability required",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <ChecklistSection
+                  stepNumber={8}
+                  title="Design System Architecture"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "8-1", label: "Create high-level architecture diagram (all systems, data flows, security)" },
+                    { id: "8-2", label: "Document technology stack specification (infrastructure, databases, middleware)" },
+                    { id: "8-3", label: "Define scalability and performance requirements" },
+                    { id: "8-4", label: "Document growth projections and optimization strategies" },
+                    { id: "8-5", label: "Define disaster recovery strategy (backup, RTO, RPO)" },
+                    { id: "8-6", label: "Document failover mechanisms if high availability required" },
+                  ]}
+                />
               </CardContent>
             </Card>
 
@@ -1086,119 +880,51 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                <Accordion type="multiple" className="space-y-4">
-                  <AccordionItem value="step9" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Database className="h-5 w-5 text-warning" />
-                        <span className="font-semibold">Step 9: Configure/Develop Data Integration</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Data Integration Development"
-                        storageKey="cdt3a-step9-integration"
-                        items={[
-                          "Set up staging and data warehouse environments",
-                          "Provision infrastructure (servers, databases)",
-                          "Configure network connectivity to source systems",
-                          "Set up development, testing, and production environments",
-                          "Implement security controls (firewalls, encryption, access)",
-                          "Develop/configure ETL processes for each source system",
-                          "Schedule ETL jobs (daily, weekly, monthly as needed)",
-                          "Implement error handling and alerting",
-                          "Build reconciliation reports (source vs warehouse)",
-                          "Develop real-time integrations if required",
-                          "Test data integration (unit, integration, volume, accuracy)",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={9}
+                  title="Configure/Develop Data Integration"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "9-1", label: "Set up staging and data warehouse environments" },
+                    { id: "9-2", label: "Provision infrastructure and configure network connectivity" },
+                    { id: "9-3", label: "Set up development, testing, and production environments" },
+                    { id: "9-4", label: "Implement security controls (firewalls, encryption, access)" },
+                    { id: "9-5", label: "Develop/configure ETL processes for each source system" },
+                    { id: "9-6", label: "Schedule ETL jobs and implement error handling" },
+                    { id: "9-7", label: "Build reconciliation reports (source vs warehouse)" },
+                    { id: "9-8", label: "Test data integration (unit, integration, volume, accuracy)" },
+                  ]}
+                />
 
-                  <AccordionItem value="step10" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <MonitorCheck className="h-5 w-5 text-warning" />
-                        <span className="font-semibold">Step 10: Configure/Develop Dashboards</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Board Dashboard Build"
-                        storageKey="cdt3a-step10-board"
-                        items={[
-                          "Overall status tile (RAG rating)",
-                          "Circular progress indicator (% compliance)",
-                          "Four outcomes summary cards",
-                          "Top 5 issues requiring attention",
-                          "Vulnerable customer outcome parity indicator",
-                          "Action tracker (remediation plans)",
-                          "Export to PDF functionality",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Executive Dashboard Build"
-                        storageKey="cdt3a-step10-exec"
-                        items={[
-                          "Detailed KPI tiles for all 18 essential KPIs",
-                          "Trend charts (line graphs showing performance over time)",
-                          "Segmentation capability (filter by product, channel, customer type)",
-                          "Drill-down to underlying data",
-                          "Alert indicators (red exclamation for threshold breaches)",
-                          "Root cause analysis views",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Operational Dashboards Build"
-                        storageKey="cdt3a-step10-ops"
-                        items={[
-                          "Product team dashboard (product-specific metrics)",
-                          "Customer service dashboard (support quality metrics)",
-                          "Complaints team dashboard (complaint analysis)",
-                          "Compliance team dashboard (control testing, policy compliance)",
-                          "Customizable views per user role",
-                        ]}
-                      />
-                      <ChecklistSection
-                        title="Interactivity Features"
-                        storageKey="cdt3a-step10-interactivity"
-                        items={[
-                          "Clickable elements for drill-down",
-                          "Filters (date range, product, channel, customer segment)",
-                          "Saved views and favorites",
-                          "Scheduled report delivery (email PDF reports)",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={10}
+                  title="Configure/Develop Dashboards"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "10-1", label: "Build Board Dashboard (RAG status, progress, outcomes, top issues, actions)" },
+                    { id: "10-2", label: "Build Executive Dashboard (18 KPIs, trends, segmentation, drill-down, alerts)" },
+                    { id: "10-3", label: "Build Operational Dashboards (product, service, complaints, compliance)" },
+                    { id: "10-4", label: "Implement interactivity (drill-down, filters, saved views)" },
+                    { id: "10-5", label: "Configure scheduled report delivery" },
+                    { id: "10-6", label: "Test export functionality (PDF, Excel)" },
+                  ]}
+                />
 
-                  <AccordionItem value="step11" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Shield className="h-5 w-5 text-warning" />
-                        <span className="font-semibold">Step 11: Implement Security and Access Controls</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Security Implementation"
-                        storageKey="cdt3a-step11-security"
-                        items={[
-                          "Configure role-based access control (create user groups, assign permissions)",
-                          "Test access controls (users see only appropriate dashboards)",
-                          "Configure SSO integration with corporate identity provider",
-                          "Enable multi-factor authentication (MFA)",
-                          "Set password policies and session timeouts",
-                          "Enable audit logging (user access, configuration changes)",
-                          "Set up log retention and review processes",
-                          "Conduct penetration testing",
-                          "Perform vulnerability scanning",
-                          "Remediate identified security issues before go-live",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <ChecklistSection
+                  stepNumber={11}
+                  title="Implement Security and Access Controls"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "11-1", label: "Configure role-based access control (create user groups, assign permissions)" },
+                    { id: "11-2", label: "Test access controls (users see only appropriate dashboards)" },
+                    { id: "11-3", label: "Configure SSO integration with corporate identity provider" },
+                    { id: "11-4", label: "Enable multi-factor authentication (MFA)" },
+                    { id: "11-5", label: "Set password policies and session timeouts" },
+                    { id: "11-6", label: "Enable audit logging (user access, configuration changes)" },
+                    { id: "11-7", label: "Conduct penetration testing and vulnerability scanning" },
+                    { id: "11-8", label: "Remediate identified security issues before go-live" },
+                  ]}
+                />
               </CardContent>
             </Card>
 
@@ -1216,65 +942,38 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                <Accordion type="multiple" className="space-y-4">
-                  <AccordionItem value="step12" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-success" />
-                        <span className="font-semibold">Step 12: Conduct User Acceptance Testing (UAT)</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="UAT Execution"
-                        storageKey="cdt3a-step12-uat"
-                        items={[
-                          "Recruit UAT participants (board member, 2-3 executives, 3-5 operational users, compliance lead)",
-                          "Develop UAT scenarios (board review, executive investigation, product analysis, compliance tracking, service review)",
-                          "Conduct Week 1 UAT: Initial testing with test data",
-                          "Conduct Week 2 UAT: Testing with production-like data",
-                          "Document issues and feedback",
-                          "Prioritize and fix critical issues",
-                          "Retest fixed issues",
-                          "Obtain UAT sign-off from key stakeholders",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
+                <ChecklistSection
+                  stepNumber={12}
+                  title="Conduct User Acceptance Testing (UAT)"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "12-1", label: "Recruit UAT participants (board member, executives, operational users, compliance)" },
+                    { id: "12-2", label: "Develop UAT scenarios (board review, executive investigation, product analysis)" },
+                    { id: "12-3", label: "Conduct Week 1 UAT: Initial testing with test data" },
+                    { id: "12-4", label: "Conduct Week 2 UAT: Testing with production-like data" },
+                    { id: "12-5", label: "Document issues and feedback" },
+                    { id: "12-6", label: "Prioritize and fix critical issues" },
+                    { id: "12-7", label: "Retest fixed issues" },
+                    { id: "12-8", label: "Obtain UAT sign-off from key stakeholders" },
+                  ]}
+                />
 
-                  <AccordionItem value="step13" className="border rounded-lg px-4">
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Zap className="h-5 w-5 text-success" />
-                        <span className="font-semibold">Step 13: Prepare for Go-Live</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                      <ChecklistSection
-                        title="Go-Live Preparation"
-                        storageKey="cdt3a-step13-golive"
-                        items={[
-                          "Complete data migration/cutover plan",
-                          "Perform final data load from all source systems",
-                          "Reconcile data to ensure completeness and accuracy",
-                          "Complete cutover checklist (systems ready, users provisioned, support available)",
-                          "Create user accounts for all dashboard users",
-                          "Assign appropriate roles and permissions",
-                          "Send login credentials and instructions",
-                          "Prepare user guides and FAQs",
-                          "Set up help desk or support email",
-                          "Train support staff on common issues",
-                          "Define escalation process for critical issues",
-                          "Schedule training sessions (covered in CD-T3B)",
-                          "Execute communication plan to all users",
-                          "Confirm all systems operational",
-                          "Monitor closely for first 48 hours",
-                          "Address immediate issues and gather feedback",
-                        ]}
-                      />
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <ChecklistSection
+                  stepNumber={13}
+                  title="Prepare for Go-Live"
+                  moduleId={MODULE_ID}
+                  items={[
+                    { id: "13-1", label: "Complete data migration/cutover plan" },
+                    { id: "13-2", label: "Perform final data load and reconciliation" },
+                    { id: "13-3", label: "Complete cutover checklist" },
+                    { id: "13-4", label: "Create user accounts and assign permissions" },
+                    { id: "13-5", label: "Prepare user guides and FAQs" },
+                    { id: "13-6", label: "Set up help desk and define escalation process" },
+                    { id: "13-7", label: "Execute communication plan" },
+                    { id: "13-8", label: "Confirm all systems operational and go live" },
+                    { id: "13-9", label: "Monitor closely for first 48 hours" },
+                  ]}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -1337,18 +1036,6 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 onPreview={() => handlePreviewTemplate("Data Integration Test Plan")}
               />
               <TemplateCard
-                title="Dashboard Configuration Specification"
-                description="Wireframes, data connections, filters, and interactivity specifications for each dashboard."
-                icon={<BarChart3 className="h-5 w-5" />}
-                onPreview={() => handlePreviewTemplate("Dashboard Configuration Specification")}
-              />
-              <TemplateCard
-                title="Security Configuration Checklist"
-                description="RBAC setup verification, authentication testing, logging enablement, and security testing completion."
-                icon={<Shield className="h-5 w-5" />}
-                onPreview={() => handlePreviewTemplate("Security Configuration Checklist")}
-              />
-              <TemplateCard
                 title="UAT Test Script"
                 description="Scenarios, steps, expected results, actual results, and issue documentation for user acceptance testing."
                 icon={<CheckCircle2 className="h-5 w-5" />}
@@ -1373,155 +1060,89 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Requirements Completeness */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Requirements Completeness
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                {[
+                  {
+                    title: "Requirements Completeness",
+                    items: [
                       "All dashboard requirements documented and approved by users",
                       "All 18 essential KPIs mapped to data sources",
                       "Data gaps identified with remediation plans",
                       "Integration architecture designed and reviewed by IT",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Solution Selection */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Solution Selection
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "Solution Selection",
+                    items: [
                       "Build vs buy decision made with Board approval if significant investment",
                       "If buying: Vendor selected based on objective evaluation",
                       "Contracts negotiated and signed",
                       "Implementation plan agreed with vendor",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Data Integration Quality */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Data Integration Quality
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "Data Integration Quality",
+                    items: [
                       "All source systems successfully connected",
                       "ETL processes operational and scheduled",
                       "Data quality >95% (reconciliation to source systems)",
                       "Real-time integrations performing within SLA (<5 second response)",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Dashboard Functionality */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Dashboard Functionality
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "Dashboard Functionality",
+                    items: [
                       "Board dashboard displays all required elements",
                       "Executive dashboard supports drill-down and segmentation",
                       "Operational dashboards provide relevant metrics by role",
                       "Export functionality working (PDF for board, Excel for executives)",
                       "Performance meets requirements (load times <5 seconds)",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Security & Access */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Security & Access
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "Security & Access",
+                    items: [
                       "RBAC implemented and tested",
                       "All users provisioned with appropriate access",
                       "SSO and MFA operational",
                       "Audit logging enabled",
                       "Security testing completed with no critical vulnerabilities",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* User Acceptance */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    User Acceptance
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "User Acceptance",
+                    items: [
                       "UAT completed with sign-off from key users",
                       "Board member confirms board dashboard meets needs",
                       "Executives confirm they can monitor performance and investigate issues",
                       "Operational users confirm dashboards provide actionable insights",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Deployment Readiness */}
-                <div className="p-4 rounded-lg border border-border bg-muted/20">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    Deployment Readiness
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {[
+                    ]
+                  },
+                  {
+                    title: "Deployment Readiness",
+                    items: [
                       "All data loaded and reconciled",
                       "Support processes established",
                       "Training materials prepared (covered in CD-T3B)",
                       "Communication plan executed",
                       "Go-live checklist completed",
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-success">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                    ]
+                  },
+                ].map((section, sectionIndex) => (
+                  <div key={sectionIndex} className="p-4 rounded-lg border border-border bg-muted/20">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-success" />
+                      {section.title}
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      {section.items.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-success">✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </CardContent>
             </Card>
 
@@ -1566,160 +1187,73 @@ const CDT3ATechnologyRequirementsPart1 = () => {
           {/* Pitfalls Tab */}
           <TabsContent value="pitfalls" className="space-y-6">
             <PitfallCard
-              number={1}
               title="Technology-Led Rather Than Outcome-Led"
-              finding="Firms focused on implementing technology rather than defining what outcomes they needed to monitor"
+              description="Firms focused on implementing technology rather than defining what outcomes they needed to monitor. This leads to expensive systems that don't support Consumer Duty monitoring."
               impact="Expensive systems deployed that don't actually support Consumer Duty monitoring"
-              prevention={[
-                "Start with MI requirements (what needs to be measured - the 18 KPIs)",
-                "Then define data requirements (what data is needed)",
-                "Finally, select technology (what systems/tools will support it)",
-                "Don't let technology vendors drive requirements",
-              ]}
-              example="Firm bought expensive BI platform because 'we need dashboards for Consumer Duty' without defining what specific metrics needed tracking. Platform had great visualization but couldn't integrate with key systems, so most data had to be manually entered."
-              riskLevel="HIGH"
-              source="FG22/5 Section 10"
+              prevention="Start with MI requirements (what needs to be measured), then define data requirements, finally select technology. Don't let vendors drive requirements."
             />
 
             <PitfallCard
-              number={2}
               title="Repackaging Existing MI Without New Data"
-              finding="Simply repackaging existing MI without considering what new data needed for Consumer Duty"
+              description="Simply repackaging existing MI without considering what new data is needed for Consumer Duty. Dashboards look good but don't evidence compliance."
               impact="Dashboards look good but don't actually evidence Consumer Duty compliance"
-              prevention={[
-                "Identify data gaps (what's not currently captured)",
-                "Enhance source systems to capture missing data (e.g., vulnerable customer flags in CRM)",
-                "Don't just report what's easy to report - report what regulators expect",
-              ]}
-              example="Firm created board dashboard showing existing complaints data and CSAT scores, but had no vulnerable customer outcome parity analysis, fair value assessment status tracking, communication testing results, or sludge audit scores. FCA asked 'How do you know vulnerable customers achieve same outcomes?' Firm had no data."
-              riskLevel="HIGH"
-              source="FCA Multi-Firm Review 2024"
+              prevention="Identify data gaps early, enhance source systems to capture missing data (e.g., vulnerable customer flags), report what regulators expect not just what's easy."
             />
 
             <PitfallCard
-              number={3}
               title="Underestimating Integration Complexity"
-              finding="Integrating multiple systems (CRM, policy admin, complaints, etc.) takes longer and costs more than expected"
+              description="Integrating multiple systems (CRM, policy admin, complaints, etc.) takes longer and costs more than expected, causing delays and incomplete data."
               impact="Delayed deployment, budget overruns, incomplete data"
-              prevention={[
-                "Realistic assessment of integration effort (each system is a mini-project)",
-                "Budget 40% of total project time for integration",
-                "Consider integration middleware (don't try to directly connect every system)",
-                "Start with most critical integrations first (iterative approach)",
-                "Plan for manual data loads as interim solution if needed",
-              ]}
-              example="Firm planned 12-week implementation. Spent 8 weeks just trying to get reliable data extract from legacy policy administration system. Eventually succeeded but 6 months late."
-              riskLevel="HIGH"
-              source="Implementation Best Practice"
+              prevention="Budget 40% of total project time for integration. Use middleware rather than direct connections. Start with critical integrations first. Plan manual loads as interim."
             />
 
             <PitfallCard
-              number={4}
               title="Poor Data Quality Undermines Everything"
-              finding="Poor data quality undermines firms' ability to provide adequate assurance"
-              impact="Board can't rely on MI, regulatory risk"
-              prevention={[
-                "Data quality assessment BEFORE building dashboards",
-                "Clean data at source (fix root cause in source systems)",
-                "Implement data validation and reconciliation processes",
-                "Regular data quality reporting",
-                "Assign data ownership and accountability",
-              ]}
-              example="Common data quality issues: missing data (incomplete customer records), inconsistent definitions (product categorization different across systems), duplicate records (same customer multiple times), lag time (data not available when needed for reporting)."
-              riskLevel="HIGH"
-              source="FCA Board Reports Review Nov 2024"
+              description="Poor data quality undermines firms' ability to provide adequate assurance. Board can't rely on MI, creating regulatory risk."
+              impact="Board can't rely on MI, regulatory risk, unreliable dashboards"
+              prevention="Assess data quality BEFORE building dashboards. Clean data at source. Implement validation and reconciliation. Assign data ownership and accountability."
             />
 
             <PitfallCard
-              number={5}
               title="Building Dashboards Before Defining KPIs"
-              finding="Creating visualizations without clear understanding of what metrics matter"
+              description="Creating visualizations without clear understanding of what metrics matter leads to pretty dashboards that don't tell you if you're compliant."
               impact="Pretty dashboards that don't tell you if you're compliant"
-              prevention={[
-                "Complete CD-M1 (MI Framework) BEFORE starting CD-T3",
-                "Define all 18 essential KPIs with clear calculations",
-                "Get stakeholder agreement on metrics before any dashboard design",
-                "Ensure each metric links to specific Consumer Duty requirement",
-              ]}
-              riskLevel="MEDIUM"
-              source="FG22/5 Section 10"
+              prevention="Complete CD-M1 (MI Framework) BEFORE starting CD-T3. Define all 18 KPIs with calculations. Get stakeholder agreement before any dashboard design."
             />
 
             <PitfallCard
-              number={6}
               title="No User Involvement Until UAT"
-              finding="IT builds dashboards in isolation, then presents to users at the end"
+              description="IT builds dashboards in isolation, then presents to users at the end. Dashboards don't meet actual needs, requiring costly rework."
               impact="Dashboards don't meet actual user needs, costly rework"
-              prevention={[
-                "Involve Board member, executives, and operational users from requirements stage",
-                "Show wireframes/mockups early for feedback",
-                "Iterative design (show progress every 2 weeks)",
-                "'Build one, review one, deploy many' - don't build all dashboards before getting feedback",
-              ]}
-              riskLevel="MEDIUM"
-              source="Implementation Best Practice"
+              prevention="Involve Board, executives, and operational users from requirements stage. Show wireframes early. Iterate every 2 weeks. Build one, review one, deploy many."
             />
 
             <PitfallCard
-              number={7}
               title="Buying Platform Without Implementation Capacity"
-              finding="Purchase software license but don't have internal resources to implement"
+              description="Purchasing software license but lacking internal resources to implement leads to expensive 'shelfware' not used effectively."
               impact="'Shelfware' - expensive platform not used effectively"
-              prevention={[
-                "Assess internal capability honestly",
-                "Budget for external consultants/implementers if needed",
-                "Factor implementation effort into vendor selection (some vendors provide more support)",
-                "Ensure vendor provides training and documentation",
-              ]}
-              example="Cost Reality Check: Software license £50K-200K/year, Implementation services £100K-300K (one-time), Internal resource 2-3 FTE for 6 months, Ongoing support 1 FTE."
-              riskLevel="MEDIUM"
-              source="Implementation Best Practice"
+              prevention="Assess internal capability honestly. Budget for external consultants. Factor implementation effort into vendor selection. Ensure vendor provides training."
             />
 
             <PitfallCard
-              number={8}
               title="Forgetting Mobile/Tablet Access for Board"
-              finding="Dashboards only work on desktop; Board members use tablets"
+              description="Dashboards only work on desktop but Board members use tablets, meaning the board dashboard goes unused."
               impact="Board dashboard not actually used"
-              prevention={[
-                "Specify mobile/tablet requirement in dashboard requirements",
-                "Test on actual devices (iPad, Android tablets)",
-                "Prioritize board dashboard for mobile optimization",
-                "Consider responsive design vs separate mobile app",
-              ]}
-              riskLevel="MEDIUM"
-              source="Implementation Best Practice"
+              prevention="Specify mobile/tablet requirement in dashboard requirements. Test on actual devices. Prioritize board dashboard for mobile optimization."
             />
 
             <PitfallCard
-              number={9}
-              title="No Plan for Ongoing Maintenance and Enhancement"
-              finding="Dashboards deployed then neglected; no resources for updates"
+              title="No Plan for Ongoing Maintenance"
+              description="Dashboards deployed then neglected with no resources for updates. Dashboards become stale and inaccurate over time."
               impact="Dashboards become stale and inaccurate"
-              prevention={[
-                "Budget for ongoing support (1 FTE permanent)",
-                "Establish change request process for enhancements",
-                "Regular review of dashboard effectiveness (quarterly)",
-                "Plan for regulatory changes requiring MI updates",
-              ]}
-              riskLevel="MEDIUM"
-              source="Implementation Best Practice"
+              prevention="Budget for ongoing support (1 FTE permanent). Establish change request process. Review effectiveness quarterly. Plan for regulatory changes."
             />
 
             <PitfallCard
-              number={10}
               title="Security Afterthought"
-              finding="Security not considered until late in project"
+              description="Security not considered until late in project causes delays at go-live and potential data breaches."
               impact="Delays at go-live, potential data breaches"
-              prevention={[
-                "Security requirements defined in Phase 1",
-                "Involve information security team from start",
-                "Security testing throughout (not just at end)",
-                "Threat modeling for dashboard architecture",
-                "Data protection impact assessment (DPIA) if processing vulnerable customer data",
-              ]}
-              riskLevel="HIGH"
-              source="UK GDPR / Implementation Best Practice"
+              prevention="Define security requirements in Phase 1. Involve InfoSec team from start. Test security throughout. Conduct threat modeling and DPIA if processing vulnerable customer data."
             />
           </TabsContent>
         </Tabs>
