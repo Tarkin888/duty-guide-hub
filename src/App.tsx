@@ -21,6 +21,7 @@ import CDI7BDataEvidenceManagementPart2 from "./pages/modules/CD-I7B-DataEvidenc
 import CDT1TrainingProgrammePart1 from "./pages/modules/CD-T1-TrainingProgrammePart1";
 import CDT1TrainingProgrammePart2 from "./pages/modules/CD-T1-TrainingProgrammePart2";
 import CDT2CommunicationsChangePart1 from "./pages/modules/CD-T2-CommunicationsChangePart1";
+import CDT2CommunicationsChangePart2 from "./pages/modules/CD-T2-CommunicationsChangePart2";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
@@ -105,6 +106,7 @@ const App = () => (
                   <Route path="/enablement/training-part2" element={<CDT1TrainingProgrammePart2 />} />
                   <Route path="/enablement/communications" element={<CDT2CommunicationsChangePart1 />} />
                   <Route path="/enablement/communications-part1" element={<CDT2CommunicationsChangePart1 />} />
+                  <Route path="/enablement/communications-part2" element={<CDT2CommunicationsChangePart2 />} />
                   <Route path="/enablement/change-management" element={<CDT2CommunicationsChangePart1 />} />
                   <Route path="/enablement/technology" element={
                     <ModulePage 
