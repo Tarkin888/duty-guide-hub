@@ -984,67 +984,67 @@ const CDT3ATechnologyRequirementsPart1 = () => {
               <TemplateCard
                 title="Dashboard Requirements Specification"
                 description="Comprehensive specification for Board, Executive, and Operational dashboards with functional and non-functional requirements."
-                icon={<MonitorCheck className="h-5 w-5" />}
+                format="Word"
                 onPreview={() => handlePreviewTemplate("Dashboard Requirements Specification")}
               />
               <TemplateCard
                 title="Data Collection Requirements Matrix"
                 description="Excel workbook covering all 18 Essential KPIs with sources, frequency, calculations, availability, and gap analysis."
-                icon={<Database className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Data Collection Requirements Matrix")}
               />
               <TemplateCard
                 title="Data Source Mapping Template"
                 description="Visual mapping document showing system ownership, data elements, quality assessment, and integration methods."
-                icon={<HardDrive className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Data Source Mapping Template")}
               />
               <TemplateCard
                 title="Integration Architecture Diagram"
                 description="Visual diagram showing source systems, middleware, data warehouse, BI platform, and data flows."
-                icon={<Network className="h-5 w-5" />}
+                format="PowerPoint"
                 onPreview={() => handlePreviewTemplate("Integration Architecture Diagram")}
               />
               <TemplateCard
                 title="Security Requirements Specification"
                 description="RBAC matrix, data protection controls, information security standards, and audit requirements."
-                icon={<Lock className="h-5 w-5" />}
+                format="Word"
                 onPreview={() => handlePreviewTemplate("Security Requirements Specification")}
               />
               <TemplateCard
                 title="Build vs Buy Decision Matrix"
                 description="Criteria scoring, cost analysis, risk assessment, and recommendation framework for technology approach."
-                icon={<Settings className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Build vs Buy Decision Matrix")}
               />
               <TemplateCard
                 title="Vendor Evaluation Scorecard"
                 description="Weighted scoring matrix for evaluating Consumer Duty platform vendors across functionality, compliance, and cost."
-                icon={<Users className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Vendor Evaluation Scorecard")}
               />
               <TemplateCard
                 title="System Architecture Design Document"
                 description="High-level architecture, technology stack, scalability plan, and disaster recovery documentation."
-                icon={<Layers className="h-5 w-5" />}
+                format="Word"
                 onPreview={() => handlePreviewTemplate("System Architecture Design Document")}
               />
               <TemplateCard
                 title="Data Integration Test Plan"
                 description="Test cases, expected results, actual results, and issue tracking for ETL and API testing."
-                icon={<Workflow className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Data Integration Test Plan")}
               />
               <TemplateCard
                 title="UAT Test Script"
                 description="Scenarios, steps, expected results, actual results, and issue documentation for user acceptance testing."
-                icon={<CheckCircle2 className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("UAT Test Script")}
               />
               <TemplateCard
                 title="Go-Live Readiness Checklist"
                 description="Pre-deployment verification checklist with sign-offs and support readiness confirmation."
-                icon={<Zap className="h-5 w-5" />}
+                format="Excel"
                 onPreview={() => handlePreviewTemplate("Go-Live Readiness Checklist")}
               />
             </div>
