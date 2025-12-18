@@ -131,15 +131,9 @@ const App = () => (
                       category="Monitoring & Assurance"
                     />
                   } />
-                  <Route path="/monitoring/testing-assurance" element={
-                    <ModulePage 
-                      title="Testing & Assurance" 
-                      description="Test and assure Consumer Duty implementation"
-                      icon={TestTube}
-                      moduleId="testing-assurance"
-                      category="Monitoring & Assurance"
-                    />
-                  } />
+                  <Route path="/monitoring/testing-assurance" element={<CDM2ATestingAssurancePart1 />} />
+                  <Route path="/monitoring/testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
+                  <Route path="/modules/cd-m2a-testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
                   <Route path="/monitoring/board-reporting" element={
                     <ModulePage 
                       title="Board Reporting" 
