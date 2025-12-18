@@ -24,6 +24,7 @@ import CDT2CommunicationsChangePart1 from "./pages/modules/CD-T2-CommunicationsC
 import CDT2CommunicationsChangePart2 from "./pages/modules/CD-T2-CommunicationsChangePart2";
 import CDT3ATechnologyRequirementsPart1 from "./pages/modules/CD-T3A-TechnologyRequirementsPart1";
 import CDT3BTechnologyRequirementsPart2 from "./pages/modules/CD-T3B-TechnologyRequirementsPart2";
+import CDM2ATestingAssurancePart1 from "./pages/modules/CD-M2A-TestingAssurancePart1";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
