@@ -25,6 +25,8 @@ import CDT2CommunicationsChangePart2 from "./pages/modules/CD-T2-CommunicationsC
 import CDT3ATechnologyRequirementsPart1 from "./pages/modules/CD-T3A-TechnologyRequirementsPart1";
 import CDT3BTechnologyRequirementsPart2 from "./pages/modules/CD-T3B-TechnologyRequirementsPart2";
 import CDM2ATestingAssurancePart1 from "./pages/modules/CD-M2A-TestingAssurancePart1";
+import CDM3BoardReportingPart1 from "./pages/modules/CD-M3-BoardReportingPart1";
+import CDM3BoardReportingPart2 from "./pages/modules/CD-M3-BoardReportingPart2";
 import CDP1GovernanceFramework from "./pages/modules/CD-P1-GovernanceFramework";
 import CDP1GovernanceFrameworkPart2 from "./pages/modules/CD-P1-GovernanceFrameworkPart2";
 import CDP2PolicyFrameworkPart1 from "./pages/modules/CD-P2-PolicyFrameworkPart1";
@@ -135,15 +137,9 @@ const App = () => (
                   <Route path="/monitoring/testing-assurance" element={<CDM2ATestingAssurancePart1 />} />
                   <Route path="/monitoring/testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
                   <Route path="/modules/cd-m2a-testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
-                  <Route path="/monitoring/board-reporting" element={
-                    <ModulePage 
-                      title="Board Reporting" 
-                      description="Report Consumer Duty outcomes to the board"
-                      icon={PresentationIcon}
-                      moduleId="board-reporting"
-                      category="Monitoring & Assurance"
-                    />
-                  } />
+                  <Route path="/monitoring/board-reporting" element={<CDM3BoardReportingPart1 />} />
+                  <Route path="/monitoring/board-reporting-part1" element={<CDM3BoardReportingPart1 />} />
+                  <Route path="/monitoring/board-reporting-part2" element={<CDM3BoardReportingPart2 />} />
                   <Route path="/monitoring/continuous-improvement" element={
                     <ModulePage 
                       title="Continuous Improvement" 
