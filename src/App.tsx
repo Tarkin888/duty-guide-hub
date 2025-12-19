@@ -36,6 +36,7 @@ import CDP3ImplementationRoadmapPart1 from "./pages/modules/CD-P3-Implementation
 import CDP3ImplementationRoadmapPart2 from "./pages/modules/CD-P3-ImplementationRoadmapPart2";
 import CDM4ContinuousImprovementPart1 from "./pages/modules/CD-M4-ContinuousImprovementPart1";
 import CDM4ContinuousImprovementPart2 from "./pages/modules/CD-M4-ContinuousImprovementPart2";
+import TemplatesLibrary from "./pages/TemplatesLibrary";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -147,15 +148,7 @@ const App = () => (
                   <Route path="/monitoring/continuous-improvement-part2" element={<CDM4ContinuousImprovementPart2 />} />
 
                   {/* Resources */}
-                  <Route path="/resources/templates" element={
-                    <ModulePage 
-                      title="Templates Library" 
-                      description="Access downloadable templates and tools"
-                      icon={FolderOpen}
-                      moduleId="templates"
-                      category="Resources"
-                    />
-                  } />
+                  <Route path="/resources/templates" element={<TemplatesLibrary />} />
                   <Route path="/resources/glossary" element={
                     <ModulePage 
                       title="Glossary" 
