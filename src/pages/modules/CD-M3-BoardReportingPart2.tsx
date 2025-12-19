@@ -442,6 +442,8 @@ export default function CDM3BoardReportingPart2() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={6}
+                        moduleId="cdm3-part2"
                         title="Production Process Setup"
                         items={[
                           { id: "prod1", label: "Define 10-week production timeline with milestones" },
@@ -614,6 +616,8 @@ export default function CDM3BoardReportingPart2() {
                     </AccordionTrigger>
                     <AccordionContent className="space-y-6">
                       <ChecklistSection
+                        stepNumber={8}
+                        moduleId="cdm3-part2"
                         title="Evidence Pack Assembly"
                         items={[
                           { id: "evid1", label: "Create evidence index cross-referencing every assertion" },
@@ -729,6 +733,8 @@ export default function CDM3BoardReportingPart2() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={9}
+                        moduleId="cdm3-part2"
                         title="Quality Standards Verification"
                         items={[
                           { id: "qa1", label: "Accuracy: All data verified and reconciled" },
@@ -795,6 +801,8 @@ export default function CDM3BoardReportingPart2() {
                       />
 
                       <ChecklistSection
+                        stepNumber={10}
+                        moduleId="cdm3-part2"
                         title="Board Presentation Checklist"
                         items={[
                           { id: "board1", label: "Full report circulated 5-7 days before meeting" },
@@ -828,6 +836,8 @@ export default function CDM3BoardReportingPart2() {
                     </AccordionTrigger>
                     <AccordionContent className="space-y-6">
                       <ChecklistSection
+                        stepNumber={11}
+                        moduleId="cdm3-part2"
                         title="Post-Submission Review"
                         items={[
                           { id: "improve1", label: "Conduct post-submission review within 2 weeks" },
@@ -952,6 +962,8 @@ export default function CDM3BoardReportingPart2() {
                       </div>
 
                       <ChecklistSection
+                        stepNumber={12}
+                        moduleId="cdm3-part2"
                         title="Maturity Progression Tracking"
                         items={[
                           { id: "mature1", label: "Assess current maturity level" },
@@ -1363,75 +1375,59 @@ export default function CDM3BoardReportingPart2() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <PitfallCard
-                  number={13}
-                  title="Starting Too Late"
-                  description="Firms starting 4-6 weeks before deadline, resulting in rushed reports with poor quality, missed issues, and inadequate validation."
+                  title="Pitfall 13: Starting Too Late"
+                  description="Firms starting 4-6 weeks before deadline, resulting in rushed reports with poor quality, missed issues, and inadequate validation. Example: Firm started 6 weeks before deadline, submitted 2 days before meeting, board couldn't review properly."
                   impact="Board cannot properly review, quality compromised, regulatory risk"
                   prevention="Start 10-12 weeks early with realistic timeline and milestones"
-                  example="Firm started 6 weeks before deadline, insufficient time for proper review, submitted 2 days before meeting, board couldn't review properly"
                 />
 
                 <PitfallCard
-                  number={14}
-                  title="Death by Data"
-                  description="FCA Finding: 'Extensive data tables but limited analysis' - reports drowning the board in raw data without actionable insights."
+                  title="Pitfall 14: Death by Data"
+                  description="FCA Finding: 'Extensive data tables but limited analysis' - reports drowning the board in raw data without actionable insights. Example: 45-page report with 20 pages of data tables, no clear conclusions."
                   impact="Board can't identify key issues, report fails to drive decisions"
                   prevention="Data belongs in appendices. Main report should have RAG ratings, trends, root causes, and actions"
-                  example="45-page report with 20 pages of data tables, no clear conclusions or recommended actions"
                 />
 
                 <PitfallCard
-                  number={15}
-                  title="Generic Content Not Specific to Firm"
-                  description="FCA Finding: 'Reports that could apply to any firm' - lacking firm-specific data, products, segments, and quantification."
+                  title="Pitfall 15: Generic Content Not Specific to Firm"
+                  description="FCA Finding: 'Reports that could apply to any firm' - lacking firm-specific data, products, segments, and quantification. Bad: 'We monitor vulnerable customers' vs Good: 'We completed vulnerability analysis for 23,456 customers...'"
                   impact="Doesn't evidence what THIS firm is doing, fails regulatory scrutiny"
                   prevention="Use firm's actual data, name specific products/segments, quantify everything"
-                  example="Bad: 'We monitor vulnerable customers' vs Good: 'We completed vulnerability analysis for 23,456 customers. Identified 3,421 (14.6%) with vulnerability characteristics. Outcome variance: CSAT -0.3 points vs non-vulnerable (target <0.5). Action: Specialist support team (6 FTE) recruiting, complete Q1-25.'"
                 />
 
                 <PitfallCard
-                  number={16}
-                  title="No Honest Acknowledgment of Issues"
-                  description="FCA Finding: 'Overly positive reports, downplaying problems' - boards not getting the full picture."
+                  title="Pitfall 16: No Honest Acknowledgment of Issues"
+                  description="FCA Finding: 'Overly positive reports, downplaying problems' - boards not getting the full picture. FCA Quote: 'We expect boards to see realistic picture including challenges'"
                   impact="Board can't direct remediation, regulatory trust eroded"
                   prevention="Be honest, don't bury bad news, use red/amber RAG appropriately"
-                  example="FCA Quote: 'We expect boards to see realistic picture including challenges'"
                 />
 
                 <PitfallCard
-                  number={17}
-                  title="Vague Action Plans"
-                  description="FCA Finding: 'Action plans lacking detail, owners, timelines' - actions don't get implemented, same issues recur."
+                  title="Pitfall 17: Vague Action Plans"
+                  description="FCA Finding: 'Action plans lacking detail, owners, timelines' - actions don't get implemented, same issues recur. Weak: 'Improve vulnerable customer support' vs Strong: 'Implement specialist team. Owner: J. Smith. Deadline: 31-Mar-25.'"
                   impact="No accountability, issues persist cycle after cycle"
                   prevention="Every action needs specific description, named owner, deadline, and success criteria"
-                  example="Weak: 'Improve vulnerable customer support' vs Strong: 'Implement specialist vulnerable customer team. Owner: J. Smith (Head of Service). Deadline: 31-Mar-25. Success: (1) 6 specialists trained, (2) Call quality >4.5/5, (3) Outcome variance <-5% by Q3-25. Status: 60% complete.'"
                 />
 
                 <PitfallCard
-                  number={18}
-                  title="Insufficient Board Challenge"
-                  description="FCA Finding: 'Report simply presented and approved without challenge' - board not discharging oversight duty."
+                  title="Pitfall 18: Insufficient Board Challenge"
+                  description="FCA Finding: 'Report simply presented and approved without challenge' - board not discharging oversight duty. Good Practice Questions: 'How confident in this data?', 'What's root cause?', 'Are actions sufficient?'"
                   impact="Governance failure, regulatory concerns about board effectiveness"
                   prevention="Build challenge into report, pre-brief on scrutiny areas, allow 60-90 minutes, record questions in minutes"
-                  example="Good Practice Questions: 'How confident in this data?', 'What's root cause?', 'Are actions sufficient?', 'How do we compare to peers?'"
                 />
 
                 <PitfallCard
-                  number={19}
-                  title="Evidence Pack as Afterthought"
-                  description="FCA Finding: 'Firms scrambling for evidence when FCA requests report' - can't produce evidence promptly, undermines credibility."
+                  title="Pitfall 19: Evidence Pack as Afterthought"
+                  description="FCA Finding: 'Firms scrambling for evidence when FCA requests report' - can't produce evidence promptly, undermines credibility. Example: Firm took 3 weeks to assemble evidence after FCA request."
                   impact="Regulatory examination failure, suggests poor controls"
                   prevention="Build evidence index AS you write report, store systematically, test retrieval"
-                  example="Firm took 3 weeks to assemble evidence after FCA request (had to search emails, recreate analysis)"
                 />
 
                 <PitfallCard
-                  number={20}
-                  title="Not Learning from Previous Cycles"
-                  description="FCA Finding: 'Same issues in reports year after year' - demonstrates ineffective governance and lack of improvement."
+                  title="Pitfall 20: Not Learning from Previous Cycles"
+                  description="FCA Finding: 'Same issues in reports year after year' - demonstrates ineffective governance. What Good Looks Like: Year 1 - 'Issue identified'; Year 2 - 'Action implemented'; Year 3 - 'Issue resolved'"
                   impact="Regulatory concern about firm's ability to embed change"
                   prevention="Post-report review every cycle, track maturity progression, show improvement trajectory"
-                  example="What Good Looks Like: Year 1 - 'Issue identified, action planned'; Year 2 - 'Action implemented, early results'; Year 3 - 'Issue resolved, maturity progressed'"
                 />
               </CardContent>
             </Card>
