@@ -166,6 +166,7 @@ export default function CDM4ContinuousImprovementPart2() {
                     <AccordionContent className="space-y-6 pt-4">
                       <RegulatoryQuote
                         source="FCA Strategic Priority"
+                        reference="Consumer Duty Implementation"
                         quote="Resources should be focused on improvements that deliver the greatest customer benefit and address the most significant compliance risks."
                       />
 
@@ -500,7 +501,8 @@ export default function CDM4ContinuousImprovementPart2() {
                     </AccordionTrigger>
                     <AccordionContent className="space-y-6 pt-4">
                       <RegulatoryQuote
-                        source="FCA Multi-firm Review (November 2025)"
+                        source="FCA Multi-firm Review"
+                        reference="November 2025"
                         quote="Best practice firms demonstrate progressive maturity, moving from compliance-focused to genuinely customer-centric operations."
                       />
 
@@ -613,6 +615,7 @@ export default function CDM4ContinuousImprovementPart2() {
                     <AccordionContent className="space-y-6 pt-4">
                       <RegulatoryQuote
                         source="FCA Position"
+                        reference="Consumer Duty Guidance"
                         quote="Innovation is welcome where it genuinely improves customer outcomes, but firms must evidence the benefit and manage risks."
                       />
 
@@ -918,86 +921,72 @@ export default function CDM4ContinuousImprovementPart2() {
               <TemplateCard
                 title="1. Continuous Improvement Governance Charter"
                 description="Formal governance document establishing ownership, committee structure, decision authority, and reporting to Board"
-                icon={Building2}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="2. Improvement Suggestion Form & Process"
                 description="Staff suggestion form with triage workflow, tracking fields, and feedback loop process"
-                icon={MessageSquare}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="3. Annual Consumer Duty Review Calendar"
                 description="12-month calendar with monthly milestones, quarterly reviews, and annual strategic activities"
-                icon={Calendar}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="4. Trend Analysis Dashboard Specification"
                 description="Dashboard design for outcomes trends, vulnerable customer parity, complaints, and predictive indicators"
-                icon={LineChart}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="5. Issue Flagging & Escalation Protocol"
                 description="Step-by-step protocol for identification, assessment, escalation, RCA, remediation, and monitoring"
-                icon={AlertCircle}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="6. Root Cause Analysis Template"
                 description="Comprehensive RCA template with 5 Whys, Fishbone diagram, impact assessment, and remediation plan"
-                icon={FolderSearch}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="7. Lessons Learned Capture Form"
                 description="Structured form for capturing lessons from events, projects, feedback with broader application assessment"
-                icon={BookOpen}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="8. Improvement Prioritisation Matrix"
                 description="Excel-based scoring tool with weighted criteria, priority categories, and 2×2 impact/effort matrix"
-                icon={Filter}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="9. Improvement Project Charter & Plan"
                 description="Project documentation including one-page charter, detailed plan, RAID log, and benefits tracking"
-                icon={ClipboardList}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="10. Quick Wins Log & Impact Tracker"
                 description="Simple tracking log for quick improvements with impact measurement and success rate metrics"
-                icon={Zap}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="11. Maturity Assessment Framework"
                 description="Detailed scoring guide with level descriptors for all 8 dimensions, evidence requirements, and progression targets"
-                icon={TrendingUp}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="12. Innovation Proposal & Evaluation Framework"
                 description="Structured approach covering feasibility, customer benefit, risk assessment, pilot plan, and evaluation criteria"
-                icon={Lightbulb}
-                downloadable
+                format="Word"
               />
               <TemplateCard
                 title="13. Regulatory Horizon Scanning Log"
                 description="Tracking log for regulatory developments with impact assessment, action planning, and strategic implications"
-                icon={Compass}
-                downloadable
+                format="Excel"
               />
               <TemplateCard
                 title="14. Best Practice Capture & Application Framework"
                 description="Framework for identifying, adapting, and applying internal and external best practices"
-                icon={Trophy}
-                downloadable
+                format="Word"
               />
             </div>
 
