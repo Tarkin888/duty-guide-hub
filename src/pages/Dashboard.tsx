@@ -24,15 +24,8 @@ import {
   Bell,
   BookMarked
 } from "lucide-react";
-import { 
-  calculateOverallProgress, 
-  getPhaseProgress, 
-  getActivities, 
-  getDaysSinceStart,
-  getCompletedModulesCount,
-  getInProgressModules,
-  getUserData
-} from "@/lib/storage";
+import { getActivities } from "@/lib/storage";
+import { useProgress } from "@/contexts/ProgressContext";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -47,39 +40,88 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { resetAllProgress } from "@/lib/storage";
 import { toast } from "sonner";
 
+// Map module IDs to their routes
+const MODULE_ROUTES: Record<string, string> = {
+  'CD-F1': '/foundation/readiness',
+  'CD-F2': '/foundation/requirements',
+  'CD-F3': '/foundation/risk-impact',
+  'CD-P1': '/governance/framework',
+  'CD-P2': '/governance/policy',
+  'CD-P3': '/governance/roadmap',
+  'CD-I1': '/outcomes/products-services',
+  'CD-I2': '/outcomes/price-value',
+  'CD-I3': '/outcomes/consumer-understanding',
+  'CD-I4': '/outcomes/consumer-support',
+  'CD-I5': '/cross-cutting/vulnerable-customers',
+  'CD-I6': '/cross-cutting/distribution-chain',
+  'CD-I7': '/cross-cutting/data-evidence',
+  'CD-T1': '/enablement/training',
+  'CD-T2': '/enablement/communications',
+  'CD-T3': '/enablement/technology',
+  'CD-M1': '/monitoring/mi-monitoring',
+  'CD-M2': '/monitoring/testing-assurance',
+  'CD-M3': '/monitoring/board-reporting',
+  'CD-M4': '/monitoring/continuous-improvement',
+};
+
+// Module display names
+const MODULE_NAMES: Record<string, string> = {
+  'CD-F1': 'Readiness Assessment',
+  'CD-F2': 'Requirements Mapping',
+  'CD-F3': 'Risk & Impact Assessment',
+  'CD-P1': 'Governance Framework',
+  'CD-P2': 'Policy Framework',
+  'CD-P3': 'Implementation Roadmap',
+  'CD-I1': 'Products & Services',
+  'CD-I2': 'Price & Value',
+  'CD-I3': 'Consumer Understanding',
+  'CD-I4': 'Consumer Support',
+  'CD-I5': 'Vulnerable Customers',
+  'CD-I6': 'Distribution Chain',
+  'CD-I7': 'Data & Evidence',
+  'CD-T1': 'Training Programme',
+  'CD-T2': 'Communications & Change',
+  'CD-T3': 'Technology Requirements',
+  'CD-M1': 'MI Framework',
+  'CD-M2': 'Testing & Assurance',
+  'CD-M3': 'Board Reporting',
+  'CD-M4': 'Continuous Improvement',
+};
+
 export default function Dashboard() {
-  const [overallProgress, setOverallProgress] = useState(0);
-  const [phaseProgress, setPhaseProgress] = useState<any>(null);
+  const { 
+    overallProgress, 
+    categoryProgress, 
+    resetAllProgress,
+    inProgressModules,
+    daysSinceStart,
+    isValidState,
+    validationErrors,
+    refreshProgress
+  } = useProgress();
+
   const [activities, setActivities] = useState<any[]>([]);
-  const [daysSinceStart, setDaysSinceStart] = useState(0);
-  const [completedCount, setCompletedCount] = useState(0);
-  const [inProgressModules, setInProgressModules] = useState<any[]>([]);
   const [lastUpdated, setLastUpdated] = useState("");
 
   useEffect(() => {
-    const userData = getUserData();
-    setOverallProgress(calculateOverallProgress());
-    setPhaseProgress(getPhaseProgress());
     setActivities(getActivities());
-    setDaysSinceStart(getDaysSinceStart());
-    setCompletedCount(getCompletedModulesCount());
-    setInProgressModules(getInProgressModules());
     setLastUpdated(format(new Date(), "PPP"));
-  }, []);
+    // Refresh progress on mount to ensure we have latest data
+    refreshProgress();
+  }, [refreshProgress]);
 
   const handleReset = () => {
     resetAllProgress();
+    toast.success("All progress has been reset");
     window.location.reload();
   };
 
-  const totalModules = 20;
   const totalTemplates = 40;
 
-  const estimatedDaysRemaining = overallProgress > 0 
-    ? Math.ceil((daysSinceStart / overallProgress) * (100 - overallProgress))
+  const estimatedDaysRemaining = overallProgress.percentageComplete > 0 && daysSinceStart > 0
+    ? Math.ceil((daysSinceStart / overallProgress.percentageComplete) * (100 - overallProgress.percentageComplete))
     : 0;
 
   const mostUsedTemplates = [
@@ -95,6 +137,30 @@ export default function Dashboard() {
     { title: "Final Rules and Guidance", url: "#" },
     { title: "Questions and Answers", url: "#" }
   ];
+
+  // Show validation errors if state is invalid
+  if (!isValidState && validationErrors.length > 0) {
+    return (
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Progress State Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">The progress tracking system has detected inconsistencies:</p>
+            <ul className="list-disc pl-6 mb-4">
+              {validationErrors.map((error, i) => (
+                <li key={i} className="text-destructive">{error}</li>
+              ))}
+            </ul>
+            <Button onClick={handleReset} variant="destructive">
+              Reset Progress to Fix
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-6 py-8 max-w-7xl">
@@ -118,7 +184,7 @@ export default function Dashboard() {
         <div className="flex flex-wrap gap-3 mt-6">
           {inProgressModules.length > 0 && (
             <Button asChild size="lg" className="gap-2">
-              <Link to={`/${inProgressModules[0].id.replace(/-/g, "/")}`}>
+              <Link to={MODULE_ROUTES[inProgressModules[0].moduleId] || '/foundation/readiness'}>
                 <Play className="h-4 w-4" />
                 Resume Where You Left Off
               </Link>
@@ -165,51 +231,47 @@ export default function Dashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex items-center justify-center">
-                <CircularProgress value={overallProgress} />
+                <CircularProgress value={overallProgress.percentageComplete} />
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-3">
-                  {phaseProgress && (
-                    <>
-                      <PhaseProgressCard 
-                        title="Foundation" 
-                        completed={phaseProgress.foundation.completed}
-                        total={phaseProgress.foundation.total}
-                        icon={BookOpen}
-                      />
-                      <PhaseProgressCard 
-                        title="Governance & Planning" 
-                        completed={phaseProgress.governance.completed}
-                        total={phaseProgress.governance.total}
-                        icon={Shield}
-                      />
-                      <PhaseProgressCard 
-                        title="Four Outcomes" 
-                        completed={phaseProgress.outcomes.completed}
-                        total={phaseProgress.outcomes.total}
-                        icon={ListChecks}
-                      />
-                      <PhaseProgressCard 
-                        title="Cross-Cutting" 
-                        completed={phaseProgress.crossCutting.completed}
-                        total={phaseProgress.crossCutting.total}
-                        icon={Users}
-                      />
-                      <PhaseProgressCard 
-                        title="Enablement" 
-                        completed={phaseProgress.enablement.completed}
-                        total={phaseProgress.enablement.total}
-                        icon={GraduationCap}
-                      />
-                      <PhaseProgressCard 
-                        title="Monitoring & Assurance" 
-                        completed={phaseProgress.monitoring.completed}
-                        total={phaseProgress.monitoring.total}
-                        icon={BarChart3}
-                      />
-                    </>
-                  )}
+                  <PhaseProgressCard 
+                    title="Foundation" 
+                    completed={categoryProgress.foundation?.completedModules || 0}
+                    total={categoryProgress.foundation?.totalModules || 3}
+                    icon={BookOpen}
+                  />
+                  <PhaseProgressCard 
+                    title="Governance & Planning" 
+                    completed={categoryProgress.governance?.completedModules || 0}
+                    total={categoryProgress.governance?.totalModules || 3}
+                    icon={Shield}
+                  />
+                  <PhaseProgressCard 
+                    title="Four Outcomes" 
+                    completed={categoryProgress.outcomes?.completedModules || 0}
+                    total={categoryProgress.outcomes?.totalModules || 4}
+                    icon={ListChecks}
+                  />
+                  <PhaseProgressCard 
+                    title="Cross-Cutting" 
+                    completed={categoryProgress.crosscutting?.completedModules || 0}
+                    total={categoryProgress.crosscutting?.totalModules || 3}
+                    icon={Users}
+                  />
+                  <PhaseProgressCard 
+                    title="Enablement" 
+                    completed={categoryProgress.enablement?.completedModules || 0}
+                    total={categoryProgress.enablement?.totalModules || 3}
+                    icon={GraduationCap}
+                  />
+                  <PhaseProgressCard 
+                    title="Monitoring & Assurance" 
+                    completed={categoryProgress.monitoring?.completedModules || 0}
+                    total={categoryProgress.monitoring?.totalModules || 4}
+                    icon={BarChart3}
+                  />
                 </div>
 
                 {estimatedDaysRemaining > 0 && (
@@ -236,7 +298,7 @@ export default function Dashboard() {
                   <Target className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{totalModules}</p>
+                  <p className="text-2xl font-bold">{overallProgress.totalModules}</p>
                   <p className="text-sm text-muted-foreground">Total Modules</p>
                 </div>
               </div>
@@ -250,7 +312,7 @@ export default function Dashboard() {
                   <CheckCircle2 className="h-6 w-6 text-success" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{completedCount}</p>
+                  <p className="text-2xl font-bold">{overallProgress.completedModules}</p>
                   <p className="text-sm text-muted-foreground">Completed Modules</p>
                 </div>
               </div>
@@ -301,17 +363,17 @@ export default function Dashboard() {
             {inProgressModules.length > 0 ? (
               <div className="space-y-4">
                 {inProgressModules.slice(0, 3).map((module) => (
-                  <div key={module.id} className="p-4 rounded-lg border border-warning/20 bg-warning/5">
+                  <div key={module.moduleId} className="p-4 rounded-lg border border-warning/20 bg-warning/5">
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-medium">
-                        {module.id.split("-").map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                        {MODULE_NAMES[module.moduleId] || module.moduleId}
                       </h4>
                       <Badge variant="outline" className="bg-warning/10 text-warning">
                         In Progress
                       </Badge>
                     </div>
                     <Button asChild variant="link" className="p-0 h-auto">
-                      <Link to={`/${module.id.replace(/-/g, "/")}`}>
+                      <Link to={MODULE_ROUTES[module.moduleId] || '/foundation/readiness'}>
                         Continue module →
                       </Link>
                     </Button>
