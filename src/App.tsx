@@ -38,6 +38,7 @@ import CDM4ContinuousImprovementPart1 from "./pages/modules/CD-M4-ContinuousImpr
 import CDM4ContinuousImprovementPart2 from "./pages/modules/CD-M4-ContinuousImprovementPart2";
 import TemplatesLibrary from "./pages/TemplatesLibrary";
 import Glossary from "./pages/Glossary";
+import RegulatoryReferences from "./pages/RegulatoryReferences";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -151,15 +152,8 @@ const App = () => (
                   {/* Resources */}
                   <Route path="/resources/templates" element={<TemplatesLibrary />} />
                   <Route path="/resources/glossary" element={<Glossary />} />
-                  <Route path="/resources/regulatory" element={
-                    <ModulePage 
-                      title="Regulatory References" 
-                      description="Key regulatory guidance and requirements"
-                      icon={Scale}
-                      moduleId="regulatory"
-                      category="Resources"
-                    />
-                  } />
+                  <Route path="/resources/regulatory-references" element={<RegulatoryReferences />} />
+                  <Route path="/resources/regulatory" element={<RegulatoryReferences />} />
 
                   <Route path="*" element={<NotFound />} />
                 </Routes>
