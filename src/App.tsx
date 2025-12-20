@@ -37,6 +37,7 @@ import CDP3ImplementationRoadmapPart2 from "./pages/modules/CD-P3-Implementation
 import CDM4ContinuousImprovementPart1 from "./pages/modules/CD-M4-ContinuousImprovementPart1";
 import CDM4ContinuousImprovementPart2 from "./pages/modules/CD-M4-ContinuousImprovementPart2";
 import TemplatesLibrary from "./pages/TemplatesLibrary";
+import Glossary from "./pages/Glossary";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -149,15 +150,7 @@ const App = () => (
 
                   {/* Resources */}
                   <Route path="/resources/templates" element={<TemplatesLibrary />} />
-                  <Route path="/resources/glossary" element={
-                    <ModulePage 
-                      title="Glossary" 
-                      description="Consumer Duty terminology and definitions"
-                      icon={BookOpen}
-                      moduleId="glossary"
-                      category="Resources"
-                    />
-                  } />
+                  <Route path="/resources/glossary" element={<Glossary />} />
                   <Route path="/resources/regulatory" element={
                     <ModulePage 
                       title="Regulatory References" 
