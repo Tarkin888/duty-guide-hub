@@ -48,11 +48,23 @@ export const updateModuleStatus = (
   status: "not-started" | "in-progress" | "completed"
 ): void => {
   const progress = getProgress();
+  const previousStatus = progress[moduleId]?.status;
+  
   progress[moduleId] = {
     status,
     lastUpdated: new Date().toISOString(),
   };
   saveProgress(progress);
+  
+  // Log activity for completed modules
+  if (status === "completed" && previousStatus !== "completed") {
+    addActivity("module_completed", moduleId);
+  } else if (status === "in-progress" && previousStatus !== "in-progress") {
+    addActivity("module_started", moduleId);
+  }
+  
+  // Dispatch custom event for same-tab updates (Dashboard will listen)
+  window.dispatchEvent(new Event('module-progress-updated'));
 };
 
 export const getModuleStatus = (moduleId: string): "not-started" | "in-progress" | "completed" => {

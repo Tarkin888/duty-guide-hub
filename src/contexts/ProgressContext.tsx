@@ -77,16 +77,27 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setStartDateState(getStartDate());
   }, [progress]);
 
-  // Listen for storage events to sync across tabs
+  // Listen for storage events to sync across tabs and custom events for same-tab updates
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'consumer-duty-progress-v2') {
+      // Listen for the key that storage.ts uses
+      if (e.key === 'consumer-duty-progress') {
         refreshProgress();
       }
     };
     
+    // Custom event for same-tab updates when module pages update progress
+    const handleProgressUpdate = () => {
+      refreshProgress();
+    };
+    
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('module-progress-updated', handleProgressUpdate);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('module-progress-updated', handleProgressUpdate);
+    };
   }, [refreshProgress]);
 
   const updateModule = useCallback((
