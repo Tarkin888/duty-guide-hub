@@ -1,4 +1,6 @@
-import { MessageSquare } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { MessageSquare, ArrowLeft, CheckCircle2, Clock, FileText, Printer } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -9,11 +11,16 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { toast as sonnerToast } from "sonner";
+
+const STORAGE_KEY = "cd-i3-consumer-understanding";
 
 const CDI3ConsumerUnderstanding = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
 
   const handleDownload = (templateName: string) => {
     toast({
@@ -29,69 +36,92 @@ const CDI3ConsumerUnderstanding = () => {
     });
   };
 
-  return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl">
-      {/* Module Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-primary/10 rounded-lg">
-            <MessageSquare className="h-8 w-8 text-primary" />
-          </div>
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-4xl font-bold">Consumer Understanding</h1>
-              <Badge variant="default">CD-I3</Badge>
-            </div>
-            <p className="text-xl text-muted-foreground">
-              Consumer Understanding Outcome Implementation
-            </p>
-          </div>
-        </div>
+  const handleMarkComplete = () => {
+    updateModuleStatus(STORAGE_KEY, "completed");
+    setStatus("completed");
+    sonnerToast.success("Module Complete", {
+      description: "Consumer Understanding marked as complete!",
+    });
+  };
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-primary" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Duration</p>
-                  <p className="font-semibold">8-16 weeks</p>
-                </div>
+  const handleMarkInProgress = () => {
+    updateModuleStatus(STORAGE_KEY, "in-progress");
+    setStatus("in-progress");
+    sonnerToast.info("Module In Progress", {
+      description: "Consumer Understanding marked as in progress",
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-primary/10 rounded-lg shrink-0">
+                <MessageSquare className="h-8 w-8 text-primary" />
               </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Phase</p>
-                  <p className="font-semibold">Four Outcomes</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <div>
-                  <p className="text-sm text-muted-foreground">Requirement</p>
-                  <p className="font-semibold">PRIN 2A.5</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
               <div>
-                <p className="text-sm text-muted-foreground">Status</p>
-                <Badge variant="outline" className="mt-1">Not Started</Badge>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <Badge variant="outline">CD-I3</Badge>
+                  <Badge variant="default">Four Outcomes</Badge>
+                  <Badge 
+                    variant={status === "completed" ? "default" : status === "in-progress" ? "secondary" : "outline"}
+                    className={status === "completed" ? "bg-success text-success-foreground" : ""}
+                  >
+                    {status === "completed" ? (
+                      <><CheckCircle2 className="h-3 w-3 mr-1" /> Complete</>
+                    ) : status === "in-progress" ? (
+                      <><Clock className="h-3 w-3 mr-1" /> In Progress</>
+                    ) : "Not Started"}
+                  </Badge>
+                </div>
+                <h1 className="text-2xl font-bold">Consumer Understanding</h1>
+                <p className="text-muted-foreground">Consumer Understanding Outcome Implementation</p>
+                
+                <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    Duration: 8-16 weeks
+                  </span>
+                  <span>Phase: Four Outcomes</span>
+                  <span>Requirement: PRIN 2A.5</span>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Button variant="outline" size="sm" onClick={() => window.print()}>
+                <Printer className="h-4 w-4 mr-2" />
+                Print
+              </Button>
+              {status === "not-started" && (
+                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                  <Clock className="h-4 w-4 mr-2" />
+                  Mark In Progress
+                </Button>
+              )}
+              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                {status === "completed" ? "Completed" : "Mark Complete"}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Content */}
+      <div className="container mx-auto py-8 px-4 max-w-7xl">
 
       {/* Tabbed Content */}
       <Tabs defaultValue="overview" className="space-y-6">
@@ -1568,6 +1598,7 @@ const CDI3ConsumerUnderstanding = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

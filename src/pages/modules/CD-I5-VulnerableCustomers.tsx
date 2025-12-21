@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Shield, Heart, Calendar, DollarSign, GraduationCap, Users, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Shield, Heart, Calendar, DollarSign, GraduationCap, Users, AlertTriangle, CheckCircle2, Clock, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,51 +11,98 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
+import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+
+const STORAGE_KEY = "cd-i5-vulnerable-customers";
 
 export default function CDI5VulnerableCustomers() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
 
   const handlePreview = (templateName: string) => {
     toast.info(`Opening preview for: ${templateName}`);
   };
 
+  const handleMarkComplete = () => {
+    updateModuleStatus(STORAGE_KEY, "completed");
+    setStatus("completed");
+    toast.success("Module Complete", {
+      description: "Vulnerable Customer Framework marked as complete!",
+    });
+  };
+
+  const handleMarkInProgress = () => {
+    updateModuleStatus(STORAGE_KEY, "in-progress");
+    setStatus("in-progress");
+    toast.info("Module In Progress", {
+      description: "Vulnerable Customer Framework marked as in progress",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-4 py-6">
+      <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-4">
           <Button
             variant="ghost"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(-1)}
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back
           </Button>
 
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-6">
-              <div className="p-4 bg-primary/10 rounded-lg">
-                <Shield className="h-12 w-12 text-primary" />
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-primary/10 rounded-lg shrink-0">
+                <Shield className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <Badge variant="outline">Cross-Cutting</Badge>
-                  <Badge>Complete Framework</Badge>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <Badge variant="outline">CD-I5</Badge>
+                  <Badge variant="secondary">Cross-Cutting</Badge>
+                  <Badge 
+                    variant={status === "completed" ? "default" : status === "in-progress" ? "secondary" : "outline"}
+                    className={status === "completed" ? "bg-success text-success-foreground" : ""}
+                  >
+                    {status === "completed" ? (
+                      <><CheckCircle2 className="h-3 w-3 mr-1" /> Complete</>
+                    ) : status === "in-progress" ? (
+                      <><Clock className="h-3 w-3 mr-1" /> In Progress</>
+                    ) : "Not Started"}
+                  </Badge>
                 </div>
-                <h1 className="text-4xl font-bold mb-2">
-                  CD-I5: Vulnerable Customer Framework Implementation
-                </h1>
-                <p className="text-xl text-muted-foreground mb-4">
-                  Complete: Foundation, Identification, Adaptations, Training & Monitoring
-                </p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span>⏱️ Duration: 8-12 weeks</span>
-                  <span>📋 Complete Implementation</span>
-                  <span>🎯 All Four Outcomes</span>
+                <h1 className="text-2xl font-bold">Vulnerable Customer Framework Implementation</h1>
+                <p className="text-muted-foreground">Foundation, Identification, Adaptations, Training & Monitoring</p>
+                
+                <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    Duration: 8-12 weeks
+                  </span>
+                  <span>Phase: Cross-Cutting</span>
+                  <span>Scope: All Four Outcomes</span>
                 </div>
               </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Button variant="outline" size="sm" onClick={() => window.print()}>
+                <Printer className="h-4 w-4 mr-2" />
+                Print
+              </Button>
+              {status === "not-started" && (
+                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                  <Clock className="h-4 w-4 mr-2" />
+                  Mark In Progress
+                </Button>
+              )}
+              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                {status === "completed" ? "Completed" : "Mark Complete"}
+              </Button>
             </div>
           </div>
         </div>

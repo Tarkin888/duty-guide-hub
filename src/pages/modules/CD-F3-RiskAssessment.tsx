@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, FileCheck, Scale, AlertTriangle, BookOpen, Target, ChevronRight } from "lucide-react";
+import { ArrowLeft, FileCheck, Scale, AlertTriangle, BookOpen, Target, ChevronRight, CheckCircle2, Clock, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,60 +11,95 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { toast } from "sonner";
+
+const STORAGE_KEY = "cd-f3-risk-assessment";
 
 export default function CDRiskAssessment() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+
+  const handleMarkComplete = () => {
+    updateModuleStatus(STORAGE_KEY, "completed");
+    setStatus("completed");
+    toast.success("Module Complete", {
+      description: "Risk & Impact Assessment marked as complete!",
+    });
+  };
+
+  const handleMarkInProgress = () => {
+    updateModuleStatus(STORAGE_KEY, "in-progress");
+    setStatus("in-progress");
+    toast.info("Module In Progress", {
+      description: "Risk & Impact Assessment marked as in progress",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4">
           <Button
             variant="ghost"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(-1)}
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
+            Back
           </Button>
           
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Scale className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold">CD-F3: Risk & Impact Assessment</h1>
-                  <p className="text-muted-foreground">Foundation Module</p>
-                </div>
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Scale className="h-6 w-6 text-primary" />
               </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <Badge variant="outline">CD-F3</Badge>
+                  <Badge variant="secondary">Foundation Phase</Badge>
+                  <Badge 
+                    variant={status === "completed" ? "default" : status === "in-progress" ? "secondary" : "outline"}
+                    className={status === "completed" ? "bg-success text-success-foreground" : ""}
+                  >
+                    {status === "completed" ? (
+                      <><CheckCircle2 className="h-3 w-3 mr-1" /> Complete</>
+                    ) : status === "in-progress" ? (
+                      <><Clock className="h-3 w-3 mr-1" /> In Progress</>
+                    ) : "Not Started"}
+                  </Badge>
+                </div>
+                <h1 className="text-2xl font-bold">Risk & Impact Assessment</h1>
+                <p className="text-muted-foreground">Foundation Module</p>
               
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Badge variant="secondary">
-                  <FileCheck className="h-3 w-3 mr-1" />
-                  Foundation Phase
-                </Badge>
-                <Badge variant="outline">4-6 weeks</Badge>
-                <Badge variant="outline">Cross-Cutting</Badge>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <Target className="h-4 w-4 text-primary" />
-                  <span><strong>Duration:</strong> 4-6 weeks initial, ongoing</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Scale className="h-4 w-4 text-primary" />
-                  <span><strong>Owner:</strong> CRO / Head of Risk</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <AlertTriangle className="h-4 w-4 text-primary" />
-                  <span><strong>Priority:</strong> Critical - All Outcomes</span>
+                <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    Duration: 4-6 weeks
+                  </span>
+                  <span>Owner: CRO / Head of Risk</span>
+                  <span>Priority: Critical</span>
                 </div>
               </div>
+            </div>
+            
+            <div className="flex items-center gap-2 shrink-0">
+              <Button variant="outline" size="sm" onClick={() => window.print()}>
+                <Printer className="h-4 w-4 mr-2" />
+                Print
+              </Button>
+              {status === "not-started" && (
+                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                  <Clock className="h-4 w-4 mr-2" />
+                  Mark In Progress
+                </Button>
+              )}
+              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                {status === "completed" ? "Completed" : "Mark Complete"}
+              </Button>
             </div>
           </div>
         </div>
