@@ -106,10 +106,20 @@ export default function Dashboard() {
   const [lastUpdated, setLastUpdated] = useState("");
 
   useEffect(() => {
-    setActivities(getActivities());
+    const loadActivities = () => {
+      setActivities(getActivities());
+    };
+    
+    loadActivities();
     setLastUpdated(format(new Date(), "PPP"));
-    // Refresh progress on mount to ensure we have latest data
     refreshProgress();
+    
+    // Listen for module progress updates to refresh activities
+    window.addEventListener('module-progress-updated', loadActivities);
+    
+    return () => {
+      window.removeEventListener('module-progress-updated', loadActivities);
+    };
   }, [refreshProgress]);
 
   const handleReset = () => {

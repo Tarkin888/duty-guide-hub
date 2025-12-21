@@ -25,6 +25,35 @@ const STORAGE_KEY = "consumer-duty-progress";
 const ACTIVITY_KEY = "consumer-duty-activity";
 const USER_DATA_KEY = "consumer-duty-user-data";
 
+// Map storage keys to friendly module names
+const MODULE_DISPLAY_NAMES: Record<string, string> = {
+  'cd-f1-readiness': 'CD-F1: Readiness Assessment',
+  'cd-f2-requirements': 'CD-F2: Requirements Mapping',
+  'cd-f3-risk-assessment': 'CD-F3: Risk & Impact Assessment',
+  'cd-p1-governance-framework': 'CD-P1: Governance Framework',
+  'cd-p2-policy-framework': 'CD-P2: Policy Framework',
+  'cd-p3-implementation-roadmap': 'CD-P3: Implementation Roadmap',
+  'cd-i1-products-services': 'CD-I1: Products & Services',
+  'cd-i2-price-value': 'CD-I2: Price & Value',
+  'cd-i3-consumer-understanding': 'CD-I3: Consumer Understanding',
+  'cd-i4-consumer-support': 'CD-I4: Consumer Support',
+  'cd-i5-vulnerable-customers': 'CD-I5: Vulnerable Customers',
+  'cd-i6-distribution-chain': 'CD-I6: Distribution Chain',
+  'cd-i7-data-evidence': 'CD-I7: Data & Evidence',
+  'cd-t1-training': 'CD-T1: Training Programme',
+  'cd-t2-communications-change': 'CD-T2: Communications & Change',
+  'cd-t3-technology-requirements': 'CD-T3: Technology Requirements',
+  'cd-m1-mi-framework': 'CD-M1: MI Framework',
+  'cd-m2-testing-assurance': 'CD-M2: Testing & Assurance',
+  'cd-m3-board-reporting': 'CD-M3: Board Reporting',
+  'cd-m4-continuous-improvement': 'CD-M4: Continuous Improvement',
+};
+
+// Get friendly display name for a module
+const getModuleDisplayName = (moduleId: string): string => {
+  return MODULE_DISPLAY_NAMES[moduleId] || moduleId.toUpperCase().replace(/-/g, ' ');
+};
+
 export const getProgress = (): ProgressData => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
@@ -56,11 +85,12 @@ export const updateModuleStatus = (
   };
   saveProgress(progress);
   
-  // Log activity for completed modules
+  // Log activity for completed modules with friendly names
+  const displayName = getModuleDisplayName(moduleId);
   if (status === "completed" && previousStatus !== "completed") {
-    addActivity("module_completed", moduleId);
+    addActivity("module_completed", displayName);
   } else if (status === "in-progress" && previousStatus !== "in-progress") {
-    addActivity("module_started", moduleId);
+    addActivity("module_started", displayName);
   }
   
   // Dispatch custom event for same-tab updates (Dashboard will listen)
