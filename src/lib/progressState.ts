@@ -1,4 +1,5 @@
 // Progress state management with localStorage persistence
+// This module bridges the storage.ts module IDs with the canonical module IDs
 
 export interface ModuleProgress {
   moduleId: string;
@@ -57,38 +58,94 @@ export const MODULE_STRUCTURE = {
   }
 } as const;
 
+// Map from storage keys (used in module pages) to canonical module IDs
+const STORAGE_KEY_TO_MODULE_ID: Record<string, string> = {
+  'cd-f1-readiness': 'CD-F1',
+  'cd-f2-requirements': 'CD-F2',
+  'cd-f3-risk': 'CD-F3',
+  'cd-p1-governance': 'CD-P1',
+  'cd-p2-policy': 'CD-P2',
+  'cd-p3-roadmap': 'CD-P3',
+  'cd-i1-products-services': 'CD-I1',
+  'cd-i2-price-value': 'CD-I2',
+  'cd-i3-consumer-understanding': 'CD-I3',
+  'cd-i4-consumer-support': 'CD-I4',
+  'cd-i5-vulnerable-customers': 'CD-I5',
+  'cd-i6-distribution-chain': 'CD-I6',
+  'cd-i7-data-evidence': 'CD-I7',
+  'cd-t1-training': 'CD-T1',
+  'cd-t1-training-part1': 'CD-T1',
+  'cd-t1-training-part2': 'CD-T1',
+  'cd-t2-communications': 'CD-T2',
+  'cd-t3-technology': 'CD-T3',
+  'cd-m1-mi-framework': 'CD-M1',
+  'cd-m2-testing': 'CD-M2',
+  'cd-m3-board-reporting': 'CD-M3',
+  'cd-m4-continuous-improvement': 'CD-M4',
+};
+
 export const TOTAL_MODULES = 20;
 
-const PROGRESS_STORAGE_KEY = 'consumer-duty-progress-v2';
+// Read from the same key that storage.ts uses
+const STORAGE_KEY = 'consumer-duty-progress';
 const START_DATE_KEY = 'implementation-start-date';
+const USER_DATA_KEY = 'consumer-duty-user-data';
 
 // Get all valid module IDs
 export function getAllModuleIds(): string[] {
   return Object.values(MODULE_STRUCTURE).flatMap(cat => cat.modules);
 }
 
-// Initialize or get progress from localStorage
-export function initializeProgress(): Map<string, ModuleProgress> {
-  const stored = localStorage.getItem(PROGRESS_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      return new Map(Object.entries(parsed));
-    } catch (e) {
-      console.error('Failed to parse stored progress:', e);
-    }
-  }
-  return new Map();
+// Convert storage status to our status format
+function normalizeStatus(status: string | undefined): 'not-started' | 'in-progress' | 'complete' {
+  if (!status) return 'not-started';
+  if (status === 'completed' || status === 'complete') return 'complete';
+  if (status === 'in-progress') return 'in-progress';
+  return 'not-started';
 }
 
-// Save progress to localStorage
-export function saveProgress(progress: Map<string, ModuleProgress>): void {
+// Initialize or get progress from localStorage - reads from storage.ts format
+export function initializeProgress(): Map<string, ModuleProgress> {
+  const progressMap = new Map<string, ModuleProgress>();
+  
   try {
-    const obj = Object.fromEntries(progress);
-    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(obj));
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      
+      // Convert storage.ts format to our format
+      Object.entries(parsed).forEach(([storageKey, data]: [string, any]) => {
+        // Map storage key to canonical module ID
+        const moduleId = STORAGE_KEY_TO_MODULE_ID[storageKey];
+        
+        if (moduleId) {
+          const status = normalizeStatus(data?.status);
+          
+          // Only add if we don't already have this module (handles part1/part2 modules)
+          // Or update if this one is more complete
+          const existing = progressMap.get(moduleId);
+          if (!existing || (status === 'complete' && existing.status !== 'complete')) {
+            progressMap.set(moduleId, {
+              moduleId,
+              status,
+              lastAccessedDate: data?.lastUpdated || new Date().toISOString(),
+              completedDate: status === 'complete' ? (data?.lastUpdated || new Date().toISOString()) : undefined,
+            });
+          }
+        }
+      });
+    }
   } catch (e) {
-    console.error('Failed to save progress:', e);
+    console.error('Failed to parse stored progress:', e);
   }
+  
+  return progressMap;
+}
+
+// Save progress to localStorage in storage.ts compatible format
+export function saveProgress(progress: Map<string, ModuleProgress>): void {
+  // We don't directly save here - module pages use storage.ts updateModuleStatus
+  // This function is kept for compatibility but the actual saving happens through storage.ts
 }
 
 // Calculate category progress
@@ -138,7 +195,7 @@ export function calculateCategoryProgress(
   };
 }
 
-// Calculate overall progress - FIXED: uses TOTAL_MODULES constant
+// Calculate overall progress - uses TOTAL_MODULES constant
 export function calculateOverallProgress(
   allProgress: Map<string, ModuleProgress>
 ): OverallProgress {
@@ -161,7 +218,7 @@ export function calculateOverallProgress(
   // Calculate percentage against fixed total of 20 modules
   const percentageComplete = Math.round((completedModules / TOTAL_MODULES) * 100);
 
-  const startDate = localStorage.getItem(START_DATE_KEY) || undefined;
+  const startDate = getStartDate() || undefined;
   const lastUpdated = new Date().toISOString();
 
   return {
@@ -174,7 +231,7 @@ export function calculateOverallProgress(
   };
 }
 
-// Update module status
+// Update module status - delegates to storage.ts compatible format
 export function updateModuleStatus(
   moduleId: string,
   status: 'not-started' | 'in-progress' | 'complete',
@@ -201,11 +258,10 @@ export function updateModuleStatus(
   newProgress.set(moduleId, updated);
   
   // Set start date if this is the first activity
-  if (!localStorage.getItem(START_DATE_KEY)) {
+  if (!getStartDate()) {
     localStorage.setItem(START_DATE_KEY, new Date().toISOString());
   }
   
-  saveProgress(newProgress);
   return newProgress;
 }
 
@@ -223,14 +279,29 @@ export function getAllCategoryProgress(
   return result;
 }
 
-// Get start date
+// Get start date - check both possible locations
 export function getStartDate(): string | null {
-  return localStorage.getItem(START_DATE_KEY);
+  // First check the dedicated start date key
+  const startDate = localStorage.getItem(START_DATE_KEY);
+  if (startDate) return startDate;
+  
+  // Fall back to user data key used by storage.ts
+  try {
+    const userData = localStorage.getItem(USER_DATA_KEY);
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      return parsed.startedDate || null;
+    }
+  } catch (e) {
+    console.error('Failed to parse user data:', e);
+  }
+  
+  return null;
 }
 
 // Get days since start
 export function getDaysSinceStart(): number {
-  const startDate = localStorage.getItem(START_DATE_KEY);
+  const startDate = getStartDate();
   if (!startDate) return 0;
   
   const start = new Date(startDate);
@@ -242,10 +313,11 @@ export function getDaysSinceStart(): number {
 
 // Reset all progress
 export function resetAllProgress(): void {
-  localStorage.removeItem(PROGRESS_STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(START_DATE_KEY);
-  localStorage.removeItem('consumer-duty-progress'); // Also remove old key
+  localStorage.removeItem('consumer-duty-progress-v2'); // Also remove old key
   localStorage.removeItem('consumer-duty-activity');
+  localStorage.removeItem(USER_DATA_KEY);
 }
 
 // Validation function to prevent impossible states
