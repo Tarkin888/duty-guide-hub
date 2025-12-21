@@ -26,9 +26,10 @@ import {
 } from "lucide-react";
 import { getActivities } from "@/lib/storage";
 import { useProgress } from "@/contexts/ProgressContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { validateStorageData } from "@/utils/storageHelpers";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,6 +114,12 @@ export default function Dashboard() {
     loadActivities();
     setLastUpdated(format(new Date(), "PPP"));
     refreshProgress();
+    
+    // Validate storage on mount
+    const validation = validateStorageData();
+    if (!validation.valid) {
+      console.warn('Storage validation errors:', validation.errors);
+    }
     
     // Listen for module progress updates to refresh activities
     window.addEventListener('module-progress-updated', loadActivities);
