@@ -41,7 +41,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { exportProgressToPDF, exportProgressToCSV } from "@/utils/exportProgress";
 
 // Map module IDs to their routes
 const MODULE_ROUTES: Record<string, string> = {
@@ -213,25 +220,28 @@ export default function Dashboard() {
               View All Templates
             </Link>
           </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Button variant="outline" size="lg" className="gap-2">
                 <Download className="h-4 w-4" />
                 Export Progress Report
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Export Coming Soon</AlertDialogTitle>
-                <AlertDialogDescription>
-                  PDF export functionality will be available in the next update.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction>Got it</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => {
+                exportProgressToPDF();
+                toast.success('PDF exported successfully');
+              }}>
+                Export as PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                exportProgressToCSV();
+                toast.success('CSV exported successfully');
+              }}>
+                Export as CSV
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
