@@ -313,7 +313,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{overallProgress.completedModules}</p>
-                  <p className="text-sm text-muted-foreground">Completed Modules</p>
+                  <p className="text-sm text-muted-foreground">Completed</p>
                 </div>
               </div>
             </CardContent>
@@ -322,12 +322,26 @@ export default function Dashboard() {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-accent/10">
-                  <FileText className="h-6 w-6 text-accent" />
+                <div className="p-3 rounded-lg bg-warning/10">
+                  <Clock className="h-6 w-6 text-warning" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{totalTemplates}+</p>
-                  <p className="text-sm text-muted-foreground">Templates Available</p>
+                  <p className="text-2xl font-bold">{overallProgress.inProgressModules}</p>
+                  <p className="text-sm text-muted-foreground">In Progress</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-lg bg-muted">
+                  <Target className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{overallProgress.totalModules - overallProgress.completedModules - overallProgress.inProgressModules}</p>
+                  <p className="text-sm text-muted-foreground">Not Started</p>
                 </div>
               </div>
             </CardContent>
