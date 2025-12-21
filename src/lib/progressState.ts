@@ -59,29 +59,67 @@ export const MODULE_STRUCTURE = {
 } as const;
 
 // Map from storage keys (used in module pages) to canonical module IDs
+// Note: Multiple storage keys can map to the same canonical ID (for multi-part modules)
 const STORAGE_KEY_TO_MODULE_ID: Record<string, string> = {
+  // Foundation modules
   'cd-f1-readiness': 'CD-F1',
   'cd-f2-requirements': 'CD-F2',
   'cd-f3-risk': 'CD-F3',
+  'cd-f3-risk-assessment': 'CD-F3',
+  
+  // Planning/Governance modules
   'cd-p1-governance': 'CD-P1',
+  'cd-p1-governance-framework': 'CD-P1',
+  'cd-p1-governance-framework-part2': 'CD-P1',
   'cd-p2-policy': 'CD-P2',
+  'cd-p2-policy-framework': 'CD-P2',
+  'cd-p2-policy-framework-part1': 'CD-P2',
+  'cd-p2-policy-framework-part2': 'CD-P2',
   'cd-p3-roadmap': 'CD-P3',
+  'cd-p3-implementation-roadmap': 'CD-P3',
+  'cd-p3-implementation-roadmap-part1': 'CD-P3',
+  'cd-p3-implementation-roadmap-part2': 'CD-P3',
+  
+  // Four Outcomes modules
   'cd-i1-products-services': 'CD-I1',
   'cd-i2-price-value': 'CD-I2',
   'cd-i3-consumer-understanding': 'CD-I3',
   'cd-i4-consumer-support': 'CD-I4',
+  
+  // Cross-cutting modules
   'cd-i5-vulnerable-customers': 'CD-I5',
   'cd-i6-distribution-chain': 'CD-I6',
+  'cd-i6': 'CD-I6', // Legacy key
   'cd-i7-data-evidence': 'CD-I7',
+  'cd-i7-data-evidence-part1': 'CD-I7',
+  'cd-i7-data-evidence-part2': 'CD-I7',
+  
+  // Enablement modules
   'cd-t1-training': 'CD-T1',
   'cd-t1-training-part1': 'CD-T1',
   'cd-t1-training-part2': 'CD-T1',
   'cd-t2-communications': 'CD-T2',
+  'cd-t2-communications-change': 'CD-T2',
+  'cd-t2-communications-change-part1': 'CD-T2',
+  'cd-t2-communications-change-part2': 'CD-T2',
   'cd-t3-technology': 'CD-T3',
+  'cd-t3-technology-requirements': 'CD-T3',
+  'cd-t3-technology-requirements-part1': 'CD-T3',
+  'cd-t3-technology-requirements-part2': 'CD-T3',
+  
+  // Monitoring modules
   'cd-m1-mi-framework': 'CD-M1',
+  'cd-m1': 'CD-M1', // Legacy key
   'cd-m2-testing': 'CD-M2',
+  'cd-m2-testing-assurance': 'CD-M2',
+  'cd-m2-testing-assurance-part1': 'CD-M2',
+  'cd-m2-testing-assurance-part2': 'CD-M2',
   'cd-m3-board-reporting': 'CD-M3',
+  'cd-m3-board-reporting-part1': 'CD-M3',
+  'cd-m3-board-reporting-part2': 'CD-M3',
   'cd-m4-continuous-improvement': 'CD-M4',
+  'cd-m4-continuous-improvement-part1': 'CD-M4',
+  'cd-m4-continuous-improvement-part2': 'CD-M4',
 };
 
 export const TOTAL_MODULES = 20;

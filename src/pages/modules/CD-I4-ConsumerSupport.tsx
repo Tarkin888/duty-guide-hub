@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Phone, FileText, CheckCircle2, AlertTriangle, Download, Printer } from "lucide-react";
+import { ArrowLeft, Phone, FileText, CheckCircle2, AlertTriangle, Download, Printer, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,11 +11,16 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { useToast } from "@/hooks/use-toast";
+import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { toast as sonnerToast } from "sonner";
+
+const STORAGE_KEY = "cd-i4-consumer-support";
 
 export default function CDI4ConsumerSupport() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
+  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
 
   const handlePreview = (templateName: string) => {
     toast({
@@ -35,67 +40,97 @@ export default function CDI4ConsumerSupport() {
     });
   };
 
+  const handleMarkComplete = () => {
+    updateModuleStatus(STORAGE_KEY, "completed");
+    setStatus("completed");
+    sonnerToast.success("Module Complete", {
+      description: "Consumer Support marked as complete!",
+    });
+  };
+
+  const handleMarkInProgress = () => {
+    updateModuleStatus(STORAGE_KEY, "in-progress");
+    setStatus("in-progress");
+    sonnerToast.info("Module In Progress", {
+      description: "Consumer Support marked as in progress",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/dashboard")}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
-              </Button>
-              <Separator orientation="vertical" className="h-6" />
-              <div className="flex items-center gap-3">
-                <Badge variant="outline">Four Outcomes</Badge>
-                <Badge variant="secondary">8-14 weeks</Badge>
+      <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-lg bg-primary/10 shrink-0">
+                <Phone className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <Badge variant="outline">CD-I4</Badge>
+                  <Badge variant="default">Four Outcomes</Badge>
+                  <Badge 
+                    variant={status === "completed" ? "default" : status === "in-progress" ? "secondary" : "outline"}
+                    className={status === "completed" ? "bg-success text-success-foreground" : ""}
+                  >
+                    {status === "completed" ? (
+                      <><CheckCircle2 className="h-3 w-3 mr-1" /> Complete</>
+                    ) : status === "in-progress" ? (
+                      <><Clock className="h-3 w-3 mr-1" /> In Progress</>
+                    ) : "Not Started"}
+                  </Badge>
+                </div>
+                <h1 className="text-2xl font-bold">Consumer Support Outcome Implementation</h1>
+                <p className="text-muted-foreground">Ensure customers receive support that meets their needs</p>
+                
+                <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    Duration: 8-14 weeks
+                  </span>
+                  <span>Phase: Four Outcomes</span>
+                  <span>Requirement: PRIN 2A.6</span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-2 shrink-0">
               <Button variant="outline" size="sm" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print
               </Button>
-              <Button variant="outline" size="sm" onClick={handleExport}>
-                <Download className="h-4 w-4 mr-2" />
-                Export
+              {status === "not-started" && (
+                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                  <Clock className="h-4 w-4 mr-2" />
+                  Mark In Progress
+                </Button>
+              )}
+              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
+                <CheckCircle2 className="h-4 w-4 mr-2" />
+                {status === "completed" ? "Completed" : "Mark Complete"}
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Module Header */}
+      {/* Module Content */}
       <div className="bg-gradient-to-br from-primary/5 via-background to-background border-b">
-        <div className="container mx-auto px-6 py-12">
-          <div className="flex items-start gap-6">
-            <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
-              <Phone className="h-8 w-8 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold mb-3 text-foreground">
-                Consumer Support Outcome Implementation
-              </h1>
-              <p className="text-xl text-muted-foreground mb-6 max-w-3xl">
-                Ensure customers receive support that meets their needs throughout their relationship with the firm
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Badge variant="outline" className="text-sm">
-                  PRIN 2A.6
-                </Badge>
-                <Badge variant="outline" className="text-sm">
-                  Sludge Audit Required
-                </Badge>
-                <Badge variant="outline" className="text-sm">
-                  Vulnerable Customer Focus
-                </Badge>
-              </div>
-            </div>
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex flex-wrap gap-3">
+            <Badge variant="outline" className="text-sm">PRIN 2A.6</Badge>
+            <Badge variant="outline" className="text-sm">Sludge Audit Required</Badge>
+            <Badge variant="outline" className="text-sm">Vulnerable Customer Focus</Badge>
           </div>
         </div>
       </div>
