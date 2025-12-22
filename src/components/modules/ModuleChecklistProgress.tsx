@@ -15,9 +15,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { updateModuleStatus, getModuleStatus } from "@/lib/storage";
+import { useProgressStore } from "@/stores/progressStore";
 
 interface StepProgress {
   stepNumber: number;
@@ -28,16 +28,16 @@ interface StepProgress {
 interface ModuleChecklistProgressProps {
   moduleId: string;
   totalSteps: number;
-  onStatusChange?: (status: "not-started" | "in-progress" | "completed") => void;
 }
 
 export function ModuleChecklistProgress({ 
   moduleId, 
   totalSteps,
-  onStatusChange 
 }: ModuleChecklistProgressProps) {
   const [stepProgress, setStepProgress] = useState<StepProgress[]>([]);
-  const [moduleStatus, setModuleStatus] = useState(() => getModuleStatus(moduleId));
+  
+  const { markModuleComplete, markModuleInProgress, getModuleStatus } = useProgressStore();
+  const moduleStatus = getModuleStatus(moduleId);
 
   // Calculate totals
   const calculateTotals = useCallback(() => {
@@ -70,24 +70,14 @@ export function ModuleChecklistProgress({
     const totalItems = steps.reduce((sum, s) => sum + s.total, 0);
     
     // Update module status based on checklist progress
-    const currentStatus = getModuleStatus(moduleId);
-    
     if (totalItems > 0) {
-      if (totalCompleted === totalItems) {
-        if (currentStatus !== "completed") {
-          updateModuleStatus(moduleId, "completed");
-          setModuleStatus("completed");
-          onStatusChange?.("completed");
-        }
-      } else if (totalCompleted > 0) {
-        if (currentStatus === "not-started") {
-          updateModuleStatus(moduleId, "in-progress");
-          setModuleStatus("in-progress");
-          onStatusChange?.("in-progress");
-        }
+      if (totalCompleted === totalItems && moduleStatus.status !== 'complete') {
+        markModuleComplete(moduleId, true);
+      } else if (totalCompleted > 0 && moduleStatus.status === 'not-started') {
+        markModuleInProgress(moduleId, false);
       }
     }
-  }, [calculateTotals, moduleId, onStatusChange]);
+  }, [calculateTotals, moduleId, moduleStatus.status, markModuleComplete, markModuleInProgress]);
 
   useEffect(() => {
     loadProgress();
@@ -119,22 +109,16 @@ export function ModuleChecklistProgress({
       }
     }
     
-    // Reset module status
-    updateModuleStatus(moduleId, "not-started");
-    setModuleStatus("not-started");
-    onStatusChange?.("not-started");
-    
     // Reload progress
     setStepProgress([]);
     
     // Dispatch event for UI updates
     window.dispatchEvent(new CustomEvent('checklist-reset', { detail: { moduleId } }));
     
-    toast({
-      title: "Progress Reset",
+    toast.success("Progress Reset", {
       description: "All checklist progress for this module has been reset.",
     });
-  }, [moduleId, totalSteps, onStatusChange]);
+  }, [moduleId, totalSteps]);
 
   const totalCompleted = stepProgress.reduce((sum, s) => sum + s.completed, 0);
   const totalItems = stepProgress.reduce((sum, s) => sum + s.total, 0);

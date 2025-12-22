@@ -604,7 +604,6 @@ export default function CDF2RequirementsMapping() {
           <ModuleChecklistProgress 
             moduleId="cd-f2-requirements" 
             totalSteps={5}
-            onStatusChange={handleStatusChange}
           />
 
           <ChecklistSection
