@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,30 +12,35 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
-import { toast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { toast } from "sonner";
+import { useProgressStore } from "@/stores/progressStore";
+
+const MODULE_ID = "cd-f1-readiness";
 
 export default function CDf1ReadinessAssessment() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(() => getModuleStatus("cd-f1-readiness"));
   
-  const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
-    setStatus(newStatus);
-  }, []);
+  // Use Zustand store
+  const { getModuleStatus, markModuleComplete, markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const moduleStatus = getModuleStatus(MODULE_ID);
+  const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
+
+  // Update last accessed on mount
+  useEffect(() => {
+    updateLastAccessed(MODULE_ID);
+  }, [updateLastAccessed]);
 
   const handleMarkComplete = () => {
-    updateModuleStatus("cd-f1-readiness", "completed");
-    setStatus("completed");
-    toast({
-      title: "Module Complete",
-      description: "Module marked as complete!",
-    });
+    markModuleComplete(MODULE_ID);
+  };
+
+  const handleMarkInProgress = () => {
+    markModuleInProgress(MODULE_ID);
   };
 
   const handlePrint = () => window.print();
   const handleDownload = (templateName: string) => {
-    toast({
-      title: "Downloading Template",
+    toast.success("Downloading Template", {
       description: `${templateName} will download shortly...`,
     });
   };
@@ -297,7 +302,6 @@ export default function CDf1ReadinessAssessment() {
           <ModuleChecklistProgress 
             moduleId="cd-f1-readiness" 
             totalSteps={7}
-            onStatusChange={handleStatusChange}
           />
 
           <ChecklistSection
@@ -582,7 +586,7 @@ export default function CDf1ReadinessAssessment() {
                   description="5-level maturity assessment framework covering 8 key capability areas with scoring guidance"
                   format="Excel"
                   onDownload={() => handleDownload("Maturity Assessment")}
-                  onPreview={() => toast({ title: "Preview", description: "Preview functionality coming soon" })}
+                  onPreview={() => toast.info("Preview functionality coming soon")}
                 />
                 <TemplateCard
                   title="Gap Analysis Framework"

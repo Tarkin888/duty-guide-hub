@@ -544,7 +544,6 @@ export default function CDI1ProductsServices() {
           <ModuleChecklistProgress 
             moduleId="cd-i1-products" 
             totalSteps={12}
-            onStatusChange={handleStatusChange}
           />
           <div className="space-y-4">
             <div className="flex items-center gap-3">

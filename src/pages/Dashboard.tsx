@@ -24,12 +24,10 @@ import {
   Bell,
   BookMarked
 } from "lucide-react";
-import { getActivities } from "@/lib/storage";
-import { useProgress } from "@/contexts/ProgressContext";
-import { useEffect, useState, useCallback } from "react";
+import { useProgressStore } from "@/stores/progressStore";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import { validateStorageData } from "@/utils/storageHelpers";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -99,53 +97,45 @@ const MODULE_NAMES: Record<string, string> = {
 };
 
 export default function Dashboard() {
-  const { 
-    overallProgress, 
-    categoryProgress, 
+  // Use Zustand store for all progress data
+  const {
+    getOverallProgress,
+    getCategoryProgress,
+    getInProgressModules,
+    getDaysSinceStart,
+    getActivities,
     resetAllProgress,
-    inProgressModules,
-    daysSinceStart,
-    isValidState,
-    validationErrors,
-    refreshProgress
-  } = useProgress();
+  } = useProgressStore();
 
-  const [activities, setActivities] = useState<any[]>([]);
   const [lastUpdated, setLastUpdated] = useState("");
 
+  // Get computed values from store
+  const overallProgress = getOverallProgress();
+  const daysSinceStart = getDaysSinceStart();
+  const inProgressModules = getInProgressModules();
+  const activities = getActivities();
+
+  // Category progress
+  const foundationProgress = getCategoryProgress('foundation');
+  const governanceProgress = getCategoryProgress('governance');
+  const outcomesProgress = getCategoryProgress('outcomes');
+  const crossCuttingProgress = getCategoryProgress('crossCutting');
+  const enablementProgress = getCategoryProgress('enablement');
+  const monitoringProgress = getCategoryProgress('monitoring');
+
   useEffect(() => {
-    const loadActivities = () => {
-      setActivities(getActivities());
-    };
-    
-    loadActivities();
     setLastUpdated(format(new Date(), "PPP"));
-    refreshProgress();
-    
-    // Validate storage on mount
-    const validation = validateStorageData();
-    if (!validation.valid) {
-      console.warn('Storage validation errors:', validation.errors);
-    }
-    
-    // Listen for module progress updates to refresh activities
-    window.addEventListener('module-progress-updated', loadActivities);
-    
-    return () => {
-      window.removeEventListener('module-progress-updated', loadActivities);
-    };
-  }, [refreshProgress]);
+  }, []);
 
   const handleReset = () => {
     resetAllProgress();
-    toast.success("All progress has been reset");
     window.location.reload();
   };
 
   const totalTemplates = 40;
 
-  const estimatedDaysRemaining = overallProgress.percentageComplete > 0 && daysSinceStart > 0
-    ? Math.ceil((daysSinceStart / overallProgress.percentageComplete) * (100 - overallProgress.percentageComplete))
+  const estimatedDaysRemaining = overallProgress.percentage > 0 && daysSinceStart > 0
+    ? Math.ceil((daysSinceStart / overallProgress.percentage) * (100 - overallProgress.percentage))
     : 0;
 
   const mostUsedTemplates = [
@@ -162,29 +152,15 @@ export default function Dashboard() {
     { title: "Questions and Answers", url: "#" }
   ];
 
-  // Show validation errors if state is invalid
-  if (!isValidState && validationErrors.length > 0) {
-    return (
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
-        <Card className="border-destructive">
-          <CardHeader>
-            <CardTitle className="text-destructive">Progress State Error</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">The progress tracking system has detected inconsistencies:</p>
-            <ul className="list-disc pl-6 mb-4">
-              {validationErrors.map((error, i) => (
-                <li key={i} className="text-destructive">{error}</li>
-              ))}
-            </ul>
-            <Button onClick={handleReset} variant="destructive">
-              Reset Progress to Fix
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Convert activities to format expected by ActivityTimeline
+  const formattedActivities = activities.map(activity => ({
+    id: activity.id,
+    type: activity.type === 'module_completed' ? 'module_completed' as const : 
+          activity.type === 'module_started' ? 'module_started' as const : 
+          'status_updated' as const,
+    moduleTitle: `${activity.moduleId}: ${activity.moduleName}`,
+    timestamp: activity.timestamp,
+  }));
 
   return (
     <div className="container mx-auto px-6 py-8 max-w-7xl">
@@ -258,45 +234,45 @@ export default function Dashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex items-center justify-center">
-                <CircularProgress value={overallProgress.percentageComplete} />
+                <CircularProgress value={overallProgress.percentage} />
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-3">
                   <PhaseProgressCard 
                     title="Foundation" 
-                    completed={categoryProgress.foundation?.completedModules || 0}
-                    total={categoryProgress.foundation?.totalModules || 3}
+                    completed={foundationProgress.completed}
+                    total={foundationProgress.total}
                     icon={BookOpen}
                   />
                   <PhaseProgressCard 
                     title="Governance & Planning" 
-                    completed={categoryProgress.governance?.completedModules || 0}
-                    total={categoryProgress.governance?.totalModules || 3}
+                    completed={governanceProgress.completed}
+                    total={governanceProgress.total}
                     icon={Shield}
                   />
                   <PhaseProgressCard 
                     title="Four Outcomes" 
-                    completed={categoryProgress.outcomes?.completedModules || 0}
-                    total={categoryProgress.outcomes?.totalModules || 4}
+                    completed={outcomesProgress.completed}
+                    total={outcomesProgress.total}
                     icon={ListChecks}
                   />
                   <PhaseProgressCard 
                     title="Cross-Cutting" 
-                    completed={categoryProgress.crosscutting?.completedModules || 0}
-                    total={categoryProgress.crosscutting?.totalModules || 3}
+                    completed={crossCuttingProgress.completed}
+                    total={crossCuttingProgress.total}
                     icon={Users}
                   />
                   <PhaseProgressCard 
                     title="Enablement" 
-                    completed={categoryProgress.enablement?.completedModules || 0}
-                    total={categoryProgress.enablement?.totalModules || 3}
+                    completed={enablementProgress.completed}
+                    total={enablementProgress.total}
                     icon={GraduationCap}
                   />
                   <PhaseProgressCard 
                     title="Monitoring & Assurance" 
-                    completed={categoryProgress.monitoring?.completedModules || 0}
-                    total={categoryProgress.monitoring?.totalModules || 4}
+                    completed={monitoringProgress.completed}
+                    total={monitoringProgress.total}
                     icon={BarChart3}
                   />
                 </div>
@@ -325,7 +301,7 @@ export default function Dashboard() {
                   <Target className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{overallProgress.totalModules}</p>
+                  <p className="text-2xl font-bold">{overallProgress.total}</p>
                   <p className="text-sm text-muted-foreground">Total Modules</p>
                 </div>
               </div>
@@ -339,7 +315,7 @@ export default function Dashboard() {
                   <CheckCircle2 className="h-6 w-6 text-success" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{overallProgress.completedModules}</p>
+                  <p className="text-2xl font-bold">{overallProgress.completed}</p>
                   <p className="text-sm text-muted-foreground">Completed</p>
                 </div>
               </div>
@@ -353,7 +329,7 @@ export default function Dashboard() {
                   <Clock className="h-6 w-6 text-warning" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{overallProgress.inProgressModules}</p>
+                  <p className="text-2xl font-bold">{overallProgress.inProgress}</p>
                   <p className="text-sm text-muted-foreground">In Progress</p>
                 </div>
               </div>
@@ -367,7 +343,7 @@ export default function Dashboard() {
                   <Target className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{overallProgress.totalModules - overallProgress.completedModules - overallProgress.inProgressModules}</p>
+                  <p className="text-2xl font-bold">{overallProgress.total - overallProgress.completed - overallProgress.inProgress}</p>
                   <p className="text-sm text-muted-foreground">Not Started</p>
                 </div>
               </div>
@@ -442,7 +418,7 @@ export default function Dashboard() {
             <CardDescription>Your latest actions and progress</CardDescription>
           </CardHeader>
           <CardContent>
-            <ActivityTimeline activities={activities.slice(0, 5)} />
+            <ActivityTimeline activities={formattedActivities.slice(0, 5)} />
           </CardContent>
         </Card>
       </div>
