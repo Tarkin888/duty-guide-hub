@@ -9,6 +9,8 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleStatusBadge } from "@/components/ModuleStatusBadge";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -33,6 +35,8 @@ import {
   Landmark,
   Search
 } from "lucide-react";
+
+const MODULE_ID = 'CD-I7';
 
 export default function CDI7ADataEvidenceManagementPart1() {
   const navigate = useNavigate();
@@ -72,6 +76,7 @@ export default function CDI7ADataEvidenceManagementPart1() {
               Back to Dashboard
             </Button>
             <div className="flex gap-2 print:hidden">
+              <ModuleStatusBadge moduleId={MODULE_ID} className="border-accent" />
               <Button variant="secondary" size="sm" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print
@@ -87,7 +92,7 @@ export default function CDI7ADataEvidenceManagementPart1() {
               <Database className="h-8 w-8" />
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-3 mb-2 flex-wrap">
                 <Badge variant="outline" className="border-accent text-primary-foreground">
                   CD-I7A
                 </Badge>
@@ -101,9 +106,10 @@ export default function CDI7ADataEvidenceManagementPart1() {
               <h1 className="text-3xl font-bold mb-2">
                 Data & Evidence Management Framework
               </h1>
-              <p className="text-primary-foreground/80 text-lg">
+              <p className="text-primary-foreground/80 text-lg mb-4">
                 Part 1: Foundation & Structure - Evidence Requirements, Documentation Standards, and Repository Design
               </p>
+              <ModuleActionButtons moduleId={MODULE_ID} />
             </div>
           </div>
         </div>
