@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
+import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
@@ -18,6 +19,10 @@ import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 export default function CDI1ProductsServices() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(() => getModuleStatus("cd-i1-products-services"));
+  
+  const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
+    setStatus(newStatus);
+  }, []);
 
   const handleMarkComplete = () => {
     updateModuleStatus("cd-i1-products-services", "completed");
@@ -536,7 +541,11 @@ export default function CDI1ProductsServices() {
             </AlertDescription>
           </Alert>
 
-          {/* PHASE 1: FRAMEWORK DEVELOPMENT */}
+          <ModuleChecklistProgress 
+            moduleId="cd-i1-products" 
+            totalSteps={12}
+            onStatusChange={handleStatusChange}
+          />
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Badge className="text-base px-3 py-1">Phase 1</Badge>
