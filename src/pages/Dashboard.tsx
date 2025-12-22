@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CircularProgress } from "@/components/CircularProgress";
 import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
+import { ResetProgressModal } from "@/components/ResetProgressModal";
 import { 
   BookOpen, 
   Download, 
@@ -22,23 +23,13 @@ import {
   Play,
   FolderOpen,
   Bell,
-  BookMarked
+  BookMarked,
+  AlertTriangle
 } from "lucide-react";
 import { useProgressStore } from "@/stores/progressStore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -108,6 +99,7 @@ export default function Dashboard() {
   } = useProgressStore();
 
   const [lastUpdated, setLastUpdated] = useState("");
+  const [resetModalOpen, setResetModalOpen] = useState(false);
 
   // Get computed values from store
   const overallProgress = getOverallProgress();
@@ -127,10 +119,6 @@ export default function Dashboard() {
     setLastUpdated(format(new Date(), "PPP"));
   }, []);
 
-  const handleReset = () => {
-    resetAllProgress();
-    window.location.reload();
-  };
 
   const totalTemplates = 40;
 
@@ -489,28 +477,20 @@ export default function Dashboard() {
 
       {/* Reset Progress Button */}
       <div className="mt-8 pt-8 border-t">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="outline" className="text-destructive border-destructive hover:bg-destructive/10">
-              Reset All Progress
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete all your progress data and activity history.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleReset} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                Yes, reset everything
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <Button 
+          variant="outline" 
+          className="text-destructive border-destructive hover:bg-destructive/10 gap-2"
+          onClick={() => setResetModalOpen(true)}
+        >
+          <AlertTriangle className="h-4 w-4" />
+          Reset All Progress
+        </Button>
       </div>
+
+      <ResetProgressModal 
+        open={resetModalOpen} 
+        onOpenChange={setResetModalOpen} 
+      />
     </div>
   );
 }
