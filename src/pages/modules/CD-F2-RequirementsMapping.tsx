@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
+import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
@@ -18,6 +19,10 @@ import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 export default function CDF2RequirementsMapping() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(() => getModuleStatus("cd-f2-requirements"));
+  
+  const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
+    setStatus(newStatus);
+  }, []);
 
   const handleMarkComplete = () => {
     updateModuleStatus("cd-f2-requirements", "completed");
@@ -595,6 +600,12 @@ export default function CDF2RequirementsMapping() {
               comprehensive traceability to your business processes.
             </AlertDescription>
           </Alert>
+
+          <ModuleChecklistProgress 
+            moduleId="cd-f2-requirements" 
+            totalSteps={5}
+            onStatusChange={handleStatusChange}
+          />
 
           <ChecklistSection
             stepNumber={1}
