@@ -134,3 +134,21 @@ All colors MUST be HSL.
     @apply text-xl lg:text-2xl;
   }
 }
+
+/* Sidebar tooltip arrow styling */
+@layer components {
+  [data-radix-popper-content-wrapper] [role="tooltip"] {
+    position: relative;
+  }
+  
+  [data-radix-popper-content-wrapper] [role="tooltip"]::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent hsl(var(--primary)) transparent transparent;
+  }
+}

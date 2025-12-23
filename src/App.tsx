@@ -56,11 +56,12 @@ const App = () => (
             <SidebarProvider>
               <div className="min-h-screen flex w-full">
                 <AppSidebar />
-              <div className="flex-1 flex flex-col">
-              <header className="h-14 border-b border-border flex items-center px-4 bg-background sticky top-0 z-10">
-                <SidebarTrigger />
-              </header>
-              <main className="flex-1 overflow-auto">
+                <div className="flex-1 flex flex-col min-w-0">
+                  <header className="h-14 border-b border-border flex items-center px-4 bg-background sticky top-0 z-10 md:hidden">
+                    <SidebarTrigger aria-label="Open navigation menu" />
+                    <span className="ml-3 font-semibold text-foreground">Consumer Duty Playbook</span>
+                  </header>
+                  <main className="flex-1 overflow-auto">
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   
@@ -150,11 +151,11 @@ const App = () => (
                   <Route path="/resources/regulatory-references" element={<RegulatoryReferences />} />
                   <Route path="/resources/regulatory" element={<RegulatoryReferences />} />
 
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+              </div>
             </div>
-          </div>
           </SidebarProvider>
           </ProgressProvider>
         </BrowserRouter>
