@@ -24,7 +24,8 @@ import {
   FolderOpen,
   Bell,
   BookMarked,
-  AlertTriangle
+  AlertTriangle,
+  RotateCcw
 } from "lucide-react";
 import { useProgressStore } from "@/stores/progressStore";
 import { useEffect, useState } from "react";
@@ -36,6 +37,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { exportProgressToPDF, exportProgressToCSV } from "@/utils/exportProgress";
 
@@ -87,6 +104,14 @@ const MODULE_NAMES: Record<string, string> = {
   'CD-M4': 'Continuous Improvement',
 };
 
+// Helper to format days since start
+function formatDaysSinceStart(days: number): string {
+  if (days < 0) return "Not started";
+  if (days === 0) return "Started today";
+  if (days === 1) return "Started yesterday";
+  return `${days} days`;
+}
+
 export default function Dashboard() {
   // Use Zustand store for all progress data
   const {
@@ -94,18 +119,26 @@ export default function Dashboard() {
     getCategoryProgress,
     getInProgressModules,
     getDaysSinceStart,
+    getStartDate,
     getActivities,
+    getAverageDaysPerModule,
+    getEstimatedCompletionDate,
     resetAllProgress,
+    resetStartDate,
   } = useProgressStore();
 
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
+  const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
 
   // Get computed values from store
   const overallProgress = getOverallProgress();
   const daysSinceStart = getDaysSinceStart();
+  const startDate = getStartDate();
   const inProgressModules = getInProgressModules();
   const activities = getActivities();
+  const avgDaysPerModule = getAverageDaysPerModule();
+  const estimatedCompletion = getEstimatedCompletionDate();
 
   // Category progress
   const foundationProgress = getCategoryProgress('foundation');
@@ -338,19 +371,46 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-info/10">
-                  <Calendar className="h-6 w-6 text-info" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{daysSinceStart}</p>
-                  <p className="text-sm text-muted-foreground">Days Since Started</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Card className="cursor-help">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-lg bg-info/10">
+                        <Calendar className="h-6 w-6 text-info" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">
+                          {daysSinceStart >= 0 ? formatDaysSinceStart(daysSinceStart) : "--"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">Days Since Started</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-xs">
+                {startDate ? (
+                  <div className="space-y-1">
+                    <p className="font-medium">Started on {format(new Date(startDate), "d MMM yyyy")}</p>
+                    {avgDaysPerModule > 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        Avg: {avgDaysPerModule} days per module
+                      </p>
+                    )}
+                    {estimatedCompletion && overallProgress.completed < overallProgress.total && (
+                      <p className="text-xs text-muted-foreground">
+                        Est. completion: {format(estimatedCompletion, "d MMM yyyy")}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p>Start date will be set when you begin a module</p>
+                )}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
 
@@ -475,8 +535,18 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* Reset Progress Button */}
-      <div className="mt-8 pt-8 border-t">
+      {/* Reset Options */}
+      <div className="mt-8 pt-8 border-t flex flex-wrap gap-3">
+        {startDate && (
+          <Button 
+            variant="outline" 
+            className="gap-2"
+            onClick={() => setResetDateDialogOpen(true)}
+          >
+            <RotateCcw className="h-4 w-4" />
+            Reset Start Date
+          </Button>
+        )}
         <Button 
           variant="outline" 
           className="text-destructive border-destructive hover:bg-destructive/10 gap-2"
@@ -486,6 +556,27 @@ export default function Dashboard() {
           Reset All Progress
         </Button>
       </div>
+
+      {/* Reset Start Date Dialog */}
+      <AlertDialog open={resetDateDialogOpen} onOpenChange={setResetDateDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reset Start Date?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will reset your implementation start date counter but keep all your module progress intact. A new start date will be set when you next update a module.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              resetStartDate();
+              setResetDateDialogOpen(false);
+            }}>
+              Reset Start Date
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <ResetProgressModal 
         open={resetModalOpen} 
