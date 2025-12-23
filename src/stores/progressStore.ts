@@ -74,6 +74,7 @@ interface ProgressState {
   updateChecklistItem: (moduleId: string, itemId: string, completed: boolean) => void;
   updateLastAccessed: (moduleId: string) => void;
   resetAllProgress: () => void;
+  resetStartDate: () => void;
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
 
   // Getters
@@ -83,7 +84,10 @@ interface ProgressState {
   getCompletedModulesCount: () => number;
   getInProgressModules: () => ModuleProgress[];
   getDaysSinceStart: () => number;
+  getStartDate: () => string | null;
   getActivities: () => Activity[];
+  getAverageDaysPerModule: () => number;
+  getEstimatedCompletionDate: () => Date | null;
 }
 
 // Module display names
@@ -357,6 +361,13 @@ export const useProgressStore = create<ProgressState>()(
         toast.success('All progress has been reset');
       },
 
+      resetStartDate: () => {
+        set({ startDate: null });
+        toast.success('Start date has been reset', {
+          description: 'A new start date will be set when you next update a module.',
+        });
+      },
+
       addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => {
         const now = new Date().toISOString();
         const newActivity: Activity = {
@@ -434,19 +445,65 @@ export const useProgressStore = create<ProgressState>()(
 
       getDaysSinceStart: () => {
         const state = get();
-        if (!state.startDate) return 0;
+        if (!state.startDate) return -1; // -1 indicates not started
 
         const start = new Date(state.startDate);
         const now = new Date();
-        const diffTime = Math.abs(now.getTime() - start.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // Reset time to midnight for accurate day calculation
+        const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diffTime = nowMidnight.getTime() - startMidnight.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        return diffDays;
+        return Math.max(0, diffDays);
+      },
+
+      getStartDate: () => {
+        const state = get();
+        return state.startDate;
       },
 
       getActivities: () => {
         const state = get();
         return state.activities;
+      },
+
+      getAverageDaysPerModule: () => {
+        const state = get();
+        const completedCount = Object.values(state.modules).filter(
+          (m) => m.status === 'complete'
+        ).length;
+        
+        if (completedCount === 0 || !state.startDate) return 0;
+
+        const start = new Date(state.startDate);
+        const now = new Date();
+        const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diffDays = Math.max(1, Math.floor((nowMidnight.getTime() - startMidnight.getTime()) / (1000 * 60 * 60 * 24)));
+
+        return Math.round((diffDays / completedCount) * 10) / 10; // 1 decimal
+      },
+
+      getEstimatedCompletionDate: () => {
+        const state = get();
+        const completedCount = Object.values(state.modules).filter(
+          (m) => m.status === 'complete'
+        ).length;
+        
+        if (completedCount === 0 || !state.startDate) return null;
+
+        const remainingModules = TOTAL_MODULES - completedCount;
+        if (remainingModules <= 0) return new Date(); // Already complete
+
+        const avgDays = get().getAverageDaysPerModule();
+        if (avgDays <= 0) return null;
+
+        const estimatedDaysRemaining = Math.ceil(remainingModules * avgDays);
+        const completionDate = new Date();
+        completionDate.setDate(completionDate.getDate() + estimatedDaysRemaining);
+
+        return completionDate;
       },
     }),
     {
