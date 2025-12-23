@@ -90,18 +90,9 @@ const App = () => (
                   <Route path="/outcomes/price-value" element={<CDI2PriceValue />} />
                   <Route path="/outcomes/consumer-understanding" element={<CDI3ConsumerUnderstanding />} />
           <Route path="/outcomes/consumer-support" element={<CDI4ConsumerSupport />} />
-          <Route path="/cross-cutting/vulnerable-customers" element={<CDI5VulnerableCustomers />} />
 
                   {/* Cross-Cutting */}
-                  <Route path="/cross-cutting/vulnerable-customers" element={
-                    <ModulePage 
-                      title="Vulnerable Customers" 
-                      description="Identify and support vulnerable customer groups"
-                      icon={Users}
-                      moduleId="vulnerable-customers"
-                      category="Cross-Cutting"
-                    />
-                  } />
+                  <Route path="/cross-cutting/vulnerable-customers" element={<CDI5VulnerableCustomers />} />
                   <Route path="/cross-cutting/distribution-chain" element={
                     <ModulePage 
                       title="Distribution Chain" 
