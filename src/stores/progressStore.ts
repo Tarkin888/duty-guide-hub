@@ -132,15 +132,12 @@ function migrateOldData(): Record<string, ModuleProgress> {
   try {
     // Try to read old format
     const oldData = localStorage.getItem('consumer-duty-progress');
-    console.log('[Migration] Old progress data:', oldData);
     
     if (oldData) {
       const parsed = JSON.parse(oldData);
-      console.log('[Migration] Parsed keys:', Object.keys(parsed));
       
       Object.entries(parsed).forEach(([storageKey, data]: [string, any]) => {
         const canonicalId = STORAGE_KEY_TO_MODULE_ID[storageKey];
-        console.log(`[Migration] Key: ${storageKey} -> Canonical: ${canonicalId}, Status: ${data?.status}`);
         
         if (canonicalId && !modules[canonicalId]) {
           const status = data?.status === 'completed' ? 'complete' : 
@@ -154,8 +151,6 @@ function migrateOldData(): Record<string, ModuleProgress> {
         }
       });
     }
-    
-    console.log('[Migration] Result modules:', modules);
   } catch (e) {
     console.error('Migration failed:', e);
   }

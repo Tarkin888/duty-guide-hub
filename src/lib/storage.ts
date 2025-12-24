@@ -1,4 +1,7 @@
 // Local storage utilities for progress tracking
+// This module bridges the old localStorage approach with the new Zustand store
+
+import { useProgressStore } from '@/stores/progressStore';
 
 export interface ModuleProgress {
   status: "not-started" | "in-progress" | "completed";
@@ -84,6 +87,14 @@ export const updateModuleStatus = (
     lastUpdated: new Date().toISOString(),
   };
   saveProgress(progress);
+  
+  // SYNC WITH ZUSTAND STORE - This ensures Dashboard picks up the changes
+  const store = useProgressStore.getState();
+  if (status === "completed") {
+    store.markModuleComplete(moduleId, false); // false = don't show toast (already handled by module page)
+  } else if (status === "in-progress") {
+    store.markModuleInProgress(moduleId, false);
+  }
   
   // Log activity for completed modules with friendly names
   const displayName = getModuleDisplayName(moduleId);
