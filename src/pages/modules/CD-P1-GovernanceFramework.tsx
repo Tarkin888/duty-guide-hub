@@ -1706,120 +1706,249 @@ export default function CDP1GovernanceFramework() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-destructive" />
-                  Common Pitfalls to Avoid
+                  Common Governance Pitfalls
                 </CardTitle>
                 <CardDescription>
-                  Key governance framework implementation failures observed by the FCA
+                  Critical governance failures that undermine Consumer Duty effectiveness. Each pitfall includes impact analysis and prevention strategies.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              {/* Pitfall 1: Compliance Exercise */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">1. Paper Exercise Only</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    1. Treating Consumer Duty as Compliance Exercise
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    Creating governance documents without embedding them in actual decision-making processes.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Test governance through real scenarios</li>
-                    <li>• Require evidence of governance in action</li>
-                    <li>• Build governance into existing processes</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Approaching Consumer Duty as a regulatory checkbox rather than embedding it as a strategic governance priority. 
+                      This manifests as treating it as a one-off project rather than an ongoing governance responsibility, 
+                      with focus on documentation over meaningful cultural and operational change.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Results in superficial compliance that fails FCA expectations. Box-ticking behaviour leads to governance 
+                      structures that exist on paper but don't influence real decisions. Creates significant regulatory risk 
+                      as the FCA specifically looks for evidence of genuine embedding, not just documentation. Poor customer 
+                      outcomes continue despite apparent compliance.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Position Consumer Duty as strategic priority in Board agenda, not compliance update</li>
+                      <li>• Integrate Consumer Duty considerations into all major business decisions</li>
+                      <li>• Include Consumer Duty metrics in executive performance objectives</li>
+                      <li>• Regular CEO/Chair communications emphasising strategic importance</li>
+                      <li>• Allocate dedicated Board time for Consumer Duty deep-dives</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Pitfall 2: Unclear SMF Accountability */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">2. Accountability Gaps</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    2. Unclear SMF Accountability Causing Decision Delays
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    RACI matrix has gaps or overlaps leading to unclear ownership of Consumer Duty outcomes.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Complete gap analysis of RACI</li>
-                    <li>• Ensure every outcome has single accountable SMF</li>
-                    <li>• Regular review for organisational changes</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      RACI matrices with gaps, overlaps, or ambiguity in Consumer Duty accountability. Multiple SMFs believing 
+                      they share accountability (or that someone else is accountable) for specific outcomes. Lack of clarity 
+                      on decision rights for Consumer Duty matters.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Critical decisions get delayed as multiple parties believe others are responsible. Customer harm issues 
+                      remain unaddressed while accountability is debated. In regulatory investigations, unclear accountability 
+                      leads to enforcement action as FCA expects single-point accountability under SM&CR. Creates organisational 
+                      paralysis on contentious Consumer Duty issues.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Complete RACI gap analysis ensuring every Consumer Duty outcome has single accountable SMF</li>
+                      <li>• Document explicit decision rights matrix for Consumer Duty matters</li>
+                      <li>• Regular RACI reviews when organisation structure changes</li>
+                      <li>• Clear escalation protocols when accountability is disputed</li>
+                      <li>• SMF statements of responsibility explicitly reference Consumer Duty accountabilities</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Pitfall 3: Insufficient Committee Seniority */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">3. Passive Board Oversight</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    3. Governance Committee Without Sufficient Seniority or Mandate
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    Board receives updates but does not actively challenge or question management assertions.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Train Board on effective challenge techniques</li>
-                    <li>• Include challenge requirements in ToR</li>
-                    <li>• Document challenge in meeting minutes</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Consumer Duty Oversight Committee (CDOC) populated with junior representatives who lack authority to make 
+                      decisions or commit resources. Committee has unclear terms of reference, no decision-making authority, 
+                      or is positioned as advisory rather than executive. No direct reporting line to Board.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Committee becomes talking shop that cannot effect change. Recommendations are ignored or require lengthy 
+                      secondary approval processes. Critical Consumer Duty issues get stuck in governance loops. Business areas 
+                      do not respect committee decisions. Creates false sense of governance while lacking real authority.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Mandate SMF-level representation on CDOC (not delegates)</li>
+                      <li>• Clear terms of reference with explicit decision authority</li>
+                      <li>• Direct reporting line to Board (or Board sub-committee)</li>
+                      <li>• Authority to require attendance of any senior leader</li>
+                      <li>• Defined budget and resource allocation authority</li>
+                      <li>• Chair should be SMF with sufficient organisational authority</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Pitfall 4: Inadequate Board Engagement */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">4. Committee Overload</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    4. Inadequate Board Engagement and Challenge
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    Creating too many new committees that duplicate or conflict with existing governance.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Map existing governance first</li>
-                    <li>• Integrate rather than add where possible</li>
-                    <li>• Clear delineation of responsibilities</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Board receives Consumer Duty updates passively without meaningful challenge. NEDs lack understanding 
+                      to ask probing questions. Board papers present only positive view without highlighting risks or gaps. 
+                      No deep-dive sessions or external perspectives sought. Board relies entirely on management attestations.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Board cannot fulfil FCA expectation of effective oversight and challenge. Issues that should be 
+                      escalated remain hidden. Management assertions go untested. Annual Board assessment lacks rigour. 
+                      FCA supervision will identify passive oversight as governance failure. Board members may face 
+                      personal regulatory consequences for inadequate oversight.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Consumer Duty training for all Board members including effective challenge techniques</li>
+                      <li>• Structured challenge frameworks built into Board papers</li>
+                      <li>• Require balanced reporting including risks, gaps, and failures</li>
+                      <li>• Regular deep-dive sessions on specific Consumer Duty areas</li>
+                      <li>• Document challenge in Board minutes with management responses</li>
+                      <li>• Periodic external assessment of Board Consumer Duty effectiveness</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Pitfall 5: Siloed Governance */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">5. Escalation Failure</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    5. Siloed Governance Not Integrated with Risk/Compliance Committees
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    Escalation pathways exist on paper but staff do not use them or fear using them.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Test escalation pathways regularly</li>
-                    <li>• Create psychologically safe environment</li>
-                    <li>• Celebrate appropriate escalations</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Consumer Duty governance operates in isolation from existing Risk, Compliance, Product, and Conduct 
+                      committees. No clear integration protocols or information sharing. Duplicate or conflicting decisions 
+                      across committees. Consumer Duty not embedded in Enterprise Risk Framework.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Inconsistent decisions across governance forums. Consumer Duty risks not captured in enterprise risk 
+                      appetite. Conflicting priorities between committees. Governance fatigue from duplicative committee 
+                      attendance. Holistic view of customer outcomes lost. Regulatory expectation of integrated governance 
+                      not met.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Map Consumer Duty governance to existing committee structure before creating new forums</li>
+                      <li>• Define clear integration protocols with Risk, Compliance, Product committees</li>
+                      <li>• Shared reporting and escalation pathways</li>
+                      <li>• Consumer Duty risks integrated into Enterprise Risk Framework</li>
+                      <li>• Cross-committee membership where appropriate</li>
+                      <li>• Unified governance calendar avoiding scheduling conflicts</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Pitfall 6: No Clear Escalation Pathways */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">6. MI Disconnect</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    6. No Clear Escalation Pathways for Consumer Duty Issues
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
-                  <p className="text-sm text-muted-foreground">
-                    Governance MI is not actionable or does not lead to actual decisions and interventions.
-                  </p>
-                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Define MI with clear action triggers</li>
-                    <li>• Track decisions made from MI</li>
-                    <li>• Regular MI effectiveness reviews</li>
-                  </ul>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Description:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Escalation pathways exist on paper but are not understood or used in practice. Staff fear escalating 
+                      issues due to cultural or career concerns. No clear triggers defining when issues must be escalated. 
+                      Escalation pathways not tested or validated. No tracking of escalations or their outcomes.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Impact:</p>
+                    <p className="text-sm text-muted-foreground">
+                      Customer harm issues remain hidden until they become crises. Front-line staff absorb issues that 
+                      should reach senior management. Governance bodies unaware of emerging risks. Regulatory expectation 
+                      of effective escalation not met. Pattern identification impossible without centralised escalation data.
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-1">Prevention:</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Define clear escalation triggers with specific thresholds</li>
+                      <li>• Regular testing of escalation pathways (fire drills)</li>
+                      <li>• Create psychologically safe environment - celebrate appropriate escalations</li>
+                      <li>• Track and report on escalations at governance forums</li>
+                      <li>• Training on escalation protocols for all customer-facing staff</li>
+                      <li>• Anonymous escalation routes for sensitive issues</li>
+                      <li>• Senior leadership visibly supporting escalation culture</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -1837,6 +1966,43 @@ export default function CDP1GovernanceFramework() {
                       not just documented. Board members may be directly engaged on their understanding 
                       of Consumer Duty and evidence of their oversight and challenge.
                     </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Key Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-primary" />
+                  Governance Health Indicators
+                </CardTitle>
+                <CardDescription>
+                  Use these metrics to identify if your governance is at risk of these pitfalls
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm">Warning Signs</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Zero escalations reaching Board level (suggests broken pathways)</li>
+                      <li>• No documented Board challenges in minutes</li>
+                      <li>• Consumer Duty items consistently last on agenda</li>
+                      <li>• Committee attendance by delegates not principals</li>
+                      <li>• Decisions requiring multiple committee approvals</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-sm">Healthy Governance Signs</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Regular escalations with documented outcomes</li>
+                      <li>• Board challenges leading to management actions</li>
+                      <li>• Consumer Duty integrated into strategic discussions</li>
+                      <li>• Quick decision turnaround on Consumer Duty matters</li>
+                      <li>• Cross-committee coordination on shared issues</li>
+                    </ul>
                   </div>
                 </div>
               </CardContent>
