@@ -511,7 +511,7 @@ export const useProgressStore = create<ProgressState>()(
     }),
     {
       name: 'consumer-duty-progress-v2',
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
         // Always try to merge old data - this ensures any modules marked complete
