@@ -514,12 +514,22 @@ export const useProgressStore = create<ProgressState>()(
       version: 1,
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
-        // Migrate old data if store is empty
-        if (state && Object.keys(state.modules).length === 0) {
+        // Always try to merge old data - this ensures any modules marked complete
+        // via the old storage system get synced to the Zustand store
+        if (state) {
           const migratedData = migrateOldData();
           if (Object.keys(migratedData).length > 0) {
-            state.modules = migratedData;
-            console.log('Migrated old progress data');
+            // Merge: migrated data fills in gaps, but doesn't overwrite existing
+            const merged = { ...migratedData, ...state.modules };
+            
+            // Also prefer 'complete' status from either source
+            Object.keys(migratedData).forEach(key => {
+              if (migratedData[key]?.status === 'complete' && state.modules[key]?.status !== 'complete') {
+                merged[key] = migratedData[key];
+              }
+            });
+            
+            state.modules = merged;
           }
         }
       },
