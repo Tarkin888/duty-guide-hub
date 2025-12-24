@@ -193,8 +193,14 @@ export default function Dashboard() {
     return completionDate;
   }, [modules, storeStartDate, avgDaysPerModule]);
 
-  // Category progress
+  // Category progress - with debug logging
+  console.log('[Dashboard] Current modules state:', modules);
+  console.log('[Dashboard] MODULE_CATEGORIES.foundation:', MODULE_CATEGORIES.foundation);
+  
   const foundationProgress = getCategoryProgress('foundation');
+  console.log('[Dashboard] Foundation progress:', foundationProgress, 
+    'Modules check:', MODULE_CATEGORIES.foundation.map(id => ({ id, status: modules[id]?.status })));
+  
   const governanceProgress = getCategoryProgress('governance');
   const outcomesProgress = getCategoryProgress('outcomes');
   const crossCuttingProgress = getCategoryProgress('crossCutting');
@@ -203,7 +209,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     setLastUpdated(format(new Date(), "PPP"));
-  }, []);
+    // Debug: Log all module keys in store
+    console.log('[Dashboard Mount] All module keys:', Object.keys(modules));
+    console.log('[Dashboard Mount] All module entries:', Object.entries(modules));
+  }, [modules]);
 
 
   const totalTemplates = 40;
