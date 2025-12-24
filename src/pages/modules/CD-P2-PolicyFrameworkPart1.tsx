@@ -1308,14 +1308,16 @@ const CDP2PolicyFrameworkPart1 = () => {
               <div>
                 <h3 className="font-semibold text-lg">Next Steps</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  This completes Part 1 of Policy & Framework Development. Part 2 will develop the detailed 
+                  This completes Part 1 of Policy & Framework Development. Part 2 develops the detailed 
                   operational policies for each of the four outcomes, vulnerable customers, distribution chain, 
                   MI and monitoring, and training requirements.
                 </p>
               </div>
-              <Button className="flex items-center gap-2">
-                Continue to Part 2
-                <ArrowRight className="h-4 w-4" />
+              <Button className="flex items-center gap-2" asChild>
+                <Link to="/governance/policy-part2">
+                  Continue to Part 2
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </CardContent>
