@@ -92,11 +92,13 @@ export default function CDP1GovernanceFramework() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
             <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
             <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="success">Success Criteria</TabsTrigger>
+            <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -1430,8 +1432,414 @@ export default function CDP1GovernanceFramework() {
                 <li>• Integration protocols with existing committees</li>
                 <li>• Board training programme details</li>
                 <li>• Governance effectiveness metrics</li>
-                <li>• Success Criteria and Common Pitfalls</li>
               </ul>
+            </Card>
+          </TabsContent>
+
+          {/* SUCCESS CRITERIA TAB */}
+          <TabsContent value="success" className="space-y-6">
+            {/* Success Overview */}
+            <Card className="border-l-4 border-l-green-500">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  Governance Framework Success Criteria
+                </CardTitle>
+                <CardDescription>
+                  Measurable outcomes demonstrating effective Consumer Duty governance implementation
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Successful governance framework implementation is evidenced by clear accountability structures, 
+                  effective oversight mechanisms, and demonstrable Board engagement with Consumer Duty outcomes.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Core Success Criteria */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-primary" />
+                    1. Board Approval
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Board has formally approved the Consumer Duty governance framework</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Board minutes documenting approval</li>
+                      <li>• Signed Consumer Duty Charter</li>
+                      <li>• Documented Board discussion and challenge</li>
+                      <li>• Clear approval date and review schedule</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <UserCheck className="h-5 w-5 text-primary" />
+                    2. RACI Matrix Established
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Clear RACI matrix established with SMF accountability mapped</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Complete RACI matrix for all Consumer Duty activities</li>
+                      <li>• SMF16 (Compliance) accountability documented</li>
+                      <li>• All four outcomes mapped to accountable SMFs</li>
+                      <li>• No gaps or overlaps in accountability</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    3. CDOC Terms of Reference
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Consumer Duty Oversight Committee terms of reference approved</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Approved CDOC Terms of Reference document</li>
+                      <li>• Defined membership and quorum requirements</li>
+                      <li>• Clear mandate and decision-making authority</li>
+                      <li>• Reporting lines to Board documented</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Layers className="h-5 w-5 text-primary" />
+                    4. Three Lines Model
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Three lines of defence model documented for Consumer Duty</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• First line responsibilities clearly defined</li>
+                      <li>• Second line oversight role documented</li>
+                      <li>• Internal Audit Consumer Duty plan approved</li>
+                      <li>• Interaction between lines specified</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <GitBranch className="h-5 w-5 text-primary" />
+                    5. Escalation Pathways
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Escalation pathways tested and functioning effectively</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Escalation matrix with severity levels</li>
+                      <li>• Desktop testing completed successfully</li>
+                      <li>• Response time SLAs defined and met</li>
+                      <li>• Documentation of test scenarios and outcomes</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    6. Governance Metrics Defined
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Governance metrics defined and baseline established</p>
+                  <div className="space-y-2">
+                    <h5 className="font-medium text-sm">Evidence Required:</h5>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Meeting frequency targets set</li>
+                      <li>• Decision turnaround time KPIs defined</li>
+                      <li>• Issue resolution rate metrics established</li>
+                      <li>• Baseline measurements documented</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="md:col-span-2">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-primary" />
+                    7. Quarterly Effectiveness Reviews
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm">Quarterly governance effectiveness reviews scheduled and process defined</p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <h5 className="font-medium text-sm">Evidence Required:</h5>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Annual calendar with quarterly review dates</li>
+                        <li>• Review methodology documented</li>
+                        <li>• Board reporting template approved</li>
+                        <li>• Improvement action tracking process</li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h5 className="font-medium text-sm">Review Focus Areas:</h5>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Committee effectiveness assessment</li>
+                        <li>• MI quality and timeliness</li>
+                        <li>• Decision quality review</li>
+                        <li>• Escalation pathway effectiveness</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Key Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-primary" />
+                  Key Metrics
+                </CardTitle>
+                <CardDescription>
+                  Measurable outcomes to track governance framework effectiveness
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-muted/30 rounded-lg">
+                    <h5 className="font-semibold text-lg text-primary">Meeting Frequency</h5>
+                    <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                      <li>• CDOC: Monthly minimum</li>
+                      <li>• Board CD update: Quarterly</li>
+                      <li>• Annual Board assessment: Once yearly</li>
+                      <li>• Target: 100% scheduled meetings held</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 bg-muted/30 rounded-lg">
+                    <h5 className="font-semibold text-lg text-primary">Decision Turnaround</h5>
+                    <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                      <li>• Critical issues: Same day</li>
+                      <li>• Significant issues: 48 hours</li>
+                      <li>• Standard items: 5 working days</li>
+                      <li>• Target: 95% within SLA</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 bg-muted/30 rounded-lg">
+                    <h5 className="font-semibold text-lg text-primary">Issue Resolution</h5>
+                    <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                      <li>• Open actions: Tracked to closure</li>
+                      <li>• Overdue actions: Less than 10%</li>
+                      <li>• Escalations resolved: 100%</li>
+                      <li>• Target: 90% closed within agreed timescales</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-4 bg-primary/5 rounded-lg">
+                  <h5 className="font-semibold mb-2">Additional Governance KPIs</h5>
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>• Board attendance at CD sessions: Target 90%+</li>
+                      <li>• Committee quorum achieved: Target 100%</li>
+                      <li>• MI pack delivery on time: Target 100%</li>
+                      <li>• Board challenge documented: Every meeting</li>
+                    </ul>
+                    <ul className="space-y-1 text-muted-foreground">
+                      <li>• SMF attestations completed: Annual, 100%</li>
+                      <li>• Training completion (Board): 100%</li>
+                      <li>• Policy reviews completed on schedule: 100%</li>
+                      <li>• External audit findings closure rate: 95%+</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Success Indicators */}
+            <Card className="bg-green-500/5 border-green-500/20">
+              <CardContent className="pt-6">
+                <div className="flex gap-4">
+                  <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-2">What Good Looks Like</h4>
+                    <ul className="text-sm space-y-2">
+                      <li>• Board actively challenges management on Consumer Duty matters, not just receiving updates</li>
+                      <li>• Clear audit trail of decisions with documented rationale</li>
+                      <li>• Consumer outcomes are central to strategic discussions</li>
+                      <li>• Issues are identified and escalated before they cause customer harm</li>
+                      <li>• Governance is proportionate but effective for firm size and complexity</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* COMMON PITFALLS TAB */}
+          <TabsContent value="pitfalls" className="space-y-6">
+            <Card className="border-l-4 border-l-destructive">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                  Common Pitfalls to Avoid
+                </CardTitle>
+                <CardDescription>
+                  Key governance framework implementation failures observed by the FCA
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">1. Paper Exercise Only</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    Creating governance documents without embedding them in actual decision-making processes.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Test governance through real scenarios</li>
+                    <li>• Require evidence of governance in action</li>
+                    <li>• Build governance into existing processes</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">2. Accountability Gaps</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    RACI matrix has gaps or overlaps leading to unclear ownership of Consumer Duty outcomes.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Complete gap analysis of RACI</li>
+                    <li>• Ensure every outcome has single accountable SMF</li>
+                    <li>• Regular review for organisational changes</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">3. Passive Board Oversight</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    Board receives updates but does not actively challenge or question management assertions.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Train Board on effective challenge techniques</li>
+                    <li>• Include challenge requirements in ToR</li>
+                    <li>• Document challenge in meeting minutes</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">4. Committee Overload</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    Creating too many new committees that duplicate or conflict with existing governance.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Map existing governance first</li>
+                    <li>• Integrate rather than add where possible</li>
+                    <li>• Clear delineation of responsibilities</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">5. Escalation Failure</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    Escalation pathways exist on paper but staff do not use them or fear using them.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Test escalation pathways regularly</li>
+                    <li>• Create psychologically safe environment</li>
+                    <li>• Celebrate appropriate escalations</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-orange-500">
+                <CardHeader>
+                  <CardTitle className="text-lg">6. MI Disconnect</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-destructive font-medium">The Pitfall:</p>
+                  <p className="text-sm text-muted-foreground">
+                    Governance MI is not actionable or does not lead to actual decisions and interventions.
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">Prevention:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Define MI with clear action triggers</li>
+                    <li>• Track decisions made from MI</li>
+                    <li>• Regular MI effectiveness reviews</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* FCA Warning */}
+            <Card className="bg-destructive/5 border-destructive/20">
+              <CardContent className="pt-6">
+                <div className="flex gap-4">
+                  <AlertTriangle className="h-6 w-6 text-destructive flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-2">FCA Supervisory Focus</h4>
+                    <p className="text-sm">
+                      The FCA has indicated that governance failures will be a key area of supervisory focus. 
+                      Firms should expect questions about how governance has been tested and evidenced, 
+                      not just documented. Board members may be directly engaged on their understanding 
+                      of Consumer Duty and evidence of their oversight and challenge.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
