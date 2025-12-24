@@ -538,19 +538,24 @@ export const useProgressStore = create<ProgressState>()(
             }
           });
           
-          if (Object.keys(migratedData).length > 0) {
-            // Merge: migrated data fills in gaps, but doesn't overwrite existing
-            const merged = { ...migratedData, ...state.modules };
-            
-            // Also prefer 'complete' status from either source
-            Object.keys(migratedData).forEach(key => {
-              if (migratedData[key]?.status === 'complete' && state.modules[key]?.status !== 'complete') {
-                merged[key] = migratedData[key];
-              }
-            });
-            
-            state.modules = merged;
-          }
+          // Always merge - migrated data fills gaps, complete content modules always marked complete
+          const merged = { ...state.modules };
+          
+          // Ensure modules with complete content are always marked complete
+          modulesWithCompleteContent.forEach(moduleId => {
+            if (!merged[moduleId] || merged[moduleId].status !== 'complete') {
+              merged[moduleId] = migratedData[moduleId];
+            }
+          });
+          
+          // Merge any other migrated data
+          Object.keys(migratedData).forEach(key => {
+            if (!merged[key]) {
+              merged[key] = migratedData[key];
+            }
+          });
+          
+          state.modules = merged;
         }
       },
     }
