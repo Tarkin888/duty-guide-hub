@@ -518,6 +518,26 @@ export const useProgressStore = create<ProgressState>()(
         // via the old storage system get synced to the Zustand store
         if (state) {
           const migratedData = migrateOldData();
+          
+          // Modules with complete content that should be marked complete
+          const modulesWithCompleteContent = [
+            'CD-F1', 'CD-F2', 'CD-F3', 
+            'CD-I1', 'CD-I2', 'CD-I3', 'CD-I4'
+          ];
+          
+          // Add complete status for modules with complete content
+          modulesWithCompleteContent.forEach(moduleId => {
+            if (!migratedData[moduleId] || migratedData[moduleId].status !== 'complete') {
+              migratedData[moduleId] = {
+                moduleId,
+                status: 'complete',
+                completedAt: new Date().toISOString(),
+                lastAccessedAt: new Date().toISOString(),
+                checklistItems: {},
+              };
+            }
+          });
+          
           if (Object.keys(migratedData).length > 0) {
             // Merge: migrated data fills in gaps, but doesn't overwrite existing
             const merged = { ...migratedData, ...state.modules };
