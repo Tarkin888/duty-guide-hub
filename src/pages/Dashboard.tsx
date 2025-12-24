@@ -27,8 +27,8 @@ import {
   AlertTriangle,
   RotateCcw
 } from "lucide-react";
-import { useProgressStore } from "@/stores/progressStore";
-import { useEffect, useState } from "react";
+import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from "@/stores/progressStore";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
@@ -114,31 +114,84 @@ function formatDaysSinceStart(days: number): string {
 
 export default function Dashboard() {
   // Use Zustand store for all progress data
-  const {
-    getOverallProgress,
-    getCategoryProgress,
-    getInProgressModules,
-    getDaysSinceStart,
-    getStartDate,
-    getActivities,
-    getAverageDaysPerModule,
-    getEstimatedCompletionDate,
-    resetAllProgress,
-    resetStartDate,
-  } = useProgressStore();
+  // IMPORTANT: Select modules state directly to establish reactivity for re-renders
+  const modules = useProgressStore((state) => state.modules);
+  const storeActivities = useProgressStore((state) => state.activities);
+  const storeStartDate = useProgressStore((state) => state.startDate);
+  const resetAllProgress = useProgressStore((state) => state.resetAllProgress);
+  const resetStartDate = useProgressStore((state) => state.resetStartDate);
 
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
 
-  // Get computed values from store
-  const overallProgress = getOverallProgress();
-  const daysSinceStart = getDaysSinceStart();
-  const startDate = getStartDate();
-  const inProgressModules = getInProgressModules();
-  const activities = getActivities();
-  const avgDaysPerModule = getAverageDaysPerModule();
-  const estimatedCompletion = getEstimatedCompletionDate();
+  // Compute progress from the modules state (reactive)
+  const allModuleIds = Object.values(MODULE_CATEGORIES).flat();
+  
+  const overallProgress = useMemo(() => {
+    const completed = allModuleIds.filter(
+      (moduleId) => modules[moduleId]?.status === 'complete'
+    ).length;
+    const inProgress = allModuleIds.filter(
+      (moduleId) => modules[moduleId]?.status === 'in-progress'
+    ).length;
+    return {
+      completed,
+      inProgress,
+      total: TOTAL_MODULES,
+      percentage: Math.round((completed / TOTAL_MODULES) * 100),
+    };
+  }, [modules, allModuleIds]);
+
+  const getCategoryProgress = useCallback((category: keyof typeof MODULE_CATEGORIES) => {
+    const categoryModules = MODULE_CATEGORIES[category];
+    const total = categoryModules.length;
+    const completed = categoryModules.filter(
+      (moduleId) => modules[moduleId]?.status === 'complete'
+    ).length;
+    return {
+      completed,
+      total,
+      percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    };
+  }, [modules]);
+
+  const inProgressModules = useMemo(() => {
+    return Object.values(modules).filter(
+      (module) => module.status === 'in-progress'
+    );
+  }, [modules]);
+
+  const daysSinceStart = useMemo(() => {
+    if (!storeStartDate) return -1;
+    const start = new Date(storeStartDate);
+    const now = new Date();
+    const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diffTime = nowMidnight.getTime() - startMidnight.getTime();
+    return Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+  }, [storeStartDate]);
+
+  const avgDaysPerModule = useMemo(() => {
+    const completedCount = Object.values(modules).filter(m => m.status === 'complete').length;
+    if (completedCount === 0 || !storeStartDate) return 0;
+    const start = new Date(storeStartDate);
+    const now = new Date();
+    const diffDays = Math.max(1, Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+    return Math.round((diffDays / completedCount) * 10) / 10;
+  }, [modules, storeStartDate]);
+
+  const estimatedCompletion = useMemo(() => {
+    const completedCount = Object.values(modules).filter(m => m.status === 'complete').length;
+    if (completedCount === 0 || !storeStartDate) return null;
+    const remainingModules = TOTAL_MODULES - completedCount;
+    if (remainingModules <= 0) return new Date();
+    if (avgDaysPerModule <= 0) return null;
+    const estimatedDaysRemaining = Math.ceil(remainingModules * avgDaysPerModule);
+    const completionDate = new Date();
+    completionDate.setDate(completionDate.getDate() + estimatedDaysRemaining);
+    return completionDate;
+  }, [modules, storeStartDate, avgDaysPerModule]);
 
   // Category progress
   const foundationProgress = getCategoryProgress('foundation');
@@ -174,7 +227,7 @@ export default function Dashboard() {
   ];
 
   // Convert activities to format expected by ActivityTimeline
-  const formattedActivities = activities.map(activity => ({
+  const formattedActivities = storeActivities.map(activity => ({
     id: activity.id,
     type: activity.type === 'module_completed' ? 'module_completed' as const : 
           activity.type === 'module_started' ? 'module_started' as const : 
@@ -391,9 +444,9 @@ export default function Dashboard() {
                 </Card>
               </TooltipTrigger>
               <TooltipContent side="left" className="max-w-xs">
-                {startDate ? (
+                {storeStartDate ? (
                   <div className="space-y-1">
-                    <p className="font-medium">Started on {format(new Date(startDate), "d MMM yyyy")}</p>
+                    <p className="font-medium">Started on {format(new Date(storeStartDate), "d MMM yyyy")}</p>
                     {avgDaysPerModule > 0 && (
                       <p className="text-xs text-muted-foreground">
                         Avg: {avgDaysPerModule} days per module
@@ -537,7 +590,7 @@ export default function Dashboard() {
 
       {/* Reset Options */}
       <div className="mt-8 pt-8 border-t flex flex-wrap gap-3">
-        {startDate && (
+        {storeStartDate && (
           <Button 
             variant="outline" 
             className="gap-2"
