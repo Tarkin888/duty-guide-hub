@@ -18,6 +18,7 @@ import CDI2PriceValue from "./pages/modules/CD-I2-PriceValue";
 import CDI3ConsumerUnderstanding from "./pages/modules/CD-I3-ConsumerUnderstanding";
 import CDI4ConsumerSupport from "./pages/modules/CD-I4-ConsumerSupport";
 import CDI5VulnerableCustomers from "./pages/modules/CD-I5-VulnerableCustomers";
+import CDI6DistributionChain from "./pages/modules/CD-I6-DistributionChain";
 import CDI7ADataEvidenceManagementPart1 from "./pages/modules/CD-I7A-DataEvidenceManagementPart1";
 import CDI7BDataEvidenceManagementPart2 from "./pages/modules/CD-I7B-DataEvidenceManagementPart2";
 import CDT1TrainingProgrammePart1 from "./pages/modules/CD-T1-TrainingProgrammePart1";
@@ -94,15 +95,7 @@ const App = () => (
 
                   {/* Cross-Cutting */}
                   <Route path="/cross-cutting/vulnerable-customers" element={<CDI5VulnerableCustomers />} />
-                  <Route path="/cross-cutting/distribution-chain" element={
-                    <ModulePage 
-                      title="Distribution Chain" 
-                      description="Manage Consumer Duty across your distribution chain"
-                      icon={Link2}
-                      moduleId="distribution-chain"
-                      category="Cross-Cutting"
-                    />
-                  } />
+                  <Route path="/cross-cutting/distribution-chain" element={<CDI6DistributionChain />} />
                   <Route path="/cross-cutting/data-evidence" element={<CDI7ADataEvidenceManagementPart1 />} />
                   <Route path="/cross-cutting/data-evidence-part1" element={<CDI7ADataEvidenceManagementPart1 />} />
                   <Route path="/cross-cutting/data-evidence-part2" element={<CDI7BDataEvidenceManagementPart2 />} />
