@@ -397,19 +397,92 @@ export default function CDI7ADataEvidenceManagementPart1() {
 
           {/* Regulatory Foundation Tab */}
           <TabsContent value="regulatory" className="space-y-6">
-            <Card>
+            <Card className="border-l-4 border-l-primary">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Scale className="h-5 w-5 text-primary" />
-                  FCA Evidence Expectations
+                  FG22/5: 'Reasonable Grounds' Evidence Requirements
                 </CardTitle>
+                <CardDescription>
+                  The FCA's Finalised Guidance sets clear expectations for evidence that firms must maintain to demonstrate Consumer Duty compliance
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <RegulatoryQuote
-                  source="FCA"
-                  reference="FG22/5"
-                  quote="Firms should be able to demonstrate that they have complied with their obligations under the Consumer Duty through appropriate records and management information."
+                  source="FCA FG22/5"
+                  reference="Paragraph 5.3"
+                  quote="Firms must be able to demonstrate that they have reasonable grounds to believe that they are complying with the Consumer Duty. This requires robust evidence gathering and documentation."
+                  link="https://www.fca.org.uk/publications/finalised-guidance/fg22-5-final-non-handbook-guidance-new-consumer-duty"
                 />
+
+                <RegulatoryQuote
+                  source="FCA FG22/5"
+                  reference="Paragraph 11.1"
+                  quote="Firms should ensure they have appropriate systems and controls in place to collect data and monitor whether they are delivering good outcomes for retail customers in line with the Consumer Duty."
+                  link="https://www.fca.org.uk/publications/finalised-guidance/fg22-5-final-non-handbook-guidance-new-consumer-duty"
+                />
+
+                <RegulatoryQuote
+                  source="FCA FG22/5"
+                  reference="Paragraph 11.2"
+                  quote="Firms should use data and management information to support effective oversight and identify whether retail customers are getting good outcomes. This should include understanding and evidencing the outcomes different groups of customers receive."
+                  link="https://www.fca.org.uk/publications/finalised-guidance/fg22-5-final-non-handbook-guidance-new-consumer-duty"
+                />
+
+                <Card className="bg-primary/5 border-primary/20">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <FileSearch className="h-5 w-5 text-primary" />
+                      What 'Reasonable Grounds' Means in Practice
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-3">
+                        <h5 className="font-semibold text-sm">Evidence Must Show:</h5>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                            <span>Active monitoring of customer outcomes</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                            <span>Consideration of Consumer Duty in decision-making</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                            <span>Proactive identification and remediation of harm</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" />
+                            <span>Testing effectiveness of controls</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="space-y-3">
+                        <h5 className="font-semibold text-sm">FCA Will Look For:</h5>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-start gap-2">
+                            <Target className="h-4 w-4 text-primary mt-0.5" />
+                            <span>Documented rationale for key decisions</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <Target className="h-4 w-4 text-primary mt-0.5" />
+                            <span>Regular MI review with actions taken</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <Target className="h-4 w-4 text-primary mt-0.5" />
+                            <span>Challenge and escalation records</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <Target className="h-4 w-4 text-primary mt-0.5" />
+                            <span>Evidence of Board and SMF engagement</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="border rounded-lg p-4">
@@ -469,6 +542,70 @@ export default function CDI7ADataEvidenceManagementPart1() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="h-5 w-5 text-primary" />
+                  Data Collection Strategy Across Four Outcomes
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="min-w-[150px]">Outcome</TableHead>
+                        <TableHead className="min-w-[200px]">Key Data Sources</TableHead>
+                        <TableHead className="min-w-[150px]">Collection Frequency</TableHead>
+                        <TableHead className="min-w-[200px]">Evidence Types</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="font-medium">Products & Services</TableCell>
+                        <TableCell className="text-sm">
+                          Target market definitions, product approvals, sales data, customer complaints, product reviews
+                        </TableCell>
+                        <TableCell className="text-sm">Quarterly + event-driven</TableCell>
+                        <TableCell className="text-sm">Approval papers, review minutes, testing results, MI dashboards</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Price & Value</TableCell>
+                        <TableCell className="text-sm">
+                          FVA assessments, pricing data, claims/utilisation, benefit realisation, comparator analysis
+                        </TableCell>
+                        <TableCell className="text-sm">Annual FVA + quarterly monitoring</TableCell>
+                        <TableCell className="text-sm">FVA documentation, pricing decisions, remediation records</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Consumer Understanding</TableCell>
+                        <TableCell className="text-sm">
+                          Comprehension testing, readability scores, customer feedback, behavioural data, call recordings
+                        </TableCell>
+                        <TableCell className="text-sm">Per communication + quarterly review</TableCell>
+                        <TableCell className="text-sm">Testing reports, approval records, feedback analysis</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Consumer Support</TableCell>
+                        <TableCell className="text-sm">
+                          Service metrics (wait times, resolution), sludge audits, complaints data, channel performance
+                        </TableCell>
+                        <TableCell className="text-sm">Monthly MI + quarterly deep-dive</TableCell>
+                        <TableCell className="text-sm">Service reports, audit findings, improvement actions</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            <RegulatoryQuote
+              source="FCA FG22/5"
+              reference="Paragraph 11.4"
+              quote="The board (or equivalent governing body) of a firm should review and approve an assessment at least annually of whether the firm is delivering good outcomes for retail customers which are consistent with the Consumer Duty."
+              link="https://www.fca.org.uk/publications/finalised-guidance/fg22-5-final-non-handbook-guidance-new-consumer-duty"
+            />
 
             <Card>
               <CardHeader>
@@ -1446,6 +1583,55 @@ export default function CDI7ADataEvidenceManagementPart1() {
                 format="Excel"
                 onDownload={() => {}}
                 onPreview={() => handlePreview("DMS Configuration Checklist")}
+              />
+              <TemplateCard
+                title="Consumer Duty Evidence Log"
+                description="Master log for tracking all Consumer Duty evidence items including source, date created, owner, review status, location, and regulatory mapping. Supports FCA examination readiness."
+                format="Excel"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("Consumer Duty Evidence Log")}
+              />
+              <TemplateCard
+                title="Testing Documentation Template"
+                description="Standardised template for documenting Consumer Duty testing activities including test objectives, methodology, sample selection, findings, and remediation tracking per FG22/5 expectations."
+                format="Word"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("Testing Documentation Template")}
+              />
+              <TemplateCard
+                title="Data Gaps Analysis Workbook"
+                description="Comprehensive workbook to identify, categorise, and prioritise data gaps across all four outcomes. Includes gap severity scoring, remediation planning, and progress tracking dashboards."
+                format="Excel"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("Data Gaps Analysis Workbook")}
+              />
+              <TemplateCard
+                title="MI Dashboard Specifications"
+                description="Technical specifications for Consumer Duty MI dashboards including data fields, visualisation requirements, refresh frequencies, and user access levels for each of the four outcomes."
+                format="Word"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("MI Dashboard Specifications")}
+              />
+              <TemplateCard
+                title="Board Evidence Pack Template"
+                description="Structured template for Board Consumer Duty evidence packs including executive summary, outcome dashboards, trend analysis, issues and actions, and attestation requirements."
+                format="PowerPoint"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("Board Evidence Pack Template")}
+              />
+              <TemplateCard
+                title="FG22/5 Evidence Mapping Matrix"
+                description="Matrix mapping specific FG22/5 paragraphs to required evidence types, collection methods, and quality standards for demonstrating 'reasonable grounds' compliance."
+                format="Excel"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("FG22/5 Evidence Mapping Matrix")}
+              />
+              <TemplateCard
+                title="Outcome-Based Data Collection Schedule"
+                description="Detailed schedule for data collection across Products & Services, Price & Value, Consumer Understanding, and Consumer Support outcomes with frequency, source, and responsible parties."
+                format="Excel"
+                onDownload={() => {}}
+                onPreview={() => handlePreview("Outcome-Based Data Collection Schedule")}
               />
             </div>
           </TabsContent>
