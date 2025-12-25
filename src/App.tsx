@@ -27,6 +27,7 @@ import CDT2CommunicationsChangePart1 from "./pages/modules/CD-T2-CommunicationsC
 import CDT2CommunicationsChangePart2 from "./pages/modules/CD-T2-CommunicationsChangePart2";
 import CDT3ATechnologyRequirementsPart1 from "./pages/modules/CD-T3A-TechnologyRequirementsPart1";
 import CDT3BTechnologyRequirementsPart2 from "./pages/modules/CD-T3B-TechnologyRequirementsPart2";
+import CDM1MIFramework from "./pages/modules/CD-M1-MIFramework";
 import CDM2ATestingAssurancePart1 from "./pages/modules/CD-M2A-TestingAssurancePart1";
 import CDM3BoardReportingPart1 from "./pages/modules/CD-M3-BoardReportingPart1";
 import CDM3BoardReportingPart2 from "./pages/modules/CD-M3-BoardReportingPart2";
@@ -113,15 +114,8 @@ const App = () => (
                   <Route path="/enablement/technology-part2" element={<CDT3BTechnologyRequirementsPart2 />} />
 
                   {/* Monitoring & Assurance */}
-                  <Route path="/monitoring/mi-monitoring" element={
-                    <ModulePage 
-                      title="MI & Monitoring" 
-                      description="Establish management information and monitoring frameworks"
-                      icon={BarChart3}
-                      moduleId="mi-monitoring"
-                      category="Monitoring & Assurance"
-                    />
-                  } />
+                  <Route path="/monitoring/mi-monitoring" element={<CDM1MIFramework />} />
+                  <Route path="/modules/cd-m1-mi-framework" element={<CDM1MIFramework />} />
                   <Route path="/monitoring/testing-assurance" element={<CDM2ATestingAssurancePart1 />} />
                   <Route path="/monitoring/testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
                   <Route path="/modules/cd-m2a-testing-assurance-part1" element={<CDM2ATestingAssurancePart1 />} />
