@@ -342,6 +342,132 @@ export default function CDI6DistributionChain() {
               <div>
                 <h2 className="text-2xl font-bold mb-4">Regulatory Foundation</h2>
 
+                {/* PRIN 2A.3.12-15 Key Rules */}
+                <Card className="mb-6 border-l-4 border-l-primary">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Scale className="h-5 w-5 text-primary" />
+                      Key Regulatory Provisions: PRIN 2A.3.12-15
+                    </CardTitle>
+                    <CardDescription>
+                      Core FCA rules governing distribution chain responsibilities
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <RegulatoryQuote
+                      source="FCA"
+                      reference="PRIN 2A.3.12"
+                      quote="A manufacturer must take all reasonable steps to ensure that the product is distributed to the identified target market. This includes choosing appropriate distribution channels and providing adequate product information to distributors."
+                    />
+                    
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <h4 className="font-semibold mb-3">PRIN 2A.3.12 - Distribution Strategy Requirements</h4>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Select distribution channels appropriate for the target market</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Provide distributors with all necessary information to understand and sell the product appropriately</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Consider the characteristics of the target market when selecting channels</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <RegulatoryQuote
+                      source="FCA"
+                      reference="PRIN 2A.3.13"
+                      quote="A manufacturer must ensure that a distributor is provided with all appropriate information on the product, the product approval process and the target market, to enable the distributor to understand and properly market the product."
+                    />
+                    
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <h4 className="font-semibold mb-3">PRIN 2A.3.13 - Information Sharing Requirements</h4>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Target market definition (positive and negative)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Product features, benefits, risks and limitations</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Fair Value Assessment summary</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Distribution strategy and any restrictions</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <RegulatoryQuote
+                      source="FCA"
+                      reference="PRIN 2A.3.14"
+                      quote="A distributor must have in place adequate product oversight and governance arrangements to ensure that products and services it intends to distribute are compatible with the needs, characteristics and objectives of the customers in the target market."
+                    />
+                    
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <h4 className="font-semibold mb-3">PRIN 2A.3.14 - Distributor Governance Requirements</h4>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Obtain and understand manufacturer product information</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Ensure products reach intended target market only</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Monitor sales patterns and investigate sales outside target market</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Provide feedback to manufacturers on outcomes</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <RegulatoryQuote
+                      source="FCA"
+                      reference="PRIN 2A.3.15"
+                      quote="Where a manufacturer is also a distributor, it must maintain adequate governance arrangements to ensure that its distribution activities do not undermine the product governance arrangements."
+                    />
+                    
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <h4 className="font-semibold mb-3">PRIN 2A.3.15 - Dual Role Firms</h4>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Firms acting as both manufacturer and distributor must comply with BOTH sets of obligations</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Distribution activities must not compromise manufacturing standards</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Clear governance separation may be required</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <Alert className="border-warning/50 bg-warning/5">
+                      <AlertTriangle className="h-4 w-4 text-warning" />
+                      <AlertTitle>Critical Principle</AlertTitle>
+                      <AlertDescription>
+                        Each firm in the distribution chain is responsible for its own compliance AND must take reasonable steps to ensure the overall chain delivers good outcomes. No firm can disclaim responsibility by pointing to another part of the chain.
+                      </AlertDescription>
+                    </Alert>
+                  </CardContent>
+                </Card>
+
                 <Accordion type="single" collapsible className="space-y-4">
                   <AccordionItem value="manufacturers" className="border rounded-lg px-4">
                     <AccordionTrigger className="text-lg font-semibold hover:no-underline">
