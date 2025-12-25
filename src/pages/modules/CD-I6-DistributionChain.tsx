@@ -1735,6 +1735,34 @@ export default function CDI6DistributionChain() {
                     format="Excel"
                     onDownload={() => toast.info("Template download coming soon")}
                   />
+
+                  <TemplateCard
+                    title="10. Distribution Chain Monitoring Schedule"
+                    description="Annual monitoring calendar with weekly/monthly/quarterly/annual activities for each chain partner type. Includes oversight activities, MI review dates, audit schedules, and attestation deadlines."
+                    format="Excel"
+                    onDownload={() => toast.info("Template download coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="11. Breach Escalation Process"
+                    description="Escalation framework for distribution chain breaches including severity classification (Critical/High/Medium/Low), escalation paths, notification timelines, remediation requirements, and regulatory reporting triggers."
+                    format="Word"
+                    onDownload={() => toast.info("Template download coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="12. Manufacturer-Distributor Agreement Clauses"
+                    description="Model clauses for distribution agreements covering Consumer Duty obligations, information sharing, target market adherence, FVA compliance, monitoring rights, issue escalation, and termination triggers."
+                    format="Word"
+                    onDownload={() => toast.info("Template download coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="13. Data Sharing Agreement Template"
+                    description="GDPR-compliant data sharing agreement for distribution chain partners covering data categories, purposes, retention, security requirements, and incident reporting obligations."
+                    format="Word"
+                    onDownload={() => toast.info("Template download coming soon")}
+                  />
                 </div>
 
                 <Card className="mt-6 border-l-4 border-l-primary">
