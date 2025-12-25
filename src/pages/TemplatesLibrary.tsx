@@ -21,6 +21,7 @@ import {
   complexityColors,
   userRoles,
 } from "@/data/templatesData";
+import { downloadTemplate } from "@/utils/templateDownload";
 import { toast } from "@/hooks/use-toast";
 
 const fileTypeIcons: Record<FileType, React.ReactNode> = {
@@ -78,10 +79,19 @@ export default function TemplatesLibrary() {
   }, [searchQuery, selectedCategories, selectedFileTypes, selectedComplexity, selectedRoles]);
 
   const handleDownload = (template: Template) => {
-    toast({
-      title: "Download Started",
-      description: `Downloading ${template.name}...`,
-    });
+    try {
+      downloadTemplate(template);
+      toast({
+        title: "Download Started",
+        description: `Downloading ${template.name}...`,
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the template. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const toggleFavorite = (id: string) => {
