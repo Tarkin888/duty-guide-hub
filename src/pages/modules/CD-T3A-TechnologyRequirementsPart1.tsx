@@ -712,6 +712,106 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* GRC Platform Comparison */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Server className="h-5 w-5 text-primary" />
+                  GRC Platform Comparison
+                </CardTitle>
+                <CardDescription>Common platforms for Consumer Duty compliance management</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left p-3 font-semibold">Platform</th>
+                        <th className="text-left p-3 font-semibold">Strengths</th>
+                        <th className="text-left p-3 font-semibold">Consumer Duty Fit</th>
+                        <th className="text-left p-3 font-semibold">Best For</th>
+                        <th className="text-left p-3 font-semibold">Considerations</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-border/50">
+                        <td className="p-3 font-medium">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="bg-primary/10">RSA Archer</Badge>
+                          </div>
+                        </td>
+                        <td className="p-3 text-muted-foreground">Enterprise GRC leader; highly configurable; strong workflow engine; mature risk management</td>
+                        <td className="p-3">
+                          <Badge className="bg-success/20 text-success border-success/30">Strong</Badge>
+                          <p className="text-xs mt-1 text-muted-foreground">Pre-built UK regulatory content; good evidence management</p>
+                        </td>
+                        <td className="p-3 text-muted-foreground">Large enterprises; complex governance needs; existing RSA investment</td>
+                        <td className="p-3 text-muted-foreground">High implementation cost; specialist skills required; lengthy deployment</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="p-3 font-medium">
+                          <Badge variant="outline" className="bg-info/10">MetricStream</Badge>
+                        </td>
+                        <td className="p-3 text-muted-foreground">Comprehensive GRC suite; strong regulatory content; good analytics; cloud-native</td>
+                        <td className="p-3">
+                          <Badge className="bg-success/20 text-success border-success/30">Strong</Badge>
+                          <p className="text-xs mt-1 text-muted-foreground">UK financial services focus; compliance workflow automation</p>
+                        </td>
+                        <td className="p-3 text-muted-foreground">Mid to large firms; multi-regulation management; integrated risk view</td>
+                        <td className="p-3 text-muted-foreground">Premium pricing; can be complex; requires dedicated admin</td>
+                      </tr>
+                      <tr className="border-b border-border/50">
+                        <td className="p-3 font-medium">
+                          <Badge variant="outline" className="bg-warning/10">LogicGate</Badge>
+                        </td>
+                        <td className="p-3 text-muted-foreground">User-friendly; no-code configuration; rapid deployment; modern UI; flexible workflows</td>
+                        <td className="p-3">
+                          <Badge className="bg-warning/20 text-warning border-warning/30">Good</Badge>
+                          <p className="text-xs mt-1 text-muted-foreground">Easy customization for Consumer Duty; quick time-to-value</p>
+                        </td>
+                        <td className="p-3 text-muted-foreground">SMEs; agile teams; firms needing quick deployment</td>
+                        <td className="p-3 text-muted-foreground">Less mature than enterprise players; may lack depth for complex needs</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 font-medium">
+                          <Badge variant="outline" className="bg-purple-500/10">ServiceNow GRC</Badge>
+                        </td>
+                        <td className="p-3 text-muted-foreground">ITSM integration; workflow automation; single platform approach; strong reporting</td>
+                        <td className="p-3">
+                          <Badge className="bg-warning/20 text-warning border-warning/30">Good</Badge>
+                          <p className="text-xs mt-1 text-muted-foreground">Excellent if existing ServiceNow; needs Consumer Duty customization</p>
+                        </td>
+                        <td className="p-3 text-muted-foreground">Existing ServiceNow customers; IT-driven compliance; process automation</td>
+                        <td className="p-3 text-muted-foreground">Requires ServiceNow expertise; Consumer Duty module may need building</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-6 grid md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-lg bg-info/5 border border-info/20">
+                    <h4 className="font-semibold text-info mb-2">Alternative Approaches</h4>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• <strong>Power BI/Tableau:</strong> Strong for MI dashboards; lacks workflow automation</li>
+                      <li>• <strong>SharePoint + Power Automate:</strong> Cost-effective; limited GRC depth</li>
+                      <li>• <strong>Bespoke Build:</strong> Maximum flexibility; high cost and time</li>
+                      <li>• <strong>Specialist Consumer Duty Tools:</strong> Purpose-built; less integration</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                    <h4 className="font-semibold text-primary mb-2">Selection Criteria</h4>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• Consumer Duty outcome monitoring capability</li>
+                      <li>• Evidence repository and audit trail</li>
+                      <li>• Integration with existing systems (CRM, policy admin)</li>
+                      <li>• Board and executive dashboard capabilities</li>
+                      <li>• Total cost of ownership (license + implementation + support)</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Implementation Steps Tab */}
@@ -1046,6 +1146,42 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                 description="Pre-deployment verification checklist with sign-offs and support readiness confirmation."
                 format="Excel"
                 onPreview={() => handlePreviewTemplate("Go-Live Readiness Checklist")}
+              />
+              <TemplateCard
+                title="Technology ROI Analysis Template"
+                description="Comprehensive ROI model covering cost analysis (license, implementation, training, support), benefit quantification (efficiency gains, risk reduction, compliance value), payback period, and NPV calculations."
+                format="Excel"
+                onPreview={() => handlePreviewTemplate("Technology ROI Analysis Template")}
+              />
+              <TemplateCard
+                title="GRC Vendor Evaluation Matrix"
+                description="Side-by-side comparison framework for GRC platforms including Archer, MetricStream, LogicGate, ServiceNow with weighted scoring across functionality, integration, cost, and support."
+                format="Excel"
+                onPreview={() => handlePreviewTemplate("GRC Vendor Evaluation Matrix")}
+              />
+              <TemplateCard
+                title="Technology Implementation Roadmap"
+                description="Gantt chart template with phases, milestones, dependencies, resource allocation, and critical path analysis for Consumer Duty technology deployment."
+                format="Excel"
+                onPreview={() => handlePreviewTemplate("Technology Implementation Roadmap")}
+              />
+              <TemplateCard
+                title="Customer Journey Analytics Requirements"
+                description="Requirements specification for customer journey tracking, touchpoint analysis, friction identification, and outcome measurement across all channels."
+                format="Word"
+                onPreview={() => handlePreviewTemplate("Customer Journey Analytics Requirements")}
+              />
+              <TemplateCard
+                title="Distribution Chain Data Platform Spec"
+                description="Technical specification for manufacturer-distributor data sharing including API requirements, data formats, security protocols, and monitoring dashboards."
+                format="Word"
+                onPreview={() => handlePreviewTemplate("Distribution Chain Data Platform Spec")}
+              />
+              <TemplateCard
+                title="Evidence Management Repository Design"
+                description="Architecture document for evidence storage including folder structure, naming conventions, retention policies, access controls, and retrieval procedures."
+                format="Word"
+                onPreview={() => handlePreviewTemplate("Evidence Management Repository Design")}
               />
             </div>
           </TabsContent>

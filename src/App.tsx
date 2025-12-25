@@ -108,15 +108,9 @@ const App = () => (
                   <Route path="/enablement/communications-part1" element={<CDT2CommunicationsChangePart1 />} />
                   <Route path="/enablement/communications-part2" element={<CDT2CommunicationsChangePart2 />} />
                   <Route path="/enablement/change-management" element={<CDT2CommunicationsChangePart1 />} />
-                  <Route path="/enablement/technology" element={
-                    <ModulePage 
-                      title="Technology" 
-                      description="Leverage technology to support Consumer Duty compliance"
-                      icon={Settings}
-                      moduleId="technology"
-                      category="Enablement"
-                    />
-                  } />
+                  <Route path="/enablement/technology" element={<CDT3ATechnologyRequirementsPart1 />} />
+                  <Route path="/enablement/technology-part1" element={<CDT3ATechnologyRequirementsPart1 />} />
+                  <Route path="/enablement/technology-part2" element={<CDT3BTechnologyRequirementsPart2 />} />
 
                   {/* Monitoring & Assurance */}
                   <Route path="/monitoring/mi-monitoring" element={
