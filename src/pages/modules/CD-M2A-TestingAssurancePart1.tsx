@@ -249,10 +249,51 @@ export default function CDM2ATestingAssurancePart1() {
         {/* REGULATORY FOUNDATION TAB */}
         <TabsContent value="regulatory" className="space-y-6">
           <RegulatoryQuote
+            source="FCA Handbook"
+            quote="A firm must regularly review and update its strategies, governance, oversight arrangements, controls and procedures to ensure they remain appropriate for the ongoing delivery of good outcomes for retail customers."
+            reference="PRIN 2A.5.1R"
+          />
+
+          <RegulatoryQuote
             source="FCA Guidance"
             quote="Quality checking confirms processes have been followed. Outcome testing confirms the product or service performed as customers reasonably expected."
             reference="FG22/5"
           />
+
+          {/* PRIN 2A.5 Requirements Card */}
+          <Card className="border-primary">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-primary" />
+                PRIN 2A.5: Ongoing Monitoring and Testing Requirements
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-semibold mb-2">Regular Review Obligation</h4>
+                  <ul className="text-sm space-y-1 text-muted-foreground">
+                    <li>• Strategies must be reviewed for ongoing appropriateness</li>
+                    <li>• Controls must be tested for operating effectiveness</li>
+                    <li>• Outcomes must be monitored continuously</li>
+                    <li>• Updates required when circumstances change</li>
+                  </ul>
+                </div>
+                <div className="p-4 border rounded-lg">
+                  <h4 className="font-semibold mb-2">Testing Frequency Expectations</h4>
+                  <ul className="text-sm space-y-1 text-muted-foreground">
+                    <li>• High-risk areas: Quarterly or more frequent</li>
+                    <li>• Standard controls: Semi-annual minimum</li>
+                    <li>• All outcomes: Annual comprehensive review</li>
+                    <li>• Triggered testing: After significant changes</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="p-3 bg-warning/10 border border-warning/30 rounded-lg">
+                <p className="text-sm font-medium text-warning">FCA Expectation: Firms cannot rely solely on annual reviews. Ongoing monitoring with appropriate escalation is required.</p>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* QC vs OT Comparison Table */}
           <Card>
@@ -941,6 +982,42 @@ export default function CDM2ATestingAssurancePart1() {
               title="Three Lines of Defence Model"
               description="Visual diagram and documentation of 3LOD roles and responsibilities for Consumer Duty testing"
               format="PowerPoint"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="Consumer Duty Findings Register"
+              description="Comprehensive register for tracking all testing findings including severity rating, root cause, outcome impact, owner assignment, and status tracking with aging analysis"
+              format="Excel"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="Remediation Action Tracker"
+              description="Detailed tracker for remediation actions with due dates, progress updates, evidence requirements, escalation triggers, and Board reporting integration"
+              format="Excel"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="Consumer Duty Assurance Map"
+              description="Visual assurance map showing coverage across all four outcomes, three lines of defence responsibilities, testing frequency, and assurance gaps analysis"
+              format="Excel"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="First-Line Self-Assessment Template"
+              description="Structured self-assessment framework for business units covering control operation, outcome delivery evidence, and escalation triggers"
+              format="Word"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="Second-Line Review Protocol"
+              description="Independent review checklist for Compliance/Risk functions covering first-line challenge, control testing, and MI validation procedures"
+              format="Word"
+              onPreview={() => {}}
+            />
+            <TemplateCard
+              title="Internal Audit Scope Template"
+              description="Audit planning template aligned with PRIN 2A.5 covering outcome testing scope, sampling methodology, and regulatory alignment checklist"
+              format="Word"
               onPreview={() => {}}
             />
           </div>
