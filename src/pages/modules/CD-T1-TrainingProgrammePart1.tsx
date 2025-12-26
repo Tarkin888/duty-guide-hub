@@ -77,7 +77,7 @@ export default function CDT1TrainingProgrammePart1() {
         <div className="flex gap-6 text-sm text-muted-foreground flex-wrap">
           <span className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            Duration: 12-16 weeks (programme development)
+            Duration: 6-8 weeks (design and rollout)
           </span>
           <span className="flex items-center gap-2">
             <GraduationCap className="h-4 w-4" />
@@ -516,6 +516,12 @@ export default function CDT1TrainingProgrammePart1() {
         <TabsContent value="templates" className="space-y-6">
           <div className="grid md:grid-cols-2 gap-4">
             <TemplateCard
+              title="Consumer Duty Training Matrix"
+              description="Comprehensive role-based training matrix mapping all roles (Board, SMFs, first line, customer-facing, product design, distribution) to training requirements, frequencies, and competency levels"
+              format="Excel"
+              onDownload={() => handleDownload("Consumer Duty Training Matrix")}
+            />
+            <TemplateCard
               title="Training Needs Analysis Report"
               description="Comprehensive Excel workbook with role inventory, current competency assessment, knowledge/skills/attitude gaps, priorities, and recommendations"
               format="Excel"
@@ -526,6 +532,18 @@ export default function CDT1TrainingProgrammePart1() {
               description="Matrix showing objectives by Bloom's Taxonomy level for each role group, with assessment methods and Consumer Duty links"
               format="Excel"
               onDownload={() => handleDownload("Learning Objectives Matrix")}
+            />
+            <TemplateCard
+              title="Consumer Duty Quiz Question Bank"
+              description="50+ multiple choice and scenario-based quiz questions covering Consumer Principle, four outcomes, and reasonable grounds with answer keys and scoring rubrics"
+              format="Word"
+              onDownload={() => handleDownload("Quiz Question Bank")}
+            />
+            <TemplateCard
+              title="Consumer Duty Scenario Library"
+              description="30+ practical scenarios for training exercises covering all four outcomes, vulnerability situations, edge cases, and escalation decisions with facilitator discussion guides"
+              format="Word"
+              onDownload={() => handleDownload("Scenario Library")}
             />
             <TemplateCard
               title="Role-Based Training Curriculum Framework"
@@ -563,6 +581,18 @@ export default function CDT1TrainingProgrammePart1() {
               format="Excel"
               onDownload={() => handleDownload("Competency Assessment Framework")}
             />
+            <TemplateCard
+              title="Training Records Log"
+              description="Individual and team training records tracker with completion dates, assessment scores, certification status, and refresher due dates"
+              format="Excel"
+              onDownload={() => handleDownload("Training Records Log")}
+            />
+            <TemplateCard
+              title="6-8 Week Implementation Timeline"
+              description="Accelerated implementation timeline with week-by-week activities for rapid training design and initial rollout phases"
+              format="Excel"
+              onDownload={() => handleDownload("6-8 Week Implementation Timeline")}
+            />
           </div>
         </TabsContent>
 
@@ -597,17 +627,20 @@ export default function CDT1TrainingProgrammePart1() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Timeline Achievement (Part 1)</CardTitle>
+              <CardTitle>6-8 Week Accelerated Timeline (Part 1)</CardTitle>
+              <CardDescription>Design and initial rollout phases</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {[
-                  { milestone: "Training Needs Analysis completed", week: "Week 3" },
-                  { milestone: "Learning objectives defined", week: "Week 4" },
-                  { milestone: "Curriculum framework approved", week: "Week 6" },
-                  { milestone: "E-learning modules developed", week: "Week 10" },
-                  { milestone: "Classroom materials developed", week: "Week 12" },
-                  { milestone: "Pilot training ready to commence", week: "Week 14" },
+                  { milestone: "Training Needs Analysis completed", week: "Week 1-2" },
+                  { milestone: "Learning objectives defined by role", week: "Week 2" },
+                  { milestone: "Core curriculum framework approved", week: "Week 3" },
+                  { milestone: "E-learning modules developed", week: "Week 4-5" },
+                  { milestone: "Classroom materials developed", week: "Week 5-6" },
+                  { milestone: "Quiz questions and scenarios finalized", week: "Week 6" },
+                  { milestone: "Pilot training conducted and refined", week: "Week 7" },
+                  { milestone: "Initial rollout commenced", week: "Week 8" },
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between p-3 rounded-lg border">
                     <span className="text-sm font-medium">{item.milestone}</span>
