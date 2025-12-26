@@ -1115,53 +1115,88 @@ export default function CDM4ContinuousImprovementPart1() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <TemplateCard
-                    title="Template 1: Continuous Improvement Governance Charter"
-                    description="Defines ownership, accountability, governance model, and improvement targets by outcome area."
-                    format="Word"
+                    title="Consumer Duty Improvement Register"
+                    description="Central register tracking all improvement initiatives with prioritisation, ownership, status, expected benefits, and completion tracking across all four outcomes"
+                    format="Excel"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
                   
                   <TemplateCard
-                    title="Template 2: Improvement Suggestion Form"
+                    title="Root Cause Analysis Template"
+                    description="Comprehensive RCA template with 5 Whys, fishbone diagram, customer impact assessment, remediation actions, and effectiveness monitoring"
+                    format="Word"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Lessons Learned Log"
+                    description="Searchable repository for capturing positive and negative lessons from complaints, projects, regulatory feedback, and customer insights with quarterly review structure"
+                    format="Excel"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Regulatory Horizon Scanning Tracker"
+                    description="Tracker for monitoring FCA publications, Dear CEO letters, multi-firm reviews, enforcement actions, and industry developments with impact assessment and action planning"
+                    format="Excel"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Annual Effectiveness Review Template"
+                    description="Structured annual review template assessing Consumer Duty framework effectiveness, maturity progression, gap analysis, and improvement priorities for the year ahead"
+                    format="Word"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Continuous Improvement Governance Charter"
+                    description="Defines ownership, accountability, governance model, and improvement targets by outcome area."
+                    format="Word"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Improvement Suggestion Form"
                     description="Staff suggestion capture form with triage process, metrics tracking, and feedback loop."
                     format="Word"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
 
                   <TemplateCard
-                    title="Template 3: Annual Review Cycle Calendar"
+                    title="Annual Review Cycle Calendar"
                     description="12-month calendar with quarterly milestones, annual report cycle, and review touchpoints."
                     format="Excel"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
 
                   <TemplateCard
-                    title="Template 4: Trend Analysis Dashboard Specification"
+                    title="Innovation & Best Practice Log"
+                    description="Register for capturing innovative approaches, industry best practices, and opportunities to enhance customer outcomes beyond minimum compliance"
+                    format="Excel"
+                    onDownload={() => toast.info("Template download - coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Trend Analysis Dashboard Specification"
                     description="KPI trend charts, trigger points, automation requirements, and visualisation standards."
                     format="Excel"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
 
                   <TemplateCard
-                    title="Template 5: Issue Flagging and Escalation Protocol"
+                    title="Issue Flagging and Escalation Protocol"
                     description="Early warning indicators, automated alerts, escalation paths, and 'stop the line' authority."
                     format="Word"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
 
                   <TemplateCard
-                    title="Template 6: Root Cause Analysis Template"
-                    description="Comprehensive RCA template with 5 Whys, fishbone diagram, outputs checklist, and action tracking."
-                    format="Word"
-                    onDownload={() => toast.info("Template download - coming soon")}
-                  />
-
-                  <TemplateCard
-                    title="Template 7: Lessons Learned Capture Form"
-                    description="Standardised lesson capture with categorisation, searchable fields, and quarterly review structure."
-                    format="Word"
+                    title="PDCA Cycle Tracker"
+                    description="Plan-Do-Check-Act cycle tracking template for each improvement initiative with stage gates, evidence requirements, and outcome measurement"
+                    format="Excel"
                     onDownload={() => toast.info("Template download - coming soon")}
                   />
                 </div>
