@@ -1043,10 +1043,10 @@ export default function CDT2CommunicationsChangePart1() {
 
           {/* Templates Tab */}
           <TabsContent value="templates" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               <TemplateCard
-                title="Stakeholder Mapping Matrix"
-                description="Excel workbook with stakeholder groups, awareness levels, impact assessment, priority quadrants, and communication approach planning"
+                title="Stakeholder Register & Mapping Matrix"
+                description="Comprehensive stakeholder register with influence/impact scoring, current sentiment, engagement strategy, primary contacts, and priority quadrant auto-calculation"
                 format="Excel"
               />
               <TemplateCard
@@ -1055,13 +1055,38 @@ export default function CDT2CommunicationsChangePart1() {
                 format="Excel"
               />
               <TemplateCard
+                title="Change Impact Heatmap"
+                description="Visual heatmap showing change intensity by department with RAG status, readiness scores, and intervention priorities across all Consumer Duty workstreams"
+                format="Excel"
+              />
+              <TemplateCard
+                title="Communications Calendar (12-Month)"
+                description="Detailed communications calendar with activities, channels, audiences, key messages, owners, frequency, and success measures mapped across 12 months"
+                format="Excel"
+              />
+              <TemplateCard
                 title="Communications Strategy Document"
                 description="Word template covering objectives, audiences, core messages, channels, calendar, roles, success measures, and governance"
                 format="Word"
               />
               <TemplateCard
+                title="Change Readiness Survey"
+                description="20-question survey template assessing awareness, understanding, capability, motivation, and leadership support with scoring rubric and analysis framework"
+                format="Word"
+              />
+              <TemplateCard
+                title="Resistance Analysis Template"
+                description="Structured analysis of resistance types, sources, intensity levels, root causes, and tailored intervention strategies by stakeholder group"
+                format="Excel"
+              />
+              <TemplateCard
                 title="Change Champion Charter"
                 description="Complete charter with role definition, responsibilities, selection criteria, benefits, network structure, and FAQ"
+                format="Word"
+              />
+              <TemplateCard
+                title="Change Agent Network Toolkit"
+                description="Toolkit for change agents including briefing materials, conversation guides, escalation protocols, feedback collection forms, and recognition programme"
                 format="Word"
               />
               <TemplateCard
@@ -1073,6 +1098,11 @@ export default function CDT2CommunicationsChangePart1() {
                 title="Resistance Management Protocol"
                 description="Comprehensive protocol with resistance types, early warning signals, intervention ladder, escalation process, and tracking log"
                 format="Word"
+              />
+              <TemplateCard
+                title="Change Success Measurement Dashboard"
+                description="Dashboard template tracking change adoption metrics, sentiment trends, readiness progression, and behaviour change indicators with executive summary"
+                format="Excel"
               />
             </div>
 
