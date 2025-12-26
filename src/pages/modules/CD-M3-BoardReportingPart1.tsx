@@ -997,27 +997,51 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Templates & Tools Tab */}
           <TabsContent value="templates" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <TemplateCard
+                title="Annual Board Report Template"
+                description="Complete master document with executive summary, four outcomes analysis, reasonable grounds evidence, vulnerable customers, forward look strategy, and board attestation sections per FG22/5 para 10"
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="Quarterly MI Dashboard Pack"
+                description="Structured quarterly MI pack with outcome-by-outcome analysis, trend charts, RAG status, variance explanations, exception highlights, and action tracking"
+                format="Excel"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="Exception Escalation Form"
+                description="Standardised form for escalating Consumer Duty exceptions to Board/ExCo with impact assessment, root cause analysis, immediate actions, and remediation timeline"
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="SMF Attestation Statement Templates"
+                description="Individual SMF attestation templates for CEO, CCO, COO, and CFO with role-specific wording, evidence requirements, and annual/quarterly certification options"
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="Consumer Duty Board Paper Template"
+                description="Standard board paper format for Consumer Duty matters with purpose, background, analysis, options, recommendation, and decision sections aligned to board governance"
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
               <TemplateCard
                 title="Board Reporting Framework Document"
                 description="Comprehensive governance structure, responsibilities, and standards for Consumer Duty reporting to the board and executive. Includes reporting hierarchy, SMF accountability matrix, and quality standards."
                 format="Word"
-                onDownload={() => toast.success("Template download started")}
-                onPreview={() => toast.info("Preview functionality coming soon")}
-              />
-
-              <TemplateCard
-                title="Annual Board Report Template"
-                description="Complete master document structure with detailed section specifications covering executive summary, four outcomes analysis, vulnerable customers, distribution chain, culture, and attestation."
-                format="Word"
-                onDownload={() => toast.success("Template download started")}
-                onPreview={() => toast.info("Preview functionality coming soon")}
-              />
-
-              <TemplateCard
-                title="Quarterly Executive Dashboard Template"
-                description="Streamlined dashboard showing 15-20 critical KPIs with RAG ratings, trend indicators, and drill-down capability for each outcome area."
-                format="Excel"
                 onDownload={() => toast.success("Template download started")}
                 onPreview={() => toast.info("Preview functionality coming soon")}
               />
@@ -1039,8 +1063,32 @@ export default function CDM3BoardReportingPart1() {
               />
 
               <TemplateCard
+                title="Board Challenge Questions Guide"
+                description="Guide for NEDs and Board members with probing questions for each outcome area, evidence expectations, and red flags to identify during oversight"
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="Regulatory Reporting Obligations Tracker"
+                description="Tracker for FCA notifications, regulatory returns, s166 responses, and other regulatory reporting obligations related to Consumer Duty"
+                format="Excel"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
                 title="MI Quality Standards Document"
                 description="Requirements for all Consumer Duty MI including accuracy, timeliness, relevance, consistency, completeness, and contextual standards."
+                format="Word"
+                onDownload={() => toast.success("Template download started")}
+                onPreview={() => toast.info("Preview functionality coming soon")}
+              />
+
+              <TemplateCard
+                title="Forward Look Strategy Template"
+                description="Template for documenting the firm's forward-looking Consumer Duty strategy including planned improvements, emerging risks, and strategic alignment"
                 format="Word"
                 onDownload={() => toast.success("Template download started")}
                 onPreview={() => toast.info("Preview functionality coming soon")}
