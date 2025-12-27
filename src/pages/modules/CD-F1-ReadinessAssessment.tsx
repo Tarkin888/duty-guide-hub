@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -12,6 +11,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { TrackedTabs, TrackedTabsList, TrackedTabsTrigger, TrackedTabsContent } from "@/components/modules/TrackedTabs";
 import { toast } from "sonner";
 import { useProgressStore } from "@/stores/progressStore";
 
@@ -96,18 +96,18 @@ export default function CDf1ReadinessAssessment() {
       <Separator />
 
       {/* Tabbed Content */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
-          <TabsTrigger value="steps">Implementation</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
-          <TabsTrigger value="success">Success Criteria</TabsTrigger>
-          <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
-        </TabsList>
+      <TrackedTabs moduleId={MODULE_ID} defaultValue="overview" className="space-y-6">
+        <TrackedTabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+          <TrackedTabsTrigger value="overview">Overview</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="regulatory">Regulatory</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="steps">Implementation</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="templates">Templates</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="success">Success Criteria</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="pitfalls">Pitfalls</TrackedTabsTrigger>
+        </TrackedTabsList>
 
         {/* TAB 1: OVERVIEW */}
-        <TabsContent value="overview" className="space-y-6">
+        <TrackedTabsContent value="overview" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -191,10 +191,10 @@ export default function CDf1ReadinessAssessment() {
               ))}
             </CardContent>
           </Card>
-        </TabsContent>
+        </TrackedTabsContent>
 
         {/* TAB 2: REGULATORY FOUNDATION */}
-        <TabsContent value="regulatory" className="space-y-6">
+        <TrackedTabsContent value="regulatory" className="space-y-6">
           <RegulatoryQuote
             source="FCA"
             reference="FG22/5, Para 4.2"
@@ -288,10 +288,10 @@ export default function CDf1ReadinessAssessment() {
               </Alert>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TrackedTabsContent>
 
         {/* TAB 3: IMPLEMENTATION STEPS */}
-        <TabsContent value="steps" className="space-y-6">
+        <TrackedTabsContent value="steps" className="space-y-6">
           <Alert className="bg-primary/5 border-primary/50">
             <AlertCircle className="h-4 w-4 text-primary" />
             <AlertDescription>
@@ -568,10 +568,10 @@ export default function CDf1ReadinessAssessment() {
               onClick: () => handleDownload("Executive Summary Template")
             }}
           />
-        </TabsContent>
+        </TrackedTabsContent>
 
         {/* TAB 4: TEMPLATES & TOOLS */}
-        <TabsContent value="templates" className="space-y-6">
+        <TrackedTabsContent value="templates" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Available Templates & Tools</CardTitle>
@@ -621,10 +621,10 @@ export default function CDf1ReadinessAssessment() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TrackedTabsContent>
 
         {/* TAB 5: SUCCESS CRITERIA */}
-        <TabsContent value="success" className="space-y-6">
+        <TrackedTabsContent value="success" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Success Criteria</CardTitle>
@@ -675,10 +675,10 @@ export default function CDf1ReadinessAssessment() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TrackedTabsContent>
 
         {/* TAB 6: COMMON PITFALLS */}
-        <TabsContent value="pitfalls" className="space-y-6">
+        <TrackedTabsContent value="pitfalls" className="space-y-6">
           <Alert className="bg-warning/5 border-warning/50">
             <AlertCircle className="h-4 w-4 text-warning" />
             <AlertDescription>
@@ -751,8 +751,8 @@ export default function CDf1ReadinessAssessment() {
               </ul>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        </TrackedTabsContent>
+      </TrackedTabs>
     </div>
   );
 }
