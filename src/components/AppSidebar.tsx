@@ -19,6 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarFilter, useSidebarFilter, FilterOption } from "@/components/SidebarFilter";
+import { SidebarSearch, useSidebarSearch, matchesSearch, HighlightText } from "@/components/SidebarSearch";
 import { getProgress } from "@/lib/storage";
 import { useState, useEffect } from "react";
 
@@ -112,9 +113,10 @@ interface NavItemProps {
   isCollapsed: boolean;
   isMobile: boolean;
   isActive: boolean;
+  searchTerm?: string;
 }
 
-function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive }: NavItemProps) {
+function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm = "" }: NavItemProps) {
   const baseClasses = cn(
     "flex items-center gap-3 px-3 py-2 rounded-md min-h-[44px] transition-all duration-200 w-full",
     "hover:bg-sidebar-accent text-sidebar-foreground",
@@ -132,7 +134,11 @@ function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive }: NavItemPr
     >
       <item.icon className="h-5 w-5 shrink-0" />
       {(!isCollapsed || isMobile) && (
-        <span className="transition-opacity duration-300">{item.title}</span>
+        <HighlightText 
+          text={item.title} 
+          highlight={searchTerm}
+          className="transition-opacity duration-300"
+        />
       )}
     </NavLink>
   );
@@ -165,6 +171,7 @@ export function AppSidebar() {
   const location = useLocation();
   const isCollapsed = state === "collapsed";
   const { filter, setFilter } = useSidebarFilter();
+  const { search, setSearch } = useSidebarSearch();
   const [progress, setProgress] = useState(() => getProgress());
 
   // Listen for progress updates
@@ -206,9 +213,9 @@ export function AppSidebar() {
     return status === filter;
   };
 
-  // Get filtered items for a group
+  // Get filtered items for a group (filter + search)
   const getFilteredItems = (items: NavigationItem[]): NavigationItem[] => {
-    return items.filter(matchesFilter);
+    return items.filter(item => matchesFilter(item) && matchesSearch(item, search));
   };
 
   // Check if group has any matching items
@@ -262,6 +269,9 @@ export function AppSidebar() {
         )}
       </SidebarHeader>
 
+      {/* Search */}
+      <SidebarSearch value={search} onChange={setSearch} isCollapsed={isCollapsed} />
+
       {/* Filter Control */}
       <SidebarFilter value={filter} onChange={setFilter} isCollapsed={isCollapsed} />
 
@@ -304,6 +314,7 @@ export function AppSidebar() {
                                     isCollapsed={isCollapsed}
                                     isMobile={isMobile}
                                     isActive={isActive}
+                                    searchTerm={search}
                                   />
                                 </SidebarMenuButton>
                               </SidebarMenuItem>
@@ -327,6 +338,7 @@ export function AppSidebar() {
                       isCollapsed={isCollapsed}
                       isMobile={isMobile}
                       isActive={isActive}
+                      searchTerm={search}
                     />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
