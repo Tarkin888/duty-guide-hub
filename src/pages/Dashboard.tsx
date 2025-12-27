@@ -193,6 +193,64 @@ export default function Dashboard() {
     return completionDate;
   }, [modules, storeStartDate, avgDaysPerModule]);
 
+  // Dynamic completion estimation with velocity calculation
+  const completionEstimate = useMemo(() => {
+    const completedModules = Object.values(modules).filter(m => m.status === 'complete');
+    const completedCount = completedModules.length;
+    const remainingModules = TOTAL_MODULES - completedCount;
+    
+    if (remainingModules <= 0) {
+      return { weeks: 0, methodology: 'All modules completed!', isComplete: true };
+    }
+    
+    if (completedCount === 0 || !storeStartDate) {
+      return { weeks: null, methodology: 'Start completing modules to see an estimate.', isComplete: false };
+    }
+
+    // Calculate velocity: modules completed in last 4 weeks
+    const fourWeeksAgo = new Date();
+    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
+    
+    const recentCompletions = completedModules.filter(m => {
+      if (!m.completedAt) return false;
+      return new Date(m.completedAt) >= fourWeeksAgo;
+    });
+    
+    const recentVelocity = recentCompletions.length; // modules in last 4 weeks
+    const weeklyVelocity = recentVelocity / 4; // modules per week
+    
+    // Calculate average duration from all completed modules
+    const start = new Date(storeStartDate);
+    const now = new Date();
+    const totalDays = Math.max(1, Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+    const avgDays = totalDays / completedCount;
+    
+    // Weight recent velocity more heavily if we have enough data
+    let estimatedWeeks: number;
+    let methodologyDetail: string;
+    
+    if (recentVelocity >= 2 && weeklyVelocity > 0) {
+      // Use weighted average: 70% recent velocity, 30% overall average
+      const velocityBasedWeeks = remainingModules / weeklyVelocity;
+      const avgBasedWeeks = (remainingModules * avgDays) / 7;
+      estimatedWeeks = Math.ceil((velocityBasedWeeks * 0.7) + (avgBasedWeeks * 0.3));
+      methodologyDetail = `Based on ${recentVelocity} modules completed in the last 4 weeks (${weeklyVelocity.toFixed(1)}/week) weighted with your overall average of ${avgDays.toFixed(1)} days per module.`;
+    } else {
+      // Use overall average only
+      estimatedWeeks = Math.ceil((remainingModules * avgDays) / 7);
+      methodologyDetail = `Based on ${completedCount} completed modules over ${totalDays} days (average ${avgDays.toFixed(1)} days per module). Complete more modules for velocity-based estimates.`;
+    }
+    
+    return {
+      weeks: Math.max(1, estimatedWeeks),
+      methodology: methodologyDetail,
+      isComplete: false,
+      remainingModules,
+      completedCount,
+      weeklyVelocity: weeklyVelocity > 0 ? weeklyVelocity.toFixed(1) : null,
+    };
+  }, [modules, storeStartDate]);
+
   // Category progress
   const foundationProgress = getCategoryProgress('foundation');
   const governanceProgress = getCategoryProgress('governance');
@@ -207,10 +265,6 @@ export default function Dashboard() {
 
 
   const totalTemplates = 40;
-
-  const estimatedDaysRemaining = overallProgress.percentage > 0 && daysSinceStart > 0
-    ? Math.ceil((daysSinceStart / overallProgress.percentage) * (100 - overallProgress.percentage))
-    : 0;
 
   const mostUsedTemplates = [
     "Consumer Duty Assessment Template",
@@ -351,13 +405,41 @@ export default function Dashboard() {
                   />
                 </div>
 
-                {estimatedDaysRemaining > 0 && (
+                {completionEstimate.weeks !== null && !completionEstimate.isComplete && (
                   <div className="pt-4 border-t">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span>
-                        Estimated {estimatedDaysRemaining} days to completion at current pace
-                      </span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground cursor-help">
+                            <Clock className="h-4 w-4" />
+                            <span>
+                              Estimated {completionEstimate.weeks} {completionEstimate.weeks === 1 ? 'week' : 'weeks'} to completion
+                            </span>
+                            <AlertCircle className="h-3.5 w-3.5 opacity-60" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="max-w-xs p-3">
+                          <div className="space-y-2">
+                            <p className="font-medium text-sm">Calculation methodology</p>
+                            <p className="text-xs text-muted-foreground">{completionEstimate.methodology}</p>
+                            <div className="text-xs pt-1 border-t border-border/50 space-y-0.5">
+                              <p>• {completionEstimate.remainingModules} modules remaining</p>
+                              <p>• {completionEstimate.completedCount} modules completed</p>
+                              {completionEstimate.weeklyVelocity && (
+                                <p>• Recent velocity: {completionEstimate.weeklyVelocity} modules/week</p>
+                              )}
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                )}
+                {completionEstimate.isComplete && (
+                  <div className="pt-4 border-t">
+                    <div className="flex items-center gap-2 text-sm text-success">
+                      <CheckCircle2 className="h-4 w-4" />
+                      <span>All modules completed!</span>
                     </div>
                   </div>
                 )}
