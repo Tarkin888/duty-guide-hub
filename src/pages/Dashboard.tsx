@@ -5,6 +5,7 @@ import { CircularProgress } from "@/components/CircularProgress";
 import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
 import { ResetProgressModal } from "@/components/ResetProgressModal";
+import { RecommendedPath } from "@/components/RecommendedPath";
 import { 
   BookOpen, 
   Download, 
@@ -547,6 +548,11 @@ export default function Dashboard() {
             </Tooltip>
           </TooltipProvider>
         </div>
+      </div>
+
+      {/* Recommended Path */}
+      <div className="mb-8">
+        <RecommendedPath />
       </div>
 
       {/* Current Priorities & Recent Activity */}
