@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Circle, Clock, Printer, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Printer, ArrowLeft, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { getModuleStatus, updateModuleStatus, addActivity } from '@/lib/storage';
+import { useProgressStore, normalizeModuleId } from '@/stores/progressStore';
+import { format } from 'date-fns';
 
 interface ModuleHeaderProps {
   moduleId: string;
@@ -37,6 +39,12 @@ export const ModuleHeader = ({
 }: ModuleHeaderProps) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<'not-started' | 'in-progress' | 'completed'>('not-started');
+  
+  // Get completion date from progress store
+  const modules = useProgressStore((state) => state.modules);
+  const canonicalId = normalizeModuleId(storageKey);
+  const moduleProgress = modules[canonicalId];
+  const completedAt = moduleProgress?.completedAt;
 
   useEffect(() => {
     const savedStatus = getModuleStatus(storageKey);
@@ -63,6 +71,14 @@ export const ModuleHeader = ({
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const formatCompletionDate = (dateString: string) => {
+    try {
+      return format(new Date(dateString), 'd MMM yyyy');
+    } catch {
+      return null;
+    }
   };
 
   const getStatusBadge = () => {
@@ -135,6 +151,12 @@ export const ModuleHeader = ({
                 )}
                 {owner && (
                   <span>Owner: {owner}</span>
+                )}
+                {status === 'completed' && completedAt && (
+                  <span className="flex items-center gap-1 text-success">
+                    <Calendar className="h-4 w-4" />
+                    Completed on {formatCompletionDate(completedAt)}
+                  </span>
                 )}
               </div>
             </div>
