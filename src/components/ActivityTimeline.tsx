@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock, CheckCircle2, Play, RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export interface Activity {
@@ -49,12 +49,27 @@ export function ActivityTimeline({ activities }: ActivityTimelineProps) {
     }
   };
 
+  const getActivityIcon = (type: Activity["type"]) => {
+    switch (type) {
+      case "module_completed":
+        return <CheckCircle2 className="h-3.5 w-3.5 text-success" />;
+      case "module_started":
+        return <Play className="h-3.5 w-3.5 text-info" />;
+      case "status_updated":
+        return <RefreshCw className="h-3.5 w-3.5 text-warning" />;
+      default:
+        return <Clock className="h-3.5 w-3.5 text-muted-foreground" />;
+    }
+  };
+
   return (
     <div className="space-y-4">
       {activities.map((activity, index) => (
         <div key={activity.id} className="flex gap-3">
           <div className="flex flex-col items-center">
-            <div className={`w-2 h-2 rounded-full ${getActivityColor(activity.type)}`} />
+            <div className={`w-6 h-6 rounded-full ${getActivityColor(activity.type)}/20 flex items-center justify-center`}>
+              {getActivityIcon(activity.type)}
+            </div>
             {index < activities.length - 1 && (
               <div className="w-px h-full bg-border mt-1" />
             )}
