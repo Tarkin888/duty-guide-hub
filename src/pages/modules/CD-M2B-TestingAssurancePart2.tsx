@@ -7,6 +7,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   ClipboardCheck, 
   Shield, 
@@ -1381,6 +1382,8 @@ export default function CDM2BTestingAssurancePart2() {
           Next: CD-M3 Board Reporting
         </Button>
       </div>
+
+      <ModuleInsights moduleCode="CD-M2B" moduleTitle="Testing & Assurance Part 2" />
     </div>
   );
 }

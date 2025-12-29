@@ -8,6 +8,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   FileText, 
   ArrowLeft, 
@@ -1463,6 +1464,8 @@ export default function CDM4ContinuousImprovementPart2() {
           </CardContent>
         </Card>
       </div>
+
+      <ModuleInsights moduleCode="CD-M4B" moduleTitle="Continuous Improvement Part 2" />
     </div>
   );
 }

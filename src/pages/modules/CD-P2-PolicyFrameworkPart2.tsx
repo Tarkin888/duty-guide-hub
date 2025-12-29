@@ -7,6 +7,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   FileText, 
   Clock, 
@@ -1254,6 +1255,7 @@ export default function CDP2PolicyFrameworkPart2() {
           </Button>
         </div>
       </div>
+      <ModuleInsights moduleCode="CD-P2B" moduleTitle="Policy Framework Part 2" />
     </div>
   );
 }

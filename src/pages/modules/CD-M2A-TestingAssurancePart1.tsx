@@ -7,6 +7,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   ClipboardCheck, 
   Shield, 
@@ -1255,6 +1256,8 @@ export default function CDM2ATestingAssurancePart1() {
           </div>
         </TabsContent>
       </Tabs>
+
+      <ModuleInsights moduleCode="CD-M2A" moduleTitle="Testing & Assurance Part 1" />
 
       {/* Navigation */}
       <div className="mt-8 flex justify-between">

@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   ArrowLeft, 
   Target, 
@@ -1378,6 +1379,7 @@ export default function CDP3ImplementationRoadmapPart2() {
           </Button>
         </div>
       </div>
+      <ModuleInsights moduleCode="CD-P3B" moduleTitle="Implementation Roadmap Part 2" />
     </div>
   );
 }

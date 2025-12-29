@@ -11,6 +11,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 import { toast } from "sonner";
 
@@ -1566,6 +1567,8 @@ export default function CDRiskAssessment() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ModuleInsights moduleCode="CD-F3" moduleTitle="Risk Assessment" />
     </div>
   );
 }

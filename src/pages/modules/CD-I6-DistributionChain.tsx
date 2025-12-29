@@ -12,6 +12,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { updateModuleStatus, addActivity } from "@/lib/storage";
 import { toast } from "sonner";
 
@@ -2188,6 +2189,8 @@ export default function CDI6DistributionChain() {
           </Tabs>
         </CardContent>
       </Card>
+
+      <ModuleInsights moduleCode="CD-I6" moduleTitle="Distribution Chain" />
     </div>
   );
 }

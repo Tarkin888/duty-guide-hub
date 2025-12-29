@@ -12,6 +12,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TrackedTabs, TrackedTabsList, TrackedTabsTrigger, TrackedTabsContent } from "@/components/modules/TrackedTabs";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "sonner";
 import { useProgressStore } from "@/stores/progressStore";
 
@@ -753,6 +754,8 @@ export default function CDf1ReadinessAssessment() {
           </Card>
         </TrackedTabsContent>
       </TrackedTabs>
+
+      <ModuleInsights moduleCode="CD-F1" moduleTitle="Readiness Assessment" />
     </div>
   );
 }

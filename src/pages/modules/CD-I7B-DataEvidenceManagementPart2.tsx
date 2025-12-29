@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -1879,6 +1880,8 @@ export default function CDI7BDataEvidenceManagementPart2() {
           </Button>
         </div>
       </main>
+
+      <ModuleInsights moduleCode="CD-I7B" moduleTitle="Data & Evidence Part 2" />
     </div>
   );
 }

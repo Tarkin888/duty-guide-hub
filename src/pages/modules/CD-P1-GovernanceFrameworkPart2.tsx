@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   ArrowLeft, 
   Building2, 
@@ -1247,6 +1248,7 @@ export default function CDP1GovernanceFrameworkPart2() {
           </TabsContent>
         </Tabs>
       </div>
+      <ModuleInsights moduleCode="CD-P1B" moduleTitle="Governance Framework Part 2" />
     </div>
   );
 }

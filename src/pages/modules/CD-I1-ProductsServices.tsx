@@ -13,6 +13,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
@@ -1422,6 +1423,8 @@ export default function CDI1ProductsServices() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <ModuleInsights moduleCode="CD-I1" moduleTitle="Products & Services" />
     </div>
   );
 }
