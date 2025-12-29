@@ -12,6 +12,7 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
@@ -718,6 +719,7 @@ export default function CDT1TrainingProgrammePart1() {
           </div>
         </TabsContent>
       </Tabs>
+      <ModuleInsights moduleCode="CD-T1A" moduleTitle="Training Programme Part 1" />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { ModuleStatusBadge } from "@/components/ModuleStatusBadge";
 import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -1902,6 +1903,8 @@ export default function CDI7ADataEvidenceManagementPart1() {
           </TabsContent>
         </Tabs>
       </main>
+
+      <ModuleInsights moduleCode="CD-I7A" moduleTitle="Data & Evidence Part 1" />
     </div>
   );
 }

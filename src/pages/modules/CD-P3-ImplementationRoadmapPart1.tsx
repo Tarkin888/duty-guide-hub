@@ -10,6 +10,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "sonner";
 
 export default function CDP3ImplementationRoadmapPart1() {
@@ -1551,6 +1552,7 @@ export default function CDP3ImplementationRoadmapPart1() {
           </TabsContent>
         </Tabs>
       </div>
+      <ModuleInsights moduleCode="CD-P3A" moduleTitle="Implementation Roadmap Part 1" />
     </div>
   );
 }

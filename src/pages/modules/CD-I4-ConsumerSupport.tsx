@@ -10,6 +10,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 import { toast as sonnerToast } from "sonner";
@@ -1155,6 +1156,8 @@ export default function CDI4ConsumerSupport() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ModuleInsights moduleCode="CD-I4" moduleTitle="Consumer Support" />
     </div>
   );
 }

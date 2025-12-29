@@ -10,6 +10,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
@@ -1598,6 +1599,8 @@ const CDI3ConsumerUnderstanding = () => {
           </div>
         </CardContent>
       </Card>
+
+      <ModuleInsights moduleCode="CD-I3" moduleTitle="Consumer Understanding" />
       </div>
     </div>
   );

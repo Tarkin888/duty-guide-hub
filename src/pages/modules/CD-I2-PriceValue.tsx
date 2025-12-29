@@ -12,6 +12,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
 
 export default function CDI2PriceValue() {
@@ -1436,6 +1437,8 @@ export default function CDI2PriceValue() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ModuleInsights moduleCode="CD-I2" moduleTitle="Price & Value" />
     </div>
   );
 }

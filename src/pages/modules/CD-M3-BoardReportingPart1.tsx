@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   FileText, 
   ArrowLeft, 
@@ -1670,6 +1671,8 @@ export default function CDM3BoardReportingPart1() {
           </Link>
         </div>
       </div>
+
+      <ModuleInsights moduleCode="CD-M3A" moduleTitle="Board Reporting Part 1" />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft, 
@@ -1394,6 +1395,7 @@ const CDT3ATechnologyRequirementsPart1 = () => {
           </TabsContent>
         </Tabs>
       </main>
+      <ModuleInsights moduleCode="CD-T3A" moduleTitle="Technology Requirements Part 1" />
     </div>
   );
 };

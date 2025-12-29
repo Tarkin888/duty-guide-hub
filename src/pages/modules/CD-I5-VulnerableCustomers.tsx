@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 
 const STORAGE_KEY = "cd-i5-vulnerable-customers";
 
@@ -955,6 +956,8 @@ export default function CDI5VulnerableCustomers() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ModuleInsights moduleCode="CD-I5" moduleTitle="Vulnerable Customers" />
     </div>
   );
 }

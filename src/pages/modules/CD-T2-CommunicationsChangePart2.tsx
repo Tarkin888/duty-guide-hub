@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   MessageSquare, 
   ArrowLeft, 
@@ -942,9 +943,10 @@ export default function CDT2CommunicationsChangePart2() {
             <Button>
               Related: CD-T1 Training Programme →
             </Button>
-          </Link>
+        </Link>
         </div>
       </div>
+      <ModuleInsights moduleCode="CD-T2B" moduleTitle="Communications & Change Part 2" />
     </div>
   );
 }
