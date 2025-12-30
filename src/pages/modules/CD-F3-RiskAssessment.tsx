@@ -12,6 +12,8 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_F3_TEMPLATES } from "@/data/cdF3Templates";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 import { toast } from "sonner";
 
@@ -21,6 +23,16 @@ export default function CDRiskAssessment() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+
+  const handlePreview = (templateId: string) => {
+    const template = CD_F3_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
+  };
 
   const handleMarkComplete = () => {
     updateModuleStatus(STORAGE_KEY, "completed");
@@ -982,26 +994,18 @@ export default function CDRiskAssessment() {
             </Alert>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <TemplateCard
-                title="Template 1: Risk Assessment Project Charter"
-                description="Comprehensive project charter defining governance, scope, methodology, timeline, and resources for the risk assessment. Includes executive summary, governance structure, scope definition, assessment methodology, timeline, resource requirements, success criteria, communication plan, and approvals."
-                format="Word"
-                onDownload={() => console.log("Download Project Charter Template")}
-              />
-
-              <TemplateCard
-                title="Template 2: Risk Identification Worksheet"
-                description="Structured worksheet for systematically capturing risks during outcome-specific workshops. Includes workshop metadata, risk identification table, risk categorization by theme and customer segment, workshop summary with breakdown by severity, and next steps."
-                format="Excel"
-                onDownload={() => console.log("Download Risk Worksheet Template")}
-              />
-
-              <TemplateCard
-                title="Template 3: Foreseeable Harm Scenario Library"
-                description="Reference library of realistic harm scenarios with detailed analysis to guide risk identification across all four outcomes. Includes 5 detailed scenarios (Loyalty Penalty, Vulnerable Customer Data, Digital-Only Exclusion, Complex Exit Fees, Automated Decisions) plus 10-15 additional scenarios covering all outcomes and common harm patterns."
-                format="PDF"
-                onDownload={() => console.log("Download Scenario Library")}
-              />
+              {CD_F3_TEMPLATES.slice(0, 3).map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  title={template.name}
+                  description={template.description}
+                  format={template.fileType}
+                  complexity={template.complexity}
+                  size={template.size}
+                  onDownload={() => toast.success("Downloading Template", { description: `${template.name} will download shortly...` })}
+                  onPreview={() => handlePreview(template.id)}
+                />
+              ))}
 
               <Card className="p-6 border-primary">
                 <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
@@ -1071,40 +1075,18 @@ export default function CDRiskAssessment() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mt-6">
-              <TemplateCard
-                title="Template 4: Impact Assessment Matrix"
-                description="Structured assessment of risk impact across multiple dimensions including customer financial harm, numbers affected, vulnerable customer impact, duration, regulatory impact, reputational damage, and strategic consequences. Excel workbook with scoring guides, individual risk assessments, and automated heat map generation."
-                format="Excel"
-                onDownload={() => console.log("Download Impact Assessment Matrix")}
-              />
-
-              <TemplateCard
-                title="Template 5: Risk Mitigation Action Plan"
-                description="Detailed plan for reducing each identified risk with action tracking, resource summary, risk score progression tracking, and monitoring dashboard. Includes action details (type, owner, resources, timeline, expected impact, success criteria), resource allocation summary, and governance reporting views."
-                format="Excel"
-                onDownload={() => console.log("Download Mitigation Action Plan")}
-              />
-
-              <TemplateCard
-                title="Template 6: Risk Appetite Statement"
-                description="Board-approved statement defining acceptable levels of Consumer Duty risk. Includes overarching risk appetite, appetite by outcome, quantitative risk appetite metrics, scenario-specific appetite, breach management protocols, governance framework, and Board attestation with signatures."
-                format="Word"
-                onDownload={() => console.log("Download Risk Appetite Statement")}
-              />
-
-              <TemplateCard
-                title="Template 7: Board Risk Report Template"
-                description="Quarterly Board report on Consumer Duty risk profile. PowerPoint presentation with executive summary dashboard, risk heat map, EXTREME/HIGH risks deep dives (one slide each), risk movement analysis, emerging risks horizon scan, risk culture indicators, and forward look with priorities and Board decisions required."
-                format="PowerPoint"
-                onDownload={() => console.log("Download Board Risk Report Template")}
-              />
-
-              <TemplateCard
-                title="Template 8: Key Risk Indicators Dashboard"
-                description="Real-time monitoring of risk indicators with thresholds and alerts. Excel workbook with KRI master list, threshold definitions (Green/Amber/Red), current values dashboard with conditional formatting, breach log tracking all threshold violations, trend analysis charts, and automated alerting specifications."
-                format="Excel"
-                onDownload={() => console.log("Download KRI Dashboard Template")}
-              />
+              {CD_F3_TEMPLATES.slice(3).map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  title={template.name}
+                  description={template.description}
+                  format={template.fileType}
+                  complexity={template.complexity}
+                  size={template.size}
+                  onDownload={() => toast.success("Downloading Template", { description: `${template.name} will download shortly...` })}
+                  onPreview={() => handlePreview(template.id)}
+                />
+              ))}
             </div>
 
             <Card className="p-6 bg-accent/5 border-accent mt-6">
@@ -1569,6 +1551,12 @@ export default function CDRiskAssessment() {
       </div>
 
       <ModuleInsights moduleCode="CD-F3" moduleTitle="Risk Assessment" />
+
+      <TemplatePreviewDialog
+        template={previewTemplate}
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+      />
     </div>
   );
 }
