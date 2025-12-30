@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft, Printer, Download, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { TemplateCard } from "@/components/modules/TemplateCard";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
@@ -15,11 +16,14 @@ import { TrackedTabs, TrackedTabsList, TrackedTabsTrigger, TrackedTabsContent } 
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "sonner";
 import { useProgressStore } from "@/stores/progressStore";
+import { CD_F1_TEMPLATES } from "@/data/cdF1Templates";
 
 const MODULE_ID = "cd-f1-readiness";
 
 export default function CDf1ReadinessAssessment() {
   const navigate = useNavigate();
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   
   // Use Zustand store
   const { getModuleStatus, markModuleComplete, markModuleInProgress, updateLastAccessed } = useProgressStore();
@@ -44,6 +48,11 @@ export default function CDf1ReadinessAssessment() {
     toast.success("Downloading Template", {
       description: `${templateName} will download shortly...`,
     });
+  };
+
+  const handlePreview = (template: TemplateDetails) => {
+    setPreviewTemplate(template);
+    setPreviewOpen(true);
   };
 
   return (
@@ -577,48 +586,23 @@ export default function CDf1ReadinessAssessment() {
             <CardHeader>
               <CardTitle>Available Templates & Tools</CardTitle>
               <CardDescription>
-                Downloadable templates to support your readiness assessment
+                Downloadable templates to support your readiness assessment. Click Preview for detailed information about each template.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
-                <TemplateCard
-                  title="Current State Maturity Assessment"
-                  description="5-level maturity assessment framework covering 8 key capability areas with scoring guidance"
-                  format="Excel"
-                  onDownload={() => handleDownload("Maturity Assessment")}
-                  onPreview={() => toast.info("Preview functionality coming soon")}
-                />
-                <TemplateCard
-                  title="Gap Analysis Framework"
-                  description="Comprehensive gap analysis template mapping current state to FCA requirements with RAG rating"
-                  format="Excel"
-                  onDownload={() => handleDownload("Gap Analysis Framework")}
-                />
-                <TemplateCard
-                  title="SWOT Analysis Template"
-                  description="Strategic assessment framework for Consumer Duty readiness with guided prompts"
-                  format="PowerPoint"
-                  onDownload={() => handleDownload("SWOT Analysis")}
-                />
-                <TemplateCard
-                  title="Stakeholder Map Template"
-                  description="Visual mapping template for stakeholder influence and interest analysis"
-                  format="PowerPoint"
-                  onDownload={() => handleDownload("Stakeholder Map")}
-                />
-                <TemplateCard
-                  title="Executive Summary Report"
-                  description="Board-ready report template for presenting assessment findings and recommendations"
-                  format="Word"
-                  onDownload={() => handleDownload("Executive Summary Report")}
-                />
-                <TemplateCard
-                  title="Quick Wins Action Plan"
-                  description="30-day action plan template for tracking immediate improvement initiatives"
-                  format="Excel"
-                  onDownload={() => handleDownload("Quick Wins Action Plan")}
-                />
+                {CD_F1_TEMPLATES.map((template) => (
+                  <TemplateCard
+                    key={template.id}
+                    title={template.name}
+                    description={template.description}
+                    format={template.fileType}
+                    complexity={template.complexity}
+                    size={template.size}
+                    onDownload={() => handleDownload(template.name)}
+                    onPreview={() => handlePreview(template)}
+                  />
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -756,6 +740,12 @@ export default function CDf1ReadinessAssessment() {
       </TrackedTabs>
 
       <ModuleInsights moduleCode="CD-F1" moduleTitle="Readiness Assessment" />
+
+      <TemplatePreviewDialog
+        template={previewTemplate}
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+      />
     </div>
   );
 }

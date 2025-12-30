@@ -8,6 +8,8 @@ interface TemplateCardProps {
   title: string;
   description: string;
   format: "Excel" | "Word" | "PowerPoint" | "PDF";
+  complexity?: "Quick Start" | "Intermediate" | "Advanced";
+  size?: string;
   onDownload?: () => void;
   onPreview?: () => void;
 }
@@ -26,12 +28,18 @@ const formatColors: Record<string, string> = {
   PDF: "bg-destructive/10 text-destructive",
 };
 
-export function TemplateCard({ title, description, format, onDownload, onPreview }: TemplateCardProps) {
+const complexityColors: Record<string, string> = {
+  "Quick Start": "bg-success/10 text-success",
+  "Intermediate": "bg-warning/10 text-warning",
+  "Advanced": "bg-destructive/10 text-destructive",
+};
+
+export function TemplateCard({ title, description, format, complexity, size, onDownload, onPreview }: TemplateCardProps) {
   const Icon = formatIcons[format] || FileText;
   
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardHeader>
+      <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">
@@ -39,9 +47,21 @@ export function TemplateCard({ title, description, format, onDownload, onPreview
             </div>
             <div>
               <CardTitle className="text-lg">{title}</CardTitle>
-              <Badge className={`mt-1 ${formatColors[format]}`} variant="secondary">
-                {format}
-              </Badge>
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <Badge className={formatColors[format]} variant="secondary">
+                  {format}
+                </Badge>
+                {complexity && (
+                  <Badge className={complexityColors[complexity]} variant="secondary">
+                    {complexity}
+                  </Badge>
+                )}
+                {size && (
+                  <Badge variant="outline" className="text-muted-foreground text-xs">
+                    {size}
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
         </div>
