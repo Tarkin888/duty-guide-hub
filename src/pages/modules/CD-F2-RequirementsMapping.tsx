@@ -14,12 +14,16 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_F2_TEMPLATES } from "@/data/cdF2Templates";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
 export default function CDF2RequirementsMapping() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(() => getModuleStatus("cd-f2-requirements"));
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   
   const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
@@ -40,6 +44,14 @@ export default function CDF2RequirementsMapping() {
       title: "Downloading Template",
       description: `${templateName} will download shortly...`,
     });
+  };
+
+  const handlePreview = (templateId: string) => {
+    const template = CD_F2_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
   };
 
   return (
@@ -723,42 +735,18 @@ export default function CDF2RequirementsMapping() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
-                <TemplateCard
-                  title="Regulatory Obligations Register"
-                  description="Complete register of all PRIN 2A requirements with applicability tracking and owner assignment"
-                  format="Excel"
-                  onDownload={() => handleDownload("Obligations Register")}
-                />
-                <TemplateCard
-                  title="Requirements Traceability Matrix"
-                  description="Links regulatory requirements to policies, procedures, controls, testing, and evidence"
-                  format="Excel"
-                  onDownload={() => handleDownload("Traceability Matrix")}
-                />
-                <TemplateCard
-                  title="Target Market Definition Template"
-                  description="Structured template for defining positive and negative target markets for each product"
-                  format="Word"
-                  onDownload={() => handleDownload("Target Market Template")}
-                />
-                <TemplateCard
-                  title="Distribution Chain Mapping Template"
-                  description="Visual tool for mapping distribution chain participants, roles, and information flows"
-                  format="PowerPoint"
-                  onDownload={() => handleDownload("Distribution Chain Map")}
-                />
-                <TemplateCard
-                  title="Four Outcomes Assessment Checklist"
-                  description="Detailed checklist for assessing compliance with each of the Four Outcomes"
-                  format="Excel"
-                  onDownload={() => handleDownload("Four Outcomes Checklist")}
-                />
-                <TemplateCard
-                  title="Fair Value Assessment Framework"
-                  description="Comprehensive methodology for conducting fair value assessments"
-                  format="Excel"
-                  onDownload={() => handleDownload("Fair Value Framework")}
-                />
+                {CD_F2_TEMPLATES.map((template) => (
+                  <TemplateCard
+                    key={template.id}
+                    title={template.name}
+                    description={template.description}
+                    format={template.fileType}
+                    complexity={template.complexity}
+                    size={template.size}
+                    onDownload={() => handleDownload(template.name)}
+                    onPreview={() => handlePreview(template.id)}
+                  />
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -831,6 +819,12 @@ export default function CDF2RequirementsMapping() {
       </Tabs>
 
       <ModuleInsights moduleCode="CD-F2" moduleTitle="Requirements Mapping" />
+
+      <TemplatePreviewDialog
+        template={previewTemplate}
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+      />
     </div>
   );
 }
