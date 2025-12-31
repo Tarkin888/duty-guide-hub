@@ -13,12 +13,16 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_I2_TEMPLATES } from "@/data/cdI2Templates";
 import { useToast } from "@/hooks/use-toast";
 
 export default function CDI2PriceValue() {
   const { toast } = useToast();
   const moduleId = "cd-i2";
   const [status, setStatus] = useState<string>("not-started");
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handleDownload = (templateName: string) => {
     toast({
@@ -27,11 +31,12 @@ export default function CDI2PriceValue() {
     });
   };
 
-  const handlePreview = (templateName: string) => {
-    toast({
-      title: "Preview",
-      description: `Preview functionality for ${templateName} coming soon`,
-    });
+  const handlePreview = (templateId: string) => {
+    const template = CD_I2_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
   };
 
   const handlePrint = () => {
@@ -1148,69 +1153,18 @@ export default function CDI2PriceValue() {
             </Card>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <TemplateCard
-                title="Fair Value Assessment Methodology Document"
-                description="Comprehensive methodology outlining approach, factors, evidence requirements, scoring system, review frequency, and governance"
-                format="Word"
-                onDownload={() => handleDownload("FVA Methodology Document")}
-                onPreview={() => handlePreview("FVA Methodology Document")}
-              />
-
-              <TemplateCard
-                title="Fair Value Assessment Template (Master)"
-                description="Detailed Excel workbook with 8 tabs covering product details, price analysis, benefits analysis, cost analysis, benchmarking, differential outcomes, contextual factors, and governance"
-                format="Excel"
-                onDownload={() => handleDownload("Fair Value Assessment Template")}
-                onPreview={() => handlePreview("Fair Value Assessment Template")}
-              />
-
-              <TemplateCard
-                title="Price Benchmarking Template"
-                description="Comparison table format for competitor pricing analysis with feature matrix, like-for-like adjustments, and market position calculation"
-                format="Excel"
-                onDownload={() => handleDownload("Price Benchmarking Template")}
-                onPreview={() => handlePreview("Price Benchmarking Template")}
-              />
-
-              <TemplateCard
-                title="Value for Money Scorecard"
-                description="One-page summary per product with 5-dimension scores, spider diagram visualization, RAG status, and key strengths/weaknesses"
-                format="PowerPoint"
-                onDownload={() => handleDownload("Value Scorecard")}
-                onPreview={() => handlePreview("Value Scorecard")}
-              />
-
-              <TemplateCard
-                title="Differential Outcomes Analysis Template"
-                description="Segmentation analysis framework showing value by customer segment, variance from average, vulnerable customer impact, and remediation actions"
-                format="Excel"
-                onDownload={() => handleDownload("Differential Outcomes Analysis")}
-                onPreview={() => handlePreview("Differential Outcomes Analysis")}
-              />
-
-              <TemplateCard
-                title="Value Remediation Plan Template"
-                description="Action plan structure for poor value products including root cause analysis, options considered, implementation plan, and customer communication"
-                format="Word"
-                onDownload={() => handleDownload("Remediation Plan")}
-                onPreview={() => handlePreview("Remediation Plan")}
-              />
-
-              <TemplateCard
-                title="FVA Monitoring Dashboard Specification"
-                description="Dashboard design showing products by RAG status, review schedule, overdue reviews, trend analysis, trigger events, and action tracker"
-                format="PowerPoint"
-                onDownload={() => handleDownload("Monitoring Dashboard")}
-                onPreview={() => handlePreview("Monitoring Dashboard")}
-              />
-
-              <TemplateCard
-                title="Board FVA Report Template"
-                description="Executive summary format covering assessment period, findings by RAG status, key issues, remediation status, vulnerable customer considerations, and attestation statement"
-                format="PowerPoint"
-                onDownload={() => handleDownload("Board Report")}
-                onPreview={() => handlePreview("Board Report")}
-              />
+              {CD_I2_TEMPLATES.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  title={template.name}
+                  description={template.description}
+                  format={template.fileType}
+                  complexity={template.complexity}
+                  size={template.size}
+                  onDownload={() => handleDownload(template.name)}
+                  onPreview={() => handlePreview(template.id)}
+                />
+              ))}
             </div>
           </TabsContent>
 
@@ -1439,6 +1393,12 @@ export default function CDI2PriceValue() {
       </div>
 
       <ModuleInsights moduleCode="CD-I2" moduleTitle="Price & Value" />
+
+      <TemplatePreviewDialog
+        template={previewTemplate}
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+      />
     </div>
   );
 }
