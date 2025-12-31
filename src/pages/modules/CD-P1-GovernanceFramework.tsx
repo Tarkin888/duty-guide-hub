@@ -9,6 +9,8 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_P1_TEMPLATES } from "@/data/cdP1Templates";
 import { 
   ArrowLeft, 
   Building2, 
@@ -35,6 +37,8 @@ const MODULE_ID = "cd-p1-governance-framework";
 export default function CDP1GovernanceFramework() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handlePrint = () => {
     window.print();
@@ -46,6 +50,14 @@ export default function CDP1GovernanceFramework() {
 
   const handleTemplateDownload = (templateName: string) => {
     toast.success(`Downloading ${templateName}...`);
+  };
+
+  const handlePreview = (templateId: string) => {
+    const template = CD_P1_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
   };
 
   return (
@@ -1104,62 +1116,25 @@ export default function CDP1GovernanceFramework() {
           {/* TEMPLATES & TOOLS TAB */}
           <TabsContent value="templates" className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
-              <TemplateCard
-                title="Board Consumer Duty Briefing Pack"
-                description="Comprehensive presentation for initial Board session covering regulatory requirements, current state assessment, implementation plan, and governance approach"
-                format="PowerPoint"
-                onDownload={() => handleTemplateDownload("Board Consumer Duty Briefing Pack")}
-              />
-
-              <TemplateCard
-                title="Board Consumer Duty Charter"
-                description="Formal 2-3 page charter documenting Board's role, responsibilities, annual review requirements, Consumer Duty Champion role, and training commitments"
-                format="Word"
-                onDownload={() => handleTemplateDownload("Board Consumer Duty Charter")}
-              />
-
-              <TemplateCard
-                title="SMF Statement of Responsibilities - Consumer Duty Clauses"
-                description="Template clauses to insert into SMF SoRs for CEO, Head of Product, Head of Customer Service, and other relevant roles"
-                format="Word"
-                onDownload={() => handleTemplateDownload("SMF Consumer Duty Clauses")}
-              />
-
-              <TemplateCard
-                title="CDOC Terms of Reference"
-                description="Comprehensive Terms of Reference for Consumer Duty Oversight Committee including purpose, membership, responsibilities, authorities, and reporting"
-                format="Word"
-                onDownload={() => handleTemplateDownload("CDOC Terms of Reference")}
-              />
-
-              <TemplateCard
-                title="Three Lines of Defence Responsibilities Matrix"
-                description="Table format showing Consumer Duty responsibilities by Line for each key activity (FVAs, target markets, testing, monitoring, etc.)"
-                format="Excel"
-                onDownload={() => handleTemplateDownload("Three Lines Matrix")}
-              />
-
-              <TemplateCard
-                title="RACI Matrix - Consumer Duty Implementation (Initial)"
-                description="Excel workbook with initial RACI for implementation deliverables, Four Outcomes, cross-cutting activities, and governance"
-                format="Excel"
-                onDownload={() => handleTemplateDownload("RACI Matrix Initial")}
-              />
-
-              <TemplateCard
-                title="Escalation Pathway Framework"
-                description="Document and visual flowchart showing escalation levels, triggers, thresholds, notification requirements, and decision authority"
-                format="Word"
-                onDownload={() => handleTemplateDownload("Escalation Pathway Framework")}
-              />
-
-              <TemplateCard
-                title="Governance Meeting Calendar"
-                description="12-month calendar showing all governance touchpoints including Board, CDOC, Working Groups, key deliverables, and training sessions"
-                format="Excel"
-                onDownload={() => handleTemplateDownload("Governance Meeting Calendar")}
-              />
+              {CD_P1_TEMPLATES.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  title={template.name}
+                  description={template.description}
+                  format={template.fileType}
+                  complexity={template.complexity}
+                  size={template.size}
+                  onDownload={() => handleTemplateDownload(template.name)}
+                  onPreview={() => handlePreview(template.id)}
+                />
+              ))}
             </div>
+
+            <TemplatePreviewDialog
+              template={previewTemplate}
+              open={previewOpen}
+              onOpenChange={setPreviewOpen}
+            />
 
             {/* Template Details */}
             <Accordion type="single" collapsible className="space-y-4">
