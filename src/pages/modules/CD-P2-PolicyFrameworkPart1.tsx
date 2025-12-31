@@ -10,6 +10,8 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_P2_TEMPLATES } from "@/data/cdP2Templates";
 import { 
   FileText, 
   Clock, 
@@ -39,6 +41,8 @@ const CDP2PolicyFrameworkPart1 = () => {
   const [notes, setNotes] = useState(() => {
     return localStorage.getItem("cd-p2-part1-notes") || "";
   });
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handleNotesChange = (value: string) => {
     setNotes(value);
@@ -47,6 +51,14 @@ const CDP2PolicyFrameworkPart1 = () => {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handlePreview = (templateId: string) => {
+    const template = CD_P2_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
   };
 
   return (
@@ -896,102 +908,25 @@ const CDP2PolicyFrameworkPart1 = () => {
           {/* Templates & Tools Tab */}
           <TabsContent value="templates" className="space-y-6">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <TemplateCard
-                title="Consumer Duty Master Policy Document"
-                description="Comprehensive 25-page policy template with all 10 sections including executive summary, regulatory requirements, governance, four outcomes, and continuous improvement"
-                format="Word"
-                onDownload={() => console.log("Download Master Policy")}
-                onPreview={() => console.log("Preview Master Policy")}
-              />
-
-              <TemplateCard
-                title="Policy Development Project Plan"
-                description="Gantt chart template showing 4 phases across 7 weeks with milestones, activities, dependencies, owners, and RAG status"
-                format="Excel"
-                onDownload={() => console.log("Download Project Plan")}
-                onPreview={() => console.log("Preview Project Plan")}
-              />
-
-              <TemplateCard
-                title="Policy Architecture Map"
-                description="Visual diagram showing four-level hierarchy, all policies by level, relationships, ownership, review frequencies, and framework integration"
-                format="PowerPoint"
-                onDownload={() => console.log("Download Architecture Map")}
-                onPreview={() => console.log("Preview Architecture Map")}
-              />
-
-              <TemplateCard
-                title="Policy Ownership Matrix"
-                description="Table format tracking policy name, level, SMF accountable, operational owner, review frequency, last/next review dates, and status"
-                format="Excel"
-                onDownload={() => console.log("Download Ownership Matrix")}
-                onPreview={() => console.log("Preview Ownership Matrix")}
-              />
-
-              <TemplateCard
-                title="Oversight Committee Terms of Reference"
-                description="Comprehensive TOR including purpose, authority, membership, quorum, meeting frequency, agenda structure, reporting obligations, and key responsibilities"
-                format="Word"
-                onDownload={() => console.log("Download Committee TOR")}
-                onPreview={() => console.log("Preview Committee TOR")}
-              />
-
-              <TemplateCard
-                title="SMF Consumer Duty Responsibilities Policy"
-                description="Policy template covering prescribed responsibility allocation, SMF-specific expectations by outcome, reasonable steps interpretation, and attestation requirements"
-                format="Word"
-                onDownload={() => console.log("Download SMF Policy")}
-                onPreview={() => console.log("Preview SMF Policy")}
-              />
-
-              <TemplateCard
-                title="Policy Development Standards"
-                description="Standards document specifying template structure, plain language standards (Flesch >60), version numbering rules, review triggers, and quality criteria"
-                format="Word"
-                onDownload={() => console.log("Download Standards")}
-                onPreview={() => console.log("Preview Standards")}
-              />
-
-              <TemplateCard
-                title="Policy Version Control Log"
-                description="Excel tracker with policy reference, version, date, author, reviewer, approver, change summary, review due date, status, and file location"
-                format="Excel"
-                onDownload={() => console.log("Download Version Log")}
-                onPreview={() => console.log("Preview Version Log")}
-              />
-
-              <TemplateCard
-                title="Policy Approval Workflow Diagram"
-                description="Process map showing Draft → Review → Consultation → Revision → Approval → Publication → Communication → Monitoring with decision points"
-                format="PowerPoint"
-                onDownload={() => console.log("Download Workflow")}
-                onPreview={() => console.log("Preview Workflow")}
-              />
-
-              <TemplateCard
-                title="Policy Communication Strategy Template"
-                description="Communication plan including objectives, target audiences, key messages, channels, timeline, responsibilities, success measures, and feedback mechanisms"
-                format="Word"
-                onDownload={() => console.log("Download Comms Strategy")}
-                onPreview={() => console.log("Preview Comms Strategy")}
-              />
-
-              <TemplateCard
-                title="Policy Breach Register"
-                description="Excel log tracking date, policy breached, description, severity, impact, root cause, owner, corrective action, due date, status, and closure"
-                format="Excel"
-                onDownload={() => console.log("Download Breach Register")}
-                onPreview={() => console.log("Preview Breach Register")}
-              />
-
-              <TemplateCard
-                title="Policy Exception Request Form"
-                description="Form template for requesting policy exceptions with business justification, risk assessment, proposed mitigations, duration, and approval workflow"
-                format="Word"
-                onDownload={() => console.log("Download Exception Form")}
-                onPreview={() => console.log("Preview Exception Form")}
-              />
+              {CD_P2_TEMPLATES.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  title={template.name}
+                  description={template.description}
+                  format={template.fileType}
+                  complexity={template.complexity}
+                  size={template.size}
+                  onDownload={() => console.log(`Download ${template.name}`)}
+                  onPreview={() => handlePreview(template.id)}
+                />
+              ))}
             </div>
+
+            <TemplatePreviewDialog
+              template={previewTemplate}
+              open={previewOpen}
+              onOpenChange={setPreviewOpen}
+            />
           </TabsContent>
 
           {/* Success Criteria Tab */}
