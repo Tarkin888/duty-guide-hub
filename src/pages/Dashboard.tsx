@@ -29,6 +29,7 @@ import {
   RotateCcw
 } from "lucide-react";
 import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from "@/stores/progressStore";
+import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
@@ -114,54 +115,75 @@ function formatDaysSinceStart(days: number): string {
 }
 
 export default function Dashboard() {
-  // Use Zustand store for all progress data
-  // IMPORTANT: Select modules state directly to establish reactivity for re-renders
+  // Use Zustand store for activities and start date
   const modules = useProgressStore((state) => state.modules);
   const storeActivities = useProgressStore((state) => state.activities);
   const storeStartDate = useProgressStore((state) => state.startDate);
   const resetAllProgress = useProgressStore((state) => state.resetAllProgress);
   const resetStartDate = useProgressStore((state) => state.resetStartDate);
 
+  // Use actual checklist progress from localStorage
+  const { progress: checklistProgress, isLoading: isLoadingProgress, error: progressError } = useChecklistProgress();
+
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
 
-  // Compute progress from the modules state (reactive)
-  const allModuleIds = Object.values(MODULE_CATEGORIES).flat();
-  
+  // Compute REAL progress from actual checkbox states
   const overallProgress = useMemo(() => {
-    const completed = allModuleIds.filter(
-      (moduleId) => modules[moduleId]?.status === 'complete'
-    ).length;
-    const inProgress = allModuleIds.filter(
-      (moduleId) => modules[moduleId]?.status === 'in-progress'
-    ).length;
+    if (!checklistProgress) {
+      return {
+        completed: 0,
+        inProgress: 0,
+        total: TOTAL_MODULES,
+        percentage: 0,
+        checkedBoxes: 0,
+        totalBoxes: 0,
+      };
+    }
+    
     return {
-      completed,
-      inProgress,
-      total: TOTAL_MODULES,
-      percentage: Math.round((completed / TOTAL_MODULES) * 100),
+      completed: checklistProgress.completedModules,
+      inProgress: checklistProgress.inProgressModules,
+      total: checklistProgress.totalModules,
+      percentage: checklistProgress.overallPercentage,
+      checkedBoxes: checklistProgress.totalCheckedBoxes,
+      totalBoxes: checklistProgress.totalBoxes,
     };
-  }, [modules, allModuleIds]);
+  }, [checklistProgress]);
 
+  // Get category progress from actual checklist data
   const getCategoryProgress = useCallback((category: keyof typeof MODULE_CATEGORIES) => {
-    const categoryModules = MODULE_CATEGORIES[category];
-    const total = categoryModules.length;
-    const completed = categoryModules.filter(
-      (moduleId) => modules[moduleId]?.status === 'complete'
-    ).length;
+    if (!checklistProgress?.categoryStats) {
+      const categoryModules = MODULE_CATEGORIES[category];
+      return { completed: 0, total: categoryModules.length, percentage: 0 };
+    }
+    
+    const stats = checklistProgress.categoryStats[category];
+    if (!stats) {
+      const categoryModules = MODULE_CATEGORIES[category];
+      return { completed: 0, total: categoryModules.length, percentage: 0 };
+    }
+    
     return {
-      completed,
-      total,
-      percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+      completed: stats.completedModules,
+      total: stats.totalModules,
+      percentage: stats.percentage,
     };
-  }, [modules]);
+  }, [checklistProgress]);
 
+  // Get in-progress modules from actual checklist data
   const inProgressModules = useMemo(() => {
-    return Object.values(modules).filter(
-      (module) => module.status === 'in-progress'
-    );
-  }, [modules]);
+    if (!checklistProgress?.moduleStats) return [];
+    
+    return checklistProgress.moduleStats
+      .filter(m => m.status === 'in-progress')
+      .map(m => ({
+        moduleId: m.moduleId,
+        status: m.status as 'in-progress',
+        percentage: m.percentage,
+      }));
+  }, [checklistProgress]);
 
   const daysSinceStart = useMemo(() => {
     if (!storeStartDate) return -1;
@@ -174,16 +196,16 @@ export default function Dashboard() {
   }, [storeStartDate]);
 
   const avgDaysPerModule = useMemo(() => {
-    const completedCount = Object.values(modules).filter(m => m.status === 'complete').length;
+    const completedCount = overallProgress.completed;
     if (completedCount === 0 || !storeStartDate) return 0;
     const start = new Date(storeStartDate);
     const now = new Date();
     const diffDays = Math.max(1, Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
     return Math.round((diffDays / completedCount) * 10) / 10;
-  }, [modules, storeStartDate]);
+  }, [overallProgress.completed, storeStartDate]);
 
   const estimatedCompletion = useMemo(() => {
-    const completedCount = Object.values(modules).filter(m => m.status === 'complete').length;
+    const completedCount = overallProgress.completed;
     if (completedCount === 0 || !storeStartDate) return null;
     const remainingModules = TOTAL_MODULES - completedCount;
     if (remainingModules <= 0) return new Date();
@@ -192,12 +214,11 @@ export default function Dashboard() {
     const completionDate = new Date();
     completionDate.setDate(completionDate.getDate() + estimatedDaysRemaining);
     return completionDate;
-  }, [modules, storeStartDate, avgDaysPerModule]);
+  }, [overallProgress.completed, storeStartDate, avgDaysPerModule]);
 
   // Dynamic completion estimation with velocity calculation
   const completionEstimate = useMemo(() => {
-    const completedModules = Object.values(modules).filter(m => m.status === 'complete');
-    const completedCount = completedModules.length;
+    const completedCount = overallProgress.completed;
     const remainingModules = TOTAL_MODULES - completedCount;
     
     if (remainingModules <= 0) {
@@ -208,39 +229,14 @@ export default function Dashboard() {
       return { weeks: null, methodology: 'Start completing modules to see an estimate.', isComplete: false };
     }
 
-    // Calculate velocity: modules completed in last 4 weeks
-    const fourWeeksAgo = new Date();
-    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
-    
-    const recentCompletions = completedModules.filter(m => {
-      if (!m.completedAt) return false;
-      return new Date(m.completedAt) >= fourWeeksAgo;
-    });
-    
-    const recentVelocity = recentCompletions.length; // modules in last 4 weeks
-    const weeklyVelocity = recentVelocity / 4; // modules per week
-    
-    // Calculate average duration from all completed modules
+    // Calculate average duration from completed modules
     const start = new Date(storeStartDate);
     const now = new Date();
     const totalDays = Math.max(1, Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
     const avgDays = totalDays / completedCount;
     
-    // Weight recent velocity more heavily if we have enough data
-    let estimatedWeeks: number;
-    let methodologyDetail: string;
-    
-    if (recentVelocity >= 2 && weeklyVelocity > 0) {
-      // Use weighted average: 70% recent velocity, 30% overall average
-      const velocityBasedWeeks = remainingModules / weeklyVelocity;
-      const avgBasedWeeks = (remainingModules * avgDays) / 7;
-      estimatedWeeks = Math.ceil((velocityBasedWeeks * 0.7) + (avgBasedWeeks * 0.3));
-      methodologyDetail = `Based on ${recentVelocity} modules completed in the last 4 weeks (${weeklyVelocity.toFixed(1)}/week) weighted with your overall average of ${avgDays.toFixed(1)} days per module.`;
-    } else {
-      // Use overall average only
-      estimatedWeeks = Math.ceil((remainingModules * avgDays) / 7);
-      methodologyDetail = `Based on ${completedCount} completed modules over ${totalDays} days (average ${avgDays.toFixed(1)} days per module). Complete more modules for velocity-based estimates.`;
-    }
+    const estimatedWeeks = Math.ceil((remainingModules * avgDays) / 7);
+    const methodologyDetail = `Based on ${completedCount} completed modules over ${totalDays} days (average ${avgDays.toFixed(1)} days per module).`;
     
     return {
       weeks: Math.max(1, estimatedWeeks),
@@ -248,9 +244,9 @@ export default function Dashboard() {
       isComplete: false,
       remainingModules,
       completedCount,
-      weeklyVelocity: weeklyVelocity > 0 ? weeklyVelocity.toFixed(1) : null,
+      weeklyVelocity: null,
     };
-  }, [modules, storeStartDate]);
+  }, [overallProgress.completed, storeStartDate]);
 
   // Category progress
   const foundationProgress = getCategoryProgress('foundation');
@@ -361,9 +357,24 @@ export default function Dashboard() {
             <CardDescription>Your implementation journey across all phases</CardDescription>
           </CardHeader>
           <CardContent>
+            {progressError ? (
+              <div className="flex items-center gap-2 p-4 rounded-lg bg-destructive/10 text-destructive">
+                <AlertTriangle className="h-5 w-5" />
+                <span>{progressError}</span>
+              </div>
+            ) : isLoadingProgress ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-pulse text-muted-foreground">Loading progress...</div>
+              </div>
+            ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <CircularProgress value={overallProgress.percentage} />
+                {overallProgress.totalBoxes > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    {overallProgress.checkedBoxes} of {overallProgress.totalBoxes} items checked
+                  </p>
+                )}
               </div>
               
               <div className="space-y-4">
@@ -446,6 +457,7 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
+            )}
           </CardContent>
         </Card>
 
