@@ -14,12 +14,16 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
+import { CD_I1_TEMPLATES } from "@/data/cdI1Templates";
 import { toast } from "@/hooks/use-toast";
 import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
 
 export default function CDI1ProductsServices() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(() => getModuleStatus("cd-i1-products-services"));
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   
   const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
@@ -40,6 +44,14 @@ export default function CDI1ProductsServices() {
       title: "Downloading Template",
       description: `${templateName} will download shortly...`,
     });
+  };
+
+  const handlePreview = (templateId: string) => {
+    const template = CD_I1_TEMPLATES.find(t => t.id === templateId);
+    if (template) {
+      setPreviewTemplate(template);
+      setPreviewOpen(true);
+    }
   };
 
   return (
@@ -1079,56 +1091,25 @@ export default function CDI1ProductsServices() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
-                <TemplateCard
-                  title="Product Governance Framework"
-                  description="Complete framework including approval process, lifecycle management, roles & responsibilities, and governance structure"
-                  format="Word"
-                  onDownload={() => handleDownload("Product Governance Framework")}
-                  onPreview={() => toast({ title: "Preview", description: "Preview functionality coming soon" })}
-                />
-                <TemplateCard
-                  title="Product Review Template"
-                  description="Comprehensive Excel workbook with tabs for product details, target market, design assessment, distribution, performance, and findings"
-                  format="Excel"
-                  onDownload={() => handleDownload("Product Review Template")}
-                />
-                <TemplateCard
-                  title="Target Market Definition Template"
-                  description="Structured template for defining granular target markets with positive/negative definitions and vulnerability considerations"
-                  format="Word"
-                  onDownload={() => handleDownload("Target Market Template")}
-                />
-                <TemplateCard
-                  title="Product Approval Checklist"
-                  description="Gateway checklist ensuring all Consumer Duty requirements met before product launch"
-                  format="Excel"
-                  onDownload={() => handleDownload("Product Approval Checklist")}
-                />
-                <TemplateCard
-                  title="Closed Products Review Template"
-                  description="Specialized template for assessing closed products with remediation action planning"
-                  format="Excel"
-                  onDownload={() => handleDownload("Closed Products Review")}
-                />
-                <TemplateCard
-                  title="Distribution Chain Mapping Template"
-                  description="Visual template for mapping distribution participants, roles, information flows, and responsibilities"
-                  format="PowerPoint"
-                  onDownload={() => handleDownload("Distribution Chain Map")}
-                />
-                <TemplateCard
-                  title="Manufacturer Information Pack Template"
-                  description="Comprehensive pack providing distributors with target market, fair value summary, and distribution strategy"
-                  format="Word"
-                  onDownload={() => handleDownload("Manufacturer Info Pack")}
-                />
-                <TemplateCard
-                  title="Distribution Agreement Clauses"
-                  description="Consumer Duty contract clauses covering obligations, information sharing, and remediation responsibilities"
-                  format="Word"
-                  onDownload={() => handleDownload("Distribution Clauses")}
-                />
+                {CD_I1_TEMPLATES.map((template) => (
+                  <TemplateCard
+                    key={template.id}
+                    title={template.name}
+                    description={template.description}
+                    format={template.fileType}
+                    complexity={template.complexity}
+                    size={template.size}
+                    onDownload={() => handleDownload(template.name)}
+                    onPreview={() => handlePreview(template.id)}
+                  />
+                ))}
               </div>
+
+              <TemplatePreviewDialog
+                template={previewTemplate}
+                open={previewOpen}
+                onOpenChange={setPreviewOpen}
+              />
             </CardContent>
           </Card>
 
