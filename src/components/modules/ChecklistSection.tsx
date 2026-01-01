@@ -116,17 +116,40 @@ export function ChecklistSection({
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [isOpen, setIsOpen] = useState(true);
 
-  // Load from localStorage on mount
+  // Initialize localStorage with all items on mount (ensures total count is accurate)
   useEffect(() => {
     try {
       const stored = localStorage.getItem(storageKey);
       if (stored) {
-        setCheckedItems(JSON.parse(stored));
+        // Load existing checked state
+        const existingData = JSON.parse(stored);
+        // Ensure all current items exist in state (handles added/removed items)
+        const updated: Record<string, boolean> = {};
+        items.forEach(item => {
+          updated[item.id] = existingData[item.id] || false;
+        });
+        setCheckedItems(updated);
+        // Update storage if items changed
+        if (Object.keys(updated).length !== Object.keys(existingData).length) {
+          localStorage.setItem(storageKey, JSON.stringify(updated));
+        }
+      } else {
+        // Initialize with all items unchecked - critical for accurate total counting
+        const initialState: Record<string, boolean> = {};
+        items.forEach(item => {
+          initialState[item.id] = false;
+        });
+        setCheckedItems(initialState);
+        localStorage.setItem(storageKey, JSON.stringify(initialState));
       }
+      // Notify that this step's data is now available
+      window.dispatchEvent(new CustomEvent('checklist-item-changed', {
+        detail: { moduleId, stepNumber, initialized: true }
+      }));
     } catch (error) {
       console.error("Error loading checklist state:", error);
     }
-  }, [storageKey]);
+  }, [storageKey, moduleId, stepNumber, items]);
 
   // Debounced save to localStorage
   const saveToStorage = useCallback((data: Record<string, boolean>) => {
