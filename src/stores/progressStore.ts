@@ -383,6 +383,8 @@ export const useProgressStore = create<ProgressState>()(
         
         set((state) => ({
           activities: [newActivity, ...state.activities].slice(0, 50),
+          // Also set start date if not already set (first activity = start)
+          startDate: state.startDate || now,
         }));
       },
 

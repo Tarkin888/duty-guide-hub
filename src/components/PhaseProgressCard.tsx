@@ -6,10 +6,15 @@ interface PhaseProgressCardProps {
   completed: number;
   total: number;
   icon: LucideIcon;
+  /** Optional: percentage based on checkbox progress (overrides module-based calculation) */
+  checkboxPercentage?: number;
 }
 
-export function PhaseProgressCard({ title, completed, total, icon: Icon }: PhaseProgressCardProps) {
-  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+export function PhaseProgressCard({ title, completed, total, icon: Icon, checkboxPercentage }: PhaseProgressCardProps) {
+  // Use checkbox-based percentage if provided, otherwise fall back to module-based
+  const percentage = checkboxPercentage !== undefined 
+    ? checkboxPercentage 
+    : (total > 0 ? Math.round((completed / total) * 100) : 0);
 
   return (
     <div className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors">
@@ -23,7 +28,7 @@ export function PhaseProgressCard({ title, completed, total, icon: Icon }: Phase
         </div>
         <Progress value={percentage} className="h-2" />
         <p className="text-xs text-muted-foreground mt-1">
-          {completed} of {total} modules
+          {completed} of {total} modules complete
         </p>
       </div>
     </div>
