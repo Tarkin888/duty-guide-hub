@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useProgressStore } from "@/stores/progressStore";
 
 interface ChecklistItem {
   id: string;
@@ -103,6 +104,57 @@ const ChecklistItemRow = memo(({
 
 ChecklistItemRow.displayName = "ChecklistItemRow";
 
+// Module display names for activity logging
+const MODULE_DISPLAY_NAMES: Record<string, string> = {
+  'cd-f1-readiness': 'Readiness Assessment',
+  'cd-f2-requirements': 'Requirements Mapping',
+  'cd-f3-risk-assessment': 'Risk & Impact Assessment',
+  'cd-p1-governance-framework': 'Governance Framework',
+  'cd-p2-policy-framework': 'Policy Framework',
+  'cd-p3-implementation-roadmap': 'Implementation Roadmap',
+  'cd-i1-products-services': 'Products & Services',
+  'cd-i2-price-value': 'Price & Value',
+  'cd-i3-consumer-understanding': 'Consumer Understanding',
+  'cd-i4-consumer-support': 'Consumer Support',
+  'cd-i5-vulnerable-customers': 'Vulnerable Customers',
+  'cd-i6-distribution-chain': 'Distribution Chain',
+  'cd-i7-data-evidence': 'Data & Evidence',
+  'cd-t1-training': 'Training Programme',
+  'cd-t2-communications-change': 'Communications & Change',
+  'cd-t3-technology-requirements': 'Technology Requirements',
+  'cd-m1-mi-framework': 'MI Framework',
+  'cd-m2-testing-assurance': 'Testing & Assurance',
+  'cd-m3-board-reporting': 'Board Reporting',
+  'cd-m4-continuous-improvement': 'Continuous Improvement',
+};
+
+// Helper to convert storage moduleId to canonical format
+function getCanonicalModuleId(storageModuleId: string): string {
+  const mapping: Record<string, string> = {
+    'cd-f1-readiness': 'CD-F1',
+    'cd-f2-requirements': 'CD-F2',
+    'cd-f3-risk-assessment': 'CD-F3',
+    'cd-p1-governance-framework': 'CD-P1',
+    'cd-p2-policy-framework': 'CD-P2',
+    'cd-p3-implementation-roadmap': 'CD-P3',
+    'cd-i1-products-services': 'CD-I1',
+    'cd-i2-price-value': 'CD-I2',
+    'cd-i3-consumer-understanding': 'CD-I3',
+    'cd-i4-consumer-support': 'CD-I4',
+    'cd-i5-vulnerable-customers': 'CD-I5',
+    'cd-i6-distribution-chain': 'CD-I6',
+    'cd-i7-data-evidence': 'CD-I7',
+    'cd-t1-training': 'CD-T1',
+    'cd-t2-communications-change': 'CD-T2',
+    'cd-t3-technology-requirements': 'CD-T3',
+    'cd-m1-mi-framework': 'CD-M1',
+    'cd-m2-testing-assurance': 'CD-M2',
+    'cd-m3-board-reporting': 'CD-M3',
+    'cd-m4-continuous-improvement': 'CD-M4',
+  };
+  return mapping[storageModuleId] || storageModuleId.toUpperCase();
+}
+
 export function ChecklistSection({ 
   stepNumber, 
   title, 
@@ -115,6 +167,11 @@ export function ChecklistSection({
   const storageKey = `checklist-${moduleId}-step${stepNumber}`;
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [isOpen, setIsOpen] = useState(true);
+  
+  // Get activity logging function from store
+  const addActivity = useProgressStore((state) => state.addActivity);
+  const storeStartDate = useProgressStore((state) => state.startDate);
+  const setStartDate = useProgressStore((state) => state.resetStartDate);
 
   // Initialize localStorage with all items on mount (ensures total count is accurate)
   useEffect(() => {
@@ -170,9 +227,26 @@ export function ChecklistSection({
       const updated = { ...prev, [itemId]: checked };
       saveToStorage(updated);
       
-      // Calculate and report progress
+      // Calculate progress
       const completedCount = Object.values(updated).filter(Boolean).length;
+      const wasEmpty = Object.values(prev).filter(Boolean).length === 0;
+      
       onProgressChange?.(completedCount, items.length);
+      
+      // Log activity and set start date via the store when checking (not unchecking)
+      if (checked) {
+        // Get the canonical module ID for proper activity logging
+        const canonicalId = getCanonicalModuleId(moduleId);
+        const moduleName = MODULE_DISPLAY_NAMES[moduleId] || moduleId;
+        
+        // Set start date on first ever checkbox check
+        if (wasEmpty && !storeStartDate) {
+          // Zustand store will handle start date when we call updateChecklistItem
+        }
+        
+        // Log activity - use 'module_started' for first check in module, or for any checkbox
+        addActivity('checklist_updated', canonicalId, moduleName);
+      }
       
       // Dispatch event for module-level tracking
       window.dispatchEvent(new CustomEvent('checklist-item-changed', {
@@ -181,7 +255,8 @@ export function ChecklistSection({
       
       return updated;
     });
-  }, [saveToStorage, items.length, onProgressChange, moduleId, stepNumber]);
+  }, [saveToStorage, items.length, onProgressChange, moduleId, stepNumber, storeStartDate, addActivity]);
+
 
   const handleResetStep = useCallback(() => {
     setCheckedItems({});
