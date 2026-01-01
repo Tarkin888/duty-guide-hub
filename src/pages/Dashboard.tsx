@@ -272,9 +272,9 @@ export default function Dashboard() {
   ];
 
   const recommendedReading = [
-    { title: "FCA Consumer Duty Guidance", url: "#" },
-    { title: "Final Rules and Guidance", url: "#" },
-    { title: "Questions and Answers", url: "#" }
+    { title: "FCA Consumer Duty Guidance", url: "https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf" },
+    { title: "Final Rules and Guidance", url: "https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty" },
+    { title: "Questions and Answers", url: "https://www.fca.org.uk/firms/consumer-duty" }
   ];
 
   // Convert activities to format expected by ActivityTimeline
@@ -677,7 +677,7 @@ export default function Dashboard() {
               {recommendedReading.map((item, index) => (
                 <li key={index}>
                   <Button asChild variant="link" className="h-auto p-0 text-left">
-                    <a href={item.url} className="text-sm">
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm">
                       {item.title}
                     </a>
                   </Button>
