@@ -77,6 +77,7 @@ interface ProgressState {
   resetStartDate: () => void;
   initializeStartDate: () => void;
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
+  clearActivities: () => void;
 
   // Getters
   getModuleStatus: (moduleId: string) => ModuleProgress;
@@ -395,6 +396,10 @@ export const useProgressStore = create<ProgressState>()(
           // Also set start date if not already set (first activity = start)
           startDate: state.startDate || now,
         }));
+      },
+
+      clearActivities: () => {
+        set({ activities: [] });
       },
 
       getModuleStatus: (moduleId: string) => {
