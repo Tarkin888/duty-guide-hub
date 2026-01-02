@@ -109,9 +109,24 @@ const MODULE_NAMES: Record<string, string> = {
 // Helper to format days since start
 function formatDaysSinceStart(days: number): string {
   if (days < 0) return "Not started";
-  if (days === 0) return "Started today";
-  if (days === 1) return "Started yesterday";
+  if (days === 0) return "0 days";
+  if (days === 1) return "1 day";
   return `${days} days`;
+}
+
+// Helper to get color class based on days elapsed
+function getDaysColorClass(days: number): string {
+  if (days < 0) return "text-muted-foreground";
+  if (days <= 30) return "text-success"; // Green: on track
+  if (days <= 60) return "text-warning"; // Yellow: monitor
+  return "text-destructive"; // Amber/Red: may need acceleration
+}
+
+function getDaysIconColorClass(days: number): string {
+  if (days < 0) return "bg-muted text-muted-foreground";
+  if (days <= 30) return "bg-success/10 text-success";
+  if (days <= 60) return "bg-warning/10 text-warning";
+  return "bg-destructive/10 text-destructive";
 }
 
 export default function Dashboard() {
@@ -121,6 +136,7 @@ export default function Dashboard() {
   const storeStartDate = useProgressStore((state) => state.startDate);
   const resetAllProgress = useProgressStore((state) => state.resetAllProgress);
   const resetStartDate = useProgressStore((state) => state.resetStartDate);
+  const initializeStartDate = useProgressStore((state) => state.initializeStartDate);
 
   // Use actual checklist progress from localStorage
   const { progress: checklistProgress, isLoading: isLoadingProgress, error: progressError } = useChecklistProgress();
@@ -128,6 +144,11 @@ export default function Dashboard() {
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
+
+  // Initialize start date on first visit
+  useEffect(() => {
+    initializeStartDate();
+  }, [initializeStartDate]);
 
   // Compute REAL progress from actual checkbox states
   const overallProgress = useMemo(() => {
@@ -531,12 +552,12 @@ export default function Dashboard() {
                 <Card className="cursor-help">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-lg bg-info/10">
-                        <Calendar className="h-6 w-6 text-info" />
+                      <div className={`p-3 rounded-lg ${getDaysIconColorClass(daysSinceStart)}`}>
+                        <Calendar className="h-6 w-6" />
                       </div>
                       <div>
-                        <p className="text-2xl font-bold">
-                          {daysSinceStart >= 0 ? formatDaysSinceStart(daysSinceStart) : "--"}
+                        <p className={`text-2xl font-bold ${getDaysColorClass(daysSinceStart)}`}>
+                          {formatDaysSinceStart(daysSinceStart)}
                         </p>
                         <p className="text-sm text-muted-foreground">Days Since Started</p>
                       </div>
@@ -548,6 +569,15 @@ export default function Dashboard() {
                 {storeStartDate ? (
                   <div className="space-y-1">
                     <p className="font-medium">Started on {format(new Date(storeStartDate), "d MMM yyyy")}</p>
+                    {daysSinceStart <= 30 && (
+                      <p className="text-xs text-success">On track (0-30 days)</p>
+                    )}
+                    {daysSinceStart > 30 && daysSinceStart <= 60 && (
+                      <p className="text-xs text-warning">Monitor progress (31-60 days)</p>
+                    )}
+                    {daysSinceStart > 60 && (
+                      <p className="text-xs text-destructive">May need acceleration (61+ days)</p>
+                    )}
                     {avgDaysPerModule > 0 && (
                       <p className="text-xs text-muted-foreground">
                         Avg: {avgDaysPerModule} days per module
@@ -560,7 +590,7 @@ export default function Dashboard() {
                     )}
                   </div>
                 ) : (
-                  <p>Start date will be set when you begin a module</p>
+                  <p>Tracking started today</p>
                 )}
               </TooltipContent>
             </Tooltip>

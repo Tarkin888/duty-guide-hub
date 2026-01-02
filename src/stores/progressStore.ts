@@ -75,6 +75,7 @@ interface ProgressState {
   updateLastAccessed: (moduleId: string) => void;
   resetAllProgress: () => void;
   resetStartDate: () => void;
+  initializeStartDate: () => void;
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
 
   // Getters
@@ -368,6 +369,14 @@ export const useProgressStore = create<ProgressState>()(
         set({ startDate: null });
         toast.success('Start date has been reset', {
           description: 'A new start date will be set when you next update a module.',
+        });
+      },
+
+      initializeStartDate: () => {
+        set((state) => {
+          // Only set if not already set
+          if (state.startDate) return state;
+          return { startDate: new Date().toISOString() };
         });
       },
 
