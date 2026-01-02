@@ -6,6 +6,7 @@ import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
 import { ResetProgressModal } from "@/components/ResetProgressModal";
 import { RecommendedPath } from "@/components/RecommendedPath";
+import { WelcomeModal, resetOnboarding } from "@/components/WelcomeModal";
 import { 
   BookOpen, 
   Download, 
@@ -26,7 +27,8 @@ import {
   Bell,
   BookMarked,
   AlertTriangle,
-  RotateCcw
+  RotateCcw,
+  HelpCircle
 } from "lucide-react";
 import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from "@/stores/progressStore";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
@@ -145,6 +147,7 @@ export default function Dashboard() {
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   // Initialize start date on first visit
   useEffect(() => {
@@ -309,7 +312,12 @@ export default function Dashboard() {
   }));
 
   return (
-    <div className="container mx-auto px-6 py-8 max-w-7xl">
+    <>
+      <WelcomeModal 
+        forceOpen={showWelcomeModal} 
+        onClose={() => setShowWelcomeModal(false)} 
+      />
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
       {/* Hero Section */}
       <div className="mb-8">
         <div className="flex items-start justify-between gap-4 mb-4">
@@ -364,6 +372,27 @@ export default function Dashboard() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  className="gap-2"
+                  onClick={() => {
+                    resetOnboarding();
+                    setShowWelcomeModal(true);
+                  }}
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  Tour
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Replay the welcome tour</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
 
@@ -777,5 +806,6 @@ export default function Dashboard() {
         onOpenChange={setResetModalOpen} 
       />
     </div>
+    </>
   );
 }
