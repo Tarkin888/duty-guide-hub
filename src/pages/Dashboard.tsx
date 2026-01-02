@@ -137,6 +137,7 @@ export default function Dashboard() {
   const resetAllProgress = useProgressStore((state) => state.resetAllProgress);
   const resetStartDate = useProgressStore((state) => state.resetStartDate);
   const initializeStartDate = useProgressStore((state) => state.initializeStartDate);
+  const clearActivities = useProgressStore((state) => state.clearActivities);
 
   // Use actual checklist progress from localStorage
   const { progress: checklistProgress, isLoading: isLoadingProgress, error: progressError } = useChecklistProgress();
@@ -301,9 +302,8 @@ export default function Dashboard() {
   // Convert activities to format expected by ActivityTimeline
   const formattedActivities = storeActivities.map(activity => ({
     id: activity.id,
-    type: activity.type === 'module_completed' ? 'module_completed' as const : 
-          activity.type === 'module_started' ? 'module_started' as const : 
-          'status_updated' as const,
+    type: activity.type,
+    moduleId: activity.moduleId,
     moduleTitle: `${activity.moduleId}: ${activity.moduleName}`,
     timestamp: activity.timestamp,
   }));
@@ -655,7 +655,12 @@ export default function Dashboard() {
             <CardDescription>Your latest actions and progress</CardDescription>
           </CardHeader>
           <CardContent>
-            <ActivityTimeline activities={formattedActivities.slice(0, 5)} />
+            <ActivityTimeline 
+              activities={formattedActivities.slice(0, 5)} 
+              moduleRoutes={MODULE_ROUTES}
+              showClearButton={formattedActivities.length > 0}
+              onClear={clearActivities}
+            />
           </CardContent>
         </Card>
       </div>
