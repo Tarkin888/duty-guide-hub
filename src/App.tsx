@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import { StorageErrorBoundary } from "@/components/StorageErrorBoundary";
+import { ChatbotButton } from "@/components/ChatbotButton";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
@@ -135,6 +136,7 @@ const App = () => (
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
+                <ChatbotButton />
               </div>
             </div>
           </SidebarProvider>
