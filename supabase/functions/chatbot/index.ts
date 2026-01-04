@@ -38,6 +38,11 @@ Always:
 
 If unsure, say "That's a detailed question - I'd recommend consulting the relevant playbook module or your compliance team."`;
 
+// Input validation constants
+const MAX_MESSAGE_LENGTH = 5000;
+const MAX_HISTORY_LENGTH = 50;
+const MAX_HISTORY_ITEM_LENGTH = 10000;
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -45,16 +50,104 @@ serve(async (req) => {
   }
 
   try {
-    const { message, conversationHistory = [] } = await req.json();
+    const body = await req.json();
+    const { message, conversationHistory = [] } = body;
+
+    // Validate message exists and is a string
+    if (!message || typeof message !== 'string') {
+      console.error('Invalid message format:', typeof message);
+      return new Response(JSON.stringify({ 
+        error: 'Invalid message format. Message must be a non-empty string.' 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate message length
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      console.error('Message too long:', message.length);
+      return new Response(JSON.stringify({ 
+        error: `Message too long. Maximum length is ${MAX_MESSAGE_LENGTH} characters.` 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate conversation history is an array
+    if (!Array.isArray(conversationHistory)) {
+      console.error('Invalid conversation history format');
+      return new Response(JSON.stringify({ 
+        error: 'Invalid conversation history format. Must be an array.' 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate conversation history length
+    if (conversationHistory.length > MAX_HISTORY_LENGTH) {
+      console.error('Conversation history too long:', conversationHistory.length);
+      return new Response(JSON.stringify({ 
+        error: `Conversation history too long. Maximum ${MAX_HISTORY_LENGTH} messages allowed.` 
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Validate each conversation history item
+    for (let i = 0; i < conversationHistory.length; i++) {
+      const item = conversationHistory[i];
+      if (!item || typeof item !== 'object') {
+        console.error('Invalid history item at index:', i);
+        return new Response(JSON.stringify({ 
+          error: `Invalid conversation history item at position ${i}.` 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (!item.role || !['user', 'assistant'].includes(item.role)) {
+        console.error('Invalid role in history item at index:', i);
+        return new Response(JSON.stringify({ 
+          error: `Invalid role in conversation history at position ${i}. Must be 'user' or 'assistant'.` 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (!item.content || typeof item.content !== 'string') {
+        console.error('Invalid content in history item at index:', i);
+        return new Response(JSON.stringify({ 
+          error: `Invalid content in conversation history at position ${i}.` 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (item.content.length > MAX_HISTORY_ITEM_LENGTH) {
+        console.error('History item content too long at index:', i);
+        return new Response(JSON.stringify({ 
+          error: `Conversation history item at position ${i} is too long.` 
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    console.log('Input validation passed. Message length:', message.length, 'History length:', conversationHistory.length);
 
     const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
     if (!apiKey) {
       throw new Error('ANTHROPIC_API_KEY is not configured');
     }
 
-    // Build messages array with conversation history
+    // Build messages array with conversation history (already validated)
     const messages = [
-      ...conversationHistory,
+      ...conversationHistory.map(item => ({ role: item.role, content: item.content })),
       { role: 'user', content: message }
     ];
 
