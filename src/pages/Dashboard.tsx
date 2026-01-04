@@ -575,6 +575,91 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
+          {/* Industry Comparison Card */}
+          <Card className="border-accent/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <TrendingUp className="h-4 w-4 text-accent" />
+                Industry Comparison
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                You are at <span className="font-semibold text-foreground">{overallProgress.percentage}%</span> completion
+              </p>
+              
+              {/* Benchmark Bars */}
+              <div className="space-y-3">
+                {/* Your Progress */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs">
+                    <span className="font-medium text-primary">Your Progress</span>
+                    <span className="text-muted-foreground">{overallProgress.percentage}%</span>
+                  </div>
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary rounded-full transition-all duration-500"
+                      style={{ width: `${overallProgress.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Industry Average */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Industry Average</span>
+                    <span className="text-muted-foreground">28%</span>
+                  </div>
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-muted-foreground/40 rounded-full"
+                      style={{ width: '28%' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Top Quartile */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Top Quartile</span>
+                    <span className="text-muted-foreground">45%</span>
+                  </div>
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-success/60 rounded-full"
+                      style={{ width: '45%' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Performance Indicator */}
+              <div className="pt-2 border-t">
+                {overallProgress.percentage >= 45 ? (
+                  <p className="text-xs text-success flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3" />
+                    You're in the top quartile!
+                  </p>
+                ) : overallProgress.percentage >= 28 ? (
+                  <p className="text-xs text-primary flex items-center gap-1">
+                    <TrendingUp className="h-3 w-3" />
+                    Above industry average
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Target className="h-3 w-3" />
+                    Keep going to reach industry average
+                  </p>
+                )}
+              </div>
+
+              {/* Disclaimer */}
+              <p className="text-[10px] text-muted-foreground/70 leading-tight pt-1">
+                Benchmarks based on FCA implementation timeline expectations and typical firm readiness.
+              </p>
+            </CardContent>
+          </Card>
+
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
