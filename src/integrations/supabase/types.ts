@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      maturity_assessments: {
+        Row: {
+          answers: Json
+          completed_at: string
+          consumer_support_score: number
+          consumer_understanding_score: number
+          created_at: string
+          id: string
+          overall_score: number
+          price_value_score: number
+          products_services_score: number
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string
+          consumer_support_score: number
+          consumer_understanding_score: number
+          created_at?: string
+          id?: string
+          overall_score: number
+          price_value_score: number
+          products_services_score: number
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string
+          consumer_support_score?: number
+          consumer_understanding_score?: number
+          created_at?: string
+          id?: string
+          overall_score?: number
+          price_value_score?: number
+          products_services_score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       regulatory_updates: {
         Row: {
           affected_modules: string[] | null
