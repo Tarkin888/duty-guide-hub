@@ -20,19 +20,28 @@ export const ConsumerDutyChatbot: React.FC<ConsumerDutyChatbotProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '0',
-      role: 'assistant',
-      content:
-        "Hello! I'm your Consumer Duty Compliance Assistant. I can help you navigate the playbook, explain Consumer Duty requirements, and provide implementation guidance. What would you like to know?",
-      timestamp: new Date(),
-    },
-  ]);
+  const initialMessage: Message = {
+    id: '0',
+    role: 'assistant',
+    content:
+      "Hello! I'm your Consumer Duty Compliance Assistant. I can help you navigate the playbook, explain Consumer Duty requirements, and provide implementation guidance. What would you like to know?",
+    timestamp: new Date(),
+  };
+
+  const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Reset chat when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setMessages([{ ...initialMessage, timestamp: new Date() }]);
+      setInput('');
+      setError(null);
+    }
+  }, [isOpen]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
