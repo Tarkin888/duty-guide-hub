@@ -28,8 +28,11 @@ import {
   BookMarked,
   AlertTriangle,
   RotateCcw,
-  HelpCircle
+  HelpCircle,
+  RefreshCw
 } from "lucide-react";
+import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
+import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
 import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from "@/stores/progressStore";
 import { useChecklistProgress } from "@/hooks/useChecklistProgress";
 import { useEffect, useState, useMemo, useCallback } from "react";
@@ -148,6 +151,10 @@ export default function Dashboard() {
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [regulatoryUpdatesOpen, setRegulatoryUpdatesOpen] = useState(false);
+
+  // Hook for regulatory updates
+  const { unreadCount: regulatoryUnreadCount, latestUpdateDate, refresh: refreshRegulatoryUpdates } = useRegulatoryUpdates();
 
   // Initialize start date on first visit
   useEffect(() => {
@@ -803,19 +810,33 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <Bell className="h-5 w-5 text-info" />
               Regulatory Updates
+              {regulatoryUnreadCount > 0 && (
+                <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                  {regulatoryUnreadCount}
+                </Badge>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-sm text-muted-foreground">
               <p className="mb-4">Stay informed about the latest FCA guidance and regulatory changes.</p>
-              <Button variant="outline" size="sm" className="w-full">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full gap-2"
+                onClick={() => setRegulatoryUpdatesOpen(true)}
+              >
                 View Updates
+                {regulatoryUnreadCount > 0 && <RefreshCw className="h-3 w-3" />}
               </Button>
+              <p className="text-[10px] text-muted-foreground/70 mt-3">
+                Last updated: {latestUpdateDate ? format(latestUpdateDate, "MMMM yyyy") : "Loading..."}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -889,6 +910,12 @@ export default function Dashboard() {
       <ResetProgressModal 
         open={resetModalOpen} 
         onOpenChange={setResetModalOpen} 
+      />
+
+      <RegulatoryUpdatesDialog
+        open={regulatoryUpdatesOpen}
+        onOpenChange={setRegulatoryUpdatesOpen}
+        onUnreadCountChange={() => refreshRegulatoryUpdates()}
       />
     </div>
     </>

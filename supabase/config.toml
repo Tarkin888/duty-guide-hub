@@ -1,1 +1,7 @@
 project_id = "wsrgmxwlqevlugbrnjct"
+
+[functions.chatbot]
+verify_jwt = false
+
+[functions.fetch-fca-updates]
+verify_jwt = false

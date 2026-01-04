@@ -14,7 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      regulatory_updates: {
+        Row: {
+          affected_modules: string[] | null
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          link: string
+          pub_date: string
+          source: string | null
+          title: string
+        }
+        Insert: {
+          affected_modules?: string[] | null
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link: string
+          pub_date: string
+          source?: string | null
+          title: string
+        }
+        Update: {
+          affected_modules?: string[] | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link?: string
+          pub_date?: string
+          source?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      user_update_reads: {
+        Row: {
+          id: string
+          read_at: string
+          update_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          read_at?: string
+          update_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          read_at?: string
+          update_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_update_reads_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "regulatory_updates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
