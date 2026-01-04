@@ -29,7 +29,8 @@ import {
   AlertTriangle,
   RotateCcw,
   HelpCircle,
-  RefreshCw
+  RefreshCw,
+  ClipboardCheck
 } from "lucide-react";
 import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
 import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
@@ -785,6 +786,45 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Maturity Assessment Card */}
+      <Card className="mb-8 border-accent/30 bg-gradient-to-br from-accent/5 to-primary/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ClipboardCheck className="h-5 w-5 text-accent" />
+            Maturity Assessment Tool
+          </CardTitle>
+          <CardDescription>
+            Evaluate your Consumer Duty implementation maturity across the four outcomes
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+            <div className="space-y-2">
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  20 questions across four Consumer Duty outcomes
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Visual heatmap and gap analysis
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Track improvement over time (quarterly retakes)
+                </li>
+              </ul>
+            </div>
+            <Button asChild size="lg" className="gap-2 shrink-0">
+              <Link to="/maturity-assessment">
+                <ClipboardCheck className="h-4 w-4" />
+                Take Assessment
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Access Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

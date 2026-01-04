@@ -44,6 +44,7 @@ import CDM4ContinuousImprovementPart2 from "./pages/modules/CD-M4-ContinuousImpr
 import TemplatesLibrary from "./pages/TemplatesLibrary";
 import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
+import MaturityAssessment from "./pages/MaturityAssessment";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -132,6 +133,9 @@ const App = () => (
                   <Route path="/resources/glossary" element={<Glossary />} />
                   <Route path="/resources/regulatory-references" element={<RegulatoryReferences />} />
                   <Route path="/resources/regulatory" element={<RegulatoryReferences />} />
+
+                  {/* Tools */}
+                  <Route path="/maturity-assessment" element={<MaturityAssessment />} />
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
