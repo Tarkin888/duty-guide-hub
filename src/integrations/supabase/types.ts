@@ -53,6 +53,71 @@ export type Database = {
         }
         Relationships: []
       }
+      module_notes: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          module_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          module_id: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          module_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      note_shares: {
+        Row: {
+          created_at: string
+          id: string
+          note_id: string
+          permission: string
+          shared_with_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note_id: string
+          permission?: string
+          shared_with_user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note_id?: string
+          permission?: string
+          shared_with_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_shares_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "module_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       regulatory_updates: {
         Row: {
           affected_modules: string[] | null

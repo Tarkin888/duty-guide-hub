@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getModuleStatus, updateModuleStatus, addActivity } from "@/lib/storage";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { ModuleNotesSection } from "@/components/notes/ModuleNotesSection";
 
 interface ModulePageProps {
   title: string;
@@ -152,6 +153,9 @@ export default function ModulePage({ title, description, icon: Icon, moduleId, c
           </div>
         </CardContent>
       </Card>
+
+      {/* Notes Section */}
+      <ModuleNotesSection moduleId={moduleId} moduleTitle={title} />
     </div>
   );
 }
