@@ -11,9 +11,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Edit2, Trash2, Share2, Calendar, Tag } from "lucide-react";
 import { format } from "date-fns";
+import DOMPurify from "dompurify";
 import { ModuleNote } from "@/hooks/useModuleNotes";
 import { RichTextEditor } from "./RichTextEditor";
 import { NoteShareDialog } from "./NoteShareDialog";
+
+// Configure DOMPurify with allowed tags for rendering notes
+const sanitizeConfig = {
+  ALLOWED_TAGS: ['b', 'i', 'u', 'a', 'ul', 'ol', 'li', 'p', 'br', 'strong', 'em', 'span', 'div'],
+  ALLOWED_ATTR: ['href', 'target', 'rel'],
+  ALLOW_DATA_ATTR: false,
+};
 
 interface NoteCardProps {
   note: ModuleNote;
@@ -163,7 +171,9 @@ export const NoteCard = ({
         <CardContent>
           <div
             className="prose prose-sm max-w-none text-muted-foreground line-clamp-4"
-            dangerouslySetInnerHTML={{ __html: note.content || "<em>No content</em>" }}
+            dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(note.content || "<em>No content</em>", sanitizeConfig) 
+            }}
           />
         </CardContent>
       </Card>

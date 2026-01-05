@@ -2,7 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Bold, Italic, Underline, List, ListOrdered, Link } from "lucide-react";
 import { cn } from "@/lib/utils";
+import DOMPurify from "dompurify";
 
+// Configure DOMPurify with allowed tags for rich text editing
+const sanitizeConfig = {
+  ALLOWED_TAGS: ['b', 'i', 'u', 'a', 'ul', 'ol', 'li', 'p', 'br', 'strong', 'em', 'span', 'div'],
+  ALLOWED_ATTR: ['href', 'target', 'rel'],
+  ALLOW_DATA_ATTR: false,
+};
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
@@ -22,8 +29,11 @@ export const RichTextEditor = ({
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML !== value) {
-      editorRef.current.innerHTML = value;
+    if (editorRef.current) {
+      const sanitizedValue = DOMPurify.sanitize(value, sanitizeConfig);
+      if (editorRef.current.innerHTML !== sanitizedValue) {
+        editorRef.current.innerHTML = sanitizedValue;
+      }
     }
   }, [value]);
 
@@ -37,7 +47,8 @@ export const RichTextEditor = ({
 
   const handleInput = () => {
     if (editorRef.current) {
-      onChange(editorRef.current.innerHTML);
+      const sanitized = DOMPurify.sanitize(editorRef.current.innerHTML, sanitizeConfig);
+      onChange(sanitized);
     }
   };
 
