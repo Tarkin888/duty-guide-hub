@@ -1,4 +1,5 @@
 import { Template } from '@/data/templatesData';
+import { trackTemplateDownload } from '@/lib/moduleCompletionValidation';
 
 // Generate a sanitized filename from template name
 const sanitizeFilename = (name: string): string => {
@@ -245,11 +246,42 @@ const generateContent = (template: Template): string => {
   }
 };
 
+// Convert module reference to storage key format
+const getModuleStorageKey = (moduleRef: string): string => {
+  const refMap: Record<string, string> = {
+    'CD-F1': 'cd-f1-readiness',
+    'CD-F2': 'cd-f2-requirements',
+    'CD-F3': 'cd-f3-risk-assessment',
+    'CD-P1': 'cd-p1-governance-framework',
+    'CD-P2': 'cd-p2-policy-framework',
+    'CD-P3': 'cd-p3-implementation-roadmap',
+    'CD-I1': 'cd-i1-products-services',
+    'CD-I2': 'cd-i2-price-value',
+    'CD-I3': 'cd-i3-consumer-understanding',
+    'CD-I4': 'cd-i4-consumer-support',
+    'CD-I5': 'cd-i5-vulnerable-customers',
+    'CD-I6': 'cd-i6-distribution-chain',
+    'CD-I7': 'cd-i7-data-evidence',
+    'CD-T1': 'cd-t1-training',
+    'CD-T2': 'cd-t2-communications-change',
+    'CD-T3': 'cd-t3-technology-requirements',
+    'CD-M1': 'cd-m1-mi-framework',
+    'CD-M2': 'cd-m2-testing-assurance',
+    'CD-M3': 'cd-m3-board-reporting',
+    'CD-M4': 'cd-m4-continuous-improvement',
+  };
+  return refMap[moduleRef] || moduleRef.toLowerCase().replace(/-/g, '-');
+};
+
 // Main download function
-export const downloadTemplate = (template: Template): void => {
+export const downloadTemplate = (template: Template, moduleId?: string): void => {
   const filename = `${sanitizeFilename(template.name)}${getExtension(template.fileType)}`;
   const content = generateContent(template);
   const mimeType = getMimeType(template.fileType);
+  
+  // Track the download for module completion validation
+  const storageKey = moduleId || getModuleStorageKey(template.moduleReference);
+  trackTemplateDownload(storageKey, template.id);
   
   // Create blob and download
   const blob = new Blob([content], { type: mimeType });
