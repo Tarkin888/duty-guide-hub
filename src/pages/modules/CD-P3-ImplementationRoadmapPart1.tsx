@@ -11,6 +11,8 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { PhaseCalendarScheduler } from "@/components/calendar/PhaseCalendarScheduler";
+import { QuickCalendarEvents } from "@/components/calendar/QuickCalendarEvents";
 import { toast } from "sonner";
 
 export default function CDP3ImplementationRoadmapPart1() {
@@ -64,11 +66,12 @@ export default function CDP3ImplementationRoadmapPart1() {
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-6 w-full">
+          <TabsList className="grid grid-cols-7 w-full">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
             <TabsTrigger value="steps">Implementation Steps</TabsTrigger>
             <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
           </TabsList>
@@ -1321,6 +1324,12 @@ export default function CDP3ImplementationRoadmapPart1() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* CALENDAR TAB */}
+          <TabsContent value="calendar" className="space-y-6">
+            <PhaseCalendarScheduler />
+            <QuickCalendarEvents />
           </TabsContent>
 
           {/* SUCCESS CRITERIA TAB */}
