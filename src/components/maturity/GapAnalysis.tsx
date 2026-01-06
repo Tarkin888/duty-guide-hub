@@ -1,6 +1,8 @@
 import { AlertTriangle, TrendingUp, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { OUTCOME_LABELS, OUTCOME_MODULES } from '@/data/maturityAssessmentData';
+import { MODULE_CODE_TO_PATH } from '@/lib/linkAnalysis';
 
 interface GapAnalysisProps {
   scores: {
@@ -91,23 +93,26 @@ export const GapAnalysis = ({ scores }: GapAnalysisProps) => {
         </div>
         {recommendedModules.size > 0 ? (
           <div className="space-y-2">
-            {Array.from(recommendedModules).map(moduleId => (
-              <a
-                key={moduleId}
-                href={`/modules/${moduleId.toLowerCase()}`}
-                className="flex items-center justify-between p-3 bg-primary/5 rounded-lg border border-primary/20 hover:bg-primary/10 transition-colors"
-              >
-                <div>
-                  <span className="font-medium text-foreground">{moduleId}</span>
-                  <span className="text-muted-foreground text-sm ml-2">
-                    {MODULE_NAMES[moduleId]}
-                  </span>
-                </div>
-                <Badge variant="outline" className="bg-primary/10 text-primary">
-                  Priority
-                </Badge>
-              </a>
-            ))}
+            {Array.from(recommendedModules).map(moduleId => {
+              const modulePath = MODULE_CODE_TO_PATH[moduleId] || `/outcomes/${moduleId.toLowerCase().replace('cd-', '')}`;
+              return (
+                <Link
+                  key={moduleId}
+                  to={modulePath}
+                  className="flex items-center justify-between p-3 bg-primary/5 rounded-lg border border-primary/20 hover:bg-primary/10 transition-colors"
+                >
+                  <div>
+                    <span className="font-medium text-foreground">{moduleId}</span>
+                    <span className="text-muted-foreground text-sm ml-2">
+                      {MODULE_NAMES[moduleId]}
+                    </span>
+                  </div>
+                  <Badge variant="outline" className="bg-primary/10 text-primary">
+                    Priority
+                  </Badge>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <p className="text-muted-foreground text-sm">

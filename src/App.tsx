@@ -45,6 +45,7 @@ import TemplatesLibrary from "./pages/TemplatesLibrary";
 import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
 import MaturityAssessment from "./pages/MaturityAssessment";
+import SiteHealth from "./pages/SiteHealth";
 import { ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -136,6 +137,7 @@ const App = () => (
 
                   {/* Tools */}
                   <Route path="/maturity-assessment" element={<MaturityAssessment />} />
+                  <Route path="/admin/site-health" element={<SiteHealth />} />
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
