@@ -1,4 +1,4 @@
-import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon } from "lucide-react";
+import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon, Activity } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -104,6 +104,13 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
       { title: "Templates Library", url: "/resources/templates", icon: FolderOpen },
       { title: "Glossary", url: "/resources/glossary", icon: BookOpen },
       { title: "Regulatory References", url: "/resources/regulatory", icon: Scale },
+    ],
+  },
+  {
+    title: "Admin",
+    group: true,
+    items: [
+      { title: "Site Health", url: "/admin/site-health", icon: Activity },
     ],
   },
 ];
