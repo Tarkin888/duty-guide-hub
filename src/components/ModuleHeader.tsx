@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Circle, Clock, Printer, ArrowLeft, Calendar } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Printer, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
-import { getModuleStatus, updateModuleStatus, addActivity } from '@/lib/storage';
+import { getModuleStatus, updateModuleStatus } from '@/lib/storage';
 import { useProgressStore, normalizeModuleId } from '@/stores/progressStore';
 import { format } from 'date-fns';
+import { ModuleBreadcrumb } from './ModuleBreadcrumb';
 
 interface ModuleHeaderProps {
   moduleId: string;
@@ -37,9 +37,7 @@ export const ModuleHeader = ({
   part,
   icon,
 }: ModuleHeaderProps) => {
-  const navigate = useNavigate();
   const [status, setStatus] = useState<'not-started' | 'in-progress' | 'completed'>('not-started');
-  
   // Get completion date from progress store
   const modules = useProgressStore((state) => state.modules);
   const canonicalId = normalizeModuleId(storageKey);
@@ -110,14 +108,13 @@ export const ModuleHeader = ({
   return (
     <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
       <div className="container mx-auto px-4 py-4">
-        <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
+        {/* Breadcrumb Navigation */}
+        <ModuleBreadcrumb 
+          moduleId={moduleId} 
+          moduleName={title}
+          part={part}
           className="mb-4"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
+        />
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div className="flex items-start gap-4">

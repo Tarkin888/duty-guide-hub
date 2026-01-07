@@ -8,7 +8,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
   MessageSquare, 
-  ArrowLeft, 
   Users, 
   Target, 
   Clock, 
@@ -31,6 +30,7 @@ import {
   Award
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
@@ -126,14 +126,9 @@ export default function CDT2CommunicationsChangePart1() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto py-6 px-4 max-w-7xl">
-        {/* Header */}
+        {/* Breadcrumb Navigation */}
         <div className="mb-6">
-          <Link to="/dashboard">
-            <Button variant="ghost" size="sm" className="mb-4">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </Link>
+          <ModuleBreadcrumb moduleId="CD-T2" moduleName="Communications & Change Management" part="Part 1 of 2" className="mb-4" />
           
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">

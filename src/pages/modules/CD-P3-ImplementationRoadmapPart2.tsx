@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +12,6 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { 
-  ArrowLeft, 
   Target, 
   Clock, 
   Users, 
@@ -37,16 +37,9 @@ export default function CDP3ImplementationRoadmapPart2() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
+        {/* Breadcrumb Navigation */}
         <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/dashboard")}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
+          <ModuleBreadcrumb moduleId="CD-P3" moduleName="Implementation Roadmap Development" part="Part 2 of 2" className="mb-4" />
           
           <div className="flex items-start justify-between">
             <div>
@@ -1368,14 +1361,10 @@ export default function CDP3ImplementationRoadmapPart2() {
           </TabsContent>
         </Tabs>
 
-        {/* Navigation */}
-        <div className="mt-8 flex justify-between">
+        {/* Navigation to Part 1 */}
+        <div className="mt-8 flex justify-start">
           <Button variant="outline" onClick={() => navigate("/governance/roadmap")}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Part 1: Strategic Planning
-          </Button>
-          <Button onClick={() => navigate("/dashboard")}>
-            Back to Dashboard
+            ← Part 1: Strategic Planning
           </Button>
         </div>
       </div>

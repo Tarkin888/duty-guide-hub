@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ArrowLeft, FileText, Download, Printer, CheckCircle2, DollarSign } from "lucide-react";
-import { Link } from "react-router-dom";
+import { FileText, Download, Printer, CheckCircle2, DollarSign } from "lucide-react";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -54,13 +54,8 @@ export default function CDI2PriceValue() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto py-8 px-4 max-w-7xl">
-        {/* Navigation */}
-        <Link to="/dashboard">
-          <Button variant="ghost" className="mb-6">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
-          </Button>
-        </Link>
+        {/* Breadcrumb Navigation */}
+        <ModuleBreadcrumb moduleId="CD-I2" moduleName="Price & Value Outcome Implementation" className="mb-6" />
 
         {/* Module Header */}
         <div className="mb-8">

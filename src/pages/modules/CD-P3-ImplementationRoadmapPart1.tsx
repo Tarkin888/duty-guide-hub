@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, Map, Clock, Users, FileText, Target, CheckCircle2, AlertTriangle, Lightbulb, Calendar, DollarSign, GitBranch, Shield, Building2, TrendingUp, Milestone, ArrowRight } from "lucide-react";
+import { Map, Clock, Users, FileText, Target, CheckCircle2, AlertTriangle, Lightbulb, Calendar, DollarSign, GitBranch, Shield, Building2, TrendingUp, Milestone, ArrowRight } from "lucide-react";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
@@ -32,16 +33,9 @@ export default function CDP3ImplementationRoadmapPart1() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 max-w-7xl">
-        {/* Header */}
+        {/* Breadcrumb Navigation */}
         <div className="mb-6">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/dashboard")}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
+          <ModuleBreadcrumb moduleId="CD-P3" moduleName="Implementation Roadmap Development" part="Part 1 of 2" className="mb-4" />
           
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">

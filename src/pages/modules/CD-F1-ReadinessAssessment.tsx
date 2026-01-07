@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, Printer, Download, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb } from "lucide-react";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { PitfallCard } from "@/components/modules/PitfallCard";
@@ -23,7 +23,6 @@ import { CD_F1_TEMPLATES } from "@/data/cdF1Templates";
 const MODULE_ID = "cd-f1-readiness";
 
 export default function CDf1ReadinessAssessment() {
-  const navigate = useNavigate();
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   
@@ -65,12 +64,9 @@ export default function CDf1ReadinessAssessment() {
 
   return (
     <div className="container max-w-6xl mx-auto p-6 space-y-6">
-      {/* Header */}
+      {/* Breadcrumb Navigation */}
       <div className="space-y-4">
-        <Button variant="ghost" onClick={() => navigate(-1)} className="gap-2">
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </Button>
+        <ModuleBreadcrumb moduleId="CD-F1" moduleName="Readiness Assessment" />
         
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div className="space-y-2">

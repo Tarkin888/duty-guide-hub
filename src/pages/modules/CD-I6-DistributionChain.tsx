@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Network, Download, FileText, CheckCircle2, AlertTriangle, Scale, Users, Building2, UserCheck, ScrollText, Shield } from "lucide-react";
+import { Network, Download, FileText, CheckCircle2, AlertTriangle, Scale, Users, Building2, UserCheck, ScrollText, Shield } from "lucide-react";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,7 +17,6 @@ import { updateModuleStatus, addActivity } from "@/lib/storage";
 import { toast } from "sonner";
 
 export default function CDI6DistributionChain() {
-  const navigate = useNavigate();
   const [status, setStatus] = useState<"not-started" | "in-progress" | "completed">(() => {
     const stored = localStorage.getItem("module-cd-i6-status");
     return (stored as "not-started" | "in-progress" | "completed") || "not-started";
@@ -41,12 +40,9 @@ export default function CDI6DistributionChain() {
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      {/* Navigation */}
+      {/* Breadcrumb Navigation */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard")}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
-        </Button>
+        <ModuleBreadcrumb moduleId="CD-I6" moduleName="Distribution Chain Management" />
         <div className="flex items-center gap-2 ml-auto">
           <Badge variant="outline">Implementation Module</Badge>
           <Badge 
