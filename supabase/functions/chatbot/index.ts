@@ -43,6 +43,49 @@ const MAX_MESSAGE_LENGTH = 5000;
 const MAX_HISTORY_LENGTH = 50;
 const MAX_HISTORY_ITEM_LENGTH = 10000;
 
+// Rate limiting constants
+const RATE_LIMIT_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
+
+// In-memory rate limit store (resets on function cold start)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+// Get client identifier for rate limiting
+function getClientId(req: Request): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+         req.headers.get('x-real-ip') ||
+         req.headers.get('cf-connecting-ip') ||
+         'unknown';
+}
+
+// Check and update rate limit
+function checkRateLimit(clientId: string): { allowed: boolean; remaining: number; resetIn: number } {
+  const now = Date.now();
+  const clientData = rateLimitStore.get(clientId);
+  
+  // Clean up expired entries periodically
+  if (rateLimitStore.size > 1000) {
+    for (const [key, value] of rateLimitStore.entries()) {
+      if (value.resetTime < now) {
+        rateLimitStore.delete(key);
+      }
+    }
+  }
+  
+  if (!clientData || clientData.resetTime < now) {
+    // New window
+    rateLimitStore.set(clientId, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT_REQUESTS - 1, resetIn: RATE_LIMIT_WINDOW_MS };
+  }
+  
+  if (clientData.count >= RATE_LIMIT_REQUESTS) {
+    return { allowed: false, remaining: 0, resetIn: clientData.resetTime - now };
+  }
+  
+  clientData.count++;
+  return { allowed: true, remaining: RATE_LIMIT_REQUESTS - clientData.count, resetIn: clientData.resetTime - now };
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -50,6 +93,27 @@ serve(async (req) => {
   }
 
   try {
+    // Rate limiting check
+    const clientId = getClientId(req);
+    const rateLimit = checkRateLimit(clientId);
+    
+    if (!rateLimit.allowed) {
+      console.log('Rate limit exceeded for client:', clientId);
+      return new Response(JSON.stringify({ 
+        error: 'Rate limit exceeded. Please wait a moment and try again.',
+        retryAfter: Math.ceil(rateLimit.resetIn / 1000)
+      }), {
+        status: 429,
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': String(Math.ceil(rateLimit.resetIn / 1000)),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': String(Math.ceil(rateLimit.resetIn / 1000))
+        },
+      });
+    }
+
     const body = await req.json();
     const { message, conversationHistory = [] } = body;
 
