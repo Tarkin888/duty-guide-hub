@@ -34,9 +34,9 @@ import {
 } from "lucide-react";
 import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
 import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
-import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from "@/stores/progressStore";
-import { useChecklistProgress } from "@/hooks/useChecklistProgress";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useProgressStore, TOTAL_MODULES } from "@/stores/progressStore";
+import { useProgressCalculation } from "@/lib/progressCalculation";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
@@ -145,8 +145,8 @@ export default function Dashboard() {
   const initializeStartDate = useProgressStore((state) => state.initializeStartDate);
   const clearActivities = useProgressStore((state) => state.clearActivities);
 
-  // Use actual checklist progress from localStorage
-  const { progress: checklistProgress, isLoading: isLoadingProgress, error: progressError } = useChecklistProgress();
+  // Use centralized progress calculation based on module completion status
+  const { overall: calculatedProgress, categories: categoryProgress, inProgressModules: progressInProgressModules } = useProgressCalculation();
 
   const [lastUpdated, setLastUpdated] = useState("");
   const [resetModalOpen, setResetModalOpen] = useState(false);
@@ -162,61 +162,25 @@ export default function Dashboard() {
     initializeStartDate();
   }, [initializeStartDate]);
 
-  // Compute REAL progress from actual checkbox states
+  // Use centralized progress calculation - based on module completion status
+  // Formula: (completed modules / total modules) * 100
   const overallProgress = useMemo(() => {
-    if (!checklistProgress) {
-      return {
-        completed: 0,
-        inProgress: 0,
-        total: TOTAL_MODULES,
-        percentage: 0,
-        checkedBoxes: 0,
-        totalBoxes: 0,
-      };
-    }
-    
     return {
-      completed: checklistProgress.completedModules,
-      inProgress: checklistProgress.inProgressModules,
-      total: checklistProgress.totalModules,
-      percentage: checklistProgress.overallPercentage,
-      checkedBoxes: checklistProgress.totalCheckedBoxes,
-      totalBoxes: checklistProgress.totalBoxes,
+      completed: calculatedProgress.completed,
+      inProgress: calculatedProgress.inProgress,
+      notStarted: calculatedProgress.notStarted,
+      total: calculatedProgress.total,
+      percentage: calculatedProgress.percentage,
     };
-  }, [checklistProgress]);
+  }, [calculatedProgress]);
 
-  // Get category progress from actual checklist data
-  const getCategoryProgress = useCallback((category: keyof typeof MODULE_CATEGORIES) => {
-    if (!checklistProgress?.categoryStats) {
-      const categoryModules = MODULE_CATEGORIES[category];
-      return { completed: 0, total: categoryModules.length, percentage: 0 };
-    }
-    
-    const stats = checklistProgress.categoryStats[category];
-    if (!stats) {
-      const categoryModules = MODULE_CATEGORIES[category];
-      return { completed: 0, total: categoryModules.length, percentage: 0 };
-    }
-    
-    return {
-      completed: stats.completedModules,
-      total: stats.totalModules,
-      percentage: stats.percentage,
-    };
-  }, [checklistProgress]);
-
-  // Get in-progress modules from actual checklist data
+  // Get in-progress modules for display
   const inProgressModules = useMemo(() => {
-    if (!checklistProgress?.moduleStats) return [];
-    
-    return checklistProgress.moduleStats
-      .filter(m => m.status === 'in-progress')
-      .map(m => ({
-        moduleId: m.moduleId,
-        status: m.status as 'in-progress',
-        percentage: m.percentage,
-      }));
-  }, [checklistProgress]);
+    return progressInProgressModules.map(m => ({
+      moduleId: m.moduleId,
+      status: m.status as 'in-progress',
+    }));
+  }, [progressInProgressModules]);
 
   const daysSinceStart = useMemo(() => {
     if (!storeStartDate) return -1;
@@ -281,13 +245,13 @@ export default function Dashboard() {
     };
   }, [overallProgress.completed, storeStartDate]);
 
-  // Category progress
-  const foundationProgress = getCategoryProgress('foundation');
-  const governanceProgress = getCategoryProgress('governance');
-  const outcomesProgress = getCategoryProgress('outcomes');
-  const crossCuttingProgress = getCategoryProgress('crossCutting');
-  const enablementProgress = getCategoryProgress('enablement');
-  const monitoringProgress = getCategoryProgress('monitoring');
+  // Category progress - directly from useProgressCalculation hook
+  const foundationProgress = categoryProgress.foundation;
+  const governanceProgress = categoryProgress.governance;
+  const outcomesProgress = categoryProgress.outcomes;
+  const crossCuttingProgress = categoryProgress.crossCutting;
+  const enablementProgress = categoryProgress.enablement;
+  const monitoringProgress = categoryProgress.monitoring;
 
   useEffect(() => {
     setLastUpdated(format(new Date(), "PPP"));
@@ -415,24 +379,12 @@ export default function Dashboard() {
             <CardDescription>Your implementation journey across all phases</CardDescription>
           </CardHeader>
           <CardContent>
-            {progressError ? (
-              <div className="flex items-center gap-2 p-4 rounded-lg bg-destructive/10 text-destructive">
-                <AlertTriangle className="h-5 w-5" />
-                <span>{progressError}</span>
-              </div>
-            ) : isLoadingProgress ? (
-              <div className="flex items-center justify-center py-8">
-                <div className="animate-pulse text-muted-foreground">Loading progress...</div>
-              </div>
-            ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex flex-col items-center justify-center gap-2">
                 <CircularProgress value={overallProgress.percentage} />
-                {overallProgress.totalBoxes > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    {overallProgress.checkedBoxes} of {overallProgress.totalBoxes} items checked
-                  </p>
-                )}
+                <p className="text-xs text-muted-foreground">
+                  {overallProgress.completed} of {overallProgress.total} modules complete
+                </p>
               </div>
               
               <div className="space-y-4">
@@ -521,7 +473,6 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            )}
           </CardContent>
         </Card>
 
