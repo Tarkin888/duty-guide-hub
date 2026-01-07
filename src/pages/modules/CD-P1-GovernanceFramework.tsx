@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +12,6 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_P1_TEMPLATES } from "@/data/cdP1Templates";
 import { 
-  ArrowLeft, 
   Building2, 
   Clock, 
   Users, 
@@ -35,7 +34,6 @@ import { toast } from "sonner";
 const MODULE_ID = "cd-p1-governance-framework";
 
 export default function CDP1GovernanceFramework() {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -65,14 +63,8 @@ export default function CDP1GovernanceFramework() {
       {/* Header */}
       <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate("/dashboard")}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
+          {/* Breadcrumb Navigation */}
+          <ModuleBreadcrumb moduleId="CD-P1" moduleName="Governance Framework Design" part="Part 1 of 2" className="mb-4" />
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-start gap-4">
