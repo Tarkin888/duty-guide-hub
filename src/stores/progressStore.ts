@@ -71,6 +71,7 @@ interface ProgressState {
   // Actions
   markModuleComplete: (moduleId: string, showToast?: boolean) => void;
   markModuleInProgress: (moduleId: string, showToast?: boolean) => void;
+  resetModuleProgress: (moduleId: string, showToast?: boolean) => void;
   updateChecklistItem: (moduleId: string, itemId: string, completed: boolean) => void;
   updateLastAccessed: (moduleId: string) => void;
   resetAllProgress: () => void;
@@ -78,6 +79,7 @@ interface ProgressState {
   initializeStartDate: () => void;
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
   clearActivities: () => void;
+  validateAndRepairState: () => { valid: boolean; repaired: boolean; errors: string[] };
 
   // Getters
   getModuleStatus: (moduleId: string) => ModuleProgress;
@@ -278,6 +280,47 @@ export const useProgressStore = create<ProgressState>()(
         }
       },
 
+      resetModuleProgress: (moduleId: string, showToast = true) => {
+        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
+        const now = new Date().toISOString();
+        
+        set((state) => {
+          const newModules = { ...state.modules };
+          
+          // Remove the module from tracking (resets to not-started)
+          delete newModules[canonicalId];
+          
+          return {
+            modules: newModules,
+          };
+        });
+        
+        // Also sync with legacy localStorage
+        try {
+          const legacyData = localStorage.getItem('consumer-duty-progress');
+          if (legacyData) {
+            const parsed = JSON.parse(legacyData);
+            // Find and remove any storage keys that map to this module
+            Object.keys(STORAGE_KEY_TO_MODULE_ID).forEach(storageKey => {
+              if (STORAGE_KEY_TO_MODULE_ID[storageKey] === canonicalId) {
+                delete parsed[storageKey];
+              }
+            });
+            localStorage.setItem('consumer-duty-progress', JSON.stringify(parsed));
+          }
+        } catch (e) {
+          console.error('Failed to sync reset with legacy storage:', e);
+        }
+        
+        window.dispatchEvent(new Event('module-progress-updated'));
+        
+        if (showToast) {
+          toast.info('Progress Reset', {
+            description: `${getModuleDisplayName(canonicalId)} reset to Not Started.`,
+          });
+        }
+      },
+
       updateChecklistItem: (moduleId: string, itemId: string, completed: boolean) => {
         const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
         const now = new Date().toISOString();
@@ -400,6 +443,40 @@ export const useProgressStore = create<ProgressState>()(
 
       clearActivities: () => {
         set({ activities: [] });
+      },
+
+      validateAndRepairState: () => {
+        const state = get();
+        const errors: string[] = [];
+        let repaired = false;
+        
+        const validModuleIds: string[] = Object.values(MODULE_CATEGORIES).flat();
+        const newModules = { ...state.modules };
+        
+        // Check for invalid module IDs
+        Object.keys(newModules).forEach(moduleId => {
+          if (!validModuleIds.includes(moduleId)) {
+            errors.push(`Invalid module ID: ${moduleId}`);
+            delete newModules[moduleId];
+            repaired = true;
+          }
+        });
+        
+        // Check for invalid statuses
+        Object.entries(newModules).forEach(([moduleId, module]) => {
+          if (!['not-started', 'in-progress', 'complete'].includes(module.status)) {
+            errors.push(`Invalid status for ${moduleId}: ${module.status}`);
+            newModules[moduleId] = { ...module, status: 'not-started' };
+            repaired = true;
+          }
+        });
+        
+        if (repaired) {
+          set({ modules: newModules });
+          console.warn('[ProgressStore] State repaired:', errors);
+        }
+        
+        return { valid: errors.length === 0, repaired, errors };
       },
 
       getModuleStatus: (moduleId: string) => {
@@ -530,50 +607,45 @@ export const useProgressStore = create<ProgressState>()(
       version: 2,
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
-        // Always try to merge old data - this ensures any modules marked complete
-        // via the old storage system get synced to the Zustand store
+        // On first load, try to migrate data from old localStorage format
         if (state) {
           const migratedData = migrateOldData();
           
-          // Modules with complete content that should be marked complete
-          const modulesWithCompleteContent = [
-            'CD-F1', 'CD-F2', 'CD-F3', 
-            'CD-I1', 'CD-I2', 'CD-I3', 'CD-I4'
-          ];
-          
-          // Add complete status for modules with complete content
-          modulesWithCompleteContent.forEach(moduleId => {
-            if (!migratedData[moduleId] || migratedData[moduleId].status !== 'complete') {
-              migratedData[moduleId] = {
-                moduleId,
-                status: 'complete',
-                completedAt: new Date().toISOString(),
-                lastAccessedAt: new Date().toISOString(),
-                checklistItems: {},
-              };
-            }
-          });
-          
-          // Always merge - migrated data fills gaps, complete content modules always marked complete
+          // Only merge migrated data for modules not already in the store
+          // Never auto-complete modules - only user actions should mark complete
           const merged = { ...state.modules };
           
-          // Ensure modules with complete content are always marked complete
-          modulesWithCompleteContent.forEach(moduleId => {
-            if (!merged[moduleId] || merged[moduleId].status !== 'complete') {
-              merged[moduleId] = migratedData[moduleId];
-            }
-          });
-          
-          // Merge any other migrated data
           Object.keys(migratedData).forEach(key => {
+            // Only add from migrated data if not already present
             if (!merged[key]) {
               merged[key] = migratedData[key];
             }
           });
           
           state.modules = merged;
+          
+          // Log state for debugging in development
+          if (process.env.NODE_ENV === 'development') {
+            console.log('[ProgressStore] Rehydrated state:', {
+              totalModules: Object.keys(state.modules).length,
+              complete: Object.values(state.modules).filter(m => m.status === 'complete').length,
+              inProgress: Object.values(state.modules).filter(m => m.status === 'in-progress').length,
+            });
+          }
         }
       },
     }
   )
 );
+
+// Subscribe to store changes for debugging
+if (process.env.NODE_ENV === 'development') {
+  useProgressStore.subscribe((state, prevState) => {
+    const prevComplete = Object.values(prevState.modules).filter(m => m.status === 'complete').length;
+    const currComplete = Object.values(state.modules).filter(m => m.status === 'complete').length;
+    
+    if (prevComplete !== currComplete) {
+      console.log('[ProgressStore] Completed modules changed:', prevComplete, '→', currComplete);
+    }
+  });
+}

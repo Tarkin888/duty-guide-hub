@@ -1,7 +1,8 @@
 // Local storage utilities for progress tracking
-// This module bridges the old localStorage approach with the new Zustand store
+// This module is the BRIDGE between legacy localStorage and the Zustand store
+// All status updates go through here to ensure both systems stay in sync
 
-import { useProgressStore } from '@/stores/progressStore';
+import { useProgressStore, normalizeModuleId } from '@/stores/progressStore';
 
 export interface ModuleProgress {
   status: "not-started" | "in-progress" | "completed";
@@ -57,36 +58,71 @@ const getModuleDisplayName = (moduleId: string): string => {
   return MODULE_DISPLAY_NAMES[moduleId] || moduleId.toUpperCase().replace(/-/g, ' ');
 };
 
+// Safely read from localStorage with error handling
 export const getProgress = (): ProgressData => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : {};
+    if (!data) return {};
+    
+    const parsed = JSON.parse(data);
+    
+    // Validate data structure
+    if (typeof parsed !== 'object' || parsed === null) {
+      console.warn('[Storage] Invalid progress data format, resetting');
+      return {};
+    }
+    
+    return parsed;
   } catch (error) {
-    console.error("Error reading progress from localStorage:", error);
+    console.error("[Storage] Error reading progress from localStorage:", error);
     return {};
   }
 };
 
-export const saveProgress = (progress: ProgressData): void => {
+// Safely write to localStorage with quota handling
+export const saveProgress = (progress: ProgressData): boolean => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    return true;
   } catch (error) {
-    console.error("Error saving progress to localStorage:", error);
+    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+      console.error("[Storage] localStorage quota exceeded");
+      // Try to clear old data and retry
+      try {
+        localStorage.removeItem('consumer-duty-activity');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    console.error("[Storage] Error saving progress to localStorage:", error);
+    return false;
   }
 };
 
+/**
+ * Update module status - THE CENTRAL SYNC POINT
+ * Updates both legacy localStorage AND Zustand store
+ */
 export const updateModuleStatus = (
   moduleId: string,
   status: "not-started" | "in-progress" | "completed"
 ): void => {
   const progress = getProgress();
   const previousStatus = progress[moduleId]?.status;
+  const now = new Date().toISOString();
   
+  // Update legacy localStorage
   progress[moduleId] = {
     status,
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: now,
   };
-  saveProgress(progress);
+  
+  const saved = saveProgress(progress);
+  if (!saved) {
+    console.error('[Storage] Failed to save progress, localStorage may be full');
+  }
   
   // SYNC WITH ZUSTAND STORE - This ensures Dashboard picks up the changes
   const store = useProgressStore.getState();
@@ -100,12 +136,17 @@ export const updateModuleStatus = (
   const displayName = getModuleDisplayName(moduleId);
   if (status === "completed" && previousStatus !== "completed") {
     addActivity("module_completed", displayName);
-  } else if (status === "in-progress" && previousStatus !== "in-progress") {
+  } else if (status === "in-progress" && previousStatus !== "in-progress" && previousStatus !== "completed") {
     addActivity("module_started", displayName);
   }
   
   // Dispatch custom event for same-tab updates (Dashboard will listen)
   window.dispatchEvent(new Event('module-progress-updated'));
+  
+  // Log for debugging in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[Storage] Module ${moduleId} status updated: ${previousStatus || 'not-started'} → ${status}`);
+  }
 };
 
 export const getModuleStatus = (moduleId: string): "not-started" | "in-progress" | "completed" => {
