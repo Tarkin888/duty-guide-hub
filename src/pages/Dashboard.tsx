@@ -153,6 +153,8 @@ export default function Dashboard() {
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const [regulatoryUpdatesOpen, setRegulatoryUpdatesOpen] = useState(false);
+  const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isExportingCSV, setIsExportingCSV] = useState(false);
 
   // Hook for regulatory updates
   const { unreadCount: regulatoryUnreadCount, latestUpdateDate, refresh: refreshRegulatoryUpdates } = useRegulatoryUpdates();
@@ -330,17 +332,55 @@ export default function Dashboard() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => {
-                exportProgressToPDF();
-                toast.success('PDF exported successfully');
-              }}>
-                Export as PDF
+              <DropdownMenuItem 
+                disabled={isExportingPDF}
+                onClick={async () => {
+                  setIsExportingPDF(true);
+                  try {
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Allow UI to update
+                    exportProgressToPDF();
+                    toast.success('Progress report exported successfully');
+                  } catch (error) {
+                    console.error('PDF export failed:', error);
+                    toast.error('Failed to generate PDF. Please try again.');
+                  } finally {
+                    setIsExportingPDF(false);
+                  }
+                }}
+              >
+                {isExportingPDF ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Generating PDF...
+                  </>
+                ) : (
+                  'Export as PDF'
+                )}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {
-                exportProgressToCSV();
-                toast.success('CSV exported successfully');
-              }}>
-                Export as CSV
+              <DropdownMenuItem 
+                disabled={isExportingCSV}
+                onClick={async () => {
+                  setIsExportingCSV(true);
+                  try {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    exportProgressToCSV();
+                    toast.success('CSV exported successfully');
+                  } catch (error) {
+                    console.error('CSV export failed:', error);
+                    toast.error('Failed to generate CSV. Please try again.');
+                  } finally {
+                    setIsExportingCSV(false);
+                  }
+                }}
+              >
+                {isExportingCSV ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Generating CSV...
+                  </>
+                ) : (
+                  'Export as CSV'
+                )}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
