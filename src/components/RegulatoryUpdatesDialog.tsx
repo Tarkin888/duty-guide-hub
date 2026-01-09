@@ -250,16 +250,12 @@ export function RegulatoryUpdatesDialog({
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      // Call the edge function to fetch new updates
-      const { error } = await supabase.functions.invoke('fetch-fca-updates');
-      if (error) throw error;
-      
-      // Reload the updates
+      // Reload the updates from database (updates are fetched automatically)
       await fetchUpdates();
-      toast.success('Updates refreshed');
+      toast.success('Updates reloaded from database');
     } catch (error) {
       console.error('Error refreshing:', error);
-      toast.error('Failed to refresh updates');
+      toast.error('Failed to reload updates');
     } finally {
       setRefreshing(false);
     }
@@ -298,9 +294,10 @@ export function RegulatoryUpdatesDialog({
             onClick={handleRefresh}
             disabled={refreshing}
             className="gap-2"
+            title="Reload updates from database"
           >
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
+            Reload
           </Button>
           {unreadCount > 0 && (
             <Button
@@ -333,10 +330,8 @@ export function RegulatoryUpdatesDialog({
           ) : updates.length === 0 ? (
             <div className="text-center py-12">
               <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No regulatory updates found</p>
-              <Button onClick={handleRefresh} variant="outline" className="mt-4">
-                Refresh from FCA
-              </Button>
+              <p className="text-muted-foreground">No regulatory updates available yet</p>
+              <p className="text-xs text-muted-foreground mt-2">Updates are synced automatically from FCA sources</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -443,7 +438,7 @@ export function RegulatoryUpdatesDialog({
         </ScrollArea>
 
         <p className="text-[10px] text-muted-foreground/70 text-center mt-2">
-          Updates sourced from FCA RSS feeds. Refresh to check for new publications.
+          Updates sourced from FCA RSS feeds. Data synced automatically.
         </p>
       </DialogContent>
     </Dialog>
