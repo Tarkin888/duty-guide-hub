@@ -89,6 +89,7 @@ interface ProgressState {
   getInProgressModules: () => ModuleProgress[];
   getDaysSinceStart: () => number;
   getStartDate: () => string | null;
+  getFormattedStartDate: () => string | null;
   getActivities: () => Activity[];
   getAverageDaysPerModule: () => number;
   getEstimatedCompletionDate: () => Date | null;
@@ -417,11 +418,22 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       initializeStartDate: () => {
-        set((state) => {
-          // Only set if not already set
-          if (state.startDate) return state;
-          return { startDate: new Date().toISOString() };
-        });
+        // This function should NOT auto-set a date
+        // The start date is ONLY set when the first module is marked as in-progress or complete
+        // This is already handled in markModuleComplete and markModuleInProgress
+        const state = get();
+        
+        // Validate existing start date
+        if (state.startDate) {
+          const startDate = new Date(state.startDate);
+          const now = new Date();
+          
+          // If start date is invalid or in the future, clear it
+          if (isNaN(startDate.getTime()) || startDate > now) {
+            console.warn('[ProgressStore] Invalid start date detected, clearing');
+            set({ startDate: null });
+          }
+        }
       },
 
       addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => {
@@ -557,6 +569,21 @@ export const useProgressStore = create<ProgressState>()(
       getStartDate: () => {
         const state = get();
         return state.startDate;
+      },
+
+      getFormattedStartDate: () => {
+        const state = get();
+        if (!state.startDate) return null;
+        
+        const date = new Date(state.startDate);
+        if (isNaN(date.getTime())) return null;
+        
+        // Format as DD/MM/YYYY (British format)
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        
+        return `${day}/${month}/${year}`;
       },
 
       getActivities: () => {
