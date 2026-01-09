@@ -6,6 +6,45 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+const MAX_REQUESTS_PER_WINDOW = 6; // Max 6 requests per hour (generous for RSS fetching)
+
+// In-memory rate limit store (resets on function cold start)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+// Clean up expired entries periodically
+function cleanupRateLimitStore() {
+  const now = Date.now();
+  for (const [key, value] of rateLimitStore.entries()) {
+    if (now > value.resetTime) {
+      rateLimitStore.delete(key);
+    }
+  }
+}
+
+// Check and update rate limit
+function checkRateLimit(identifier: string): { allowed: boolean; remaining: number; resetTime: number } {
+  cleanupRateLimitStore();
+  
+  const now = Date.now();
+  const existing = rateLimitStore.get(identifier);
+  
+  if (!existing || now > existing.resetTime) {
+    // New window
+    const resetTime = now + RATE_LIMIT_WINDOW_MS;
+    rateLimitStore.set(identifier, { count: 1, resetTime });
+    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - 1, resetTime };
+  }
+  
+  if (existing.count >= MAX_REQUESTS_PER_WINDOW) {
+    return { allowed: false, remaining: 0, resetTime: existing.resetTime };
+  }
+  
+  existing.count++;
+  return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - existing.count, resetTime: existing.resetTime };
+}
+
 // FCA RSS feeds for Consumer Duty related content
 const FCA_RSS_FEEDS = [
   'https://www.fca.org.uk/news/news-stories.rss',
@@ -142,6 +181,32 @@ serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Rate limiting - use a global identifier since this is a shared resource
+  const rateLimitId = 'global-fca-fetch';
+  const rateLimit = checkRateLimit(rateLimitId);
+  
+  if (!rateLimit.allowed) {
+    const retryAfter = Math.ceil((rateLimit.resetTime - Date.now()) / 1000);
+    console.log(`Rate limit exceeded. Retry after ${retryAfter} seconds.`);
+    return new Response(
+      JSON.stringify({ 
+        error: 'Rate limit exceeded. This function can only be called a few times per hour.',
+        retryAfter 
+      }),
+      { 
+        status: 429, 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Retry-After': retryAfter.toString(),
+          'X-RateLimit-Limit': MAX_REQUESTS_PER_WINDOW.toString(),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': rateLimit.resetTime.toString()
+        } 
+      }
+    );
   }
 
   try {
