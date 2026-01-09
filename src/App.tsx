@@ -61,8 +61,12 @@ const App = () => (
               <div className="min-h-screen flex w-full">
                 <AppSidebar />
                 <div className="flex-1 flex flex-col min-w-0">
-                  <header className="h-14 border-b border-border flex items-center px-4 bg-background sticky top-0 z-10 md:hidden">
-                    <SidebarTrigger aria-label="Open navigation menu" />
+                  {/* Mobile header with hamburger menu */}
+                  <header className="h-14 border-b border-border flex items-center px-4 bg-background sticky top-0 z-20 md:hidden">
+                    <SidebarTrigger 
+                      aria-label="Open navigation menu"
+                      className="h-10 w-10 hover:bg-accent"
+                    />
                     <span className="ml-3 font-semibold text-foreground">Consumer Duty Playbook</span>
                   </header>
                   <main className="flex-1 overflow-auto">

@@ -1,4 +1,4 @@
-import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon, Activity } from "lucide-react";
+import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon, Activity, Building2, Layers, Compass, MonitorCheck } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -33,6 +33,7 @@ interface NavigationItem {
 interface NavigationGroup {
   title: string;
   group: true;
+  icon: LucideIcon; // Icon for collapsed state
   items: NavigationItem[];
 }
 
@@ -44,6 +45,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Foundation Modules",
     group: true,
+    icon: Building2,
     items: [
       { title: "Readiness Assessment", url: "/foundation/readiness", icon: ClipboardCheck, moduleId: "cd-f1-readiness" },
       { title: "Requirements Mapping", url: "/foundation/requirements", icon: Map, moduleId: "cd-f2-requirements" },
@@ -53,6 +55,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Governance & Planning",
     group: true,
+    icon: Shield,
     items: [
       { title: "Governance Framework", url: "/governance/framework", icon: Shield, moduleId: "cd-p1-governance-framework" },
       { title: "Policy Development", url: "/governance/policy", icon: FileText, moduleId: "cd-p2-policy-framework" },
@@ -60,8 +63,9 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     ],
   },
   {
-    title: "Four Outcomes Implementation",
+    title: "Four Outcomes",
     group: true,
+    icon: Compass,
     items: [
       { title: "Products & Services", url: "/outcomes/products-services", icon: ListChecks, moduleId: "cd-i1-products-services" },
       { title: "Price & Value", url: "/outcomes/price-value", icon: DollarSign, moduleId: "cd-i2-price-value" },
@@ -70,8 +74,9 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     ],
   },
   {
-    title: "Cross-Cutting Modules",
+    title: "Cross-Cutting",
     group: true,
+    icon: Layers,
     items: [
       { title: "Vulnerable Customers", url: "/cross-cutting/vulnerable-customers", icon: Users, moduleId: "cd-i5-vulnerable-customers" },
       { title: "Distribution Chain", url: "/cross-cutting/distribution-chain", icon: Link2, moduleId: "cd-i6-distribution-chain" },
@@ -81,6 +86,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Enablement",
     group: true,
+    icon: GraduationCap,
     items: [
       { title: "Training", url: "/enablement/training", icon: GraduationCap, moduleId: "cd-t1-training" },
       { title: "Change Management", url: "/enablement/change-management", icon: RefreshCw, moduleId: "cd-t2-communications-change" },
@@ -90,6 +96,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Monitoring & Assurance",
     group: true,
+    icon: MonitorCheck,
     items: [
       { title: "MI & Monitoring", url: "/monitoring/mi-monitoring", icon: BarChart3, moduleId: "cd-m1-mi-framework" },
       { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube, moduleId: "cd-m2-testing-assurance" },
@@ -100,6 +107,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Resources",
     group: true,
+    icon: FolderOpen,
     items: [
       { title: "Templates Library", url: "/resources/templates", icon: FolderOpen },
       { title: "Glossary", url: "/resources/glossary", icon: BookOpen },
@@ -109,6 +117,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Admin",
     group: true,
+    icon: Activity,
     items: [
       { title: "Site Health", url: "/admin/site-health", icon: Activity },
     ],
@@ -249,18 +258,20 @@ export function AppSidebar() {
         </button>
       )}
 
-      <SidebarHeader className="border-b-0 px-4 py-4">
-        {!isCollapsed && (
-          <div className="flex flex-col gap-1 transition-opacity duration-300">
-            <h2 className="text-lg font-bold text-sidebar-foreground">Consumer Duty</h2>
-            <p className="text-xs text-sidebar-foreground/70">Implementation Playbook</p>
+      <SidebarHeader className="border-b border-sidebar-border px-3 py-3">
+        {!isCollapsed && !isMobile && (
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-0.5 transition-opacity duration-300">
+              <h2 className="text-base font-bold text-sidebar-foreground">Consumer Duty</h2>
+              <p className="text-xs text-sidebar-foreground/70">Implementation Playbook</p>
+            </div>
           </div>
         )}
         {isCollapsed && !isMobile && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex items-center justify-center">
-                <Shield className="h-6 w-6 text-sidebar-primary" />
+              <div className="flex items-center justify-center py-1">
+                <Shield className="h-6 w-6 text-primary" />
               </div>
             </TooltipTrigger>
             <TooltipContent side="right" className="bg-primary text-primary-foreground">
@@ -269,7 +280,7 @@ export function AppSidebar() {
           </Tooltip>
         )}
         {isMobile && (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 pr-12">
             <h2 className="text-lg font-bold text-sidebar-foreground">Consumer Duty</h2>
             <p className="text-xs text-sidebar-foreground/70">Implementation Playbook</p>
           </div>
@@ -288,27 +299,78 @@ export function AppSidebar() {
             if ('group' in item && item.group && 'items' in item) {
               const filteredItems = getFilteredItems(item.items);
               const groupIsActive = isGroupActive(item.items);
+              const GroupIcon = item.icon;
               
               // Hide group if no items match filter
               if (!groupHasMatchingItems(item.items)) {
                 return null;
               }
+
+              // When collapsed, show group icon with tooltip that expands to show items
+              if (isCollapsed && !isMobile) {
+                return (
+                  <SidebarGroup key={index} className="py-1">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div
+                          className={cn(
+                            "flex items-center justify-center w-full p-2 rounded-md cursor-pointer transition-all duration-200",
+                            "hover:bg-sidebar-accent min-h-[44px]",
+                            groupIsActive && "bg-primary/10 text-primary"
+                          )}
+                        >
+                          <GroupIcon className={cn(
+                            "h-5 w-5",
+                            groupIsActive && "text-primary"
+                          )} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="right"
+                        className="p-0 bg-sidebar border border-sidebar-border shadow-lg"
+                        sideOffset={12}
+                      >
+                        <div className="min-w-[200px]">
+                          <div className="px-3 py-2 border-b border-sidebar-border">
+                            <span className="font-medium text-sm text-sidebar-foreground">{item.title}</span>
+                          </div>
+                          <div className="py-1">
+                            {filteredItems.map((subItem) => {
+                              const isActive = isActiveRoute(subItem.url);
+                              return (
+                                <NavLink
+                                  key={subItem.url}
+                                  to={subItem.url}
+                                  className={cn(
+                                    "flex items-center gap-3 px-3 py-2 text-sm transition-colors",
+                                    "hover:bg-sidebar-accent text-sidebar-foreground",
+                                    isActive && "bg-primary text-primary-foreground font-medium"
+                                  )}
+                                >
+                                  <subItem.icon className="h-4 w-4" />
+                                  <span>{subItem.title}</span>
+                                </NavLink>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </SidebarGroup>
+                );
+              }
               
               return (
                 <Collapsible key={index} defaultOpen={groupIsActive || !isCollapsed}>
                   <SidebarGroup>
-                    {!isCollapsed && (
-                      <CollapsibleTrigger asChild>
-                        <SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent text-sidebar-foreground transition-colors duration-200">
-                          <span className="flex-1">{item.title}</span>
-                          <ChevronDown className="h-4 w-4 transition-transform duration-200 ui-expanded:rotate-180" />
-                        </SidebarGroupLabel>
-                      </CollapsibleTrigger>
-                    )}
-                    <CollapsibleContent className={cn(
-                      "transition-all duration-300",
-                      isCollapsed && "!block"
-                    )}>
+                    <CollapsibleTrigger asChild>
+                      <SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent text-sidebar-foreground transition-colors duration-200">
+                        <GroupIcon className="h-4 w-4 mr-2" />
+                        <span className="flex-1">{item.title}</span>
+                        <ChevronDown className="h-4 w-4 transition-transform duration-200 ui-expanded:rotate-180" />
+                      </SidebarGroupLabel>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="transition-all duration-300">
                       <SidebarGroupContent>
                         <SidebarMenu>
                           {filteredItems.map((subItem) => {
@@ -360,26 +422,35 @@ export function AppSidebar() {
       <SidebarFooter className="border-t border-sidebar-border p-2">
         {/* Toggle button */}
         {!isMobile && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleSidebar}
-            className={cn(
-              "w-full flex items-center gap-2 text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200 min-h-[44px]",
-              isCollapsed ? "justify-center" : "justify-start px-3"
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleSidebar}
+                className={cn(
+                  "w-full flex items-center gap-2 text-sidebar-foreground hover:bg-sidebar-accent transition-all duration-200 min-h-[44px]",
+                  isCollapsed ? "justify-center" : "justify-start px-3"
+                )}
+                aria-label={isCollapsed ? "Expand sidebar navigation" : "Collapse sidebar navigation"}
+                aria-expanded={!isCollapsed}
+              >
+                {isCollapsed ? (
+                  <ChevronRight className="h-5 w-5 transition-transform duration-300" />
+                ) : (
+                  <>
+                    <ChevronLeft className="h-5 w-5 transition-transform duration-300" />
+                    <span className="text-sm">Collapse</span>
+                  </>
+                )}
+              </Button>
+            </TooltipTrigger>
+            {isCollapsed && (
+              <TooltipContent side="right" className="bg-primary text-primary-foreground">
+                Expand sidebar
+              </TooltipContent>
             )}
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            aria-expanded={!isCollapsed}
-          >
-            {isCollapsed ? (
-              <ChevronRight className="h-4 w-4 transition-transform duration-300" />
-            ) : (
-              <>
-                <ChevronLeft className="h-4 w-4 transition-transform duration-300" />
-                <span className="text-sm">Collapse</span>
-              </>
-            )}
-          </Button>
+          </Tooltip>
         )}
 
         {/* Version info - only show when expanded */}
