@@ -114,7 +114,7 @@ const MODULE_NAMES: Record<string, string> = {
 
 // Helper to format days since start
 function formatDaysSinceStart(days: number): string {
-  if (days < 0) return "Not started";
+  if (days < 0) return "Not Started";
   if (days === 0) return "0 days";
   if (days === 1) return "1 day";
   return `${days} days`;
@@ -144,6 +144,7 @@ export default function Dashboard() {
   const resetStartDate = useProgressStore((state) => state.resetStartDate);
   const initializeStartDate = useProgressStore((state) => state.initializeStartDate);
   const clearActivities = useProgressStore((state) => state.clearActivities);
+  const getFormattedStartDate = useProgressStore((state) => state.getFormattedStartDate);
 
   // Use centralized progress calculation based on module completion status
   const { overall: calculatedProgress, categories: categoryProgress, inProgressModules: progressInProgressModules } = useProgressCalculation();
@@ -681,15 +682,20 @@ export default function Dashboard() {
               <TooltipContent side="left" className="max-w-xs">
                 {storeStartDate ? (
                   <div className="space-y-1">
-                    <p className="font-medium">Started on {format(new Date(storeStartDate), "d MMM yyyy")}</p>
+                    <p className="font-medium">Started on {getFormattedStartDate()}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {daysSinceStart === 0 
+                        ? 'Started today' 
+                        : `${daysSinceStart} day${daysSinceStart === 1 ? '' : 's'} ago`}
+                    </p>
                     {daysSinceStart <= 30 && (
                       <p className="text-xs text-success">On track (0-30 days)</p>
                     )}
-                    {daysSinceStart > 30 && daysSinceStart <= 60 && (
-                      <p className="text-xs text-warning">Monitor progress (31-60 days)</p>
+                    {daysSinceStart > 30 && daysSinceStart <= 90 && (
+                      <p className="text-xs text-warning">Monitor progress (31-90 days)</p>
                     )}
-                    {daysSinceStart > 60 && (
-                      <p className="text-xs text-destructive">May need acceleration (61+ days)</p>
+                    {daysSinceStart > 90 && (
+                      <p className="text-xs text-destructive">Should be nearing completion (90+ days)</p>
                     )}
                     {avgDaysPerModule > 0 && (
                       <p className="text-xs text-muted-foreground">
@@ -698,12 +704,12 @@ export default function Dashboard() {
                     )}
                     {estimatedCompletion && overallProgress.completed < overallProgress.total && (
                       <p className="text-xs text-muted-foreground">
-                        Est. completion: {format(estimatedCompletion, "d MMM yyyy")}
+                        Est. completion: {format(estimatedCompletion, "dd/MM/yyyy")}
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p>Tracking started today</p>
+                  <p>Start a module to begin tracking</p>
                 )}
               </TooltipContent>
             </Tooltip>
@@ -923,7 +929,10 @@ export default function Dashboard() {
           <AlertDialogHeader>
             <AlertDialogTitle>Reset Start Date?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will reset your implementation start date counter but keep all your module progress intact. A new start date will be set when you next update a module.
+              {storeStartDate 
+                ? `Your current start date is ${getFormattedStartDate()}. This will reset your implementation start date counter but keep all your module progress intact.`
+                : 'This will reset your implementation start date counter but keep all your module progress intact.'
+              } A new start date will be set when you next update a module.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
