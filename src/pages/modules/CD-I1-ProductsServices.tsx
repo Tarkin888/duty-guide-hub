@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,25 +17,31 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_I1_TEMPLATES } from "@/data/cdI1Templates";
 import { toast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useProgressStore } from "@/stores/progressStore";
+
+const MODULE_ID = "cd-i1-products-services";
 
 export default function CDI1ProductsServices() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(() => getModuleStatus("cd-i1-products-services"));
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   
+  // Use Zustand store for module status
+  const { getModuleStatus, markModuleComplete, updateLastAccessed } = useProgressStore();
+  const moduleStatus = getModuleStatus(MODULE_ID);
+  const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
+
+  // Update last accessed on mount
+  useEffect(() => {
+    updateLastAccessed(MODULE_ID);
+  }, [updateLastAccessed]);
+  
   const handleStatusChange = useCallback((newStatus: "not-started" | "in-progress" | "completed") => {
-    setStatus(newStatus);
+    // Status is now managed by the store, this is for backwards compatibility
   }, []);
 
   const handleMarkComplete = () => {
-    updateModuleStatus("cd-i1-products-services", "completed");
-    setStatus("completed");
-    toast({
-      title: "Module Complete",
-      description: "Products & Services module marked as complete!",
-    });
+    markModuleComplete(MODULE_ID);
   };
 
   const handlePrint = () => window.print();

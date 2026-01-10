@@ -18,6 +18,7 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useProgressStore } from "@/stores/progressStore";
+import { ModuleStatus, getModuleChecklistProgress } from "@/lib/progressUtils";
 
 interface StepProgress {
   stepNumber: number;
@@ -36,10 +37,12 @@ export function ModuleChecklistProgress({
 }: ModuleChecklistProgressProps) {
   const [stepProgress, setStepProgress] = useState<StepProgress[]>([]);
   
-  const { markModuleComplete, markModuleInProgress, getModuleStatus } = useProgressStore();
+  // Use Zustand store with individual selectors to prevent unnecessary re-renders
+  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+  const getModuleStatus = useProgressStore((state) => state.getModuleStatus);
   const moduleStatus = getModuleStatus(moduleId);
 
-  // Calculate totals
+  // Calculate totals from localStorage
   const calculateTotals = useCallback(() => {
     const steps: StepProgress[] = [];
     
@@ -65,19 +68,16 @@ export function ModuleChecklistProgress({
     const steps = calculateTotals();
     setStepProgress(steps);
     
-    // Calculate overall progress
+    // Calculate overall progress from checklist items
     const totalCompleted = steps.reduce((sum, s) => sum + s.completed, 0);
     const totalItems = steps.reduce((sum, s) => sum + s.total, 0);
     
-    // Update module status based on checklist progress
-    if (totalItems > 0) {
-      if (totalCompleted === totalItems && moduleStatus.status !== 'complete') {
-        markModuleComplete(moduleId, true);
-      } else if (totalCompleted > 0 && moduleStatus.status === 'not-started') {
-        markModuleInProgress(moduleId, false);
-      }
+    // Auto-upgrade to "in-progress" if user has checked any items
+    // But NEVER auto-complete - that requires explicit "Mark Complete" action
+    if (totalItems > 0 && totalCompleted > 0 && moduleStatus.status === ModuleStatus.NOT_STARTED) {
+      markModuleInProgress(moduleId, false); // false = no toast
     }
-  }, [calculateTotals, moduleId, moduleStatus.status, markModuleComplete, markModuleInProgress]);
+  }, [calculateTotals, moduleId, moduleStatus.status, markModuleInProgress]);
 
   useEffect(() => {
     loadProgress();

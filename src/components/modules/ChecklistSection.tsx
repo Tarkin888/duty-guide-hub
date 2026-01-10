@@ -20,6 +20,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useProgressStore } from "@/stores/progressStore";
+import { normalizeModuleId, getModuleDisplayName } from "@/lib/progressUtils";
 
 interface ChecklistItem {
   id: string;
@@ -128,31 +129,14 @@ const MODULE_DISPLAY_NAMES: Record<string, string> = {
   'cd-m4-continuous-improvement': 'Continuous Improvement',
 };
 
-// Helper to convert storage moduleId to canonical format
+// Helper to convert storage moduleId to canonical format (now using progressUtils)
 function getCanonicalModuleId(storageModuleId: string): string {
-  const mapping: Record<string, string> = {
-    'cd-f1-readiness': 'CD-F1',
-    'cd-f2-requirements': 'CD-F2',
-    'cd-f3-risk-assessment': 'CD-F3',
-    'cd-p1-governance-framework': 'CD-P1',
-    'cd-p2-policy-framework': 'CD-P2',
-    'cd-p3-implementation-roadmap': 'CD-P3',
-    'cd-i1-products-services': 'CD-I1',
-    'cd-i2-price-value': 'CD-I2',
-    'cd-i3-consumer-understanding': 'CD-I3',
-    'cd-i4-consumer-support': 'CD-I4',
-    'cd-i5-vulnerable-customers': 'CD-I5',
-    'cd-i6-distribution-chain': 'CD-I6',
-    'cd-i7-data-evidence': 'CD-I7',
-    'cd-t1-training': 'CD-T1',
-    'cd-t2-communications-change': 'CD-T2',
-    'cd-t3-technology-requirements': 'CD-T3',
-    'cd-m1-mi-framework': 'CD-M1',
-    'cd-m2-testing-assurance': 'CD-M2',
-    'cd-m3-board-reporting': 'CD-M3',
-    'cd-m4-continuous-improvement': 'CD-M4',
-  };
-  return mapping[storageModuleId] || storageModuleId.toUpperCase();
+  return normalizeModuleId(storageModuleId);
+}
+
+// Helper to get display name (now using progressUtils)
+function getLocalModuleDisplayName(storageModuleId: string): string {
+  return MODULE_DISPLAY_NAMES[storageModuleId] || getModuleDisplayName(normalizeModuleId(storageModuleId));
 }
 
 export function ChecklistSection({ 
@@ -237,7 +221,7 @@ export function ChecklistSection({
       if (checked) {
         // Get the canonical module ID for proper activity logging
         const canonicalId = getCanonicalModuleId(moduleId);
-        const moduleName = MODULE_DISPLAY_NAMES[moduleId] || moduleId;
+        const moduleName = getLocalModuleDisplayName(moduleId);
         
         // Set start date on first ever checkbox check
         if (wasEmpty && !storeStartDate) {

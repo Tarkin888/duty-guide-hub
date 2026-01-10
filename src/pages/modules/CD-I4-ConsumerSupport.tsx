@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Phone, FileText, CheckCircle2, AlertTriangle, Download, Printer, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,16 +12,25 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useProgressStore } from "@/stores/progressStore";
 import { toast as sonnerToast } from "sonner";
 
-const STORAGE_KEY = "cd-i4-consumer-support";
+const MODULE_ID = "cd-i4-consumer-support";
 
 export default function CDI4ConsumerSupport() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
-  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  
+  // Use Zustand store for module status
+  const { getModuleStatus, markModuleComplete, markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const moduleStatus = getModuleStatus(MODULE_ID);
+  const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
+
+  // Update last accessed on mount
+  useEffect(() => {
+    updateLastAccessed(MODULE_ID);
+  }, [updateLastAccessed]);
 
   const handlePreview = (templateName: string) => {
     toast({
@@ -42,19 +51,11 @@ export default function CDI4ConsumerSupport() {
   };
 
   const handleMarkComplete = () => {
-    updateModuleStatus(STORAGE_KEY, "completed");
-    setStatus("completed");
-    sonnerToast.success("Module Complete", {
-      description: "Consumer Support marked as complete!",
-    });
+    markModuleComplete(MODULE_ID);
   };
 
   const handleMarkInProgress = () => {
-    updateModuleStatus(STORAGE_KEY, "in-progress");
-    setStatus("in-progress");
-    sonnerToast.info("Module In Progress", {
-      description: "Consumer Support marked as in progress",
-    });
+    markModuleInProgress(MODULE_ID);
   };
 
   return (
