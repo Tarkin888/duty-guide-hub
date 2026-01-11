@@ -288,6 +288,11 @@ export function getInProgressModules(): ModuleProgressInfo[] {
 /**
  * Calculate checklist progress for a module from localStorage
  * This is separate from module completion status
+ * 
+ * STANDARDIZED CALCULATION:
+ * - Y (totalItems): Count of all checklist items registered in localStorage
+ * - X (completedItems): Count of items with value === true
+ * - Percentage: Math.round((X / Y) * 100)
  */
 export function getModuleChecklistProgress(moduleId: string, totalSteps: number): ChecklistProgress {
   let completedItems = 0;
@@ -299,15 +304,21 @@ export function getModuleChecklistProgress(moduleId: string, totalSteps: number)
       const stored = localStorage.getItem(storageKey);
       if (stored) {
         const data = JSON.parse(stored);
-        const items = Object.values(data);
-        totalItems += items.length;
-        completedItems += items.filter(Boolean).length;
+        // Validate data structure
+        if (typeof data === 'object' && data !== null) {
+          const entries = Object.entries(data);
+          // Only count valid boolean entries
+          const validEntries = entries.filter(([, value]) => typeof value === 'boolean');
+          totalItems += validEntries.length;
+          completedItems += validEntries.filter(([, checked]) => checked === true).length;
+        }
       }
     } catch (error) {
       console.error(`Error reading checklist step ${i}:`, error);
     }
   }
   
+  // Use consistent percentage formula: Math.round((X / Y) * 100)
   const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   const isComplete = completedItems === totalItems && totalItems > 0;
   

@@ -43,7 +43,11 @@ export function ModuleChecklistProgress({
   const getModuleStatus = useProgressStore((state) => state.getModuleStatus);
   const moduleStatus = getModuleStatus(moduleId);
 
-  // Calculate totals from localStorage
+  /**
+   * Calculate totals from localStorage
+   * IMPORTANT: Only counts items that have been initialized (exist in localStorage)
+   * The ChecklistSection component is responsible for initializing all items on mount
+   */
   const calculateTotals = useCallback(() => {
     const steps: StepProgress[] = [];
     
@@ -53,9 +57,18 @@ export function ModuleChecklistProgress({
         const stored = localStorage.getItem(storageKey);
         if (stored) {
           const data = JSON.parse(stored);
-          const completedCount = Object.values(data).filter(Boolean).length;
-          const totalCount = Object.keys(data).length;
-          steps.push({ stepNumber: i, completed: completedCount, total: totalCount });
+          // Validate data structure
+          if (typeof data === 'object' && data !== null) {
+            const entries = Object.entries(data);
+            // Only count boolean values (filter out any corrupted data)
+            const validEntries = entries.filter(([, value]) => typeof value === 'boolean');
+            const completedCount = validEntries.filter(([, checked]) => checked === true).length;
+            const totalCount = validEntries.length;
+            
+            if (totalCount > 0) {
+              steps.push({ stepNumber: i, completed: completedCount, total: totalCount });
+            }
+          }
         }
       } catch (error) {
         console.error(`Error reading step ${i} progress:`, error);
@@ -136,10 +149,13 @@ export function ModuleChecklistProgress({
     });
   }, [moduleId, totalSteps, resetModuleProgress]);
 
+  // Aggregate totals from all steps (single source of truth from localStorage)
   const totalCompleted = stepProgress.reduce((sum, s) => sum + s.completed, 0);
   const totalItems = stepProgress.reduce((sum, s) => sum + s.total, 0);
+  // Calculate percentage using consistent formula: Math.round((X / Y) * 100)
   const overallProgress = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
-  const isComplete = overallProgress === 100 && totalItems > 0;
+  // Module is complete when ALL items are checked
+  const isComplete = totalCompleted === totalItems && totalItems > 0;
 
   // Don't render if no items tracked yet
   if (totalItems === 0) {

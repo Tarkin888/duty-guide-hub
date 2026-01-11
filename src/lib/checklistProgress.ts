@@ -121,15 +121,21 @@ export function getModuleChecklistProgress(canonicalModuleId: string): ModuleChe
       
       if (stored) {
         const data = JSON.parse(stored);
-        const entries = Object.entries(data);
-        totalBoxes += entries.length;
-        totalChecked += entries.filter(([, checked]) => checked === true).length;
+        // Validate data structure and only count boolean values
+        if (typeof data === 'object' && data !== null) {
+          const entries = Object.entries(data);
+          // Filter to only valid boolean entries (protects against corrupted data)
+          const validEntries = entries.filter(([, value]) => typeof value === 'boolean');
+          totalBoxes += validEntries.length;
+          totalChecked += validEntries.filter(([, checked]) => checked === true).length;
+        }
       }
     }
   } catch (error) {
     console.error(`Error reading checklist for ${canonicalModuleId}:`, error);
   }
 
+  // Calculate percentage using consistent formula: Math.round((X / Y) * 100)
   const percentage = totalBoxes > 0 ? Math.round((totalChecked / totalBoxes) * 100) : 0;
   
   let status: 'not-started' | 'in-progress' | 'complete' = 'not-started';
