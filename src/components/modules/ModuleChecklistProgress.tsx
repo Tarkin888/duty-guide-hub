@@ -39,6 +39,7 @@ export function ModuleChecklistProgress({
   
   // Use Zustand store with individual selectors to prevent unnecessary re-renders
   const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+  const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
   const getModuleStatus = useProgressStore((state) => state.getModuleStatus);
   const moduleStatus = getModuleStatus(moduleId);
 
@@ -72,10 +73,22 @@ export function ModuleChecklistProgress({
     const totalCompleted = steps.reduce((sum, s) => sum + s.completed, 0);
     const totalItems = steps.reduce((sum, s) => sum + s.total, 0);
     
-    // Auto-upgrade to "in-progress" if user has checked any items
-    // But NEVER auto-complete - that requires explicit "Mark Complete" action
-    if (totalItems > 0 && totalCompleted > 0 && moduleStatus.status === ModuleStatus.NOT_STARTED) {
-      markModuleInProgress(moduleId, false); // false = no toast
+    // State transition logic:
+    // 1. If no items checked and module is complete or in-progress → should revert to in-progress (store handles this)
+    // 2. If some items checked but was not-started → upgrade to in-progress
+    // 3. If was complete but items unchecked (not all complete) → revert to in-progress
+    
+    if (totalItems > 0) {
+      if (totalCompleted === 0 && moduleStatus.status !== ModuleStatus.NOT_STARTED) {
+        // All items unchecked - this will be handled by the ChecklistSection component
+        // which calls updateChecklistItem on the store
+      } else if (totalCompleted > 0 && moduleStatus.status === ModuleStatus.NOT_STARTED) {
+        // Some items checked, upgrade to in-progress
+        markModuleInProgress(moduleId, false);
+      } else if (moduleStatus.status === ModuleStatus.COMPLETE && totalCompleted < totalItems) {
+        // Was complete but not all items checked anymore - revert to in-progress
+        markModuleInProgress(moduleId, false);
+      }
     }
   }, [calculateTotals, moduleId, moduleStatus.status, markModuleInProgress]);
 
@@ -109,6 +122,9 @@ export function ModuleChecklistProgress({
       }
     }
     
+    // Reset module status to not-started via Zustand store
+    resetModuleProgress(moduleId, false);
+    
     // Reload progress
     setStepProgress([]);
     
@@ -116,9 +132,9 @@ export function ModuleChecklistProgress({
     window.dispatchEvent(new CustomEvent('checklist-reset', { detail: { moduleId } }));
     
     toast.success("Progress Reset", {
-      description: "All checklist progress for this module has been reset.",
+      description: "All checklist progress for this module has been reset to Not Started.",
     });
-  }, [moduleId, totalSteps]);
+  }, [moduleId, totalSteps, resetModuleProgress]);
 
   const totalCompleted = stepProgress.reduce((sum, s) => sum + s.completed, 0);
   const totalItems = stepProgress.reduce((sum, s) => sum + s.total, 0);

@@ -4,10 +4,19 @@
  * All progress calculations MUST go through this module to ensure consistency
  * between module pages, dashboard, and phase cards.
  * 
- * Module State Rules:
- * - NOT_STARTED: 0 checklist items checked AND no explicit "Mark In Progress" action
- * - IN_PROGRESS: At least 1 item checked OR explicitly marked in progress, but not all items complete
+ * Module State Rules (DETERMINISTIC TRANSITIONS):
+ * - NOT_STARTED: 0 checklist items checked AND no explicit user interaction
+ * - IN_PROGRESS: At least 1 item checked OR explicitly started, but not marked complete
  * - COMPLETE: Explicitly marked as complete via "Mark Complete" button
+ * 
+ * State Transition Rules:
+ * - NOT_STARTED → IN_PROGRESS: When first checklist item is checked
+ * - IN_PROGRESS → COMPLETE: Only via explicit "Mark Complete" action
+ * - COMPLETE → IN_PROGRESS: When any checklist item is unchecked (auto-reversion)
+ * - Any State → NOT_STARTED: Only via explicit "Reset" action
+ * 
+ * INVARIANT: A module is counted in exactly ONE bucket at any time.
+ * Sum of (Not Started + In Progress + Complete) MUST equal TOTAL_MODULES (20).
  */
 
 import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES, normalizeModuleId, getModuleDisplayName } from '@/stores/progressStore';
@@ -448,11 +457,19 @@ function calculateCategoryProgressFromMap(
 /**
  * Validate that progress counts are consistent
  * Returns true if counts match expected values
+ * 
+ * INVARIANT: completed + inProgress + notStarted === TOTAL_MODULES (20)
  */
 export function validateProgressConsistency(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
   const overall = calculateOverallProgress();
   const allCategories = getAllCategoryProgress();
+  
+  // CRITICAL: Sum of all states must equal TOTAL_MODULES
+  const stateSum = overall.completed + overall.inProgress + overall.notStarted;
+  if (stateSum !== TOTAL_MODULES) {
+    errors.push(`State sum (${stateSum}) does not match TOTAL_MODULES (${TOTAL_MODULES}). Completed: ${overall.completed}, In Progress: ${overall.inProgress}, Not Started: ${overall.notStarted}`);
+  }
   
   // Sum of category totals should equal TOTAL_MODULES
   const categoryTotal = Object.values(allCategories).reduce((sum, cat) => sum + cat.total, 0);
@@ -472,14 +489,48 @@ export function validateProgressConsistency(): { valid: boolean; errors: string[
     errors.push(`Category in-progress sum (${categoryInProgress}) does not match overall in-progress (${overall.inProgress})`);
   }
   
-  // Completed + In Progress + Not Started should equal total
-  const stateSum = overall.completed + overall.inProgress + overall.notStarted;
-  if (stateSum !== overall.total) {
-    errors.push(`State sum (${stateSum}) does not match total (${overall.total})`);
+  // Sum of not-started across categories should equal overall not-started
+  const categoryNotStarted = Object.values(allCategories).reduce((sum, cat) => sum + cat.notStarted, 0);
+  if (categoryNotStarted !== overall.notStarted) {
+    errors.push(`Category not-started sum (${categoryNotStarted}) does not match overall not-started (${overall.notStarted})`);
   }
   
   return {
     valid: errors.length === 0,
     errors,
   };
+}
+
+/**
+ * Check if a module can transition to a given state
+ * Used for validation before state changes
+ */
+export function canTransitionTo(
+  currentStatus: ModuleStatusType,
+  targetStatus: ModuleStatusType
+): boolean {
+  // All transitions are valid in our model:
+  // - NOT_STARTED → IN_PROGRESS (first checkbox)
+  // - IN_PROGRESS → COMPLETE (explicit Mark Complete)
+  // - COMPLETE → IN_PROGRESS (item unchecked - auto-reversion)
+  // - Any → NOT_STARTED (reset action)
+  return true;
+}
+
+/**
+ * Get a human-readable description of why a module is in its current state
+ */
+export function getStatusReason(moduleId: string): string {
+  const status = getModuleStatus(moduleId);
+  
+  switch (status) {
+    case ModuleStatus.NOT_STARTED:
+      return 'No checklist items have been completed';
+    case ModuleStatus.IN_PROGRESS:
+      return 'Some checklist items completed, awaiting "Mark Complete"';
+    case ModuleStatus.COMPLETE:
+      return 'Marked as complete by user';
+    default:
+      return 'Unknown status';
+  }
 }

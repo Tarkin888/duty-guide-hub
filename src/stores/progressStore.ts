@@ -83,8 +83,8 @@ interface ProgressState {
 
   // Getters
   getModuleStatus: (moduleId: string) => ModuleProgress;
-  getCategoryProgress: (category: keyof typeof MODULE_CATEGORIES) => { completed: number; total: number; percentage: number };
-  getOverallProgress: () => { completed: number; inProgress: number; total: number; percentage: number };
+  getCategoryProgress: (category: keyof typeof MODULE_CATEGORIES) => { completed: number; inProgress: number; notStarted: number; total: number; percentage: number };
+  getOverallProgress: () => { completed: number; inProgress: number; notStarted: number; total: number; percentage: number };
   getCompletedModulesCount: () => number;
   getInProgressModules: () => ModuleProgress[];
   getDaysSinceStart: () => number;
@@ -229,12 +229,7 @@ export const useProgressStore = create<ProgressState>()(
         set((state) => {
           const existingModule = state.modules[canonicalId];
           
-          // Don't downgrade from complete
-          if (existingModule?.status === 'complete') {
-            return state;
-          }
-          
-          // Don't re-mark if already in progress
+          // Already in progress - just update last accessed
           if (existingModule?.status === 'in-progress') {
             return { 
               modules: {
@@ -245,19 +240,26 @@ export const useProgressStore = create<ProgressState>()(
           }
           
           const newModules = { ...state.modules };
+          
+          // Determine if this is a transition from complete (reversion)
+          const wasComplete = existingModule?.status === 'complete';
+          
           newModules[canonicalId] = {
             moduleId: canonicalId,
             status: 'in-progress',
             lastAccessedAt: now,
+            // Clear completedAt when reverting from complete
+            completedAt: undefined,
             checklistItems: existingModule?.checklistItems || {},
           };
 
           const newStartDate = state.startDate || now;
           
           // Add activity
+          const activityType = wasComplete ? 'module_started' : 'module_started';
           const newActivity: Activity = {
             id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            type: 'module_started',
+            type: activityType,
             moduleId: canonicalId,
             moduleName: getModuleDisplayName(canonicalId),
             timestamp: now,
@@ -276,7 +278,7 @@ export const useProgressStore = create<ProgressState>()(
         
         if (showToast) {
           toast.info('Module In Progress', {
-            description: `Started ${getModuleDisplayName(canonicalId)}.`,
+            description: `${getModuleDisplayName(canonicalId)} is now in progress.`,
           });
         }
       },
@@ -338,16 +340,32 @@ export const useProgressStore = create<ProgressState>()(
             [itemId]: completed,
           };
           
-          // Auto-upgrade to in-progress if not started
-          const newStatus = existingModule.status === 'not-started' 
-            ? 'in-progress' 
-            : existingModule.status;
+          // Count checklist items to determine state
+          const checkedCount = Object.values(newChecklistItems).filter(Boolean).length;
+          
+          // Determine the new status based on checklist state
+          let newStatus = existingModule.status;
+          
+          if (checkedCount === 0) {
+            // No items checked - revert to not-started
+            newStatus = 'not-started';
+          } else if (existingModule.status === 'not-started') {
+            // Some items checked and was not-started - upgrade to in-progress
+            newStatus = 'in-progress';
+          } else if (existingModule.status === 'complete') {
+            // Was complete but items unchecked - revert to in-progress
+            // This handles the case where a completed module has items unchecked
+            newStatus = 'in-progress';
+          }
+          // If already in-progress, stay in-progress (only explicit Mark Complete can upgrade)
 
           const newModules = { ...state.modules };
           newModules[canonicalId] = {
             ...existingModule,
             status: newStatus,
             lastAccessedAt: now,
+            // Clear completedAt if we're reverting from complete
+            completedAt: newStatus === 'complete' ? existingModule.completedAt : undefined,
             checklistItems: newChecklistItems,
           };
 
@@ -509,9 +527,17 @@ export const useProgressStore = create<ProgressState>()(
         const completed = categoryModules.filter(
           (moduleId) => state.modules[moduleId]?.status === 'complete'
         ).length;
+        
+        const inProgress = categoryModules.filter(
+          (moduleId) => state.modules[moduleId]?.status === 'in-progress'
+        ).length;
+        
+        const notStarted = total - completed - inProgress;
 
         return {
           completed,
+          inProgress,
+          notStarted,
           total,
           percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
         };
@@ -528,10 +554,13 @@ export const useProgressStore = create<ProgressState>()(
         const inProgress = allModules.filter(
           (moduleId) => state.modules[moduleId]?.status === 'in-progress'
         ).length;
+        
+        const notStarted = TOTAL_MODULES - completed - inProgress;
 
         return {
           completed,
           inProgress,
+          notStarted,
           total: TOTAL_MODULES,
           percentage: Math.round((completed / TOTAL_MODULES) * 100),
         };
