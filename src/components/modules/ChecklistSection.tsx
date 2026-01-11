@@ -152,10 +152,10 @@ export function ChecklistSection({
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [isOpen, setIsOpen] = useState(true);
   
-  // Get activity logging function from store
+  // Get Zustand store functions for state management
   const addActivity = useProgressStore((state) => state.addActivity);
+  const updateChecklistItem = useProgressStore((state) => state.updateChecklistItem);
   const storeStartDate = useProgressStore((state) => state.startDate);
-  const setStartDate = useProgressStore((state) => state.resetStartDate);
 
   // Initialize localStorage with all items on mount (ensures total count is accurate)
   useEffect(() => {
@@ -213,22 +213,19 @@ export function ChecklistSection({
       
       // Calculate progress
       const completedCount = Object.values(updated).filter(Boolean).length;
-      const wasEmpty = Object.values(prev).filter(Boolean).length === 0;
       
       onProgressChange?.(completedCount, items.length);
       
-      // Log activity and set start date via the store when checking (not unchecking)
+      // Get the canonical module ID for proper activity logging
+      const canonicalId = getCanonicalModuleId(moduleId);
+      const moduleName = getLocalModuleDisplayName(moduleId);
+      
+      // Update the Zustand store - this handles state transitions automatically
+      // The store will upgrade to in-progress if not-started, and revert from complete if unchecking
+      updateChecklistItem(moduleId, itemId, checked);
+      
+      // Log activity when checking (not unchecking)
       if (checked) {
-        // Get the canonical module ID for proper activity logging
-        const canonicalId = getCanonicalModuleId(moduleId);
-        const moduleName = getLocalModuleDisplayName(moduleId);
-        
-        // Set start date on first ever checkbox check
-        if (wasEmpty && !storeStartDate) {
-          // Zustand store will handle start date when we call updateChecklistItem
-        }
-        
-        // Log activity - use 'module_started' for first check in module, or for any checkbox
         addActivity('checklist_updated', canonicalId, moduleName);
       }
       
@@ -239,7 +236,7 @@ export function ChecklistSection({
       
       return updated;
     });
-  }, [saveToStorage, items.length, onProgressChange, moduleId, stepNumber, storeStartDate, addActivity]);
+  }, [saveToStorage, items.length, onProgressChange, moduleId, stepNumber, addActivity, updateChecklistItem]);
 
 
   const handleResetStep = useCallback(() => {
