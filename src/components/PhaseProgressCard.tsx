@@ -2,19 +2,30 @@ import { Progress } from "@/components/ui/progress";
 import { LucideIcon } from "lucide-react";
 
 interface PhaseProgressCardProps {
+  /** Phase title (e.g., "Foundation", "Governance & Planning") */
   title: string;
+  /** Number of completed modules in this phase */
   completed: number;
+  /** Total number of modules in this phase */
   total: number;
+  /** Icon to display */
   icon: LucideIcon;
-  /** Optional: percentage based on checkbox progress (overrides module-based calculation) */
-  checkboxPercentage?: number;
 }
 
-export function PhaseProgressCard({ title, completed, total, icon: Icon, checkboxPercentage }: PhaseProgressCardProps) {
-  // Use checkbox-based percentage if provided, otherwise fall back to module-based
-  const percentage = checkboxPercentage !== undefined 
-    ? checkboxPercentage 
-    : (total > 0 ? Math.round((completed / total) * 100) : 0);
+/**
+ * PhaseProgressCard - Displays progress for a category/phase
+ * 
+ * Uses unified module state logic where:
+ * - `completed`: Count of modules with status === 'complete'
+ * - `total`: Total modules defined in MODULE_CATEGORIES for this phase
+ * - Percentage: Math.round((completed / total) * 100)
+ * 
+ * This ensures phase cards align exactly with the global dashboard counts.
+ */
+export function PhaseProgressCard({ title, completed, total, icon: Icon }: PhaseProgressCardProps) {
+  // Single deterministic percentage calculation: (completed / total) * 100
+  // This matches the calculation in progressUtils.ts calculateCategoryProgressFromMap
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
     <div className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors">

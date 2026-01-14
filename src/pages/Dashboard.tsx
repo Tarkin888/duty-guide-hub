@@ -435,42 +435,36 @@ export default function Dashboard() {
                     completed={foundationProgress.completed}
                     total={foundationProgress.total}
                     icon={BookOpen}
-                    checkboxPercentage={foundationProgress.percentage}
                   />
                   <PhaseProgressCard 
                     title="Governance & Planning" 
                     completed={governanceProgress.completed}
                     total={governanceProgress.total}
                     icon={Shield}
-                    checkboxPercentage={governanceProgress.percentage}
                   />
                   <PhaseProgressCard 
                     title="Four Outcomes" 
                     completed={outcomesProgress.completed}
                     total={outcomesProgress.total}
                     icon={ListChecks}
-                    checkboxPercentage={outcomesProgress.percentage}
                   />
                   <PhaseProgressCard 
                     title="Cross-Cutting" 
                     completed={crossCuttingProgress.completed}
                     total={crossCuttingProgress.total}
                     icon={Users}
-                    checkboxPercentage={crossCuttingProgress.percentage}
                   />
                   <PhaseProgressCard 
                     title="Enablement" 
                     completed={enablementProgress.completed}
                     total={enablementProgress.total}
                     icon={GraduationCap}
-                    checkboxPercentage={enablementProgress.percentage}
                   />
                   <PhaseProgressCard 
                     title="Monitoring & Assurance" 
                     completed={monitoringProgress.completed}
                     total={monitoringProgress.total}
                     icon={BarChart3}
-                    checkboxPercentage={monitoringProgress.percentage}
                   />
                 </div>
 
