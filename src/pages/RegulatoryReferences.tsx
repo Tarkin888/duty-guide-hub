@@ -394,13 +394,40 @@ const RegulatoryReferences = () => {
                   <div>
                     <h4 className="font-semibold text-sm mb-2">Related Modules</h4>
                     <div className="flex flex-wrap gap-1">
-                      {ref.relatedModules.map((module, idx) => (
-                        <Link key={idx} to={`/modules/${module.toLowerCase()}`}>
-                          <Badge variant="outline" className="text-xs cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">
-                            {module}
-                          </Badge>
-                        </Link>
-                      ))}
+                      {ref.relatedModules.map((module, idx) => {
+                        // Use centralized routing for module paths
+                        const pathMap: Record<string, string> = {
+                          'CD-F1': '/foundation/readiness',
+                          'CD-F2': '/foundation/requirements',
+                          'CD-F3': '/foundation/risk-impact',
+                          'CD-P1': '/governance/framework',
+                          'CD-P2': '/governance/policy',
+                          'CD-P3': '/governance/roadmap',
+                          'CD-I1': '/outcomes/products-services',
+                          'CD-I2': '/outcomes/price-value',
+                          'CD-I3': '/outcomes/consumer-understanding',
+                          'CD-I4': '/outcomes/consumer-support',
+                          'CD-I5': '/cross-cutting/vulnerable-customers',
+                          'CD-I6': '/cross-cutting/distribution-chain',
+                          'CD-I7': '/cross-cutting/data-evidence',
+                          'CD-T1': '/enablement/training',
+                          'CD-T2': '/enablement/communications',
+                          'CD-T3': '/enablement/technology',
+                          'CD-M1': '/monitoring/mi-monitoring',
+                          'CD-M2': '/monitoring/testing-assurance',
+                          'CD-M3': '/monitoring/board-reporting',
+                          'CD-M4': '/monitoring/continuous-improvement',
+                        };
+                        const modulePath = pathMap[module.toUpperCase()] || pathMap[module] || `/foundation/readiness`;
+                        
+                        return (
+                          <Link key={idx} to={modulePath}>
+                            <Badge variant="outline" className="text-xs cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">
+                              {module}
+                            </Badge>
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
 
