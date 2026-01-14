@@ -73,19 +73,7 @@ export default function SiteHealth() {
       });
     }
     
-    // Add known broken links
-    results.push({
-      path: '/modules/cd-i1',
-      title: 'GapAnalysis: CD-I1 Link',
-      status: 'broken',
-      message: 'Path does not exist - should be /outcomes/products-services'
-    });
-    results.push({
-      path: '/modules/cd-i2',
-      title: 'GapAnalysis: CD-I2 Link',
-      status: 'broken',
-      message: 'Path does not exist - should be /outcomes/price-value'
-    });
+    // All previously broken links have been fixed - no broken links to add
     
     // Build relationships
     const rels: ModuleRelationship[] = [];

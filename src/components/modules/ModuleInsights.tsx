@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
@@ -188,19 +189,49 @@ export function ModuleInsights({ moduleCode, moduleTitle }: ModuleInsightsProps)
                     <span className="text-sm font-medium">Users Also Viewed</span>
                   </div>
                   <ul className="space-y-1.5">
-                    {insights.relatedModules.map((module, idx) => (
-                      <li key={idx} className="flex items-center justify-between text-xs">
-                        <a 
-                          href={`/modules/${module.code.toLowerCase()}`}
-                          className="text-primary hover:underline truncate max-w-[120px]"
-                        >
-                          {module.code}
-                        </a>
-                        <Badge variant="outline" className="text-[10px] px-1.5">
-                          {module.viewRate}%
-                        </Badge>
-                      </li>
-                    ))}
+                    {insights.relatedModules.map((module, idx) => {
+                      // Use centralized routing - import getModulePath from routes config
+                      const modulePath = (() => {
+                        // Simple mapping for common module codes
+                        const pathMap: Record<string, string> = {
+                          'CD-F1': '/foundation/readiness',
+                          'CD-F2': '/foundation/requirements',
+                          'CD-F3': '/foundation/risk-impact',
+                          'CD-P1': '/governance/framework',
+                          'CD-P2': '/governance/policy',
+                          'CD-P3': '/governance/roadmap',
+                          'CD-I1': '/outcomes/products-services',
+                          'CD-I2': '/outcomes/price-value',
+                          'CD-I3': '/outcomes/consumer-understanding',
+                          'CD-I4': '/outcomes/consumer-support',
+                          'CD-I5': '/cross-cutting/vulnerable-customers',
+                          'CD-I6': '/cross-cutting/distribution-chain',
+                          'CD-I7': '/cross-cutting/data-evidence',
+                          'CD-T1': '/enablement/training',
+                          'CD-T2': '/enablement/communications',
+                          'CD-T3': '/enablement/technology',
+                          'CD-M1': '/monitoring/mi-monitoring',
+                          'CD-M2': '/monitoring/testing-assurance',
+                          'CD-M3': '/monitoring/board-reporting',
+                          'CD-M4': '/monitoring/continuous-improvement',
+                        };
+                        return pathMap[module.code] || `/foundation/readiness`;
+                      })();
+                      
+                      return (
+                        <li key={idx} className="flex items-center justify-between text-xs">
+                          <Link 
+                            to={modulePath}
+                            className="text-primary hover:underline truncate max-w-[120px]"
+                          >
+                            {module.code}
+                          </Link>
+                          <Badge variant="outline" className="text-[10px] px-1.5">
+                            {module.viewRate}%
+                          </Badge>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </div>
