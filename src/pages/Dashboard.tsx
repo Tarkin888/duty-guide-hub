@@ -292,25 +292,25 @@ export default function Dashboard() {
         forceOpen={showWelcomeModal} 
         onClose={() => setShowWelcomeModal(false)} 
       />
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8 max-w-7xl">
       {/* Hero Section */}
-      <div className="mb-8">
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground mb-2">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 break-words">
               Consumer Duty Implementation Playbook
             </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-3xl">
               Your comprehensive guide to FCA Consumer Duty compliance - from assessment through ongoing monitoring
             </p>
           </div>
-          <Badge variant="outline" className="shrink-0">
+          <Badge variant="outline" className="shrink-0 self-start text-xs sm:text-sm">
             <Calendar className="h-3 w-3 mr-1" />
             {lastUpdated}
           </Badge>
         </div>
 
-        <div className="flex flex-wrap gap-3 mt-6">
+        <div className="flex flex-wrap gap-2 sm:gap-3 mt-4 sm:mt-6">
           {inProgressModules.length > 0 && (
             <Button asChild size="lg" className="gap-2">
               <Link to={MODULE_ROUTES[inProgressModules[0].moduleId] || '/foundation/readiness'}>
@@ -409,26 +409,26 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* Progress Overview Card */}
         <Card className="lg:col-span-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-accent" />
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <Target className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               Progress Overview
             </CardTitle>
-            <CardDescription>Your implementation journey across all phases</CardDescription>
+            <CardDescription className="text-sm">Your implementation journey across all phases</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               <div className="flex flex-col items-center justify-center gap-2">
                 <CircularProgress value={overallProgress.percentage} />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-center">
                   {overallProgress.completed} of {overallProgress.total} modules complete
                 </p>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="space-y-3">
                   <PhaseProgressCard 
                     title="Foundation" 

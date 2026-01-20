@@ -55,45 +55,45 @@ const ChecklistItemRow = memo(({
 }) => {
   return (
     <div className="space-y-2 group">
-      <div className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-muted/50">
+      <div className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg transition-colors hover:bg-muted/50 min-h-[44px]">
         <Checkbox
           id={item.id}
           checked={checked}
           onCheckedChange={onCheck}
           className={cn(
-            "mt-1 transition-all duration-200 data-[state=checked]:scale-105",
+            "mt-0.5 sm:mt-1 h-5 w-5 shrink-0 transition-all duration-200 data-[state=checked]:scale-105",
             "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           )}
           aria-label={`Mark "${item.label}" as complete`}
         />
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-1 min-w-0">
           <label
             htmlFor={item.id}
             className={cn(
-              "text-sm font-medium leading-relaxed cursor-pointer transition-all duration-200",
+              "text-sm font-medium leading-relaxed cursor-pointer transition-all duration-200 break-words",
               checked && "text-muted-foreground line-through"
             )}
           >
             {item.label}
           </label>
           {(item.responsible || item.duration) && (
-            <div className="flex gap-4 text-xs text-muted-foreground">
+            <div className="flex flex-wrap gap-2 sm:gap-4 text-xs text-muted-foreground">
               {item.responsible && (
                 <span className="flex items-center gap-1">
-                  <User className="h-3 w-3" />
-                  {item.responsible}
+                  <User className="h-3 w-3 shrink-0" />
+                  <span className="truncate">{item.responsible}</span>
                 </span>
               )}
               {item.duration && (
                 <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {item.duration}
+                  <Clock className="h-3 w-3 shrink-0" />
+                  <span>{item.duration}</span>
                 </span>
               )}
             </div>
           )}
           {item.details && (
-            <p className="text-sm text-muted-foreground pt-1">
+            <p className="text-xs sm:text-sm text-muted-foreground pt-1 break-words">
               {item.details}
             </p>
           )}
