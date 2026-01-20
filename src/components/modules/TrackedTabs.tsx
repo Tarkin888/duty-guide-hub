@@ -64,7 +64,9 @@ export const TrackedTabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      "inline-flex h-auto sm:h-10 items-center justify-start sm:justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      "overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent",
+      "w-full flex-wrap sm:flex-nowrap gap-1",
       className,
     )}
     {...props}
@@ -89,11 +91,11 @@ export const TrackedTabsTrigger = React.forwardRef<
       ref={ref}
       value={value}
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-background transition-all",
         "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:pointer-events-none disabled:opacity-50",
-        "gap-1.5",
+        "gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[40px]",
         className,
       )}
       {...props}

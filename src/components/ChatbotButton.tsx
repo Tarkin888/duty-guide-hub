@@ -8,16 +8,16 @@ export const ChatbotButton: React.FC = () => {
 
   return (
     <>
-      {/* Floating trigger button */}
+      {/* Floating trigger button - positioned to avoid mobile navigation */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
         size="icon"
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg hover:shadow-xl 
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-lg hover:shadow-xl 
                   transition-all z-40"
         aria-label="Open Consumer Duty Assistant"
         title="Consumer Duty Assistant"
       >
-        <MessageCircle size={24} />
+        <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
       </Button>
 
       {/* Chatbot modal */}

@@ -40,29 +40,42 @@ export function CircularProgress({
     return 'text-accent';
   };
 
+  // Responsive size calculation
+  const responsiveSize = size;
+  const responsiveStroke = strokeWidth;
+  const responsiveRadius = (responsiveSize - responsiveStroke) / 2;
+  const responsiveCircumference = responsiveRadius * 2 * Math.PI;
+  const responsiveOffset = responsiveCircumference - (animatedValue / 100) * responsiveCircumference;
+
   return (
     <div className={cn("relative inline-flex items-center justify-center", className)}>
-      <svg width={size} height={size} className="transform -rotate-90">
+      {/* Mobile-first: show smaller on mobile, larger on desktop */}
+      <svg 
+        width={responsiveSize} 
+        height={responsiveSize} 
+        className="transform -rotate-90 w-28 h-28 sm:w-40 sm:h-40"
+        viewBox={`0 0 ${responsiveSize} ${responsiveSize}`}
+      >
         {/* Background circle */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
+          cx={responsiveSize / 2}
+          cy={responsiveSize / 2}
+          r={responsiveRadius}
           stroke="currentColor"
-          strokeWidth={strokeWidth}
+          strokeWidth={responsiveStroke}
           fill="none"
           className="text-muted"
         />
         {/* Progress circle with animation */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
+          cx={responsiveSize / 2}
+          cy={responsiveSize / 2}
+          r={responsiveRadius}
           stroke="currentColor"
-          strokeWidth={strokeWidth}
+          strokeWidth={responsiveStroke}
           fill="none"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
+          strokeDasharray={responsiveCircumference}
+          strokeDashoffset={responsiveOffset}
           strokeLinecap="round"
           className={cn(
             getProgressColor(),
@@ -75,12 +88,12 @@ export function CircularProgress({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={cn(
-          "text-4xl font-bold transition-colors duration-500",
+          "text-2xl sm:text-4xl font-bold transition-colors duration-500",
           animatedValue === 100 ? "text-success" : "text-foreground"
         )}>
           {animatedValue}%
         </span>
-        <span className="text-sm text-muted-foreground">Complete</span>
+        <span className="text-xs sm:text-sm text-muted-foreground">Complete</span>
       </div>
     </div>
   );

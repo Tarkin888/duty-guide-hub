@@ -104,7 +104,7 @@ export const ConsumerDutyChatbot: React.FC<ConsumerDutyChatbotProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 w-96 h-[500px] bg-background border border-border rounded-lg shadow-xl flex flex-col z-50">
+    <div className="fixed inset-4 sm:inset-auto sm:bottom-4 sm:right-4 sm:w-96 sm:h-[500px] max-h-[calc(100vh-2rem)] bg-background border border-border rounded-lg shadow-xl flex flex-col z-50">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border bg-primary text-primary-foreground rounded-t-lg">
         <div className="flex items-center gap-2">
