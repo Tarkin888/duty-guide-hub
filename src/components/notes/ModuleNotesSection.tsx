@@ -188,11 +188,13 @@ export const ModuleNotesSection = ({
               </Button>
             </div>
 
-            {/* User ID Display */}
-            <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
-              <span className="font-medium">Your User ID:</span> {userId}
-              <span className="ml-2">(Share this with team members to receive shared notes)</span>
-            </div>
+            {/* Sharing Info */}
+            {userId && (
+              <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+                <span className="font-medium">💡 Tip:</span> Share notes with team members using their user ID. 
+                Your ID can be found in your account menu.
+              </div>
+            )}
 
             {/* New Note Form */}
             {isCreating && (

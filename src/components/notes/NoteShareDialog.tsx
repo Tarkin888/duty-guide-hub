@@ -59,7 +59,7 @@ export const NoteShareDialog = ({
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="userId">User ID</Label>
+            <Label htmlFor="userId">Recipient's User ID</Label>
             <Input
               id="userId"
               placeholder="Enter the recipient's user ID"
@@ -67,7 +67,7 @@ export const NoteShareDialog = ({
               onChange={(e) => setUserId(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              Ask your team member for their user ID from their browser's local storage
+              Ask your team member for their authenticated user ID from their account settings
             </p>
           </div>
 

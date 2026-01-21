@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AssessmentResult {
   id: string;
@@ -14,16 +15,8 @@ interface AssessmentResult {
   answers: Record<string, number>;
 }
 
-const getUserId = (): string => {
-  let userId = localStorage.getItem('maturity_user_id');
-  if (!userId) {
-    userId = `user_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-    localStorage.setItem('maturity_user_id', userId);
-  }
-  return userId;
-};
-
 export const useMaturityAssessment = () => {
+  const { user } = useAuth();
   const [assessments, setAssessments] = useState<AssessmentResult[]>([]);
   const [latestAssessment, setLatestAssessment] = useState<AssessmentResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,9 +24,16 @@ export const useMaturityAssessment = () => {
   const [daysUntilRetake, setDaysUntilRetake] = useState(0);
   const { toast } = useToast();
 
-  const userId = getUserId();
+  const userId = user?.id || null;
 
   const fetchAssessments = async () => {
+    if (!userId) {
+      setAssessments([]);
+      setLatestAssessment(null);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const { data, error } = await supabase
@@ -92,6 +92,15 @@ export const useMaturityAssessment = () => {
     consumer_understanding: number;
     consumer_support: number;
   }) => {
+    if (!userId) {
+      toast({
+        title: 'Error',
+        description: 'You must be signed in to save assessments',
+        variant: 'destructive',
+      });
+      return null;
+    }
+
     try {
       const { data, error } = await supabase
         .from('maturity_assessments')
@@ -129,7 +138,7 @@ export const useMaturityAssessment = () => {
 
   useEffect(() => {
     fetchAssessments();
-  }, []);
+  }, [userId]);
 
   return {
     assessments,

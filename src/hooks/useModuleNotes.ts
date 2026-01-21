@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface ModuleNote {
   id: string;
@@ -21,23 +22,23 @@ export interface NoteShare {
   created_at: string;
 }
 
-const getUserId = () => {
-  let userId = localStorage.getItem("consumer_duty_user_id");
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem("consumer_duty_user_id", userId);
-  }
-  return userId;
-};
-
 export const useModuleNotes = (moduleId: string) => {
+  const { user } = useAuth();
   const [notes, setNotes] = useState<ModuleNote[]>([]);
   const [sharedNotes, setSharedNotes] = useState<ModuleNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const userId = getUserId();
+  
+  const userId = user?.id || null;
 
   const fetchNotes = useCallback(async () => {
+    if (!userId) {
+      setNotes([]);
+      setSharedNotes([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       // Fetch user's own notes
@@ -86,6 +87,11 @@ export const useModuleNotes = (moduleId: string) => {
   }, [fetchNotes]);
 
   const createNote = async (title: string, content: string, category?: string) => {
+    if (!userId) {
+      toast.error("You must be signed in to create notes");
+      return null;
+    }
+
     try {
       const { data, error } = await supabase
         .from("module_notes")
@@ -216,11 +222,18 @@ export const useModuleNotes = (moduleId: string) => {
 
 // Hook for searching all notes across modules
 export const useAllNotes = () => {
+  const { user } = useAuth();
   const [notes, setNotes] = useState<ModuleNote[]>([]);
   const [loading, setLoading] = useState(true);
-  const userId = getUserId();
+  const userId = user?.id || null;
 
   const fetchAllNotes = useCallback(async () => {
+    if (!userId) {
+      setNotes([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase
