@@ -1,25 +1,24 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-
-// Get or create user ID from localStorage
-function getUserId(): string {
-  let userId = localStorage.getItem('consumer-duty-user-id');
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem('consumer-duty-user-id', userId);
-  }
-  return userId;
-}
+import { useAuth } from "@/contexts/AuthContext";
 
 export function useRegulatoryUpdates() {
+  const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
   const [latestUpdateDate, setLatestUpdateDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const userId = user?.id || null;
+
   const fetchCounts = useCallback(async () => {
+    if (!userId) {
+      setUnreadCount(0);
+      setLatestUpdateDate(null);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const userId = getUserId();
-      
       // Fetch all updates
       const { data: updates, error: updatesError } = await supabase
         .from('regulatory_updates')
@@ -49,7 +48,7 @@ export function useRegulatoryUpdates() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     fetchCounts();

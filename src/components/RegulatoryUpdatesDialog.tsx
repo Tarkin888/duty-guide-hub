@@ -20,6 +20,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface RegulatoryUpdate {
   id: string;
@@ -85,16 +86,6 @@ const MODULE_ROUTES: Record<string, string> = {
   'CD-T3': '/enablement/technology',
 };
 
-// Get or create user ID from localStorage
-function getUserId(): string {
-  let userId = localStorage.getItem('consumer-duty-user-id');
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem('consumer-duty-user-id', userId);
-  }
-  return userId;
-}
-
 function getCategoryIcon(category: string) {
   switch (category) {
     case 'dear_ceo_letter':
@@ -151,10 +142,13 @@ export function RegulatoryUpdatesDialog({
   onOpenChange,
   onUnreadCountChange 
 }: RegulatoryUpdatesDialogProps) {
+  const { user } = useAuth();
   const [updates, setUpdates] = useState<RegulatoryUpdate[]>([]);
   const [readIds, setReadIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const userId = user?.id || null;
 
   const fetchUpdates = useCallback(async () => {
     try {
@@ -179,7 +173,11 @@ export function RegulatoryUpdatesDialog({
   }, []);
 
   const fetchReadStatus = useCallback(async () => {
-    const userId = getUserId();
+    if (!userId) {
+      setReadIds(new Set());
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('user_update_reads')
@@ -191,7 +189,7 @@ export function RegulatoryUpdatesDialog({
     } catch (error) {
       console.error('Error fetching read status:', error);
     }
-  }, []);
+  }, [userId]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -210,7 +208,11 @@ export function RegulatoryUpdatesDialog({
   }, [updates, readIds, onUnreadCountChange]);
 
   const handleMarkAsRead = async (updateId: string) => {
-    const userId = getUserId();
+    if (!userId) {
+      toast.error('You must be signed in to mark updates as read');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('user_update_reads')
@@ -226,7 +228,11 @@ export function RegulatoryUpdatesDialog({
   };
 
   const handleMarkAllAsRead = async () => {
-    const userId = getUserId();
+    if (!userId) {
+      toast.error('You must be signed in to mark updates as read');
+      return;
+    }
+
     const unreadIds = updates.filter(u => !readIds.has(u.id)).map(u => u.id);
     
     if (unreadIds.length === 0) return;
