@@ -6,15 +6,23 @@ interface Message {
   content: string;
 }
 
+interface ChatOptions {
+  conversationHistory?: Message[];
+  currentContext?: string;
+}
+
 export const sendChatMessage = async (
   userMessage: string,
-  conversationHistory: Message[] = []
+  options: ChatOptions = {}
 ): Promise<string> => {
+  const { conversationHistory = [], currentContext } = options;
+  
   try {
     const { data, error } = await supabase.functions.invoke('chatbot', {
       body: { 
         message: userMessage,
-        conversationHistory 
+        conversationHistory,
+        currentContext
       }
     });
 
