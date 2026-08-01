@@ -21,7 +21,7 @@ import {
   complexityColors,
   userRoles,
 } from "@/data/templatesData";
-import { downloadTemplate } from "@/utils/templateDownload";
+import { downloadTemplate, getDownloadFilename } from "@/utils/templateDownload";
 import { toast } from "@/hooks/use-toast";
 
 const fileTypeIcons: Record<FileType, React.ReactNode> = {
