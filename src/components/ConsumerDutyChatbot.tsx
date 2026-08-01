@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { X, Send, Loader2, MessageCircle, Bot, User } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { sendChatMessage } from '@/utils/chatbotApi';
