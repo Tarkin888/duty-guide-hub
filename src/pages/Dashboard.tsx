@@ -5,6 +5,7 @@ import { CircularProgress } from "@/components/CircularProgress";
 import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
 import { RecommendedPath } from "@/components/RecommendedPath";
+import { AnnualAttestationCycle } from "@/components/AnnualAttestationCycle";
 import { WelcomeModal, resetOnboarding } from "@/components/WelcomeModal";
 import { 
   BookOpen, 
