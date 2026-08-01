@@ -107,7 +107,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     ],
   },
   {
-    title: "Monitoring & Assurance",
+    title: "Knowledge Base: Monitoring & Assurance",
     group: true,
     icon: MonitorCheck,
     items: [
