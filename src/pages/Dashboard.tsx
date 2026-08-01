@@ -416,7 +416,7 @@ export default function Dashboard() {
               <Target className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               Progress Overview
             </CardTitle>
-            <CardDescription className="text-sm">Your implementation journey across all phases</CardDescription>
+            <CardDescription className="text-sm">Your knowledge base coverage across all phases</CardDescription>
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
