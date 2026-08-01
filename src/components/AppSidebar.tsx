@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SidebarFilter, useSidebarFilter, FilterOption } from "@/components/SidebarFilter";
 import { SidebarSearch, useSidebarSearch, matchesSearch, HighlightText } from "@/components/SidebarSearch";
-import { getProgress } from "@/lib/storage";
+import { useModulesMap, normalizeModuleId } from "@/stores/progressStore";
 import { useState, useEffect } from "react";
 
 interface NavigationItem {
@@ -188,20 +188,8 @@ export function AppSidebar() {
   const isCollapsed = state === "collapsed";
   const { filter, setFilter } = useSidebarFilter();
   const { search, setSearch } = useSidebarSearch();
-  const [progress, setProgress] = useState(() => getProgress());
-
-  // Listen for progress updates
-  useEffect(() => {
-    const handleProgressUpdate = () => {
-      setProgress(getProgress());
-    };
-    window.addEventListener('module-progress-updated', handleProgressUpdate);
-    window.addEventListener('storage', handleProgressUpdate);
-    return () => {
-      window.removeEventListener('module-progress-updated', handleProgressUpdate);
-      window.removeEventListener('storage', handleProgressUpdate);
-    };
-  }, []);
+  // Single source of truth for module status
+  const modules = useModulesMap();
 
   const isActiveRoute = (url: string) => {
     if (url === "/") {
@@ -218,7 +206,8 @@ export function AppSidebar() {
   // Get module status from progress data
   const getModuleStatus = (moduleId?: string): "not-started" | "in-progress" | "completed" => {
     if (!moduleId) return "not-started";
-    return progress[moduleId]?.status || "not-started";
+    const status = modules[normalizeModuleId(moduleId)]?.status || "not-started";
+    return status === "complete" ? "completed" : status;
   };
 
   // Check if item matches filter

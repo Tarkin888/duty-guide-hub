@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useProgressStore, useModuleProgress, normalizeModuleId } from "@/stores/progressStore";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
@@ -20,23 +20,25 @@ const STORAGE_KEY = "cd-i5-vulnerable-customers";
 export default function CDI5VulnerableCustomers() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
-  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  const canonicalId = normalizeModuleId(STORAGE_KEY);
+  const moduleProgress = useModuleProgress(canonicalId);
+  const status = moduleProgress.status === "complete" ? "completed" : moduleProgress.status;
+  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
+  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
 
   const handlePreview = (templateName: string) => {
     toast.info(`Opening preview for: ${templateName}`);
   };
 
   const handleMarkComplete = () => {
-    updateModuleStatus(STORAGE_KEY, "completed");
-    setStatus("completed");
+    markModuleComplete(canonicalId, false);
     toast.success("Module Complete", {
       description: "Vulnerable Customers Framework marked as complete!",
     });
   };
 
   const handleMarkInProgress = () => {
-    updateModuleStatus(STORAGE_KEY, "in-progress");
-    setStatus("in-progress");
+    markModuleInProgress(canonicalId, false);
     toast.info("Module In Progress", {
       description: "Vulnerable Customers Framework marked as in progress",
     });
