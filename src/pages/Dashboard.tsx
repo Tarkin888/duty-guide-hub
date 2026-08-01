@@ -5,6 +5,7 @@ import { CircularProgress } from "@/components/CircularProgress";
 import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
 import { RecommendedPath } from "@/components/RecommendedPath";
+import { AnnualAttestationCycle } from "@/components/AnnualAttestationCycle";
 import { WelcomeModal, resetOnboarding } from "@/components/WelcomeModal";
 import { 
   BookOpen, 
@@ -297,10 +298,10 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
           <div className="min-w-0 flex-1">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 break-words">
-              Consumer Duty Implementation Playbook
+              Consumer Duty Compliance Hub
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-3xl">
-              Your comprehensive guide to FCA Consumer Duty compliance - from assessment through ongoing monitoring
+              Run and evidence Consumer Duty as business-as-usual, and prepare your annual board attestation
             </p>
           </div>
           <Badge variant="outline" className="shrink-0 self-start text-xs sm:text-sm">
@@ -416,7 +417,7 @@ export default function Dashboard() {
               <Target className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               Progress Overview
             </CardTitle>
-            <CardDescription className="text-sm">Your implementation journey across all phases</CardDescription>
+            <CardDescription className="text-sm">Your knowledge base coverage across all phases</CardDescription>
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
@@ -710,8 +711,20 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Annual Attestation Cycle */}
+      <div className="mb-8">
+        <AnnualAttestationCycle />
+      </div>
+
       {/* Recommended Path */}
       <div className="mb-8">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-foreground">Knowledge base and onboarding reference</h2>
+          <p className="text-sm text-muted-foreground">
+            The implementation modules remain available as reference material for onboarding and for evidencing how
+            your framework was built.
+          </p>
+        </div>
         <RecommendedPath />
       </div>
 

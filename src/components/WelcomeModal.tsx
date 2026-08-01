@@ -15,15 +15,15 @@ interface WelcomeModalProps {
 const tourSteps = [
   {
     icon: Sparkles,
-    title: "Welcome to the Consumer Duty Playbook",
-    description: "Your comprehensive guide to FCA Consumer Duty compliance. This playbook will help you navigate the implementation journey from assessment through ongoing monitoring.",
+    title: "Welcome to the Consumer Duty Compliance Hub",
+    description: "Your working environment for running and evidencing FCA Consumer Duty as business-as-usual, and for preparing the annual board attestation.",
     highlight: "Let's take a quick tour of the key features.",
   },
   {
     icon: BookOpen,
-    title: "Structured Implementation Modules",
-    description: "20 modules organized across 6 phases guide you through the complete implementation process. Each module contains step-by-step checklists, templates, and regulatory guidance.",
-    highlight: "Start with the Foundation phase to assess your current readiness.",
+    title: "Knowledge Base Modules",
+    description: "20 modules across 6 phases act as your knowledge base and onboarding reference. Each module contains checklists, templates and regulatory guidance you can return to at any time.",
+    highlight: "Use the Foundation phase when onboarding new colleagues or revisiting your framework.",
   },
   {
     icon: CheckSquare,
@@ -34,14 +34,14 @@ const tourSteps = [
   {
     icon: FileText,
     title: "Ready-to-Use Templates",
-    description: "Access professionally designed templates for gap analysis, policy frameworks, board reports, and more. Download and customize them for your organization.",
+    description: "Access professionally designed templates for gap analysis, policy frameworks, board reports, and more. Download and customise them for your organisation.",
     highlight: "Find templates in each module or browse the full library.",
   },
   {
     icon: BarChart3,
     title: "Dashboard & Reporting",
-    description: "Your dashboard provides a real-time overview of implementation progress. Export progress reports for board presentations and regulatory evidence.",
-    highlight: "You're all set! Let's begin your implementation journey.",
+    description: "Your dashboard shows the annual attestation cycle and your evidence coverage. Export reports for board presentations and regulatory evidence.",
+    highlight: "You're all set. Start with the Annual Attestation Cycle on the dashboard.",
   },
 ];
 

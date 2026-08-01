@@ -82,7 +82,7 @@ const App = () => (
                                 aria-label="Open navigation menu"
                                 className="h-10 w-10 hover:bg-accent"
                               />
-                              <span className="ml-3 font-semibold text-foreground">Consumer Duty Playbook</span>
+                              <span className="ml-3 font-semibold text-foreground">Consumer Duty Compliance Hub</span>
                             </div>
                             <UserMenu />
                           </header>
