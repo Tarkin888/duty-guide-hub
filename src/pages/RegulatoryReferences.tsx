@@ -43,8 +43,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   regulatoryReferences, 
   referenceTypeConfig, 
+  referenceThemeConfig,
+  referenceThemeOrder,
   RegulatoryReference, 
   ReferenceType,
+  ReferenceTheme,
   OutcomeCategory,
   getReferencesCount 
 } from "@/data/regulatoryReferencesData";
@@ -477,21 +480,13 @@ const RegulatoryReferences = () => {
     );
   };
 
-  // Group references by type for sections
-  const primarySources = filteredReferences.filter(r => 
-    ['handbook', 'policy-statement', 'finalised-guidance'].includes(r.type) && 
-    ['fg22-5', 'ps22-9', 'prin-2a', 'fg21-1'].includes(r.id)
-  );
-  const multiFilmReviews = filteredReferences.filter(r => r.type === 'multi-firm-review');
-  const speeches = filteredReferences.filter(r => r.type === 'speech');
-  const dearCeoLetters = filteredReferences.filter(r => r.type === 'dear-ceo');
-  const enforcementActions = filteredReferences.filter(r => r.type === 'enforcement');
-  const industryGuidance = filteredReferences.filter(r => r.type === 'industry-guidance');
-  const academicResources = filteredReferences.filter(r => r.type === 'academic');
-  const otherPolicySources = filteredReferences.filter(r => 
-    ['handbook', 'policy-statement', 'finalised-guidance'].includes(r.type) && 
-    !['fg22-5', 'ps22-9', 'prin-2a', 'fg21-1'].includes(r.id)
-  );
+  // Group references by curated theme
+  const referencesByTheme = referenceThemeOrder.reduce((acc, theme) => {
+    acc[theme] = filteredReferences.filter((r) => r.theme === theme);
+    return acc;
+  }, {} as Record<ReferenceTheme, RegulatoryReference[]>);
+
+  const featuredReferences = regulatoryReferences.filter((r) => r.featured);
 
   return (
     <div className="min-h-screen bg-background">
@@ -542,6 +537,60 @@ const RegulatoryReferences = () => {
           </Card>
         </div>
       </div>
+
+      {/* Featured references */}
+      {featuredReferences.length > 0 && (
+        <section className="container mx-auto px-4 mt-8" aria-labelledby="featured-heading">
+          <h2 id="featured-heading" className="text-xl font-bold mb-3 flex items-center gap-2">
+            <Target className="h-5 w-5 text-accent" />
+            Start here
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {featuredReferences.map((ref) => (
+              <Card key={ref.id} className="border-l-4 border-l-accent bg-accent/5">
+                <CardHeader className="pb-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <Badge className="bg-accent text-accent-foreground text-xs">Featured</Badge>
+                    <Badge variant="outline" className="text-xs">{ref.reference}</Badge>
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {ref.published}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg">{ref.title}</CardTitle>
+                  <CardDescription>{ref.summary}</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex flex-wrap gap-2">
+                    {ref.externalUrl && (
+                      <Button asChild size="sm" variant="outline">
+                        <a href={ref.externalUrl} target="_blank" rel="noopener noreferrer">
+                          Read on fca.org.uk
+                          <ExternalLink className="h-3.5 w-3.5 ml-1" />
+                        </a>
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setTypeFilter("all");
+                        setOutcomeFilter("all");
+                        setDateFilter("all");
+                        setExpandedCards((prev) => new Set(prev).add(ref.id));
+                        document.getElementById(`theme-${ref.theme}`)?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      View full summary
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Search & Filters */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b py-4 mt-6">
@@ -652,116 +701,28 @@ const RegulatoryReferences = () => {
           </div>
         ) : (
           <div className="space-y-10">
-            {/* Primary Sources */}
-            {primarySources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Scale className="h-6 w-6 text-primary" />
-                  Primary Consumer Duty Sources
-                </h2>
-                <p className="text-muted-foreground mb-4">Essential FCA guidance and rules that form the foundation of Consumer Duty</p>
-                <div className="space-y-4">
-                  {primarySources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Other Policy Sources */}
-            {otherPolicySources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <FileText className="h-6 w-6 text-primary" />
-                  Additional Policy & Guidance
-                </h2>
-                <div className="space-y-4">
-                  {otherPolicySources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Multi-firm Reviews */}
-            {multiFilmReviews.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Target className="h-6 w-6 text-primary" />
-                  Supervisory Feedback & Reviews
-                </h2>
-                <p className="text-muted-foreground mb-4">FCA findings from sector-wide reviews highlighting good practice and areas for improvement</p>
-                <div className="space-y-4">
-                  {multiFilmReviews.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Speeches */}
-            {speeches.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <MessageSquare className="h-6 w-6 text-primary" />
-                  FCA Speeches & Publications
-                </h2>
-                <p className="text-muted-foreground mb-4">Key speeches from FCA leadership on Consumer Duty expectations</p>
-                <div className="space-y-4">
-                  {speeches.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Dear CEO Letters */}
-            {dearCeoLetters.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Mail className="h-6 w-6 text-primary" />
-                  Dear CEO Letters
-                </h2>
-                <p className="text-muted-foreground mb-4">Direct communications to firm leadership on regulatory expectations</p>
-                <div className="space-y-4">
-                  {dearCeoLetters.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Enforcement Actions */}
-            {enforcementActions.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Gavel className="h-6 w-6 text-red-600" />
-                  Enforcement Actions
-                </h2>
-                <p className="text-muted-foreground mb-4">Regulatory enforcement cases with lessons learned for compliance</p>
-                <div className="space-y-4">
-                  {enforcementActions.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Industry Guidance */}
-            {industryGuidance.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Building2 className="h-6 w-6 text-primary" />
-                  Industry Guidance & Resources
-                </h2>
-                <p className="text-muted-foreground mb-4">Sector-specific guidance from trade bodies (supplementary to FCA requirements)</p>
-                <div className="space-y-4">
-                  {industryGuidance.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Academic Resources */}
-            {academicResources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                  Academic & Research Resources
-                </h2>
-                <p className="text-muted-foreground mb-4">Research papers and academic analysis on Consumer Duty topics</p>
-                <div className="space-y-4">
-                  {academicResources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
+            {referenceThemeOrder.map((theme) => {
+              const themeRefs = referencesByTheme[theme];
+              if (!themeRefs || themeRefs.length === 0) return null;
+              const config = referenceThemeConfig[theme];
+              return (
+                <section key={theme} id={`theme-${theme}`}>
+                  <div className="border-l-4 border-accent pl-4 mb-4">
+                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                      <Scale className="h-6 w-6 text-primary" />
+                      {config.label}
+                    </h2>
+                    <p className="text-muted-foreground">{config.description}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {themeRefs.length} {themeRefs.length === 1 ? 'reference' : 'references'}
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    {themeRefs.map(renderReferenceCard)}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
       </main>
