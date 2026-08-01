@@ -698,9 +698,38 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Implementation Steps</CardTitle>
-                  <CardDescription>Six-phase approach to establishing your MI framework</CardDescription>
+                  <CardDescription>The recurring monitoring cycle, supported by the detailed working phases below</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <h3 className="font-semibold text-lg mb-1">The recurring monitoring cycle</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      These eight steps repeat every year. Steps 1 to 4 are refreshed annually; steps 5 to 8 run continuously through the year and feed the board report and attestation.
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { t: "Map foreseeable harms per product", d: "For each product and service, articulate the harms a customer could foreseeably suffer, then work backwards to the data needed to detect them." },
+                        { t: "Define outcome-based KPIs for each of the four outcomes", d: "Products and services, price and value, consumer understanding, and consumer support - each with metrics that measure what the customer received." },
+                        { t: "Set thresholds and targets with documented rationale", d: "Record why each threshold is set where it is, who approved it, and when it will next be reviewed." },
+                        { t: "Establish monitoring cadence", d: "Decide which metrics are monitored continuously and which are assessed periodically, and justify the split." },
+                        { t: "Analyse differential outcomes for vulnerable customers", d: "Segment results and examine gaps between customer groups, including vulnerable customers, rather than reporting averages." },
+                        { t: "Link complaints and root cause data to specific outcomes", d: "Map complaints, quality assurance findings and root cause analysis onto the outcome they evidence." },
+                        { t: "Escalate breaches", d: "Trigger defined escalation when a threshold is breached, with owner, timescale and remediation recorded." },
+                        { t: "Feed conclusions into the board report", d: "Carry findings, learnings and actions - not raw dashboards - into the annual board report and attestation." }
+                      ].map((step, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                            {index + 1}
+                          </span>
+                          <div>
+                            <p className="text-sm font-medium">{step.t}</p>
+                            <p className="text-sm text-muted-foreground">{step.d}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="space-y-6">
                     <ChecklistSection
                       stepNumber={1}
