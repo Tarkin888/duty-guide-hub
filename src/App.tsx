@@ -49,6 +49,7 @@ import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
 import MaturityAssessment from "./pages/MaturityAssessment";
 import SiteHealth from "./pages/SiteHealth";
+import SettingsPage from "./pages/Settings";
 import { FileText } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -161,6 +162,7 @@ const App = () => (
                               {/* Tools */}
                               <Route path="/maturity-assessment" element={<MaturityAssessment />} />
                               <Route path="/admin/site-health" element={<SiteHealth />} />
+                              <Route path="/settings" element={<SettingsPage />} />
 
                               <Route path="*" element={<NotFound />} />
                             </Routes>

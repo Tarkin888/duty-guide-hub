@@ -120,6 +120,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     icon: Activity,
     items: [
       { title: "Site Health", url: "/admin/site-health", icon: Activity },
+      { title: "Settings", url: "/settings", icon: Settings },
     ],
   },
 ];
