@@ -14,6 +14,8 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle, Download, Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useProgressStore, useModulesMap } from '@/stores/progressStore';
+import { exportProgressToPDF } from '@/utils/exportProgress';
+import { TOTAL_MODULES } from '@/config/moduleRegistry';
 import { toast } from 'sonner';
 
 interface ResetProgressModalProps {
@@ -32,31 +34,24 @@ export function ResetProgressModal({ open, onOpenChange }: ResetProgressModalPro
   const completedCount = getCompletedModulesCount();
   const isConfirmationValid = confirmText.toLowerCase() === 'reset' && understood;
 
-  const handleExportProgress = () => {
-    const progressData = {
-      exportDate: new Date().toISOString(),
-      version: 1,
-      modules,
-      activities,
-      startDate,
-      completedModulesCount: completedCount,
-    };
+  const [isExporting, setIsExporting] = useState(false);
 
-    const blob = new Blob([JSON.stringify(progressData, null, 2)], {
-      type: 'application/json',
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `consumer-duty-progress-backup-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    toast.success('Progress exported successfully!', {
-      description: 'Your backup has been downloaded.',
-    });
+  const handleExportProgress = async () => {
+    setIsExporting(true);
+    try {
+      // Yield a frame so the loading state paints before PDF generation blocks.
+      await new Promise(resolve => setTimeout(resolve, 50));
+      exportProgressToPDF();
+      toast.success('Progress report downloaded', {
+        description: 'Keep this PDF as your record before resetting.',
+      });
+    } catch (error) {
+      toast.error('Could not generate your progress report', {
+        description: 'Nothing has been reset. Please try again.',
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleReset = async () => {
@@ -70,7 +65,9 @@ export function ResetProgressModal({ open, onOpenChange }: ResetProgressModalPro
       });
       handleClose();
     } catch (error) {
-      toast.error('Reset failed. Please try again.');
+      toast.error('Reset failed', {
+        description: 'Your progress has not been changed. Please try again.',
+      });
     } finally {
       setIsResetting(false);
     }
@@ -81,14 +78,15 @@ export function ResetProgressModal({ open, onOpenChange }: ResetProgressModalPro
     setConfirmText('');
     setUnderstood(false);
     setIsResetting(false);
+    setIsExporting(false);
     onOpenChange(false);
   };
 
   const itemsToDelete = [
-    `Completion status for all ${completedCount} completed modules`,
-    "All checklist progress within modules",
-    "Your start date and time tracking",
-    "All saved progress data"
+    `Completion status for all ${TOTAL_MODULES} modules (${completedCount} currently complete)`,
+    'Every checklist item ticked within those modules',
+    'Your implementation start date and days-since-started tracking',
+    'Your recent activity history',
   ];
 
   // Determine input border color based on validation
@@ -131,12 +129,22 @@ export function ResetProgressModal({ open, onOpenChange }: ResetProgressModalPro
                   variant="outline"
                   className="w-full gap-2"
                   onClick={handleExportProgress}
+                  disabled={isExporting}
                 >
-                  <Download className="h-4 w-4" />
-                  Download Progress Before Resetting
+                  {isExporting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Preparing your report…
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4" />
+                      Download your progress first (PDF)
+                    </>
+                  )}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  Recommended: Export your progress before resetting
+                  Recommended: this is the only copy you will have once progress is reset.
                 </p>
               </div>
             </div>
