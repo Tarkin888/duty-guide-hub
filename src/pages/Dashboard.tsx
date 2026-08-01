@@ -297,10 +297,10 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
           <div className="min-w-0 flex-1">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 break-words">
-              Consumer Duty Implementation Playbook
+              Consumer Duty Compliance Hub
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-3xl">
-              Your comprehensive guide to FCA Consumer Duty compliance - from assessment through ongoing monitoring
+              Run and evidence Consumer Duty as business-as-usual, and prepare your annual board attestation
             </p>
           </div>
           <Badge variant="outline" className="shrink-0 self-start text-xs sm:text-sm">
