@@ -53,14 +53,14 @@ export default function CDM1MIFramework() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="outline">Monitoring Module</Badge>
+                  <Badge variant="outline">Ongoing Compliance</Badge>
                   <Badge variant="secondary">{status.replace("-", " ").toUpperCase()}</Badge>
                 </div>
-                <h1 className="text-3xl font-bold">CD-M1: MI & Outcome Monitoring Framework Implementation</h1>
+                <h1 className="text-3xl font-bold">CD-M1: Ongoing Monitoring &amp; MI Framework</h1>
               </div>
             </div>
             <p className="text-muted-foreground text-lg">
-              Establish comprehensive Management Information framework to evidence good outcomes across all four Consumer Duty outcomes and enable data-driven decision-making
+              Run continuous outcomes monitoring as business-as-usual and produce management information that evidences good customer outcomes for the annual board report
             </p>
           </div>
 
