@@ -19,6 +19,50 @@ export type OutcomeCategory =
   | 'vulnerable-customers'
   | 'governance';
 
+export type ReferenceTheme =
+  | 'core-rules'
+  | 'board-reporting'
+  | 'fair-value'
+  | 'vulnerability'
+  | 'distribution'
+  | 'monitoring';
+
+export const referenceThemeConfig: Record<ReferenceTheme, { label: string; description: string }> = {
+  'core-rules': {
+    label: 'Core rules and guidance',
+    description: 'The Consumer Duty rulebook and the FCA guidance that interprets it.',
+  },
+  'board-reporting': {
+    label: 'Board reporting and governance',
+    description: 'Expectations for the annual board report, oversight and accountability.',
+  },
+  'fair-value': {
+    label: 'Price and fair value',
+    description: 'Fair value assessments, pricing evidence and value for money.',
+  },
+  'vulnerability': {
+    label: 'Vulnerable customers',
+    description: 'Identifying vulnerability and delivering outcome parity.',
+  },
+  'distribution': {
+    label: 'Distribution chains',
+    description: 'Manufacturer and distributor responsibilities and information sharing.',
+  },
+  'monitoring': {
+    label: 'Monitoring and supervision',
+    description: 'Supervisory reviews, sector findings and ongoing outcomes monitoring.',
+  },
+};
+
+export const referenceThemeOrder: ReferenceTheme[] = [
+  'core-rules',
+  'board-reporting',
+  'fair-value',
+  'vulnerability',
+  'distribution',
+  'monitoring',
+];
+
 export interface RegulatoryReference {
   id: string;
   reference: string;
@@ -52,6 +96,10 @@ export interface RegulatoryReference {
   externalUrl?: string;
   pdfUrl?: string;
   keywords: string[];
+  /** Curated theme used for the themed library view */
+  theme: ReferenceTheme;
+  /** Highlighted at the top of the Regulatory References page */
+  featured?: boolean;
 }
 
 export const referenceTypeConfig: Record<ReferenceType, { label: string; color: string; bgColor: string }> = {
@@ -95,6 +143,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     externalUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf',
     pdfUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg22-5.pdf',
     keywords: ['consumer duty', 'guidance', 'outcomes', 'principle 12', 'cross-cutting'],
+    theme: 'core-rules',
   },
   {
     id: 'ps22-9',
@@ -118,6 +167,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     externalUrl: 'https://www.fca.org.uk/publication/policy/ps22-9.pdf',
     pdfUrl: 'https://www.fca.org.uk/publication/policy/ps22-9.pdf',
     keywords: ['policy statement', 'rules', 'handbook', 'implementation'],
+    theme: 'core-rules',
   },
   {
     id: 'prin-2a',
@@ -143,6 +193,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-F2', 'CD-I1', 'CD-I2', 'CD-I3', 'CD-I4'],
     externalUrl: 'https://www.handbook.fca.org.uk/handbook/PRIN/2A.html',
     keywords: ['handbook', 'rules', 'prin', 'principle 12'],
+    theme: 'core-rules',
   },
   {
     id: 'fg21-1',
@@ -168,6 +219,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     externalUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg21-1.pdf',
     pdfUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg21-1.pdf',
     keywords: ['vulnerable customers', 'four drivers', 'health', 'resilience', 'capability', 'life events'],
+    theme: 'vulnerability',
   },
   {
     id: 'fg19-5',
@@ -185,6 +237,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I6'],
     externalUrl: 'https://www.fca.org.uk/publication/finalised-guidance/fg19-5.pdf',
     keywords: ['general insurance', 'distribution', 'manufacturer', 'distributor', 'product governance'],
+    theme: 'distribution',
   },
   {
     id: 'cp21-13',
@@ -202,6 +255,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-F2'],
     externalUrl: 'https://www.fca.org.uk/publication/consultation/cp21-13.pdf',
     keywords: ['consultation', 'proposals', 'draft rules'],
+    theme: 'core-rules',
   },
   {
     id: 'dp21-4',
@@ -219,16 +273,17 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-F2'],
     externalUrl: 'https://www.fca.org.uk/publication/discussion/dp21-4.pdf',
     keywords: ['discussion paper', 'conceptual', 'framework'],
+    theme: 'core-rules',
   },
 
   // MULTI-FIRM REVIEWS
   {
     id: 'mfr-board-reports-2024',
-    reference: 'MFR-2024-10',
+    reference: 'MFR-2024-12',
     title: 'Consumer Duty Board Reports Review',
-    fullTitle: 'Consumer Duty Board Reports: Good Practice & Areas for Improvement',
+    fullTitle: 'Consumer Duty Board Reports: Good Practice and Areas for Improvement',
     type: 'multi-firm-review',
-    published: 'October 2024',
+    published: 'December 2024',
     publishedYear: 2024,
     status: 'Current',
     summary: 'Review of first annual board reports from across industry, identifying good practice and areas needing improvement.',
@@ -258,6 +313,8 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-M3', 'CD-P1'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-board-reports',
     keywords: ['board reports', 'governance', 'MI', 'oversight'],
+    theme: 'board-reporting',
+    featured: true,
   },
   {
     id: 'mfr-payments-2024',
@@ -290,6 +347,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-F1', 'CD-I2', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-payments',
     keywords: ['payments', 'e-money', 'digital', 'APP fraud'],
+    theme: 'monitoring',
   },
   {
     id: 'mfr-implementation-2024',
@@ -322,6 +380,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2', 'CD-I3', 'CD-I4', 'CD-I5', 'CD-I6', 'CD-I7A', 'CD-I7B'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-implementation',
     keywords: ['implementation', 'good practice', 'areas for improvement'],
+    theme: 'monitoring',
   },
   {
     id: 'mfr-fair-value-2024',
@@ -358,6 +417,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/fair-value-frameworks',
     keywords: ['fair value', 'FVA', 'pricing', 'benchmarking', 'benefits'],
+    theme: 'fair-value',
   },
   {
     id: 'mfr-insurance-2024',
@@ -388,6 +448,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I4', 'CD-I6'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-insurance',
     keywords: ['insurance', 'claims', 'renewals', 'distribution'],
+    theme: 'monitoring',
   },
   {
     id: 'mfr-wealth-2024',
@@ -417,6 +478,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-wealth',
     keywords: ['wealth management', 'investment', 'suitability', 'advice'],
+    theme: 'monitoring',
   },
   {
     id: 'mfr-retail-banking-2024',
@@ -446,6 +508,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2', 'CD-I4', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-retail-banking',
     keywords: ['retail banking', 'current accounts', 'savings', 'overdrafts'],
+    theme: 'monitoring',
   },
   {
     id: 'mfr-consumer-credit-2024',
@@ -475,6 +538,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I4', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publications/multi-firm-reviews/consumer-duty-consumer-credit',
     keywords: ['consumer credit', 'lending', 'collections', 'affordability'],
+    theme: 'monitoring',
   },
 
   // SPEECHES
@@ -502,6 +566,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-M1', 'CD-M3', 'CD-P1'],
     externalUrl: 'https://www.fca.org.uk/news/speeches/consumer-duty-art-possible-year',
     keywords: ['one year', 'progress', 'enforcement', 'expectations'],
+    theme: 'monitoring',
   },
   {
     id: 'speech-mills-2024-03',
@@ -525,6 +590,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-M4'],
     externalUrl: 'https://www.fca.org.uk/news/speeches/consumer-duty-embedding',
     keywords: ['embedding', 'culture', 'continuous improvement'],
+    theme: 'monitoring',
   },
   {
     id: 'speech-rathi-2024',
@@ -547,6 +613,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P1'],
     externalUrl: 'https://www.fca.org.uk/news/speeches/fca-strategy-consumer-outcomes',
     keywords: ['strategy', 'CEO', 'vision'],
+    theme: 'core-rules',
   },
   {
     id: 'speech-mills-2023-07',
@@ -570,6 +637,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P3'],
     externalUrl: 'https://www.fca.org.uk/news/speeches/consumer-duty-implementation',
     keywords: ['implementation', 'go-live', 'milestone'],
+    theme: 'core-rules',
   },
   {
     id: 'speech-randell-2024',
@@ -589,6 +657,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P1', 'CD-M3'],
     externalUrl: 'https://www.fca.org.uk/news/speeches/board-oversight-consumer-duty',
     keywords: ['board', 'oversight', 'governance', 'NED'],
+    theme: 'board-reporting',
   },
 
   // DEAR CEO LETTERS
@@ -615,6 +684,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P1', 'CD-P3', 'CD-T1'],
     externalUrl: 'https://www.fca.org.uk/publication/correspondence/dear-ceo-consumer-duty-implementation.pdf',
     keywords: ['dear CEO', 'implementation', 'expectations', 'readiness'],
+    theme: 'core-rules',
   },
   {
     id: 'dear-ceo-2024-closed',
@@ -633,6 +703,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2'],
     externalUrl: 'https://www.fca.org.uk/publication/correspondence/dear-ceo-closed-products.pdf',
     keywords: ['closed products', 'back-book', 'legacy'],
+    theme: 'core-rules',
   },
   {
     id: 'dear-ceo-2024-annual',
@@ -651,6 +722,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-M3'],
     externalUrl: 'https://www.fca.org.uk/publication/correspondence/dear-ceo-annual-reports.pdf',
     keywords: ['board reports', 'annual', 'MI'],
+    theme: 'board-reporting',
   },
   {
     id: 'dear-ceo-insurance-2024',
@@ -669,6 +741,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2', 'CD-I4'],
     externalUrl: 'https://www.fca.org.uk/publication/correspondence/dear-ceo-insurance-consumer-duty.pdf',
     keywords: ['insurance', 'claims', 'renewals'],
+    theme: 'core-rules',
   },
   {
     id: 'dear-ceo-payments-2024',
@@ -687,6 +760,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I4', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publication/correspondence/dear-ceo-payments-consumer-duty.pdf',
     keywords: ['payments', 'e-money', 'digital', 'fraud'],
+    theme: 'monitoring',
   },
 
   // ENFORCEMENT ACTIONS
@@ -726,6 +800,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2', 'CD-I5', 'CD-M3'],
     externalUrl: 'https://www.fca.org.uk/news/press-releases/enforcement-fva-failure',
     keywords: ['enforcement', 'fine', 'fair value', 'vulnerable'],
+    theme: 'fair-value',
   },
   {
     id: 'enforcement-2024-002',
@@ -755,6 +830,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I4'],
     externalUrl: 'https://www.fca.org.uk/news/press-releases/enforcement-consumer-support',
     keywords: ['enforcement', 'sludge', 'switching', 'barriers'],
+    theme: 'monitoring',
   },
   {
     id: 'enforcement-2024-003',
@@ -779,6 +855,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I3'],
     externalUrl: 'https://www.fca.org.uk/news/press-releases/enforcement-consumer-understanding',
     keywords: ['enforcement', 'communications', 'understanding', 'comprehension'],
+    theme: 'core-rules',
   },
   {
     id: 'enforcement-2024-004',
@@ -803,6 +880,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I6'],
     externalUrl: 'https://www.fca.org.uk/news/press-releases/enforcement-distribution-chain',
     keywords: ['enforcement', 'distribution', 'manufacturer', 'distributor'],
+    theme: 'distribution',
   },
   {
     id: 'enforcement-2024-005',
@@ -832,6 +910,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I5', 'CD-T1'],
     externalUrl: 'https://www.fca.org.uk/news/press-releases/enforcement-vulnerable-customers',
     keywords: ['enforcement', 'vulnerable', 'harm', 'identification'],
+    theme: 'vulnerability',
   },
 
   // STRATEGY DOCUMENTS
@@ -857,6 +936,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P1', 'CD-M4'],
     externalUrl: 'https://www.fca.org.uk/about/our-strategy',
     keywords: ['strategy', 'future', 'priorities'],
+    theme: 'monitoring',
   },
   {
     id: 'focus-areas-2025',
@@ -883,6 +963,8 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2', 'CD-I3', 'CD-I5'],
     externalUrl: 'https://www.fca.org.uk/publications/business-plans/consumer-duty-focus',
     keywords: ['focus areas', 'priorities', 'supervision'],
+    theme: 'monitoring',
+    featured: true,
   },
 
   // INDUSTRY GUIDANCE
@@ -904,6 +986,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2'],
     externalUrl: 'https://www.ukfinance.org.uk/consumer-duty',
     keywords: ['UK Finance', 'banking', 'industry guidance'],
+    theme: 'core-rules',
   },
   {
     id: 'abi-toolkit',
@@ -922,6 +1005,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2', 'CD-I4'],
     externalUrl: 'https://www.abi.org.uk/consumer-duty',
     keywords: ['ABI', 'insurance', 'claims', 'toolkit'],
+    theme: 'core-rules',
   },
   {
     id: 'ia-guidance',
@@ -940,6 +1024,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2', 'CD-I3'],
     externalUrl: 'https://www.theia.org/consumer-duty',
     keywords: ['Investment Association', 'asset management', 'funds'],
+    theme: 'core-rules',
   },
   {
     id: 'fla-guidance',
@@ -958,6 +1043,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I4'],
     externalUrl: 'https://www.fla.org.uk/consumer-duty',
     keywords: ['FLA', 'motor finance', 'leasing'],
+    theme: 'core-rules',
   },
   {
     id: 'bba-guide',
@@ -976,6 +1062,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2', 'CD-I3', 'CD-I4'],
     externalUrl: 'https://www.bba.org.uk/consumer-duty',
     keywords: ['BBA', 'good practice', 'banking'],
+    theme: 'core-rules',
   },
   {
     id: 'pimfa-guide',
@@ -994,6 +1081,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I1', 'CD-I2'],
     externalUrl: 'https://www.pimfa.co.uk/consumer-duty',
     keywords: ['PIMFA', 'wealth', 'advice', 'IFA'],
+    theme: 'core-rules',
   },
 
   // ACADEMIC RESEARCH
@@ -1020,6 +1108,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I3', 'CD-I5'],
     externalUrl: 'https://academic.example.com/behavioural-consumer-duty',
     keywords: ['behavioural science', 'testing', 'comprehension', 'academic'],
+    theme: 'core-rules',
   },
   {
     id: 'academic-fair-value',
@@ -1044,6 +1133,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I2'],
     externalUrl: 'https://academic.example.com/fair-value-finance',
     keywords: ['fair value', 'measurement', 'academic', 'framework'],
+    theme: 'fair-value',
   },
   {
     id: 'academic-vulnerability',
@@ -1068,6 +1158,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I5', 'CD-T1'],
     externalUrl: 'https://academic.example.com/vulnerability-finance',
     keywords: ['vulnerability', 'identification', 'support', 'academic'],
+    theme: 'vulnerability',
   },
   {
     id: 'academic-governance',
@@ -1092,6 +1183,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-P1', 'CD-M3'],
     externalUrl: 'https://academic.example.com/governance-outcomes',
     keywords: ['governance', 'board', 'oversight', 'academic'],
+    theme: 'board-reporting',
   },
   {
     id: 'academic-communications',
@@ -1116,6 +1208,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relatedModules: ['CD-I3'],
     externalUrl: 'https://academic.example.com/financial-communications',
     keywords: ['communications', 'design', 'understanding', 'academic'],
+    theme: 'core-rules',
   },
 ];
 
