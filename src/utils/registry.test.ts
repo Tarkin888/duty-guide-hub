@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { MODULE_REGISTRY, ALL_MODULE_IDS, TOTAL_CHECKLIST_ITEMS, MODULE_CATEGORIES } from '@/config/moduleRegistry';
+import { MODULE_REGISTRY, ALL_MODULE_IDS, ALL_ITEM_KEYS, TOTAL_CHECKLIST_ITEMS, MODULE_CATEGORIES } from '@/config/moduleRegistry';
 
 describe('static module registry', () => {
   it('defines exactly 20 modules', () => {
@@ -7,7 +7,7 @@ describe('static module registry', () => {
   });
 
   it('has a fixed, non-discovered total item count', () => {
-    const sum = ALL_MODULE_IDS.reduce((n, id) => n + MODULE_REGISTRY[id].itemKeys.length, 0);
+    const sum = MODULE_REGISTRY.reduce((n, m) => n + m.items.length, 0);
     expect(sum).toBe(TOTAL_CHECKLIST_ITEMS);
   });
 
@@ -18,7 +18,7 @@ describe('static module registry', () => {
   });
 
   it('uses unique item keys across all modules', () => {
-    const keys = ALL_MODULE_IDS.flatMap((id) => MODULE_REGISTRY[id].itemKeys);
+    const keys = ALL_ITEM_KEYS;
     expect(new Set(keys).size).toBe(keys.length);
   });
 });
