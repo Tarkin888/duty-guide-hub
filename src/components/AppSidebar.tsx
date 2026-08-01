@@ -47,7 +47,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     group: true,
     icon: RefreshCw,
     items: [
-      { title: "Monitor Outcomes (MI)", url: "/monitoring/mi-monitoring", icon: BarChart3 },
+      { title: "Ongoing Monitoring & MI Framework", url: "/monitoring/mi-monitoring", icon: BarChart3 },
       { title: "Evidence Management", url: "/cross-cutting/data-evidence", icon: Database },
       { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube },
       { title: "Board Report & Attestation", url: "/monitoring/board-reporting", icon: PresentationIcon },

@@ -53,14 +53,14 @@ export default function CDM1MIFramework() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="outline">Monitoring Module</Badge>
+                  <Badge variant="outline">Ongoing Compliance</Badge>
                   <Badge variant="secondary">{status.replace("-", " ").toUpperCase()}</Badge>
                 </div>
-                <h1 className="text-3xl font-bold">CD-M1: MI & Outcome Monitoring Framework Implementation</h1>
+                <h1 className="text-3xl font-bold">CD-M1: Ongoing Monitoring &amp; MI Framework</h1>
               </div>
             </div>
             <p className="text-muted-foreground text-lg">
-              Establish comprehensive Management Information framework to evidence good outcomes across all four Consumer Duty outcomes and enable data-driven decision-making
+              Run continuous outcomes monitoring as business-as-usual and produce management information that evidences good customer outcomes for the annual board report
             </p>
           </div>
 
@@ -104,15 +104,23 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Module Overview</CardTitle>
-                  <CardDescription>Understanding the MI & Outcome Monitoring Framework</CardDescription>
+                  <CardDescription>Running outcomes monitoring and MI as business-as-usual</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">
+                    <p className="text-sm font-semibold mb-1">This is a recurring annual cycle, not a project</p>
+                    <p className="text-sm text-muted-foreground">
+                      Monitoring does not finish. Each year the firm monitors outcomes continuously, gathers evidence, assesses whether customers actually received good outcomes, reports conclusions to the board and supports the annual attestation. The material below is the standing operating framework for that cycle, refreshed each year rather than completed once.
+                    </p>
+                  </div>
+
                   <div>
                     <h3 className="font-semibold text-lg mb-3">Purpose</h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      Establish a comprehensive Management Information (MI) framework to evidence good outcomes across all four Consumer Duty outcomes and enable data-driven decision-making. MI is the engine of Consumer Duty compliance - without robust data, firms cannot evidence they're delivering good outcomes.
+                      Help the firm run continuous outcomes monitoring and produce management information that evidences good outcomes for the annual board report - not just process metrics. The test is not whether reviews were completed on time; it is whether the data shows customers received the outcome intended, and whether the firm can explain what it concluded and what it changed as a result.
                     </p>
                   </div>
+
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -226,9 +234,67 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Regulatory Foundation</CardTitle>
-                  <CardDescription>FCA expectations and requirements for MI and outcome monitoring</CardDescription>
+                  <CardDescription>The regulatory basis for ongoing outcomes monitoring and MI</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">
+                      <h3 className="font-semibold mb-2">Primary basis</h3>
+                      <p className="text-sm text-muted-foreground">
+                        PRIN 2A.9 (monitoring of consumer outcomes) and FG22/5 Chapter 11. Confirm exact sub-paragraphs against the Handbook.
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                      <h3 className="font-semibold">What the FCA expects firms to improve</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Source: FCA insurance multi-firm review of outcomes monitoring, 26 June 2024; the FCA stated the findings apply to all retail firms.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        The FCA concluded that many firms must improve monitoring before they can genuinely determine whether they deliver good outcomes. The recurring weakness was over-reliance on process-completion metrics - counting whether a value assessment, product review or communications review had been done - rather than measuring the outcome the customer received. Completing a document review alone does not assure that customers can make properly informed decisions. Metrics were often reported with little insight into findings, learnings or actions. Some firms relied on repackaged existing data, which the FCA had already warned is insufficient. Some presented data in ways unlikely to support board scrutiny or challenge.
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                      <h3 className="font-semibold">What good looks like</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Source: FCA insurance multi-firm review of outcomes monitoring, 26 June 2024.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Stronger firms first articulated the foreseeable harms attached to a product, then worked backwards to the data needed to detect them. They drew on a defined range of data categories: SLA compliance, product performance data, second- and third-line reviews, customer feedback, quality assurance, complaints analysis, process completion, product governance findings, employee surveys and deep-dive analysis.
+                      </p>
+                      <div>
+                        <p className="text-sm font-medium mb-2">The FCA's named improvement areas</p>
+                        <div className="space-y-2">
+                          {[
+                            "Range and type of metrics",
+                            "Thresholds and targets",
+                            "Oversight",
+                            "Monitoring outcomes for different customer groups including vulnerable customers",
+                            "Actions taken as a result"
+                          ].map((area, index) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-muted-foreground">{area}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border-l-4 border-warning bg-warning/10 p-4">
+                      <h3 className="font-semibold mb-2">Current direction</h3>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Source: FCA review of Year 2 board reports, 16 April 2026.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        The FCA told firms to move past MI dashboards to analysis that draws conclusions, and to monitor outcomes delivered through distribution chains.
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 className="font-semibold text-lg pt-2">Supporting reference material</h3>
+
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="mi-quality">
                       <AccordionTrigger className="text-lg font-semibold">
@@ -690,9 +756,38 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Implementation Steps</CardTitle>
-                  <CardDescription>Six-phase approach to establishing your MI framework</CardDescription>
+                  <CardDescription>The recurring monitoring cycle, supported by the detailed working phases below</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <h3 className="font-semibold text-lg mb-1">The recurring monitoring cycle</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      These eight steps repeat every year. Steps 1 to 4 are refreshed annually; steps 5 to 8 run continuously through the year and feed the board report and attestation.
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { t: "Map foreseeable harms per product", d: "For each product and service, articulate the harms a customer could foreseeably suffer, then work backwards to the data needed to detect them." },
+                        { t: "Define outcome-based KPIs for each of the four outcomes", d: "Products and services, price and value, consumer understanding, and consumer support - each with metrics that measure what the customer received." },
+                        { t: "Set thresholds and targets with documented rationale", d: "Record why each threshold is set where it is, who approved it, and when it will next be reviewed." },
+                        { t: "Establish monitoring cadence", d: "Decide which metrics are monitored continuously and which are assessed periodically, and justify the split." },
+                        { t: "Analyse differential outcomes for vulnerable customers", d: "Segment results and examine gaps between customer groups, including vulnerable customers, rather than reporting averages." },
+                        { t: "Link complaints and root cause data to specific outcomes", d: "Map complaints, quality assurance findings and root cause analysis onto the outcome they evidence." },
+                        { t: "Escalate breaches", d: "Trigger defined escalation when a threshold is breached, with owner, timescale and remediation recorded." },
+                        { t: "Feed conclusions into the board report", d: "Carry findings, learnings and actions - not raw dashboards - into the annual board report and attestation." }
+                      ].map((step, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                            {index + 1}
+                          </span>
+                          <div>
+                            <p className="text-sm font-medium">{step.t}</p>
+                            <p className="text-sm text-muted-foreground">{step.d}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="space-y-6">
                     <ChecklistSection
                       stepNumber={1}
@@ -982,9 +1077,24 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Success Criteria</CardTitle>
-                  <CardDescription>Evidence that your MI framework is effective and regulatory-ready</CardDescription>
+                  <CardDescription>Evidence that ongoing outcomes monitoring is working</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 space-y-3">
+                    <h3 className="font-semibold text-lg">Core tests for the annual cycle</h3>
+                    {[
+                      "Outcome metrics are defined for all four Consumer Duty outcomes, not process-completion counts.",
+                      "Thresholds and targets are documented for every metric, with the rationale for each recorded.",
+                      "Differential-outcome analysis is in place, covering vulnerable customers and other identified customer groups.",
+                      "MI draws conclusions rather than listing numbers: each pack states findings, learnings and the actions taken."
+                    ].map((criterion, index) => (
+                      <div key={index} className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{criterion}</span>
+                      </div>
+                    ))}
+                  </div>
+
                   <div className="space-y-6">
                     <div>
                       <h3 className="font-semibold text-lg mb-3">MI Framework Establishment</h3>
@@ -1174,9 +1284,46 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Common Pitfalls</CardTitle>
-                  <CardDescription>Issues to avoid when implementing your MI framework</CardDescription>
+                  <CardDescription>Issues to avoid when running ongoing outcomes monitoring</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <PitfallCard
+                    title="Process-completion metrics mistaken for outcome evidence"
+                    description="Reporting that value assessments, product reviews or communications reviews were completed, and treating that as evidence of a good outcome."
+                    impact="The board cannot tell whether customers actually received the intended outcome. The FCA has identified this as the single most common weakness."
+                    prevention="For every process metric, pair an outcome metric that measures what the customer experienced."
+                  />
+                  <PitfallCard
+                    title="Repackaged existing data"
+                    description="Re-presenting pre-Duty management data under Consumer Duty headings without asking what new data is needed."
+                    impact="The FCA has already warned firms that repackaged data is insufficient to determine outcomes."
+                    prevention="Start from the foreseeable harms for each product and work backwards to the data required to detect them."
+                  />
+                  <PitfallCard
+                    title="Dashboards without analysis"
+                    description="MI packs that present numbers and trend lines with no findings, learnings, conclusions or actions."
+                    impact="The FCA has told firms to move past MI dashboards to analysis that draws conclusions."
+                    prevention="Require every metric pack to state what the data shows, what the firm concluded, and what it will do."
+                  />
+                  <PitfallCard
+                    title="No thresholds or targets"
+                    description="Metrics reported without a defined acceptable range, so no result can trigger action."
+                    impact="Deterioration goes unchallenged and escalation never fires."
+                    prevention="Set a threshold and target for each metric with documented rationale, and review them annually."
+                  />
+                  <PitfallCard
+                    title="Vulnerability MI absent"
+                    description="Outcomes reported only as an overall average, with no breakdown for vulnerable customers or other customer groups."
+                    impact="Differential harm remains invisible; this is a named FCA improvement area."
+                    prevention="Segment every core outcome metric and analyse gaps between groups explicitly."
+                  />
+                  <PitfallCard
+                    title="Weak distribution-chain outcome monitoring"
+                    description="Little or no data on the outcomes customers receive through intermediaries, brokers or other distributors."
+                    impact="The FCA's Year 2 board report review specifically directs firms to monitor outcomes delivered through distribution chains."
+                    prevention="Agree outcome data exchange with each distributor and monitor it on the same cadence as direct business."
+                  />
+
                   <PitfallCard
                     title="Simply Repackaging Existing MI"
                     description="Firms repackage existing MI without considering what new data is needed to truly understand customer outcomes. Example: Reporting complaint volumes without categorizing by outcome or analyzing root causes."
