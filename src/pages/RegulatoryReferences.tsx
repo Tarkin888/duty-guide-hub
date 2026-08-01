@@ -43,8 +43,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   regulatoryReferences, 
   referenceTypeConfig, 
+  referenceThemeConfig,
+  referenceThemeOrder,
   RegulatoryReference, 
   ReferenceType,
+  ReferenceTheme,
   OutcomeCategory,
   getReferencesCount 
 } from "@/data/regulatoryReferencesData";
@@ -477,21 +480,13 @@ const RegulatoryReferences = () => {
     );
   };
 
-  // Group references by type for sections
-  const primarySources = filteredReferences.filter(r => 
-    ['handbook', 'policy-statement', 'finalised-guidance'].includes(r.type) && 
-    ['fg22-5', 'ps22-9', 'prin-2a', 'fg21-1'].includes(r.id)
-  );
-  const multiFilmReviews = filteredReferences.filter(r => r.type === 'multi-firm-review');
-  const speeches = filteredReferences.filter(r => r.type === 'speech');
-  const dearCeoLetters = filteredReferences.filter(r => r.type === 'dear-ceo');
-  const enforcementActions = filteredReferences.filter(r => r.type === 'enforcement');
-  const industryGuidance = filteredReferences.filter(r => r.type === 'industry-guidance');
-  const academicResources = filteredReferences.filter(r => r.type === 'academic');
-  const otherPolicySources = filteredReferences.filter(r => 
-    ['handbook', 'policy-statement', 'finalised-guidance'].includes(r.type) && 
-    !['fg22-5', 'ps22-9', 'prin-2a', 'fg21-1'].includes(r.id)
-  );
+  // Group references by curated theme
+  const referencesByTheme = referenceThemeOrder.reduce((acc, theme) => {
+    acc[theme] = filteredReferences.filter((r) => r.theme === theme);
+    return acc;
+  }, {} as Record<ReferenceTheme, RegulatoryReference[]>);
+
+  const featuredReferences = regulatoryReferences.filter((r) => r.featured);
 
   return (
     <div className="min-h-screen bg-background">
