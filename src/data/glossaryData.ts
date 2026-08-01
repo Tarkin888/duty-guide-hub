@@ -660,6 +660,7 @@ export const glossaryTerms: GlossaryTerm[] = [
     term: 'Characteristics of Vulnerability',
     category: 'customer',
     officialDefinition: 'Personal circumstances making someone susceptible to harm under four drivers.',
+    fcaReference: 'FG21/1, Chapter 1',
     plainEnglish: 'Things that make someone vulnerable - health, life events, resilience, capability.',
     whyItMatters: 'Helps identify vulnerable customers for enhanced support.',
     practicalExample: 'Visual impairment + bereavement + low income + poor digital skills = multiple characteristics.',
