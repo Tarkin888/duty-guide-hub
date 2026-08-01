@@ -36,7 +36,8 @@ function formatPrintDate(date: Date) {
 }
 
 function getDocumentTitleText() {
-  const heading = document.querySelector("main h1, h1");
+  const heading =
+    document.querySelector("main h1") ?? document.querySelector("h1");
   const text = heading?.textContent?.trim();
   return text && text.length > 0 ? text : "Consumer Duty Playbook";
 }
@@ -100,15 +101,16 @@ export function installPrintMode() {
   const nativePrint = window.print.bind(window);
 
   const patched = async () => {
+    setPrinting(true);
+    mountPrintFurniture();
+    // Two frames: one for React to render force-mounted panels, one for layout.
+    await nextFrame();
+    await nextFrame();
     try {
-      setPrinting(true);
-      mountPrintFurniture();
-      // Two frames: one for React to render force-mounted panels, one for layout.
-      await nextFrame();
-      await nextFrame();
       nativePrint();
     } finally {
-      setPrinting(false);
+      // Leave print mode once the dialog has closed (afterprint also fires).
+      window.setTimeout(() => setPrinting(false), 500);
     }
   };
 
