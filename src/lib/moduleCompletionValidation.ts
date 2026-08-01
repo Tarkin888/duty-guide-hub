@@ -1,3 +1,4 @@
+import { useProgressStore } from '@/stores/progressStore';
 /**
  * Module completion validation utilities
  * Checks various criteria before allowing module completion
@@ -148,31 +149,11 @@ export function endModuleSession(moduleId: string): void {
 }
 
 /**
- * Get checklist progress for a module (from localStorage)
+ * Get checklist progress for a module from the single progress store
+ * (denominators come from the static module registry)
  */
 function getChecklistProgress(moduleId: string): number {
-  try {
-    let totalChecked = 0;
-    let totalBoxes = 0;
-    
-    // Scan up to 10 steps
-    for (let step = 1; step <= 10; step++) {
-      const stepKey = `checklist-${moduleId}-step${step}`;
-      const stored = localStorage.getItem(stepKey);
-      
-      if (stored) {
-        const data = JSON.parse(stored);
-        const entries = Object.entries(data);
-        totalBoxes += entries.length;
-        totalChecked += entries.filter(([, checked]) => checked === true).length;
-      }
-    }
-    
-    return totalBoxes > 0 ? Math.round((totalChecked / totalBoxes) * 100) : 0;
-  } catch (error) {
-    console.error("Error reading checklist progress:", error);
-    return 0;
-  }
+  return useProgressStore.getState().getModuleStatus(moduleId).percentage;
 }
 
 /**
