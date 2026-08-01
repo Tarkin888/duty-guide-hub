@@ -14,14 +14,13 @@ import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 
 export default function CDT1TrainingProgrammePart2() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(() => getModuleStatus("cd-t1-training-part2"));
+  const { status, setStatus } = useModuleStatusControls("cd-t1-training-part2");
 
   const handleMarkComplete = () => {
-    updateModuleStatus("cd-t1-training-part2", "completed");
     setStatus("completed");
     toast({
       title: "Part 2 Complete",

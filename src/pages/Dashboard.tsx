@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
 import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
-import { useProgressStore, TOTAL_MODULES } from "@/stores/progressStore";
+import { useProgressStore, useModulesMap, TOTAL_MODULES } from "@/stores/progressStore";
 import { useProgressCalculation } from "@/lib/progressUtils";
 import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
@@ -137,7 +137,7 @@ function getDaysIconColorClass(days: number): string {
 
 export default function Dashboard() {
   // Use Zustand store for activities and start date
-  const modules = useProgressStore((state) => state.modules);
+  const modules = useModulesMap();
   const storeActivities = useProgressStore((state) => state.activities);
   const storeStartDate = useProgressStore((state) => state.startDate);
   const resetAllProgress = useProgressStore((state) => state.resetAllProgress);

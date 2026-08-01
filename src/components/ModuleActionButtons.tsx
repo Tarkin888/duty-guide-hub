@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Clock, RotateCcw, Calendar } from 'lucide-react';
-import { useProgressStore } from '@/stores/progressStore';
+import { useProgressStore, useModuleProgress } from '@/stores/progressStore';
 import { format } from 'date-fns';
 
 interface ModuleActionButtonsProps {
@@ -9,8 +9,10 @@ interface ModuleActionButtonsProps {
 }
 
 export function ModuleActionButtons({ moduleId, className }: ModuleActionButtonsProps) {
-  const { getModuleStatus, markModuleComplete, markModuleInProgress } = useProgressStore();
-  const moduleStatus = getModuleStatus(moduleId);
+  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
+  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+  const reopenModule = useProgressStore((state) => state.reopenModule);
+  const moduleStatus = useModuleProgress(moduleId);
 
   const handleMarkInProgress = () => {
     markModuleInProgress(moduleId);
@@ -21,24 +23,7 @@ export function ModuleActionButtons({ moduleId, className }: ModuleActionButtons
   };
 
   const handleReopen = () => {
-    // To reopen, we set back to in-progress by directly updating the store
-    const { modules } = useProgressStore.getState();
-    const existingModule = modules[moduleId];
-    
-    useProgressStore.setState((state) => ({
-      modules: {
-        ...state.modules,
-        [moduleId]: {
-          ...existingModule,
-          moduleId,
-          status: 'in-progress',
-          completedAt: undefined,
-          lastAccessedAt: new Date().toISOString(),
-        },
-      },
-    }));
-    
-    window.dispatchEvent(new Event('module-progress-updated'));
+    reopenModule(moduleId);
   };
 
   const formatCompletionDate = (dateString: string) => {

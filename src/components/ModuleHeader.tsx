@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Circle, Clock, Printer, Calendar, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
-import { getModuleStatus, updateModuleStatus } from '@/lib/storage';
-import { useProgressStore, normalizeModuleId } from '@/stores/progressStore';
+import { useProgressStore, useModuleProgress, normalizeModuleId } from '@/stores/progressStore';
 import { format } from 'date-fns';
 import { ModuleBreadcrumb } from './ModuleBreadcrumb';
 import {
@@ -70,36 +69,20 @@ export const ModuleHeader = ({
   part,
   icon,
 }: ModuleHeaderProps) => {
-  const [status, setStatus] = useState<'not-started' | 'in-progress' | 'completed'>('not-started');
   const [completeDialogOpen, setCompleteDialogOpen] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [dontShowComplete, setDontShowComplete] = useState(false);
   const [dontShowReset, setDontShowReset] = useState(false);
-  
-  // Get completion date from progress store
-  const modules = useProgressStore((state) => state.modules);
+
+  // Single source of truth: the progress store
   const canonicalId = normalizeModuleId(storageKey);
-  const moduleProgress = modules[canonicalId];
-  const completedAt = moduleProgress?.completedAt;
+  const moduleProgress = useModuleProgress(canonicalId);
+  const completedAt = moduleProgress.completedAt;
+  const status = moduleProgress.status;
 
-  useEffect(() => {
-    const savedStatus = getModuleStatus(storageKey);
-    setStatus(savedStatus);
-  }, [storageKey]);
-
-  // Sync with Zustand store when it changes
-  useEffect(() => {
-    if (moduleProgress) {
-      const zustandStatus = moduleProgress.status;
-      if (zustandStatus === 'complete' && status !== 'completed') {
-        setStatus('completed');
-      } else if (zustandStatus === 'in-progress' && status !== 'in-progress') {
-        setStatus('in-progress');
-      } else if (zustandStatus === 'not-started' && status !== 'not-started') {
-        setStatus('not-started');
-      }
-    }
-  }, [moduleProgress, status]);
+  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
+  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+  const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
 
   const handleMarkCompleteClick = () => {
     const prefs = getConfirmPreferences();
@@ -115,8 +98,7 @@ export const ModuleHeader = ({
       saveConfirmPreferences({ skipCompleteConfirm: true });
     }
     
-    updateModuleStatus(storageKey, 'completed');
-    setStatus('completed');
+    markModuleComplete(canonicalId, false);
     setCompleteDialogOpen(false);
     
     toast.success('Module Complete!', {
@@ -138,8 +120,7 @@ export const ModuleHeader = ({
       saveConfirmPreferences({ skipResetConfirm: true });
     }
     
-    updateModuleStatus(storageKey, 'not-started');
-    setStatus('not-started');
+    resetModuleProgress(canonicalId, false);
     setResetDialogOpen(false);
     
     toast.info('Progress Reset', {
@@ -148,8 +129,7 @@ export const ModuleHeader = ({
   };
 
   const handleMarkInProgress = () => {
-    updateModuleStatus(storageKey, 'in-progress');
-    setStatus('in-progress');
+    markModuleInProgress(canonicalId, false);
     
     toast.info('Module In Progress', {
       description: `Started working on ${title}`,
@@ -170,7 +150,7 @@ export const ModuleHeader = ({
 
   const getStatusBadge = () => {
     switch (status) {
-      case 'completed':
+      case 'complete':
         return (
           <Badge className="bg-success text-success-foreground">
             <CheckCircle2 className="h-3 w-3 mr-1" />
@@ -239,7 +219,7 @@ export const ModuleHeader = ({
                   {owner && (
                     <span>Owner: {owner}</span>
                   )}
-                  {status === 'completed' && completedAt && (
+                  {status === 'complete' && completedAt && (
                     <span className="flex items-center gap-1 text-success">
                       <Calendar className="h-4 w-4" />
                       Completed on {formatCompletionDate(completedAt)}
@@ -262,7 +242,7 @@ export const ModuleHeader = ({
                 </Button>
               )}
 
-              {status === 'completed' ? (
+              {status === 'complete' ? (
                 <Button variant="outline" size="sm" onClick={handleResetClick}>
                   <RotateCcw className="h-4 w-4 mr-2" />
                   Reset Progress

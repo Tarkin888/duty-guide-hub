@@ -17,11 +17,11 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_F2_TEMPLATES } from "@/data/cdF2Templates";
 import { toast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 
 export default function CDF2RequirementsMapping() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(() => getModuleStatus("cd-f2-requirements"));
+  const { status, setStatus } = useModuleStatusControls("cd-f2-requirements");
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   
@@ -30,7 +30,6 @@ export default function CDF2RequirementsMapping() {
   }, []);
 
   const handleMarkComplete = () => {
-    updateModuleStatus("cd-f2-requirements", "completed");
     setStatus("completed");
     toast({
       title: "Module Complete",

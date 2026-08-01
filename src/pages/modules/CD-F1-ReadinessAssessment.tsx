@@ -16,7 +16,7 @@ import { TrackedTabs, TrackedTabsList, TrackedTabsTrigger, TrackedTabsContent } 
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { ModuleCompletionWarning } from "@/components/modules/ModuleCompletionWarning";
 import { toast } from "sonner";
-import { useProgressStore } from "@/stores/progressStore";
+import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 import { useModuleCompletion } from "@/hooks/useModuleCompletion";
 import { CD_F1_TEMPLATES } from "@/data/cdF1Templates";
 
@@ -27,8 +27,8 @@ export default function CDf1ReadinessAssessment() {
   const [previewOpen, setPreviewOpen] = useState(false);
   
   // Use Zustand store
-  const { getModuleStatus, markModuleInProgress, updateLastAccessed } = useProgressStore();
-  const moduleStatus = getModuleStatus(MODULE_ID);
+  const { markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const moduleStatus = useModuleProgress(MODULE_ID);
   const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
 
   // Module completion with validation

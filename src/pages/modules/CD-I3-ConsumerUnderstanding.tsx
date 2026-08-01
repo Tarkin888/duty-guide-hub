@@ -13,7 +13,7 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast as sonnerToast } from "sonner";
 
 const STORAGE_KEY = "cd-i3-consumer-understanding";
@@ -21,7 +21,7 @@ const STORAGE_KEY = "cd-i3-consumer-understanding";
 const CDI3ConsumerUnderstanding = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  const { status, setStatus } = useModuleStatusControls(STORAGE_KEY);
 
   const handleDownload = (templateName: string) => {
     toast({
@@ -38,7 +38,6 @@ const CDI3ConsumerUnderstanding = () => {
   };
 
   const handleMarkComplete = () => {
-    updateModuleStatus(STORAGE_KEY, "completed");
     setStatus("completed");
     sonnerToast.success("Module Complete", {
       description: "Consumer Understanding marked as complete!",
@@ -46,7 +45,6 @@ const CDI3ConsumerUnderstanding = () => {
   };
 
   const handleMarkInProgress = () => {
-    updateModuleStatus(STORAGE_KEY, "in-progress");
     setStatus("in-progress");
     sonnerToast.info("Module In Progress", {
       description: "Consumer Understanding marked as in progress",

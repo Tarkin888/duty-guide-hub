@@ -1,33 +1,37 @@
 /**
- * Unified Progress Utilities - SINGLE SOURCE OF TRUTH
- * 
- * All progress calculations MUST go through this module to ensure consistency
- * between module pages, dashboard, and phase cards.
- * 
- * Module State Rules (DETERMINISTIC TRANSITIONS):
- * - NOT_STARTED: 0 checklist items checked AND no explicit user interaction
- * - IN_PROGRESS: At least 1 item checked OR explicitly started, but not marked complete
- * - COMPLETE: Explicitly marked as complete via "Mark Complete" button
- * 
- * State Transition Rules:
- * - NOT_STARTED → IN_PROGRESS: When first checklist item is checked
- * - IN_PROGRESS → COMPLETE: Only via explicit "Mark Complete" action
- * - COMPLETE → IN_PROGRESS: When any checklist item is unchecked (auto-reversion)
- * - Any State → NOT_STARTED: Only via explicit "Reset" action
- * 
- * INVARIANT: A module is counted in exactly ONE bucket at any time.
- * Sum of (Not Started + In Progress + Complete) MUST equal TOTAL_MODULES (20).
+ * Unified Progress Utilities - all derivations read the single Zustand store,
+ * with denominators coming from the static module registry.
+ *
+ * Rules (used everywhere, no exceptions):
+ * - Module status: Complete only if 100% of its registered checklist items are
+ *   ticked; In Progress if more than zero are ticked; otherwise Not Started.
+ * - Category %: completed modules in category / total modules in category.
+ * - Overall %: total completed modules / 20.
+ * - Items checked: summed across the static registry only.
  */
 
-import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES, normalizeModuleId, getModuleDisplayName } from '@/stores/progressStore';
+import {
+  useProgressStore,
+  deriveModuleProgress,
+  deriveModulesMap,
+  useModulesMap,
+  useCheckedItemsCount,
+  type ModuleProgress,
+  type AggregateProgress,
+} from '@/stores/progressStore';
+import {
+  MODULE_CATEGORIES,
+  CATEGORY_NAMES,
+  CATEGORY_KEYS,
+  TOTAL_MODULES,
+  TOTAL_CHECKLIST_ITEMS,
+  ALL_MODULE_IDS,
+  normalizeModuleId,
+  getModuleDisplayName,
+  getModuleItemKeys,
+  type CategoryKey,
+} from '@/config/moduleRegistry';
 
-// ============================================================================
-// TYPE-SAFE ENUMS AND CONSTANTS
-// ============================================================================
-
-/**
- * Module status enum - use these constants instead of string literals
- */
 export const ModuleStatus = {
   NOT_STARTED: 'not-started',
   IN_PROGRESS: 'in-progress',
@@ -36,26 +40,17 @@ export const ModuleStatus = {
 
 export type ModuleStatusType = typeof ModuleStatus[keyof typeof ModuleStatus];
 
-/**
- * Category names for phase groupings
- */
-export const CategoryNames = {
-  foundation: 'Foundation',
-  governance: 'Governance & Planning',
-  outcomes: 'Four Outcomes',
-  crossCutting: 'Cross-Cutting',
-  enablement: 'Enablement',
-  monitoring: 'Monitoring & Assurance',
-} as const;
+export const CategoryNames = CATEGORY_NAMES;
 
-export type CategoryKey = keyof typeof MODULE_CATEGORIES;
-
-// Re-export for convenience
-export { MODULE_CATEGORIES, TOTAL_MODULES, normalizeModuleId, getModuleDisplayName };
-
-// ============================================================================
-// INTERFACES
-// ============================================================================
+export {
+  MODULE_CATEGORIES,
+  TOTAL_MODULES,
+  TOTAL_CHECKLIST_ITEMS,
+  normalizeModuleId,
+  getModuleDisplayName,
+  useCheckedItemsCount,
+};
+export type { CategoryKey };
 
 export interface ModuleProgressInfo {
   moduleId: string;
@@ -64,27 +59,17 @@ export interface ModuleProgressInfo {
   status: ModuleStatusType;
   completedAt?: string;
   lastAccessedAt?: string;
+  completedItems: number;
+  totalItems: number;
+  percentage: number;
 }
 
-export interface CategoryProgress {
+export interface CategoryProgress extends AggregateProgress {
   categoryKey: CategoryKey;
   categoryName: string;
-  completed: number;
-  inProgress: number;
-  notStarted: number;
-  total: number;
-  /** Percentage based on completed modules only: (completed / total) * 100 */
-  percentage: number;
 }
 
-export interface OverallProgress {
-  completed: number;
-  inProgress: number;
-  notStarted: number;
-  total: number;
-  /** Percentage based on completed modules out of 20: (completed / 20) * 100 */
-  percentage: number;
-}
+export type OverallProgress = AggregateProgress;
 
 export interface ChecklistProgress {
   completedItems: number;
@@ -93,371 +78,164 @@ export interface ChecklistProgress {
   isComplete: boolean;
 }
 
-// ============================================================================
-// CORE PROGRESS FUNCTIONS
-// ============================================================================
+function toInfo(progress: ModuleProgress): ModuleProgressInfo {
+  return {
+    moduleId: progress.moduleId,
+    canonicalId: progress.moduleId,
+    displayName: getModuleDisplayName(progress.moduleId),
+    status: progress.status,
+    completedAt: progress.completedAt,
+    lastAccessedAt: progress.lastAccessedAt,
+    completedItems: progress.completedItems,
+    totalItems: progress.totalItems,
+    percentage: progress.percentage,
+  };
+}
 
-/**
- * Get the canonical module ID from any storage key or module ID variant
- */
 export function getCanonicalModuleId(moduleId: string): string {
   return normalizeModuleId(moduleId);
 }
 
-/**
- * Get module status from the Zustand store (the single source of truth)
- */
 export function getModuleStatus(moduleId: string): ModuleStatusType {
-  const state = useProgressStore.getState();
-  const canonicalId = normalizeModuleId(moduleId);
-  const module = state.modules[canonicalId];
-  return module?.status || ModuleStatus.NOT_STARTED;
+  return useProgressStore.getState().getModuleStatus(moduleId).status;
 }
 
-/**
- * Get full module progress information
- */
 export function getModuleProgress(moduleId: string): ModuleProgressInfo {
-  const state = useProgressStore.getState();
-  const canonicalId = normalizeModuleId(moduleId);
-  const module = state.modules[canonicalId];
-  
-  return {
-    moduleId,
-    canonicalId,
-    displayName: getModuleDisplayName(canonicalId),
-    status: module?.status || ModuleStatus.NOT_STARTED,
-    completedAt: module?.completedAt,
-    lastAccessedAt: module?.lastAccessedAt,
-  };
+  return toInfo(useProgressStore.getState().getModuleStatus(moduleId));
 }
 
-/**
- * Get all module statuses as a map
- */
 export function getAllModuleStatuses(): Map<string, ModuleProgressInfo> {
-  const state = useProgressStore.getState();
-  const statuses = new Map<string, ModuleProgressInfo>();
-  
-  // Get all module IDs from categories
-  const allModuleIds = Object.values(MODULE_CATEGORIES).flat();
-  
-  for (const moduleId of allModuleIds) {
-    const module = state.modules[moduleId];
-    statuses.set(moduleId, {
-      moduleId,
-      canonicalId: moduleId,
-      displayName: getModuleDisplayName(moduleId),
-      status: module?.status || ModuleStatus.NOT_STARTED,
-      completedAt: module?.completedAt,
-      lastAccessedAt: module?.lastAccessedAt,
-    });
-  }
-  
-  return statuses;
+  const { checkedItems, moduleMeta } = useProgressStore.getState();
+  const map = deriveModulesMap(checkedItems, moduleMeta);
+  return new Map(ALL_MODULE_IDS.map((id) => [id, toInfo(map[id])]));
 }
 
-// ============================================================================
-// CATEGORY PROGRESS CALCULATIONS
-// ============================================================================
-
-/**
- * Calculate progress for a specific category/phase
- * Formula: percentage = (completed modules / total modules in category) * 100
- */
-export function calculateCategoryProgress(categoryKey: CategoryKey): CategoryProgress {
-  const state = useProgressStore.getState();
-  const categoryModules = MODULE_CATEGORIES[categoryKey];
-  const total = categoryModules.length;
-  
+function buildCategoryProgress(
+  categoryKey: CategoryKey,
+  statuses: Map<string, ModuleProgressInfo>
+): CategoryProgress {
+  const moduleIds = MODULE_CATEGORIES[categoryKey] || [];
   let completed = 0;
   let inProgress = 0;
-  let notStarted = 0;
-  
-  for (const moduleId of categoryModules) {
-    const module = state.modules[moduleId];
-    const status = module?.status || ModuleStatus.NOT_STARTED;
-    
-    if (status === ModuleStatus.COMPLETE) {
-      completed++;
-    } else if (status === ModuleStatus.IN_PROGRESS) {
-      inProgress++;
-    } else {
-      notStarted++;
-    }
+
+  for (const moduleId of moduleIds) {
+    const status = statuses.get(moduleId)?.status || ModuleStatus.NOT_STARTED;
+    if (status === ModuleStatus.COMPLETE) completed++;
+    else if (status === ModuleStatus.IN_PROGRESS) inProgress++;
   }
-  
-  // Percentage is based on COMPLETED modules only
-  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-  
+
+  const total = moduleIds.length;
   return {
     categoryKey,
-    categoryName: CategoryNames[categoryKey],
+    categoryName: CATEGORY_NAMES[categoryKey],
     completed,
     inProgress,
-    notStarted,
+    notStarted: total - completed - inProgress,
     total,
-    percentage,
+    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
   };
 }
 
-/**
- * Get progress for all categories at once
- */
+export function calculateCategoryProgress(categoryKey: CategoryKey): CategoryProgress {
+  return buildCategoryProgress(categoryKey, getAllModuleStatuses());
+}
+
 export function getAllCategoryProgress(): Record<CategoryKey, CategoryProgress> {
-  return {
-    foundation: calculateCategoryProgress('foundation'),
-    governance: calculateCategoryProgress('governance'),
-    outcomes: calculateCategoryProgress('outcomes'),
-    crossCutting: calculateCategoryProgress('crossCutting'),
-    enablement: calculateCategoryProgress('enablement'),
-    monitoring: calculateCategoryProgress('monitoring'),
-  };
+  const statuses = getAllModuleStatuses();
+  return CATEGORY_KEYS.reduce((acc, key) => {
+    acc[key] = buildCategoryProgress(key, statuses);
+    return acc;
+  }, {} as Record<CategoryKey, CategoryProgress>);
 }
 
-// ============================================================================
-// OVERALL PROGRESS CALCULATIONS
-// ============================================================================
-
-/**
- * Calculate overall progress across all 20 modules
- * Formula: percentage = (completed modules / 20 total modules) * 100
- * 
- * IMPORTANT: This is the ONLY function that should calculate overall progress
- */
 export function calculateOverallProgress(): OverallProgress {
-  const state = useProgressStore.getState();
-  const allModuleIds = Object.values(MODULE_CATEGORIES).flat();
-  
-  let completed = 0;
-  let inProgress = 0;
-  let notStarted = 0;
-  
-  for (const moduleId of allModuleIds) {
-    const module = state.modules[moduleId];
-    const status = module?.status || ModuleStatus.NOT_STARTED;
-    
-    if (status === ModuleStatus.COMPLETE) {
-      completed++;
-    } else if (status === ModuleStatus.IN_PROGRESS) {
-      inProgress++;
-    } else {
-      notStarted++;
-    }
-  }
-  
-  // Percentage is based on COMPLETED modules out of TOTAL_MODULES (20)
-  const percentage = Math.round((completed / TOTAL_MODULES) * 100);
-  
-  return {
-    completed,
-    inProgress,
-    notStarted,
-    total: TOTAL_MODULES,
-    percentage,
-  };
+  return useProgressStore.getState().getOverallProgress();
 }
 
-/**
- * Get count of completed modules
- */
 export function getCompletedModulesCount(): number {
   return calculateOverallProgress().completed;
 }
 
-/**
- * Get modules currently in progress
- */
 export function getInProgressModules(): ModuleProgressInfo[] {
-  const allStatuses = getAllModuleStatuses();
-  const inProgress: ModuleProgressInfo[] = [];
-  
-  for (const [, moduleInfo] of allStatuses) {
-    if (moduleInfo.status === ModuleStatus.IN_PROGRESS) {
-      inProgress.push(moduleInfo);
-    }
-  }
-  
-  return inProgress;
+  return Array.from(getAllModuleStatuses().values()).filter(
+    (m) => m.status === ModuleStatus.IN_PROGRESS
+  );
 }
 
-// ============================================================================
-// CHECKLIST PROGRESS (Item-level within modules)
-// ============================================================================
-
 /**
- * Calculate checklist progress for a module from localStorage
- * This is separate from module completion status
- * 
- * STANDARDIZED CALCULATION:
- * - Y (totalItems): Count of all checklist items registered in localStorage
- * - X (completedItems): Count of items with value === true
- * - Percentage: Math.round((X / Y) * 100)
+ * Checklist progress for a module. The denominator comes from the static
+ * registry, so it is identical on every screen and never changes on navigation.
  */
-export function getModuleChecklistProgress(moduleId: string, totalSteps: number): ChecklistProgress {
-  let completedItems = 0;
-  let totalItems = 0;
-  
-  for (let i = 1; i <= totalSteps; i++) {
-    const storageKey = `checklist-${moduleId}-step${i}`;
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        const data = JSON.parse(stored);
-        // Validate data structure
-        if (typeof data === 'object' && data !== null) {
-          const entries = Object.entries(data);
-          // Only count valid boolean entries
-          const validEntries = entries.filter(([, value]) => typeof value === 'boolean');
-          totalItems += validEntries.length;
-          completedItems += validEntries.filter(([, checked]) => checked === true).length;
-        }
-      }
-    } catch (error) {
-      console.error(`Error reading checklist step ${i}:`, error);
-    }
-  }
-  
-  // Use consistent percentage formula: Math.round((X / Y) * 100)
-  const percentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
-  const isComplete = completedItems === totalItems && totalItems > 0;
-  
+export function getModuleChecklistProgress(moduleId: string): ChecklistProgress {
+  const progress = useProgressStore.getState().getModuleStatus(moduleId);
   return {
-    completedItems,
-    totalItems,
-    percentage,
-    isComplete,
+    completedItems: progress.completedItems,
+    totalItems: progress.totalItems,
+    percentage: progress.percentage,
+    isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
   };
 }
 
-/**
- * Check if a module has any checklist activity (for determining if started)
- */
-export function hasModuleChecklistActivity(moduleId: string, totalSteps: number): boolean {
-  for (let i = 1; i <= totalSteps; i++) {
-    const storageKey = `checklist-${moduleId}-step${i}`;
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        const data = JSON.parse(stored);
-        const hasAnyChecked = Object.values(data).some(Boolean);
-        if (hasAnyChecked) return true;
-      }
-    } catch (error) {
-      // Ignore errors
-    }
-  }
-  return false;
+export function hasModuleChecklistActivity(moduleId: string): boolean {
+  return useProgressStore.getState().getModuleStatus(moduleId).completedItems > 0;
+}
+
+export function getModuleTotalItems(moduleId: string): number {
+  return getModuleItemKeys(moduleId).length;
 }
 
 // ============================================================================
-// REACT HOOKS FOR REACTIVE UPDATES
+// REACT HOOKS
 // ============================================================================
 
-/**
- * React hook that returns reactive progress calculations
- * Subscribes to Zustand store changes automatically
- */
 export function useProgressCalculation() {
-  const modules = useProgressStore((state) => state.modules);
-  
-  // Calculate all module statuses
-  const moduleStatuses = new Map<string, ModuleProgressInfo>();
-  const allModuleIds = Object.values(MODULE_CATEGORIES).flat();
-  
-  for (const moduleId of allModuleIds) {
-    const module = modules[moduleId];
-    moduleStatuses.set(moduleId, {
-      moduleId,
-      canonicalId: moduleId,
-      displayName: getModuleDisplayName(moduleId),
-      status: module?.status || ModuleStatus.NOT_STARTED,
-      completedAt: module?.completedAt,
-      lastAccessedAt: module?.lastAccessedAt,
-    });
-  }
-  
-  // Calculate overall progress
+  const modules = useModulesMap();
+
+  const moduleStatuses = new Map<string, ModuleProgressInfo>(
+    ALL_MODULE_IDS.map((id) => [id, toInfo(modules[id])])
+  );
+
   let completed = 0;
   let inProgress = 0;
-  let notStarted = 0;
-  
-  for (const [, moduleInfo] of moduleStatuses) {
-    if (moduleInfo.status === ModuleStatus.COMPLETE) {
-      completed++;
-    } else if (moduleInfo.status === ModuleStatus.IN_PROGRESS) {
-      inProgress++;
-    } else {
-      notStarted++;
-    }
+  for (const [, info] of moduleStatuses) {
+    if (info.status === ModuleStatus.COMPLETE) completed++;
+    else if (info.status === ModuleStatus.IN_PROGRESS) inProgress++;
   }
-  
+
   const overall: OverallProgress = {
     completed,
     inProgress,
-    notStarted,
+    notStarted: TOTAL_MODULES - completed - inProgress,
     total: TOTAL_MODULES,
     percentage: Math.round((completed / TOTAL_MODULES) * 100),
   };
-  
-  // Calculate category progress
-  const categories: Record<CategoryKey, CategoryProgress> = {
-    foundation: calculateCategoryProgressFromMap('foundation', moduleStatuses),
-    governance: calculateCategoryProgressFromMap('governance', moduleStatuses),
-    outcomes: calculateCategoryProgressFromMap('outcomes', moduleStatuses),
-    crossCutting: calculateCategoryProgressFromMap('crossCutting', moduleStatuses),
-    enablement: calculateCategoryProgressFromMap('enablement', moduleStatuses),
-    monitoring: calculateCategoryProgressFromMap('monitoring', moduleStatuses),
-  };
-  
-  // Get in-progress modules
+
+  const categories = CATEGORY_KEYS.reduce((acc, key) => {
+    acc[key] = buildCategoryProgress(key, moduleStatuses);
+    return acc;
+  }, {} as Record<CategoryKey, CategoryProgress>);
+
   const inProgressModules = Array.from(moduleStatuses.values()).filter(
     (m) => m.status === ModuleStatus.IN_PROGRESS
   );
-  
-  return {
-    overall,
-    categories,
-    inProgressModules,
-    moduleStatuses,
-  };
+
+  return { overall, categories, inProgressModules, moduleStatuses };
 }
 
-/**
- * Helper to calculate category progress from a pre-computed status map
- */
-function calculateCategoryProgressFromMap(
-  categoryKey: CategoryKey,
-  moduleStatuses: Map<string, ModuleProgressInfo>
-): CategoryProgress {
-  const categoryModules = MODULE_CATEGORIES[categoryKey];
-  const total = categoryModules.length;
-  
-  let completed = 0;
-  let inProgress = 0;
-  let notStarted = 0;
-  
-  for (const moduleId of categoryModules) {
-    const moduleInfo = moduleStatuses.get(moduleId);
-    const status = moduleInfo?.status || ModuleStatus.NOT_STARTED;
-    
-    if (status === ModuleStatus.COMPLETE) {
-      completed++;
-    } else if (status === ModuleStatus.IN_PROGRESS) {
-      inProgress++;
-    } else {
-      notStarted++;
-    }
-  }
-  
+/** Reactive checklist progress for a single module */
+export function useModuleChecklistProgress(moduleId: string): ChecklistProgress & {
+  status: ModuleStatusType;
+} {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  const progress = deriveModuleProgress(moduleId, checkedItems, moduleMeta);
+
   return {
-    categoryKey,
-    categoryName: CategoryNames[categoryKey],
-    completed,
-    inProgress,
-    notStarted,
-    total,
-    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    completedItems: progress.completedItems,
+    totalItems: progress.totalItems,
+    percentage: progress.percentage,
+    isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
+    status: progress.status,
   };
 }
 
@@ -465,82 +243,41 @@ function calculateCategoryProgressFromMap(
 // VALIDATION HELPERS
 // ============================================================================
 
-/**
- * Validate that progress counts are consistent
- * Returns true if counts match expected values
- * 
- * INVARIANT: completed + inProgress + notStarted === TOTAL_MODULES (20)
- */
 export function validateProgressConsistency(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
   const overall = calculateOverallProgress();
   const allCategories = getAllCategoryProgress();
-  
-  // CRITICAL: Sum of all states must equal TOTAL_MODULES
+
   const stateSum = overall.completed + overall.inProgress + overall.notStarted;
   if (stateSum !== TOTAL_MODULES) {
-    errors.push(`State sum (${stateSum}) does not match TOTAL_MODULES (${TOTAL_MODULES}). Completed: ${overall.completed}, In Progress: ${overall.inProgress}, Not Started: ${overall.notStarted}`);
+    errors.push(`State sum (${stateSum}) does not match TOTAL_MODULES (${TOTAL_MODULES})`);
   }
-  
-  // Sum of category totals should equal TOTAL_MODULES
+
   const categoryTotal = Object.values(allCategories).reduce((sum, cat) => sum + cat.total, 0);
   if (categoryTotal !== TOTAL_MODULES) {
     errors.push(`Category total (${categoryTotal}) does not match TOTAL_MODULES (${TOTAL_MODULES})`);
   }
-  
-  // Sum of completed across categories should equal overall completed
+
   const categoryCompleted = Object.values(allCategories).reduce((sum, cat) => sum + cat.completed, 0);
   if (categoryCompleted !== overall.completed) {
-    errors.push(`Category completed sum (${categoryCompleted}) does not match overall completed (${overall.completed})`);
+    errors.push(
+      `Category completed sum (${categoryCompleted}) does not match overall completed (${overall.completed})`
+    );
   }
-  
-  // Sum of in-progress across categories should equal overall in-progress
-  const categoryInProgress = Object.values(allCategories).reduce((sum, cat) => sum + cat.inProgress, 0);
-  if (categoryInProgress !== overall.inProgress) {
-    errors.push(`Category in-progress sum (${categoryInProgress}) does not match overall in-progress (${overall.inProgress})`);
-  }
-  
-  // Sum of not-started across categories should equal overall not-started
-  const categoryNotStarted = Object.values(allCategories).reduce((sum, cat) => sum + cat.notStarted, 0);
-  if (categoryNotStarted !== overall.notStarted) {
-    errors.push(`Category not-started sum (${categoryNotStarted}) does not match overall not-started (${overall.notStarted})`);
-  }
-  
-  return {
-    valid: errors.length === 0,
-    errors,
-  };
+
+  return { valid: errors.length === 0, errors };
 }
 
-/**
- * Check if a module can transition to a given state
- * Used for validation before state changes
- */
-export function canTransitionTo(
-  currentStatus: ModuleStatusType,
-  targetStatus: ModuleStatusType
-): boolean {
-  // All transitions are valid in our model:
-  // - NOT_STARTED → IN_PROGRESS (first checkbox)
-  // - IN_PROGRESS → COMPLETE (explicit Mark Complete)
-  // - COMPLETE → IN_PROGRESS (item unchecked - auto-reversion)
-  // - Any → NOT_STARTED (reset action)
-  return true;
-}
-
-/**
- * Get a human-readable description of why a module is in its current state
- */
 export function getStatusReason(moduleId: string): string {
-  const status = getModuleStatus(moduleId);
-  
-  switch (status) {
+  const progress = useProgressStore.getState().getModuleStatus(moduleId);
+
+  switch (progress.status) {
     case ModuleStatus.NOT_STARTED:
       return 'No checklist items have been completed';
     case ModuleStatus.IN_PROGRESS:
-      return 'Some checklist items completed, awaiting "Mark Complete"';
+      return `${progress.completedItems} of ${progress.totalItems} checklist items completed`;
     case ModuleStatus.COMPLETE:
-      return 'Marked as complete by user';
+      return 'All checklist items completed';
     default:
       return 'Unknown status';
   }

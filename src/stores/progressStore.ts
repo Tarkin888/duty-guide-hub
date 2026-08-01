@@ -1,57 +1,49 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { toast } from 'sonner';
+import {
+  MODULE_REGISTRY,
+  MODULE_CATEGORIES,
+  TOTAL_MODULES,
+  TOTAL_CHECKLIST_ITEMS,
+  ALL_ITEM_KEYS,
+  CATEGORY_NAMES,
+  CATEGORY_KEYS,
+  ALL_MODULE_IDS,
+  STORAGE_ID_TO_MODULE_ID,
+  normalizeModuleId,
+  getModuleDisplayName,
+  getModuleDefinition,
+  getModuleItemKeys,
+  makeItemKey,
+  isKnownItemKey,
+  type CategoryKey,
+} from '@/config/moduleRegistry';
 
-// Module structure definition
-export const MODULE_CATEGORIES = {
-  foundation: ['CD-F1', 'CD-F2', 'CD-F3'],
-  governance: ['CD-P1', 'CD-P2', 'CD-P3'],
-  outcomes: ['CD-I1', 'CD-I2', 'CD-I3', 'CD-I4'],
-  crossCutting: ['CD-I5', 'CD-I6', 'CD-I7'],
-  enablement: ['CD-T1', 'CD-T2', 'CD-T3'],
-  monitoring: ['CD-M1', 'CD-M2', 'CD-M3', 'CD-M4'],
-} as const;
-
-export const TOTAL_MODULES = 20;
-
-// Map from storage keys (used in module pages) to canonical module IDs
-const STORAGE_KEY_TO_MODULE_ID: Record<string, string> = {
-  'cd-f1-readiness': 'CD-F1',
-  'cd-f2-requirements': 'CD-F2',
-  'cd-f3-risk': 'CD-F3',
-  'cd-f3-risk-assessment': 'CD-F3',
-  'cd-p1-governance': 'CD-P1',
-  'cd-p1-governance-framework': 'CD-P1',
-  'cd-p2-policy': 'CD-P2',
-  'cd-p2-policy-framework': 'CD-P2',
-  'cd-p3-roadmap': 'CD-P3',
-  'cd-p3-implementation-roadmap': 'CD-P3',
-  'cd-i1-products-services': 'CD-I1',
-  'cd-i1-products': 'CD-I1',
-  'cd-i2-price-value': 'CD-I2',
-  'cd-i3-consumer-understanding': 'CD-I3',
-  'cd-i4-consumer-support': 'CD-I4',
-  'cd-i5-vulnerable-customers': 'CD-I5',
-  'cd-i6-distribution-chain': 'CD-I6',
-  'cd-i7-data-evidence': 'CD-I7',
-  'cd-t1-training': 'CD-T1',
-  'cd-t2-communications': 'CD-T2',
-  'cd-t2-communications-change': 'CD-T2',
-  'cd-t3-technology': 'CD-T3',
-  'cd-t3-technology-requirements': 'CD-T3',
-  'cd-m1-mi-framework': 'CD-M1',
-  'cd-m2-testing': 'CD-M2',
-  'cd-m2-testing-assurance': 'CD-M2',
-  'cd-m3-board-reporting': 'CD-M3',
-  'cd-m4-continuous-improvement': 'CD-M4',
+export {
+  MODULE_CATEGORIES,
+  TOTAL_MODULES,
+  TOTAL_CHECKLIST_ITEMS,
+  CATEGORY_NAMES,
+  CATEGORY_KEYS,
+  normalizeModuleId,
+  getModuleDisplayName,
+  makeItemKey,
 };
+export type { CategoryKey };
+
+export type ModuleStatusValue = 'not-started' | 'in-progress' | 'complete';
 
 export interface ModuleProgress {
   moduleId: string;
-  status: 'not-started' | 'in-progress' | 'complete';
+  status: ModuleStatusValue;
   completedAt?: string;
   lastAccessedAt?: string;
-  checklistItems?: Record<string, boolean>;
+  /** Number of checklist items ticked for this module */
+  completedItems: number;
+  /** Fixed number of checklist items for this module (from the static registry) */
+  totalItems: number;
+  percentage: number;
 }
 
 export interface Activity {
@@ -62,17 +54,36 @@ export interface Activity {
   timestamp: string;
 }
 
+export interface AggregateProgress {
+  completed: number;
+  inProgress: number;
+  notStarted: number;
+  total: number;
+  percentage: number;
+}
+
+interface ModuleMeta {
+  completedAt?: string;
+  lastAccessedAt?: string;
+  /** Only used for modules that have no checklist items at all */
+  manualComplete?: boolean;
+}
+
 interface ProgressState {
-  modules: Record<string, ModuleProgress>;
+  /** THE single source of truth: which checklist items are ticked */
+  checkedItems: Record<string, boolean>;
+  moduleMeta: Record<string, ModuleMeta>;
   activities: Activity[];
   startDate: string | null;
-  version: number;
+  migratedLegacy: boolean;
 
   // Actions
+  setChecklistItem: (storageId: string, stepNumber: number, itemId: string, checked: boolean) => void;
+  setStepItems: (storageId: string, stepNumber: number, checked: boolean) => void;
   markModuleComplete: (moduleId: string, showToast?: boolean) => void;
   markModuleInProgress: (moduleId: string, showToast?: boolean) => void;
+  reopenModule: (moduleId: string) => void;
   resetModuleProgress: (moduleId: string, showToast?: boolean) => void;
-  updateChecklistItem: (moduleId: string, itemId: string, completed: boolean) => void;
   updateLastAccessed: (moduleId: string) => void;
   resetAllProgress: () => void;
   resetStartDate: () => void;
@@ -81,10 +92,12 @@ interface ProgressState {
   clearActivities: () => void;
   validateAndRepairState: () => { valid: boolean; repaired: boolean; errors: string[] };
 
-  // Getters
+  // Getters (derived - never stored)
+  isItemChecked: (storageId: string, stepNumber: number, itemId: string) => boolean;
   getModuleStatus: (moduleId: string) => ModuleProgress;
-  getCategoryProgress: (category: keyof typeof MODULE_CATEGORIES) => { completed: number; inProgress: number; notStarted: number; total: number; percentage: number };
-  getOverallProgress: () => { completed: number; inProgress: number; notStarted: number; total: number; percentage: number };
+  getCategoryProgress: (category: CategoryKey) => AggregateProgress;
+  getOverallProgress: () => AggregateProgress;
+  getCheckedItemsCount: () => number;
   getCompletedModulesCount: () => number;
   getInProgressModules: () => ModuleProgress[];
   getDaysSinceStart: () => number;
@@ -95,335 +108,448 @@ interface ProgressState {
   getEstimatedCompletionDate: () => Date | null;
 }
 
-// Module display names
-const MODULE_NAMES: Record<string, string> = {
-  'CD-F1': 'Readiness Assessment',
-  'CD-F2': 'Requirements Mapping',
-  'CD-F3': 'Risk & Impact Assessment',
-  'CD-P1': 'Governance Framework',
-  'CD-P2': 'Policy Framework',
-  'CD-P3': 'Implementation Roadmap',
-  'CD-I1': 'Products & Services',
-  'CD-I2': 'Price & Value',
-  'CD-I3': 'Consumer Understanding',
-  'CD-I4': 'Consumer Support',
-  'CD-I5': 'Vulnerable Customers',
-  'CD-I6': 'Distribution Chain',
-  'CD-I7': 'Data & Evidence',
-  'CD-T1': 'Training Programme',
-  'CD-T2': 'Communications & Change',
-  'CD-T3': 'Technology Requirements',
-  'CD-M1': 'MI Framework',
-  'CD-M2': 'Testing & Assurance',
-  'CD-M3': 'Board Reporting',
-  'CD-M4': 'Continuous Improvement',
-};
+// ---------------------------------------------------------------------------
+// Pure derivation helpers - every view uses these, nothing counts on its own
+// ---------------------------------------------------------------------------
 
-// Helper to normalize storage key to canonical module ID
-export function normalizeModuleId(storageKey: string): string {
-  return STORAGE_KEY_TO_MODULE_ID[storageKey] || storageKey.toUpperCase().replace(/-/g, '-');
+export function deriveModuleProgress(
+  moduleId: string,
+  checkedItems: Record<string, boolean>,
+  moduleMeta: Record<string, ModuleMeta> = {}
+): ModuleProgress {
+  const canonicalId = normalizeModuleId(moduleId);
+  const itemKeys = getModuleItemKeys(canonicalId);
+  const meta = moduleMeta[canonicalId] || {};
+  const totalItems = itemKeys.length;
+  const completedItems = itemKeys.reduce(
+    (sum, key) => sum + (checkedItems[key] === true ? 1 : 0),
+    0
+  );
+
+  let status: ModuleStatusValue = 'not-started';
+  if (totalItems > 0) {
+    if (completedItems === totalItems) status = 'complete';
+    else if (completedItems > 0) status = 'in-progress';
+  } else if (meta.manualComplete) {
+    status = 'complete';
+  } else if (meta.lastAccessedAt) {
+    status = 'in-progress';
+  }
+
+  return {
+    moduleId: canonicalId,
+    status,
+    completedAt: status === 'complete' ? meta.completedAt : undefined,
+    lastAccessedAt: meta.lastAccessedAt,
+    completedItems,
+    totalItems,
+    percentage: totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0,
+  };
 }
 
-// Helper to get module display name
-export function getModuleDisplayName(moduleId: string): string {
-  const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
-  return MODULE_NAMES[canonicalId] || canonicalId;
+function deriveAggregate(
+  moduleIds: string[],
+  checkedItems: Record<string, boolean>,
+  moduleMeta: Record<string, ModuleMeta>
+): AggregateProgress {
+  let completed = 0;
+  let inProgress = 0;
+  for (const id of moduleIds) {
+    const status = deriveModuleProgress(id, checkedItems, moduleMeta).status;
+    if (status === 'complete') completed++;
+    else if (status === 'in-progress') inProgress++;
+  }
+  const total = moduleIds.length;
+  return {
+    completed,
+    inProgress,
+    notStarted: total - completed - inProgress,
+    total,
+    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+  };
 }
 
-// Migrate old localStorage data to new format
-function migrateOldData(): Record<string, ModuleProgress> {
-  const modules: Record<string, ModuleProgress> = {};
-  
+export function deriveCheckedItemsCount(checkedItems: Record<string, boolean>): number {
+  // Counted against the static registry only - unknown/legacy keys are ignored
+  return ALL_ITEM_KEYS.reduce((sum, key) => sum + (checkedItems[key] === true ? 1 : 0), 0);
+}
+
+// ---------------------------------------------------------------------------
+// One-off migration from the previous storage layout
+// ---------------------------------------------------------------------------
+
+const STORAGE_KEY = 'consumer-duty-progress-v3';
+
+interface LegacyResult {
+  checkedItems: Record<string, boolean>;
+  moduleMeta: Record<string, ModuleMeta>;
+  startDate: string | null;
+  activities: Activity[];
+}
+
+export function migrateLegacyProgress(): LegacyResult {
+  const checkedItems: Record<string, boolean> = {};
+  const moduleMeta: Record<string, ModuleMeta> = {};
+  let startDate: string | null = null;
+  let activities: Activity[] = [];
+
+  // 1. Per-step checklist keys: checklist-<storageId>-step<n> => { itemId: boolean }
   try {
-    // Try to read old format
-    const oldData = localStorage.getItem('consumer-duty-progress');
-    
-    if (oldData) {
-      const parsed = JSON.parse(oldData);
-      
-      Object.entries(parsed).forEach(([storageKey, data]: [string, any]) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[storageKey];
-        
-        if (canonicalId && !modules[canonicalId]) {
-          const status = data?.status === 'completed' ? 'complete' : 
-                         data?.status === 'in-progress' ? 'in-progress' : 'not-started';
-          modules[canonicalId] = {
-            moduleId: canonicalId,
-            status,
-            lastAccessedAt: data?.lastUpdated || new Date().toISOString(),
-            completedAt: status === 'complete' ? data?.lastUpdated : undefined,
+    for (const module of MODULE_REGISTRY) {
+      for (const key of module.items) {
+        const [storageId, step, itemId] = key.split('::');
+        const legacyKey = `checklist-${storageId}-${step}`;
+        const raw = localStorage.getItem(legacyKey);
+        if (!raw) continue;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && parsed[itemId] === true) {
+          checkedItems[key] = true;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('[ProgressStore] Legacy checklist migration failed:', error);
+  }
+
+  // 2. Previous Zustand store (v2) - module statuses, activities and start date
+  try {
+    const rawV2 = localStorage.getItem('consumer-duty-progress-v2');
+    if (rawV2) {
+      const parsed = JSON.parse(rawV2);
+      const state = parsed?.state || {};
+      startDate = state.startDate || null;
+      if (Array.isArray(state.activities)) activities = state.activities.slice(0, 50);
+
+      Object.entries(state.modules || {}).forEach(([id, value]) => {
+        const legacyModule = value as {
+          status?: string;
+          completedAt?: string;
+          lastAccessedAt?: string;
+          checklistItems?: Record<string, boolean>;
+        };
+        const canonicalId = normalizeModuleId(id);
+        const definition = getModuleDefinition(canonicalId);
+        if (!definition) return;
+
+        moduleMeta[canonicalId] = {
+          completedAt: legacyModule.completedAt,
+          lastAccessedAt: legacyModule.lastAccessedAt,
+          manualComplete:
+            definition.items.length === 0 && legacyModule.status === 'complete' ? true : undefined,
+        };
+
+        // A module previously marked complete keeps its completion by ticking
+        // every registered item, so the new rule holds without losing progress.
+        if (legacyModule.status === 'complete') {
+          definition.items.forEach((key) => {
+            checkedItems[key] = true;
+          });
+        }
+
+        // Item-level flags stored on the old module record
+        Object.entries(legacyModule.checklistItems || {}).forEach(([itemId, checked]) => {
+          if (checked !== true) return;
+          const match = definition.items.find((key) => key.endsWith(`::${itemId}`));
+          if (match) checkedItems[match] = true;
+        });
+      });
+    }
+  } catch (error) {
+    console.error('[ProgressStore] Legacy store migration failed:', error);
+  }
+
+  // 3. Oldest format: consumer-duty-progress
+  try {
+    const rawV1 = localStorage.getItem('consumer-duty-progress');
+    if (rawV1) {
+      const parsed = JSON.parse(rawV1);
+      Object.entries(parsed || {}).forEach(([id, value]) => {
+        const data = value as { status?: string; lastUpdated?: string };
+        const definition = getModuleDefinition(normalizeModuleId(id));
+        if (!definition) return;
+        const canonicalId = definition.id;
+        if (data?.status === 'completed' || data?.status === 'complete') {
+          definition.items.forEach((key) => {
+            checkedItems[key] = true;
+          });
+          moduleMeta[canonicalId] = {
+            ...moduleMeta[canonicalId],
+            completedAt: moduleMeta[canonicalId]?.completedAt || data.lastUpdated,
+            manualComplete:
+              definition.items.length === 0 ? true : moduleMeta[canonicalId]?.manualComplete,
+          };
+        } else if (data?.status === 'in-progress') {
+          moduleMeta[canonicalId] = {
+            ...moduleMeta[canonicalId],
+            lastAccessedAt: moduleMeta[canonicalId]?.lastAccessedAt || data.lastUpdated,
           };
         }
       });
     }
-  } catch (e) {
-    console.error('Migration failed:', e);
+  } catch (error) {
+    console.error('[ProgressStore] V1 migration failed:', error);
   }
-  
-  return modules;
+
+  return { checkedItems, moduleMeta, startDate, activities };
+}
+
+function newActivity(
+  type: Activity['type'],
+  moduleId: string,
+  moduleName: string,
+  timestamp: string
+): Activity {
+  return {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+    type,
+    moduleId,
+    moduleName,
+    timestamp,
+  };
 }
 
 export const useProgressStore = create<ProgressState>()(
   persist(
     (set, get) => ({
-      modules: {},
+      checkedItems: {},
+      moduleMeta: {},
       activities: [],
       startDate: null,
-      version: 1,
+      migratedLegacy: false,
 
-      markModuleComplete: (moduleId: string, showToast = true) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
+      setChecklistItem: (storageId, stepNumber, itemId, checked) => {
+        const key = makeItemKey(storageId, stepNumber, itemId);
+        const canonicalId = normalizeModuleId(storageId);
         const now = new Date().toISOString();
-        
+
+        if (!isKnownItemKey(key)) {
+          console.warn('[ProgressStore] Unknown checklist item key ignored:', key);
+        }
+
         set((state) => {
-          const existingModule = state.modules[canonicalId];
-          
-          // Don't re-mark if already complete
-          if (existingModule?.status === 'complete') {
-            return state;
-          }
-          
-          const newModules = { ...state.modules };
-          newModules[canonicalId] = {
-            moduleId: canonicalId,
-            status: 'complete',
-            completedAt: now,
-            lastAccessedAt: now,
-            checklistItems: existingModule?.checklistItems || {},
+          const before = deriveModuleProgress(canonicalId, state.checkedItems, state.moduleMeta);
+          const checkedItems = { ...state.checkedItems };
+          if (checked) checkedItems[key] = true;
+          else delete checkedItems[key];
+
+          const moduleMeta = {
+            ...state.moduleMeta,
+            [canonicalId]: { ...state.moduleMeta[canonicalId], lastAccessedAt: now },
           };
 
-          const newStartDate = state.startDate || now;
-          
-          // Add activity
-          const newActivity: Activity = {
-            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            type: 'module_completed',
-            moduleId: canonicalId,
-            moduleName: getModuleDisplayName(canonicalId),
-            timestamp: now,
-          };
-          
-          const newActivities = [newActivity, ...state.activities].slice(0, 50);
+          const after = deriveModuleProgress(canonicalId, checkedItems, moduleMeta);
+          if (after.status === 'complete' && before.status !== 'complete') {
+            moduleMeta[canonicalId] = { ...moduleMeta[canonicalId], completedAt: now };
+          }
+
+          let activities = state.activities;
+          if (after.status === 'complete' && before.status !== 'complete') {
+            activities = [
+              newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
+              ...activities,
+            ].slice(0, 50);
+          } else if (checked) {
+            activities = [
+              newActivity('checklist_updated', canonicalId, getModuleDisplayName(canonicalId), now),
+              ...activities,
+            ].slice(0, 50);
+          }
 
           return {
-            modules: newModules,
-            startDate: newStartDate,
-            activities: newActivities,
+            checkedItems,
+            moduleMeta,
+            activities,
+            startDate: state.startDate || now,
           };
         });
-        
-        // Dispatch event for legacy compatibility
+
         window.dispatchEvent(new Event('module-progress-updated'));
-        
+      },
+
+      setStepItems: (storageId, stepNumber, checked) => {
+        const canonicalId = normalizeModuleId(storageId);
+        const prefix = `${storageId}::step${stepNumber}::`;
+        const keys = getModuleItemKeys(canonicalId).filter((key) => key.startsWith(prefix));
+        const now = new Date().toISOString();
+
+        set((state) => {
+          const checkedItems = { ...state.checkedItems };
+          keys.forEach((key) => {
+            if (checked) checkedItems[key] = true;
+            else delete checkedItems[key];
+          });
+          return {
+            checkedItems,
+            moduleMeta: {
+              ...state.moduleMeta,
+              [canonicalId]: { ...state.moduleMeta[canonicalId], lastAccessedAt: now },
+            },
+            startDate: state.startDate || now,
+          };
+        });
+
+        window.dispatchEvent(new Event('module-progress-updated'));
+      },
+
+      markModuleComplete: (moduleId, showToast = true) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        const definition = getModuleDefinition(canonicalId);
+        const now = new Date().toISOString();
+
+        set((state) => {
+          const checkedItems = { ...state.checkedItems };
+          definition?.items.forEach((key) => {
+            checkedItems[key] = true;
+          });
+          return {
+            checkedItems,
+            moduleMeta: {
+              ...state.moduleMeta,
+              [canonicalId]: {
+                ...state.moduleMeta[canonicalId],
+                completedAt: state.moduleMeta[canonicalId]?.completedAt || now,
+                lastAccessedAt: now,
+                manualComplete: definition && definition.items.length === 0 ? true : undefined,
+              },
+            },
+            activities: [
+              newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
+              ...state.activities,
+            ].slice(0, 50),
+            startDate: state.startDate || now,
+          };
+        });
+
+        window.dispatchEvent(new Event('module-progress-updated'));
+
         if (showToast) {
-          toast.success('Module Complete!', {
+          toast.success('Module complete', {
             description: `${getModuleDisplayName(canonicalId)} marked as complete.`,
           });
         }
       },
 
-      markModuleInProgress: (moduleId: string, showToast = true) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
+      markModuleInProgress: (moduleId, showToast = true) => {
+        const canonicalId = normalizeModuleId(moduleId);
         const now = new Date().toISOString();
-        
-        set((state) => {
-          const existingModule = state.modules[canonicalId];
-          
-          // Already in progress - just update last accessed
-          if (existingModule?.status === 'in-progress') {
-            return { 
-              modules: {
-                ...state.modules,
-                [canonicalId]: { ...existingModule, lastAccessedAt: now }
-              }
-            };
-          }
-          
-          const newModules = { ...state.modules };
-          
-          // Determine if this is a transition from complete (reversion)
-          const wasComplete = existingModule?.status === 'complete';
-          
-          newModules[canonicalId] = {
-            moduleId: canonicalId,
-            status: 'in-progress',
-            lastAccessedAt: now,
-            // Clear completedAt when reverting from complete
-            completedAt: undefined,
-            checklistItems: existingModule?.checklistItems || {},
-          };
 
-          const newStartDate = state.startDate || now;
-          
-          // Add activity
-          const activityType = wasComplete ? 'module_started' : 'module_started';
-          const newActivity: Activity = {
-            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            type: activityType,
-            moduleId: canonicalId,
-            moduleName: getModuleDisplayName(canonicalId),
-            timestamp: now,
-          };
-          
-          const newActivities = [newActivity, ...state.activities].slice(0, 50);
+        set((state) => ({
+          moduleMeta: {
+            ...state.moduleMeta,
+            [canonicalId]: {
+              ...state.moduleMeta[canonicalId],
+              lastAccessedAt: now,
+              manualComplete: undefined,
+            },
+          },
+          activities: [
+            newActivity('module_started', canonicalId, getModuleDisplayName(canonicalId), now),
+            ...state.activities,
+          ].slice(0, 50),
+          startDate: state.startDate || now,
+        }));
 
-          return {
-            modules: newModules,
-            startDate: newStartDate,
-            activities: newActivities,
-          };
-        });
-        
         window.dispatchEvent(new Event('module-progress-updated'));
-        
+
         if (showToast) {
-          toast.info('Module In Progress', {
+          toast.info('Module in progress', {
             description: `${getModuleDisplayName(canonicalId)} is now in progress.`,
           });
         }
       },
 
-      resetModuleProgress: (moduleId: string, showToast = true) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
+      reopenModule: (moduleId) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        const definition = getModuleDefinition(canonicalId);
         const now = new Date().toISOString();
-        
+
         set((state) => {
-          const newModules = { ...state.modules };
-          
-          // Remove the module from tracking (resets to not-started)
-          delete newModules[canonicalId];
-          
+          const checkedItems = { ...state.checkedItems };
+          // Completion is derived from the checklist, so reopening clears the ticks
+          definition?.items.forEach((key) => {
+            delete checkedItems[key];
+          });
           return {
-            modules: newModules,
+            checkedItems,
+            moduleMeta: {
+              ...state.moduleMeta,
+              [canonicalId]: {
+                ...state.moduleMeta[canonicalId],
+                completedAt: undefined,
+                lastAccessedAt: now,
+                manualComplete: undefined,
+              },
+            },
           };
         });
-        
-        // Also sync with legacy localStorage
-        try {
-          const legacyData = localStorage.getItem('consumer-duty-progress');
-          if (legacyData) {
-            const parsed = JSON.parse(legacyData);
-            // Find and remove any storage keys that map to this module
-            Object.keys(STORAGE_KEY_TO_MODULE_ID).forEach(storageKey => {
-              if (STORAGE_KEY_TO_MODULE_ID[storageKey] === canonicalId) {
-                delete parsed[storageKey];
-              }
-            });
-            localStorage.setItem('consumer-duty-progress', JSON.stringify(parsed));
-          }
-        } catch (e) {
-          console.error('Failed to sync reset with legacy storage:', e);
-        }
-        
+
         window.dispatchEvent(new Event('module-progress-updated'));
-        
+
+        toast.info('Module reopened', {
+          description: `${getModuleDisplayName(canonicalId)} is back in progress and its checklist has been cleared.`,
+        });
+      },
+
+      resetModuleProgress: (moduleId, showToast = true) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        const definition = getModuleDefinition(canonicalId);
+
+        set((state) => {
+          const checkedItems = { ...state.checkedItems };
+          definition?.items.forEach((key) => {
+            delete checkedItems[key];
+          });
+          const moduleMeta = { ...state.moduleMeta };
+          delete moduleMeta[canonicalId];
+          return { checkedItems, moduleMeta };
+        });
+
+        window.dispatchEvent(new Event('module-progress-updated'));
+
         if (showToast) {
-          toast.info('Progress Reset', {
+          toast.info('Progress reset', {
             description: `${getModuleDisplayName(canonicalId)} reset to Not Started.`,
           });
         }
       },
 
-      updateChecklistItem: (moduleId: string, itemId: string, completed: boolean) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
-        const now = new Date().toISOString();
-        
+      updateLastAccessed: (moduleId) => {
+        const canonicalId = normalizeModuleId(moduleId);
         set((state) => {
-          const existingModule = state.modules[canonicalId] || {
-            moduleId: canonicalId,
-            status: 'not-started' as const,
-            checklistItems: {},
-          };
-
-          const newChecklistItems = {
-            ...existingModule.checklistItems,
-            [itemId]: completed,
-          };
-          
-          // Count checklist items to determine state
-          const checkedCount = Object.values(newChecklistItems).filter(Boolean).length;
-          
-          // Determine the new status based on checklist state
-          let newStatus = existingModule.status;
-          
-          if (checkedCount === 0) {
-            // No items checked - revert to not-started
-            newStatus = 'not-started';
-          } else if (existingModule.status === 'not-started') {
-            // Some items checked and was not-started - upgrade to in-progress
-            newStatus = 'in-progress';
-          } else if (existingModule.status === 'complete') {
-            // Was complete but items unchecked - revert to in-progress
-            // This handles the case where a completed module has items unchecked
-            newStatus = 'in-progress';
-          }
-          // If already in-progress, stay in-progress (only explicit Mark Complete can upgrade)
-
-          const newModules = { ...state.modules };
-          newModules[canonicalId] = {
-            ...existingModule,
-            status: newStatus,
-            lastAccessedAt: now,
-            // Clear completedAt if we're reverting from complete
-            completedAt: newStatus === 'complete' ? existingModule.completedAt : undefined,
-            checklistItems: newChecklistItems,
-          };
-
-          const newStartDate = state.startDate || now;
-
+          if (!state.moduleMeta[canonicalId]) return state;
           return {
-            modules: newModules,
-            startDate: newStartDate,
-          };
-        });
-        
-        window.dispatchEvent(new Event('module-progress-updated'));
-      },
-
-      updateLastAccessed: (moduleId: string) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
-        const now = new Date().toISOString();
-        
-        set((state) => {
-          const existingModule = state.modules[canonicalId];
-          if (!existingModule) return state;
-          
-          return {
-            modules: {
-              ...state.modules,
-              [canonicalId]: { ...existingModule, lastAccessedAt: now },
+            moduleMeta: {
+              ...state.moduleMeta,
+              [canonicalId]: {
+                ...state.moduleMeta[canonicalId],
+                lastAccessedAt: new Date().toISOString(),
+              },
             },
           };
         });
       },
 
       resetAllProgress: () => {
-        set({ 
-          modules: {}, 
-          activities: [],
-          startDate: null 
-        });
-        
-        // Also clear legacy localStorage keys
+        set({ checkedItems: {}, moduleMeta: {}, activities: [], startDate: null });
+
         try {
           localStorage.removeItem('consumer-duty-progress');
+          localStorage.removeItem('consumer-duty-progress-v2');
+          localStorage.removeItem('consumer-duty-checklists');
           localStorage.removeItem('consumer-duty-activity');
           localStorage.removeItem('consumer-duty-user-data');
           localStorage.removeItem('implementation-start-date');
-          
-          // Clear checklist data
+
           const keysToRemove: string[] = [];
           for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            if (key?.startsWith('checklist-')) {
-              keysToRemove.push(key);
-            }
+            if (key?.startsWith('checklist-')) keysToRemove.push(key);
           }
-          keysToRemove.forEach(key => localStorage.removeItem(key));
-        } catch (e) {
-          console.error('Error clearing legacy data:', e);
+          keysToRemove.forEach((key) => localStorage.removeItem(key));
+        } catch (error) {
+          console.error('Error clearing legacy data:', error);
         }
-        
+
         window.dispatchEvent(new Event('module-progress-updated'));
         toast.success('All progress has been reset');
       },
@@ -436,272 +562,218 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       initializeStartDate: () => {
-        // This function should NOT auto-set a date
-        // The start date is ONLY set when the first module is marked as in-progress or complete
-        // This is already handled in markModuleComplete and markModuleInProgress
         const state = get();
-        
-        // Validate existing start date
         if (state.startDate) {
           const startDate = new Date(state.startDate);
-          const now = new Date();
-          
-          // If start date is invalid or in the future, clear it
-          if (isNaN(startDate.getTime()) || startDate > now) {
-            console.warn('[ProgressStore] Invalid start date detected, clearing');
+          if (isNaN(startDate.getTime()) || startDate > new Date()) {
             set({ startDate: null });
           }
         }
       },
 
-      addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => {
+      addActivity: (type, moduleId, moduleName) => {
         const now = new Date().toISOString();
-        const newActivity: Activity = {
-          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          type,
-          moduleId,
-          moduleName,
-          timestamp: now,
-        };
-        
         set((state) => ({
-          activities: [newActivity, ...state.activities].slice(0, 50),
-          // Also set start date if not already set (first activity = start)
+          activities: [newActivity(type, moduleId, moduleName, now), ...state.activities].slice(0, 50),
           startDate: state.startDate || now,
         }));
       },
 
-      clearActivities: () => {
-        set({ activities: [] });
-      },
+      clearActivities: () => set({ activities: [] }),
 
       validateAndRepairState: () => {
         const state = get();
         const errors: string[] = [];
         let repaired = false;
-        
-        const validModuleIds: string[] = Object.values(MODULE_CATEGORIES).flat();
-        const newModules = { ...state.modules };
-        
-        // Check for invalid module IDs
-        Object.keys(newModules).forEach(moduleId => {
-          if (!validModuleIds.includes(moduleId)) {
-            errors.push(`Invalid module ID: ${moduleId}`);
-            delete newModules[moduleId];
+
+        const checkedItems: Record<string, boolean> = {};
+        Object.entries(state.checkedItems).forEach(([key, value]) => {
+          if (value !== true) {
+            repaired = true;
+            return;
+          }
+          if (!isKnownItemKey(key)) {
+            errors.push(`Unknown checklist item: ${key}`);
+            repaired = true;
+            return;
+          }
+          checkedItems[key] = true;
+        });
+
+        const moduleMeta = { ...state.moduleMeta };
+        Object.keys(moduleMeta).forEach((moduleId) => {
+          if (!ALL_MODULE_IDS.includes(moduleId)) {
+            errors.push(`Unknown module: ${moduleId}`);
+            delete moduleMeta[moduleId];
             repaired = true;
           }
         });
-        
-        // Check for invalid statuses
-        Object.entries(newModules).forEach(([moduleId, module]) => {
-          if (!['not-started', 'in-progress', 'complete'].includes(module.status)) {
-            errors.push(`Invalid status for ${moduleId}: ${module.status}`);
-            newModules[moduleId] = { ...module, status: 'not-started' };
-            repaired = true;
-          }
-        });
-        
-        if (repaired) {
-          set({ modules: newModules });
-          console.warn('[ProgressStore] State repaired:', errors);
-        }
-        
+
+        if (repaired) set({ checkedItems, moduleMeta });
+
         return { valid: errors.length === 0, repaired, errors };
       },
 
-      getModuleStatus: (moduleId: string) => {
-        const canonicalId = STORAGE_KEY_TO_MODULE_ID[moduleId] || moduleId;
+      isItemChecked: (storageId, stepNumber, itemId) =>
+        get().checkedItems[makeItemKey(storageId, stepNumber, itemId)] === true,
+
+      getModuleStatus: (moduleId) => {
         const state = get();
-        return state.modules[canonicalId] || {
-          moduleId: canonicalId,
-          status: 'not-started',
-          checklistItems: {},
-        };
+        return deriveModuleProgress(moduleId, state.checkedItems, state.moduleMeta);
       },
 
-      getCategoryProgress: (category: keyof typeof MODULE_CATEGORIES) => {
+      getCategoryProgress: (category) => {
         const state = get();
-        const categoryModules = MODULE_CATEGORIES[category];
-        const total = categoryModules.length;
-
-        const completed = categoryModules.filter(
-          (moduleId) => state.modules[moduleId]?.status === 'complete'
-        ).length;
-        
-        const inProgress = categoryModules.filter(
-          (moduleId) => state.modules[moduleId]?.status === 'in-progress'
-        ).length;
-        
-        const notStarted = total - completed - inProgress;
-
-        return {
-          completed,
-          inProgress,
-          notStarted,
-          total,
-          percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
-        };
+        return deriveAggregate(MODULE_CATEGORIES[category] || [], state.checkedItems, state.moduleMeta);
       },
 
       getOverallProgress: () => {
         const state = get();
-        const allModules = Object.values(MODULE_CATEGORIES).flat();
-        
-        const completed = allModules.filter(
-          (moduleId) => state.modules[moduleId]?.status === 'complete'
-        ).length;
-        
-        const inProgress = allModules.filter(
-          (moduleId) => state.modules[moduleId]?.status === 'in-progress'
-        ).length;
-        
-        const notStarted = TOTAL_MODULES - completed - inProgress;
-
-        return {
-          completed,
-          inProgress,
-          notStarted,
-          total: TOTAL_MODULES,
-          percentage: Math.round((completed / TOTAL_MODULES) * 100),
-        };
+        return deriveAggregate(ALL_MODULE_IDS, state.checkedItems, state.moduleMeta);
       },
 
-      getCompletedModulesCount: () => {
-        const state = get();
-        return Object.values(state.modules).filter(
-          (module) => module.status === 'complete'
-        ).length;
-      },
+      getCheckedItemsCount: () => deriveCheckedItemsCount(get().checkedItems),
+
+      getCompletedModulesCount: () => get().getOverallProgress().completed,
 
       getInProgressModules: () => {
         const state = get();
-        return Object.values(state.modules).filter(
-          (module) => module.status === 'in-progress'
-        );
+        return ALL_MODULE_IDS.map((id) =>
+          deriveModuleProgress(id, state.checkedItems, state.moduleMeta)
+        ).filter((module) => module.status === 'in-progress');
       },
 
       getDaysSinceStart: () => {
         const state = get();
-        if (!state.startDate) return -1; // -1 indicates not started
-
+        if (!state.startDate) return -1;
         const start = new Date(state.startDate);
         const now = new Date();
-        // Reset time to midnight for accurate day calculation
         const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
         const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diffTime = nowMidnight.getTime() - startMidnight.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-        return Math.max(0, diffDays);
+        return Math.max(
+          0,
+          Math.floor((nowMidnight.getTime() - startMidnight.getTime()) / (1000 * 60 * 60 * 24))
+        );
       },
 
-      getStartDate: () => {
-        const state = get();
-        return state.startDate;
-      },
+      getStartDate: () => get().startDate,
 
       getFormattedStartDate: () => {
-        const state = get();
-        if (!state.startDate) return null;
-        
-        const date = new Date(state.startDate);
+        const { startDate } = get();
+        if (!startDate) return null;
+        const date = new Date(startDate);
         if (isNaN(date.getTime())) return null;
-        
-        // Format as DD/MM/YYYY (British format)
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        
-        return `${day}/${month}/${year}`;
+        return `${day}/${month}/${date.getFullYear()}`;
       },
 
-      getActivities: () => {
-        const state = get();
-        return state.activities;
-      },
+      getActivities: () => get().activities,
 
       getAverageDaysPerModule: () => {
         const state = get();
-        const completedCount = Object.values(state.modules).filter(
-          (m) => m.status === 'complete'
-        ).length;
-        
-        if (completedCount === 0 || !state.startDate) return 0;
-
-        const start = new Date(state.startDate);
-        const now = new Date();
-        const startMidnight = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-        const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diffDays = Math.max(1, Math.floor((nowMidnight.getTime() - startMidnight.getTime()) / (1000 * 60 * 60 * 24)));
-
-        return Math.round((diffDays / completedCount) * 10) / 10; // 1 decimal
+        const completed = state.getOverallProgress().completed;
+        if (completed === 0 || !state.startDate) return 0;
+        const days = Math.max(1, state.getDaysSinceStart());
+        return Math.round((days / completed) * 10) / 10;
       },
 
       getEstimatedCompletionDate: () => {
         const state = get();
-        const completedCount = Object.values(state.modules).filter(
-          (m) => m.status === 'complete'
-        ).length;
-        
-        if (completedCount === 0 || !state.startDate) return null;
-
-        const remainingModules = TOTAL_MODULES - completedCount;
-        if (remainingModules <= 0) return new Date(); // Already complete
-
-        const avgDays = get().getAverageDaysPerModule();
+        const completed = state.getOverallProgress().completed;
+        if (completed === 0 || !state.startDate) return null;
+        const remaining = TOTAL_MODULES - completed;
+        if (remaining <= 0) return new Date();
+        const avgDays = state.getAverageDaysPerModule();
         if (avgDays <= 0) return null;
-
-        const estimatedDaysRemaining = Math.ceil(remainingModules * avgDays);
-        const completionDate = new Date();
-        completionDate.setDate(completionDate.getDate() + estimatedDaysRemaining);
-
-        return completionDate;
+        const date = new Date();
+        date.setDate(date.getDate() + Math.ceil(remaining * avgDays));
+        return date;
       },
     }),
     {
-      name: 'consumer-duty-progress-v2',
-      version: 2,
+      name: STORAGE_KEY,
+      version: 3,
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        checkedItems: state.checkedItems,
+        moduleMeta: state.moduleMeta,
+        activities: state.activities,
+        startDate: state.startDate,
+        migratedLegacy: state.migratedLegacy,
+      }),
       onRehydrateStorage: () => (state) => {
-        // On first load, try to migrate data from old localStorage format
-        if (state) {
-          const migratedData = migrateOldData();
-          
-          // Only merge migrated data for modules not already in the store
-          // Never auto-complete modules - only user actions should mark complete
-          const merged = { ...state.modules };
-          
-          Object.keys(migratedData).forEach(key => {
-            // Only add from migrated data if not already present
-            if (!merged[key]) {
-              merged[key] = migratedData[key];
-            }
-          });
-          
-          state.modules = merged;
-          
-          // Log state for debugging in development
-          if (process.env.NODE_ENV === 'development') {
-            console.log('[ProgressStore] Rehydrated state:', {
-              totalModules: Object.keys(state.modules).length,
-              complete: Object.values(state.modules).filter(m => m.status === 'complete').length,
-              inProgress: Object.values(state.modules).filter(m => m.status === 'in-progress').length,
-            });
-          }
-        }
+        if (!state || state.migratedLegacy) return;
+
+        // One-off migration so existing progress is not lost
+        const legacy = migrateLegacyProgress();
+        state.checkedItems = { ...legacy.checkedItems, ...state.checkedItems };
+        state.moduleMeta = { ...legacy.moduleMeta, ...state.moduleMeta };
+        state.startDate = state.startDate || legacy.startDate;
+        state.activities = state.activities?.length ? state.activities : legacy.activities;
+        state.migratedLegacy = true;
       },
     }
   )
 );
 
-// Subscribe to store changes for debugging
-if (process.env.NODE_ENV === 'development') {
-  useProgressStore.subscribe((state, prevState) => {
-    const prevComplete = Object.values(prevState.modules).filter(m => m.status === 'complete').length;
-    const currComplete = Object.values(state.modules).filter(m => m.status === 'complete').length;
-    
-    if (prevComplete !== currComplete) {
-      console.log('[ProgressStore] Completed modules changed:', prevComplete, '→', currComplete);
-    }
-  });
+// ---------------------------------------------------------------------------
+// Reactive hooks - every view reads progress through these
+// ---------------------------------------------------------------------------
+
+export function useModuleProgress(moduleId: string): ModuleProgress {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  return deriveModuleProgress(moduleId, checkedItems, moduleMeta);
+}
+
+export function useOverallProgress(): AggregateProgress {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  return deriveAggregate(ALL_MODULE_IDS, checkedItems, moduleMeta);
+}
+
+export function useCategoryProgress(category: CategoryKey): AggregateProgress {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  return deriveAggregate(MODULE_CATEGORIES[category] || [], checkedItems, moduleMeta);
+}
+
+export function useCheckedItemsCount(): { checked: number; total: number; percentage: number } {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const checked = deriveCheckedItemsCount(checkedItems);
+  return {
+    checked,
+    total: TOTAL_CHECKLIST_ITEMS,
+    percentage: TOTAL_CHECKLIST_ITEMS > 0 ? Math.round((checked / TOTAL_CHECKLIST_ITEMS) * 100) : 0,
+  };
+}
+
+export { STORAGE_ID_TO_MODULE_ID, ALL_MODULE_IDS, getModuleDefinition, getModuleItemKeys };
+
+/**
+ * Derived map of every module's progress, keyed by canonical module id.
+ * Kept for views that need to look modules up by id - it is always derived,
+ * never stored.
+ */
+export function deriveModulesMap(
+  checkedItems: Record<string, boolean>,
+  moduleMeta: Record<string, ModuleMeta>
+): Record<string, ModuleProgress> {
+  const map: Record<string, ModuleProgress> = {};
+  for (const id of ALL_MODULE_IDS) {
+    map[id] = deriveModuleProgress(id, checkedItems, moduleMeta);
+  }
+  return map;
+}
+
+export function getModulesMap(): Record<string, ModuleProgress> {
+  const state = useProgressStore.getState();
+  return deriveModulesMap(state.checkedItems, state.moduleMeta);
+}
+
+export function useModulesMap(): Record<string, ModuleProgress> {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  return deriveModulesMap(checkedItems, moduleMeta);
 }

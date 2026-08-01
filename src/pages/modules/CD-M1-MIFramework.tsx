@@ -11,20 +11,15 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
-import { updateModuleStatus, addActivity } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
 
 export default function CDM1MIFramework() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<"not-started" | "in-progress" | "completed">(() => {
-    const stored = localStorage.getItem("module-cd-m1-status");
-    return (stored as "not-started" | "in-progress" | "completed") || "not-started";
-  });
+  const { status, setStatus } = useModuleStatusControls("cd-m1");
 
   const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
-    updateModuleStatus("cd-m1", newStatus);
-    addActivity("status_updated", "CD-M1: MI & Outcome Monitoring Framework");
     toast.success(`Module status updated to ${newStatus}`);
   };
 

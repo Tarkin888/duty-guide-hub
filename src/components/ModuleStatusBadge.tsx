@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Circle, Clock } from 'lucide-react';
-import { useProgressStore } from '@/stores/progressStore';
+import { useModuleProgress } from '@/stores/progressStore';
 import { cn } from '@/lib/utils';
 
 interface ModuleStatusBadgeProps {
@@ -9,8 +9,7 @@ interface ModuleStatusBadgeProps {
 }
 
 export function ModuleStatusBadge({ moduleId, className }: ModuleStatusBadgeProps) {
-  const { getModuleStatus } = useProgressStore();
-  const status = getModuleStatus(moduleId).status;
+  const status = useModuleProgress(moduleId).status;
 
   const variants = {
     'not-started': {

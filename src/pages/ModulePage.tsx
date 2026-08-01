@@ -5,7 +5,7 @@ import { ArrowLeft, FileDown, Printer, CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LucideIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getModuleStatus, updateModuleStatus, addActivity } from "@/lib/storage";
+import { useProgressStore, useModuleProgress, normalizeModuleId } from "@/stores/progressStore";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ModuleNotesSection } from "@/components/notes/ModuleNotesSection";
@@ -20,25 +20,20 @@ interface ModulePageProps {
 
 export default function ModulePage({ title, description, icon: Icon, moduleId, category }: ModulePageProps) {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<"not-started" | "in-progress" | "completed">("not-started");
-
-  useEffect(() => {
-    setStatus(getModuleStatus(moduleId));
-  }, [moduleId]);
+  const canonicalId = normalizeModuleId(moduleId);
+  const moduleProgress = useModuleProgress(canonicalId);
+  const status = moduleProgress.status === "complete" ? "completed" : moduleProgress.status;
+  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
+  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+  const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
 
   const handleStatusChange = (newStatus: string) => {
-    const validStatus = newStatus as "not-started" | "in-progress" | "completed";
-    const oldStatus = status;
-    setStatus(validStatus);
-    updateModuleStatus(moduleId, validStatus);
-    
-    // Track activity
-    if (validStatus === "completed" && oldStatus !== "completed") {
-      addActivity("module_completed", title);
-    } else if (validStatus === "in-progress" && oldStatus === "not-started") {
-      addActivity("module_started", title);
+    if (newStatus === "completed") {
+      markModuleComplete(canonicalId, false);
+    } else if (newStatus === "in-progress") {
+      markModuleInProgress(canonicalId, false);
     } else {
-      addActivity("status_updated", title);
+      resetModuleProgress(canonicalId, false);
     }
     
     toast.success("Module status updated", {
