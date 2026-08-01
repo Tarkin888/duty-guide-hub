@@ -1,252 +1,29 @@
 import { Template } from '@/data/templatesData';
 import { trackTemplateDownload } from '@/lib/moduleCompletionValidation';
 
-// Generate a sanitized filename from template name
-const sanitizeFilename = (name: string): string => {
-  return name
+// Generate a sanitised filename fragment from a template name
+const sanitiseFilename = (name: string): string =>
+  name
     .replace(/[^a-zA-Z0-9\s]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim();
-};
 
-// Generate file extension from file type
 const getExtension = (fileType: string): string => {
   const extensions: Record<string, string> = {
-    xlsx: '.xlsx',
-    docx: '.docx',
-    pptx: '.pptx',
-    pdf: '.pdf',
+    xlsx: 'xlsx',
+    docx: 'docx',
+    pptx: 'pptx',
+    pdf: 'pdf',
   };
-  return extensions[fileType] || '.txt';
+  return extensions[fileType] || 'txt';
 };
 
-// MIME types for different file formats
-const getMimeType = (fileType: string): string => {
-  const mimeTypes: Record<string, string> = {
-    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    pdf: 'application/pdf',
-  };
-  return mimeTypes[fileType] || 'application/octet-stream';
-};
+// Public download filename: [Module-Code]-[Template-Name]-v[n].[ext]
+export const getDownloadFilename = (template: Template): string =>
+  `${template.moduleReference}-${sanitiseFilename(template.name)}-v${template.version}.${getExtension(template.fileType)}`;
 
-// Generate Excel file content (simplified XML-based xlsx)
-const generateExcelContent = (template: Template): string => {
-  const rows = [
-    `CONSUMER DUTY IMPLEMENTATION PLAYBOOK`,
-    `${template.name}`,
-    ``,
-    `Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}`,
-    `Module Reference: ${template.moduleReference}`,
-    ``,
-    `DESCRIPTION`,
-    template.fullDescription,
-    ``,
-    `WHAT'S INCLUDED`,
-    ...template.whatIncluded.map((item, i) => `${i + 1}. ${item}`),
-    ``,
-    `HOW TO USE`,
-    template.howToUse,
-    ``,
-    `PREREQUISITES`,
-    template.prerequisites.length > 0 ? template.prerequisites.join(', ') : 'None',
-    ``,
-    `TARGET USERS`,
-    template.targetUsers.join(', '),
-    ``,
-    `---`,
-    `This is a template placeholder. In a production environment, this would contain`,
-    `the full Excel workbook with formatted sheets, formulas, and data validation.`,
-    ``,
-    `For implementation support, refer to the Consumer Duty Implementation Playbook.`,
-  ];
-  
-  return rows.join('\n');
-};
-
-// Generate Word document content
-const generateWordContent = (template: Template): string => {
-  return `
-CONSUMER DUTY IMPLEMENTATION PLAYBOOK
-=====================================
-
-${template.name}
-${'='.repeat(template.name.length)}
-
-Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-Module Reference: ${template.moduleReference}
-Last Updated: ${template.lastUpdated}
-
-DESCRIPTION
------------
-${template.fullDescription}
-
-WHAT'S INCLUDED
----------------
-${template.whatIncluded.map((item, i) => `${i + 1}. ${item}`).join('\n')}
-
-HOW TO USE
-----------
-${template.howToUse}
-
-PREREQUISITES
--------------
-${template.prerequisites.length > 0 ? template.prerequisites.join('\n') : 'None'}
-
-TARGET USERS
-------------
-${template.targetUsers.join(', ')}
-
-KEYWORDS
---------
-${template.keywords.join(', ')}
-
----
-
-[TEMPLATE CONTENT BEGINS HERE]
-
-This is a template placeholder document. In a production environment, 
-this would contain the fully formatted Word document with:
-
-• Professional styling and branding
-• Pre-formatted sections and tables
-• Guidance notes and instructions
-• Placeholder text for customisation
-• Version control information
-
-For implementation support, please refer to the Consumer Duty 
-Implementation Playbook modules.
-
----
-Consumer Duty Implementation Playbook
-© ${new Date().getFullYear()} All rights reserved
-`;
-};
-
-// Generate PowerPoint content
-const generatePowerPointContent = (template: Template): string => {
-  return `
-CONSUMER DUTY IMPLEMENTATION PLAYBOOK
-=====================================
-PRESENTATION TEMPLATE
-
-${template.name}
-
-Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-Module Reference: ${template.moduleReference}
-
----
-
-SLIDE 1: TITLE
-${template.name}
-Consumer Duty Implementation
-
----
-
-SLIDE 2: OVERVIEW
-${template.description}
-
----
-
-SLIDE 3: WHAT'S INCLUDED
-${template.whatIncluded.map((item, i) => `• ${item}`).join('\n')}
-
----
-
-SLIDE 4: HOW TO USE
-${template.howToUse}
-
----
-
-SLIDE 5: TARGET AUDIENCE
-${template.targetUsers.map(user => `• ${user}`).join('\n')}
-
----
-
-[ADDITIONAL SLIDES]
-
-This is a presentation template placeholder. In a production environment,
-this would contain the fully formatted PowerPoint presentation with:
-
-• Professional slide designs and branding
-• Charts and diagrams
-• Speaker notes
-• Editable content areas
-• Animation and transitions
-
----
-Consumer Duty Implementation Playbook
-`;
-};
-
-// Generate PDF content (text representation)
-const generatePDFContent = (template: Template): string => {
-  return `
-%PDF-1.4
-CONSUMER DUTY IMPLEMENTATION PLAYBOOK
-=====================================
-
-${template.name}
-
-Document Information
---------------------
-Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-Module Reference: ${template.moduleReference}
-File Type: PDF Document
-Complexity: ${template.complexity}
-
-Description
------------
-${template.fullDescription}
-
-Contents
---------
-${template.whatIncluded.map((item, i) => `${i + 1}. ${item}`).join('\n')}
-
-Usage Instructions
-------------------
-${template.howToUse}
-
-Target Users
-------------
-${template.targetUsers.join(', ')}
-
----
-
-This is a PDF template placeholder. In a production environment,
-this would contain the fully formatted PDF document with:
-
-• Professional layout and branding
-• Form fields where applicable
-• Bookmarks and navigation
-• Accessible formatting
-• Digital signature areas if required
-
----
-Consumer Duty Implementation Playbook
-© ${new Date().getFullYear()} All rights reserved
-`;
-};
-
-// Generate content based on file type
-const generateContent = (template: Template): string => {
-  switch (template.fileType) {
-    case 'xlsx':
-      return generateExcelContent(template);
-    case 'docx':
-      return generateWordContent(template);
-    case 'pptx':
-      return generatePowerPointContent(template);
-    case 'pdf':
-      return generatePDFContent(template);
-    default:
-      return generateWordContent(template);
-  }
-};
-
-// Convert module reference to storage key format
+// Convert module reference to storage key format used by progress tracking
 const getModuleStorageKey = (moduleRef: string): string => {
   const refMap: Record<string, string> = {
     'CD-F1': 'cd-f1-readiness',
@@ -270,41 +47,54 @@ const getModuleStorageKey = (moduleRef: string): string => {
     'CD-M3': 'cd-m3-board-reporting',
     'CD-M4': 'cd-m4-continuous-improvement',
   };
-  return refMap[moduleRef] || moduleRef.toLowerCase().replace(/-/g, '-');
+  return refMap[moduleRef] || moduleRef.toLowerCase();
 };
 
-// Main download function
-export const downloadTemplate = (template: Template, moduleId?: string): void => {
-  const filename = `${sanitizeFilename(template.name)}${getExtension(template.fileType)}`;
-  const content = generateContent(template);
-  const mimeType = getMimeType(template.fileType);
-  
-  // Track the download for module completion validation
-  const storageKey = moduleId || getModuleStorageKey(template.moduleReference);
-  trackTemplateDownload(storageKey, template.id);
-  
-  // Create blob and download
-  const blob = new Blob([content], { type: mimeType });
+export class TemplateDownloadError extends Error {}
+
+/**
+ * Fetch the real file from /public/templates and trigger a browser download.
+ * Throws TemplateDownloadError if the template is not available or the fetch fails,
+ * so callers can surface an error to the user. Never fails silently.
+ */
+export const downloadTemplate = async (template: Template, moduleId?: string): Promise<void> => {
+  if (template.fileStatus !== 'available') {
+    throw new TemplateDownloadError('This template is not yet available to download.');
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(template.filePath, { cache: 'no-store' });
+  } catch {
+    throw new TemplateDownloadError('The file could not be reached. Check your connection and try again.');
+  }
+
+  if (!response.ok) {
+    throw new TemplateDownloadError(`The file could not be retrieved (error ${response.status}).`);
+  }
+
+  const blob = await response.blob();
+  if (blob.size === 0) {
+    throw new TemplateDownloadError('The file appears to be empty.');
+  }
+
   const url = URL.createObjectURL(blob);
-  
   const link = document.createElement('a');
   link.href = url;
-  link.download = filename;
+  link.download = getDownloadFilename(template);
   link.style.display = 'none';
-  
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
-  // Clean up the URL object
   setTimeout(() => URL.revokeObjectURL(url), 100);
+
+  // Record the download only after it has genuinely succeeded
+  trackTemplateDownload(moduleId || getModuleStorageKey(template.moduleReference), template.id);
 };
 
-// Bulk download function for multiple templates
 export const downloadMultipleTemplates = async (templates: Template[]): Promise<void> => {
-  for (const template of templates) {
-    downloadTemplate(template);
-    // Small delay between downloads to prevent browser blocking
+  for (const template of templates.filter(t => t.fileStatus === 'available')) {
+    await downloadTemplate(template);
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 };

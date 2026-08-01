@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Search, Download, Eye, FileSpreadsheet, FileText, Presentation, File, X, ChevronDown, Filter, Star, Clock, TrendingUp } from "lucide-react";
+import { Search, Download, Eye, FileSpreadsheet, FileText, Presentation, File, X, ChevronDown, Filter, Star, Clock, CheckCircle2 } from "lucide-react";
 import { 
   templates, 
   Template, 
@@ -21,7 +21,7 @@ import {
   complexityColors,
   userRoles,
 } from "@/data/templatesData";
-import { downloadTemplate } from "@/utils/templateDownload";
+import { downloadTemplate, getDownloadFilename } from "@/utils/templateDownload";
 import { toast } from "@/hooks/use-toast";
 
 const fileTypeIcons: Record<FileType, React.ReactNode> = {
@@ -78,21 +78,23 @@ export default function TemplatesLibrary() {
     });
   }, [searchQuery, selectedCategories, selectedFileTypes, selectedComplexity, selectedRoles]);
 
-  const handleDownload = (template: Template) => {
+  const handleDownload = async (template: Template) => {
+    if (template.fileStatus !== 'available') return;
     try {
-      downloadTemplate(template);
+      await downloadTemplate(template);
       toast({
-        title: "Download Started",
-        description: `Downloading ${template.name}...`,
+        title: "Download started",
+        description: `${getDownloadFilename(template)} is downloading.`,
       });
     } catch (error) {
       toast({
-        title: "Download Failed",
-        description: "There was an error downloading the template. Please try again.",
+        title: "Download failed",
+        description: error instanceof Error ? error.message : "The template could not be downloaded. Please try again.",
         variant: "destructive",
       });
     }
   };
+
 
   const toggleFavorite = (id: string) => {
     setFavorites(prev => 
@@ -110,9 +112,10 @@ export default function TemplatesLibrary() {
 
   const activeFiltersCount = selectedCategories.length + selectedFileTypes.length + selectedRoles.length + (selectedComplexity ? 1 : 0);
 
-  const topDownloaded = useMemo(() => 
-    [...templates].sort((a, b) => b.downloadCount - a.downloadCount).slice(0, 5),
+  const availableTemplates = useMemo(
+    () => templates.filter(t => t.fileStatus === 'available'),
   []);
+
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -131,9 +134,14 @@ export default function TemplatesLibrary() {
               <span className="ml-2 text-primary-foreground/80">Templates</span>
             </div>
             <div className="bg-primary-foreground/10 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold">{availableTemplates.length}</span>
+              <span className="ml-2 text-primary-foreground/80">Files available now</span>
+            </div>
+            <div className="bg-primary-foreground/10 rounded-lg px-4 py-2">
               <span className="text-2xl font-bold">{Object.keys(categoryLabels).length}</span>
               <span className="ml-2 text-primary-foreground/80">Categories</span>
             </div>
+
             <div className="bg-primary-foreground/10 rounded-lg px-4 py-2 flex gap-2 items-center">
               <Badge variant="secondary" className="bg-success/20 text-success">Excel</Badge>
               <Badge variant="secondary" className="bg-info/20 text-info">Word</Badge>
@@ -287,24 +295,31 @@ export default function TemplatesLibrary() {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Top Downloaded */}
+            {/* Available now */}
             <div className="mt-8">
               <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" /> Most Popular
+                <CheckCircle2 className="h-4 w-4" /> Available to download
               </h3>
-              <div className="space-y-2">
-                {topDownloaded.map(t => (
-                  <button
-                    key={t.id}
-                    onClick={() => setSelectedTemplate(t)}
-                    className="w-full text-left text-sm p-2 rounded hover:bg-muted transition-colors"
-                  >
-                    <div className="font-medium truncate">{t.name}</div>
-                    <div className="text-muted-foreground text-xs">{t.downloadCount.toLocaleString()} downloads</div>
-                  </button>
-                ))}
-              </div>
+              {availableTemplates.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No template files are published yet. Every template is marked "Coming soon" until its file is available.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {availableTemplates.slice(0, 5).map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTemplate(t)}
+                      className="w-full text-left text-sm p-2 rounded hover:bg-muted transition-colors"
+                    >
+                      <div className="font-medium truncate">{t.name}</div>
+                      <div className="text-muted-foreground text-xs">{t.moduleReference} · {fileTypeLabels[t.fileType]}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
+
           </aside>
 
           {/* Main Content */}
@@ -347,21 +362,39 @@ export default function TemplatesLibrary() {
                         {complexityLabels[template.complexity]}
                       </Badge>
                       <Badge variant="outline">{template.moduleReference}</Badge>
+                      {template.fileStatus === 'coming-soon' && (
+                        <Badge variant="outline" className="bg-muted text-muted-foreground border-border">
+                          Coming soon
+                        </Badge>
+                      )}
                     </div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                      <span>{template.fileSize} KB</span>
+                      <span>{template.fileStatus === 'available' ? `${template.fileSize} KB` : 'File size to be confirmed'}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" /> {template.lastUpdated}
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" className="flex-1" onClick={() => handleDownload(template)}>
-                        <Download className="h-4 w-4 mr-1" /> Download
-                      </Button>
+                      {template.fileStatus === 'available' ? (
+                        <Button size="sm" className="flex-1" onClick={() => handleDownload(template)}>
+                          <Download className="h-4 w-4 mr-1" /> Download
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 cursor-not-allowed"
+                          disabled
+                          aria-label={`${template.name} — coming soon, not yet available to download`}
+                        >
+                          <Clock className="h-4 w-4 mr-1" /> Coming soon
+                        </Button>
+                      )}
                       <Button size="sm" variant="outline" onClick={() => setSelectedTemplate(template)}>
                         <Eye className="h-4 w-4" />
                       </Button>
                     </div>
+
                   </CardContent>
                 </Card>
               ))}
@@ -425,7 +458,9 @@ export default function TemplatesLibrary() {
                   </div>
                   <div>
                     <span className="text-muted-foreground">Size:</span>
-                    <span className="ml-2 font-medium">{selectedTemplate.fileSize} KB</span>
+                    <span className="ml-2 font-medium">
+                      {selectedTemplate.fileStatus === 'available' ? `${selectedTemplate.fileSize} KB` : 'To be confirmed'}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Complexity:</span>
@@ -434,6 +469,16 @@ export default function TemplatesLibrary() {
                   <div>
                     <span className="text-muted-foreground">Module:</span>
                     <span className="ml-2 font-medium">{selectedTemplate.moduleReference}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Last updated:</span>
+                    <span className="ml-2 font-medium">{selectedTemplate.lastUpdated}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Availability:</span>
+                    <span className="ml-2 font-medium">
+                      {selectedTemplate.fileStatus === 'available' ? 'Available to download' : 'Coming soon'}
+                    </span>
                   </div>
                   <div className="col-span-2">
                     <span className="text-muted-foreground">Target Users:</span>
@@ -444,9 +489,16 @@ export default function TemplatesLibrary() {
             )}
           </ScrollArea>
           <div className="flex gap-3 pt-4 border-t">
-            <Button className="flex-1" onClick={() => selectedTemplate && handleDownload(selectedTemplate)}>
-              <Download className="h-4 w-4 mr-2" /> Download Template
-            </Button>
+            {selectedTemplate?.fileStatus === 'available' ? (
+              <Button className="flex-1" onClick={() => handleDownload(selectedTemplate)}>
+                <Download className="h-4 w-4 mr-2" /> Download Template
+              </Button>
+            ) : (
+              <Button className="flex-1 cursor-not-allowed" variant="outline" disabled>
+                <Clock className="h-4 w-4 mr-2" /> Coming soon
+              </Button>
+            )}
+
             <Button variant="outline" onClick={() => toggleFavorite(selectedTemplate?.id || '')}>
               <Star className={`h-4 w-4 mr-2 ${selectedTemplate && favorites.includes(selectedTemplate.id) ? 'fill-warning text-warning' : ''}`} />
               {selectedTemplate && favorites.includes(selectedTemplate.id) ? 'Favorited' : 'Add to Favorites'}
