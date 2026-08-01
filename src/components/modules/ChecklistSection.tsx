@@ -148,134 +148,44 @@ export function ChecklistSection({
   templateLink,
   onProgressChange
 }: ChecklistSectionProps) {
-  const storageKey = `checklist-${moduleId}-step${stepNumber}`;
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [isOpen, setIsOpen] = useState(true);
-  
-  // Get Zustand store functions for state management
-  const addActivity = useProgressStore((state) => state.addActivity);
-  const updateChecklistItem = useProgressStore((state) => state.updateChecklistItem);
-  const storeStartDate = useProgressStore((state) => state.startDate);
 
-  // Initialize localStorage with all items on mount (ensures total count is accurate)
-  // CRITICAL: This must initialize ALL items (checked=false) to ensure totalCount is accurate
+  // Single source of truth: the progress store keyed by the static registry
+  const checkedItemsMap = useProgressStore((state) => state.checkedItems);
+  const setChecklistItem = useProgressStore((state) => state.setChecklistItem);
+  const setStepItems = useProgressStore((state) => state.setStepItems);
+
+  const checkedItems = useMemo(() => {
+    const result: Record<string, boolean> = {};
+    items.forEach((item) => {
+      result[item.id] = checkedItemsMap[makeItemKey(moduleId, stepNumber, item.id)] === true;
+    });
+    return result;
+  }, [checkedItemsMap, items, moduleId, stepNumber]);
+
+  const completedCount = Object.values(checkedItems).filter(Boolean).length;
+
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(storageKey);
-      
-      // Build the correct state from items array (single source of truth for item count)
-      const updated: Record<string, boolean> = {};
-      items.forEach(item => {
-        // Preserve existing checked state if available, otherwise default to false
-        const existingData = stored ? JSON.parse(stored) : {};
-        updated[item.id] = existingData[item.id] === true; // Explicit boolean check
-      });
-      
-      setCheckedItems(updated);
-      
-      // Always save to ensure localStorage has correct item count
-      // This fixes off-by-one errors when items are added/removed
-      localStorage.setItem(storageKey, JSON.stringify(updated));
-      
-      // Dispatch event with accurate counts for ModuleChecklistProgress to pick up
-      const completedCount = Object.values(updated).filter(Boolean).length;
-      window.dispatchEvent(new CustomEvent('checklist-item-changed', {
-        detail: { 
-          moduleId, 
-          stepNumber, 
-          initialized: true,
-          completedCount,
-          totalCount: items.length 
-        }
-      }));
-    } catch (error) {
-      console.error("Error loading checklist state:", error);
-      // Fallback: initialize with all items unchecked
-      const fallbackState: Record<string, boolean> = {};
-      items.forEach(item => {
-        fallbackState[item.id] = false;
-      });
-      setCheckedItems(fallbackState);
-    }
-  }, [storageKey, moduleId, stepNumber, items]);
-
-  // Debounced save to localStorage
-  const saveToStorage = useCallback((data: Record<string, boolean>) => {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(data));
-    } catch (error) {
-      console.error("Error saving checklist state:", error);
-      toast({
-        title: "Warning",
-        description: "Unable to save progress. Storage may be full.",
-        variant: "destructive",
-      });
-    }
-  }, [storageKey]);
+    onProgressChange?.(completedCount, items.length);
+  }, [completedCount, items.length, onProgressChange]);
 
   const handleCheck = useCallback((itemId: string, checked: boolean) => {
-    setCheckedItems(prev => {
-      const updated = { ...prev, [itemId]: checked };
-      saveToStorage(updated);
-      
-      // Calculate progress
-      const completedCount = Object.values(updated).filter(Boolean).length;
-      
-      onProgressChange?.(completedCount, items.length);
-      
-      // Get the canonical module ID for proper activity logging
-      const canonicalId = getCanonicalModuleId(moduleId);
-      const moduleName = getLocalModuleDisplayName(moduleId);
-      
-      // Update the Zustand store - this handles state transitions automatically
-      // The store will upgrade to in-progress if not-started, and revert from complete if unchecking
-      updateChecklistItem(moduleId, itemId, checked);
-      
-      // Log activity when checking (not unchecking)
-      if (checked) {
-        addActivity('checklist_updated', canonicalId, moduleName);
-      }
-      
-      // Dispatch event for module-level tracking
-      window.dispatchEvent(new CustomEvent('checklist-item-changed', {
-        detail: { moduleId, stepNumber, itemId, checked, completedCount, totalCount: items.length }
-      }));
-      
-      return updated;
-    });
-  }, [saveToStorage, items.length, onProgressChange, moduleId, stepNumber, addActivity, updateChecklistItem]);
-
+    setChecklistItem(moduleId, stepNumber, itemId, checked);
+  }, [setChecklistItem, moduleId, stepNumber]);
 
   const handleResetStep = useCallback(() => {
-    // Reset all items to unchecked (NOT empty - preserve total count)
-    const resetState: Record<string, boolean> = {};
-    items.forEach(item => {
-      resetState[item.id] = false;
+    setStepItems(moduleId, stepNumber, false);
+    toast({
+      title: "Step reset",
+      description: `All items in Step ${stepNumber} have been reset.`,
     });
-    setCheckedItems(resetState);
-    
-    try {
-      // Save the reset state to localStorage (keeps total count accurate)
-      localStorage.setItem(storageKey, JSON.stringify(resetState));
-      onProgressChange?.(0, items.length);
-      window.dispatchEvent(new CustomEvent('checklist-item-changed', {
-        detail: { moduleId, stepNumber, itemId: null, checked: false, completedCount: 0, totalCount: items.length }
-      }));
-      toast({
-        title: "Step Reset",
-        description: `All items in Step ${stepNumber} have been reset.`,
-      });
-    } catch (error) {
-      console.error("Error resetting step:", error);
-    }
-  }, [storageKey, items, onProgressChange, moduleId, stepNumber]);
+  }, [setStepItems, moduleId, stepNumber]);
 
-  // Use items.length as single source of truth for total (not checkedItems keys)
+  // Denominator comes from the fixed item list for this step
   const totalCount = items.length;
-  const completedCount = Object.values(checkedItems).filter(Boolean).length;
-  // Calculate percentage with proper rounding: Math.round((X / Y) * 100)
   const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const isComplete = completedCount === totalCount && totalCount > 0;
+
 
   // Determine progress bar color
   const getProgressColor = () => {
