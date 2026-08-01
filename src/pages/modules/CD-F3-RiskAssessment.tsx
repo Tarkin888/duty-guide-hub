@@ -22,7 +22,7 @@ const STORAGE_KEY = "cd-f3-risk-assessment";
 export default function CDRiskAssessment() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
-  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  const { status, setStatus } = useModuleStatusControls(STORAGE_KEY);
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 

@@ -21,7 +21,7 @@ const STORAGE_KEY = "cd-i3-consumer-understanding";
 const CDI3ConsumerUnderstanding = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [status, setStatus] = useState(() => getModuleStatus(STORAGE_KEY));
+  const { status, setStatus } = useModuleStatusControls(STORAGE_KEY);
 
   const handleDownload = (templateName: string) => {
     toast({

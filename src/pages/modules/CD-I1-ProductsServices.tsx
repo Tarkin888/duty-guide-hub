@@ -17,7 +17,7 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_I1_TEMPLATES } from "@/data/cdI1Templates";
 import { toast } from "@/hooks/use-toast";
-import { useProgressStore } from "@/stores/progressStore";
+import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 
 const MODULE_ID = "cd-i1-products-services";
 
@@ -27,8 +27,8 @@ export default function CDI1ProductsServices() {
   const [previewOpen, setPreviewOpen] = useState(false);
   
   // Use Zustand store for module status
-  const { getModuleStatus, markModuleComplete, updateLastAccessed } = useProgressStore();
-  const moduleStatus = getModuleStatus(MODULE_ID);
+  const { markModuleComplete, updateLastAccessed } = useProgressStore();
+  const moduleStatus = useModuleProgress(MODULE_ID);
   const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
 
   // Update last accessed on mount

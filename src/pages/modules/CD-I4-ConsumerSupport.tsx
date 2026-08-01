@@ -12,7 +12,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
-import { useProgressStore } from "@/stores/progressStore";
+import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 import { toast as sonnerToast } from "sonner";
 
 const MODULE_ID = "cd-i4-consumer-support";
@@ -23,8 +23,8 @@ export default function CDI4ConsumerSupport() {
   const [activeTab, setActiveTab] = useState("overview");
   
   // Use Zustand store for module status
-  const { getModuleStatus, markModuleComplete, markModuleInProgress, updateLastAccessed } = useProgressStore();
-  const moduleStatus = getModuleStatus(MODULE_ID);
+  const { markModuleComplete, markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const moduleStatus = useModuleProgress(MODULE_ID);
   const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
 
   // Update last accessed on mount
