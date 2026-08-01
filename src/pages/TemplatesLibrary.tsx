@@ -78,21 +78,23 @@ export default function TemplatesLibrary() {
     });
   }, [searchQuery, selectedCategories, selectedFileTypes, selectedComplexity, selectedRoles]);
 
-  const handleDownload = (template: Template) => {
+  const handleDownload = async (template: Template) => {
+    if (template.fileStatus !== 'available') return;
     try {
-      downloadTemplate(template);
+      await downloadTemplate(template);
       toast({
-        title: "Download Started",
-        description: `Downloading ${template.name}...`,
+        title: "Download started",
+        description: `${getDownloadFilename(template)} is downloading.`,
       });
     } catch (error) {
       toast({
-        title: "Download Failed",
-        description: "There was an error downloading the template. Please try again.",
+        title: "Download failed",
+        description: error instanceof Error ? error.message : "The template could not be downloaded. Please try again.",
         variant: "destructive",
       });
     }
   };
+
 
   const toggleFavorite = (id: string) => {
     setFavorites(prev => 
