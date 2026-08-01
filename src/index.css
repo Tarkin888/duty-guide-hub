@@ -211,3 +211,177 @@ html, body {
   overflow-x: hidden;
   max-width: 100vw;
 }
+
+/* ------------------------------------------------------------------
+   Print styles (A4) — used by every "Print Module" button
+   ------------------------------------------------------------------ */
+
+/* Print header / footer furniture: hidden on screen, shown on paper */
+.print-furniture {
+  display: none;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 18mm 14mm 18mm 14mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    overflow: visible !important;
+    max-width: none !important;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #111827;
+  }
+
+  /* Layout: drop the app chrome so content uses the full page width */
+  [data-sidebar],
+  [data-sidebar="sidebar"],
+  aside,
+  .group\/sidebar-wrapper > [data-sidebar],
+  header.sticky,
+  nav,
+  [role="tablist"],
+  [data-sonner-toaster],
+  [role="status"],
+  [data-radix-popper-content-wrapper] {
+    display: none !important;
+  }
+
+  main,
+  main > *,
+  .flex-1 {
+    overflow: visible !important;
+  }
+
+  body * {
+    box-shadow: none !important;
+  }
+
+  /* Action buttons never print; keep disclosure triggers (accordions) visible */
+  button:not([aria-expanded]),
+  a[role="button"],
+  [data-print-hidden] {
+    display: none !important;
+  }
+
+  button[aria-expanded] {
+    color: inherit !important;
+  }
+
+  /* Expand every tab panel so all six tabs print in full */
+  [role="tabpanel"] {
+    display: block !important;
+    visibility: visible !important;
+    animation: none !important;
+  }
+
+  [role="tabpanel"][hidden] {
+    display: block !important;
+  }
+
+  .print-tab-panel {
+    break-before: page;
+    page-break-before: always;
+    margin-top: 0 !important;
+  }
+
+  .print-tab-panel:first-of-type {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  /* Typography for A4 */
+  h1 {
+    font-size: 20pt;
+    margin: 0 0 6pt;
+  }
+  h2 {
+    font-size: 15pt;
+    margin: 12pt 0 4pt;
+  }
+  h3 {
+    font-size: 12.5pt;
+    margin: 10pt 0 3pt;
+  }
+  p,
+  li {
+    font-size: 10.5pt;
+    orphans: 3;
+    widows: 3;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  table,
+  figure,
+  li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Cards read as flat blocks on paper */
+  .rounded-lg,
+  .rounded-xl,
+  .border {
+    border-color: #d1d5db !important;
+    background: #fff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: "";
+  }
+
+  /* Running header and footer */
+  .print-furniture {
+    display: flex !important;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8mm;
+    width: 100%;
+    font-size: 9pt;
+    color: #1e3a8a;
+  }
+
+  .print-furniture--header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: 2mm;
+    border-bottom: 1pt solid #f59e0b;
+  }
+
+  .print-furniture--footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 2mm;
+    border-top: 1pt solid #d1d5db;
+    color: #4b5563;
+  }
+
+  .print-furniture__title {
+    font-weight: 700;
+  }
+
+  .print-furniture__page::after {
+    content: "Page " counter(page);
+  }
+
+  #root {
+    padding-top: 6mm;
+  }
+}
