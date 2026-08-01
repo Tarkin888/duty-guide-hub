@@ -144,6 +144,7 @@ const App = () => (
 
                               {/* Ongoing Compliance */}
                               <Route path="/ongoing/fair-value" element={<OC3FairValueAssessment />} />
+                              <Route path="/ongoing/outcomes-testing" element={<OC4OutcomesTesting />} />
 
                               {/* Monitoring & Assurance */}
                               <Route path="/monitoring/mi-monitoring" element={<CDM1MIFramework />} />
