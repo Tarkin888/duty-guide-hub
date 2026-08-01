@@ -53,7 +53,7 @@ export function CircularProgress({
       <svg 
         width={responsiveSize} 
         height={responsiveSize} 
-        className="transform -rotate-90 w-28 h-28 sm:w-40 sm:h-40"
+        className="transform -rotate-90 w-24 h-24 md:w-40 md:h-40"
         viewBox={`0 0 ${responsiveSize} ${responsiveSize}`}
       >
         {/* Background circle */}
@@ -88,12 +88,12 @@ export function CircularProgress({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={cn(
-          "text-2xl sm:text-4xl font-bold transition-colors duration-500",
+          "text-2xl md:text-4xl font-bold transition-colors duration-500",
           animatedValue === 100 ? "text-success" : "text-foreground"
         )}>
           {animatedValue}%
         </span>
-        <span className="text-xs sm:text-sm text-muted-foreground">Complete</span>
+        <span className="text-xs md:text-sm text-muted-foreground">Complete</span>
       </div>
     </div>
   );
