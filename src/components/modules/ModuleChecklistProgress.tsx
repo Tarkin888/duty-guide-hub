@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -15,149 +15,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useProgressStore } from "@/stores/progressStore";
-import { ModuleStatus, getModuleChecklistProgress } from "@/lib/progressUtils";
-
-interface StepProgress {
-  stepNumber: number;
-  completed: number;
-  total: number;
-}
+import { useModuleChecklistProgress } from "@/lib/progressUtils";
 
 interface ModuleChecklistProgressProps {
   moduleId: string;
-  totalSteps: number;
+  /** Retained for backwards compatibility; totals come from the module registry */
+  totalSteps?: number;
 }
 
-export function ModuleChecklistProgress({ 
-  moduleId, 
-  totalSteps,
-}: ModuleChecklistProgressProps) {
-  const [stepProgress, setStepProgress] = useState<StepProgress[]>([]);
-  
-  // Use Zustand store with individual selectors to prevent unnecessary re-renders
-  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
+/**
+ * Overall progress for a module. Both the numerator and the denominator come
+ * from the single progress store and the static module registry, so the numbers
+ * are identical here, on the dashboard and in every badge.
+ */
+export function ModuleChecklistProgress({ moduleId }: ModuleChecklistProgressProps) {
   const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
-  const getModuleStatus = useProgressStore((state) => state.getModuleStatus);
-  const moduleStatus = getModuleStatus(moduleId);
-
-  /**
-   * Calculate totals from localStorage
-   * IMPORTANT: Only counts items that have been initialized (exist in localStorage)
-   * The ChecklistSection component is responsible for initializing all items on mount
-   */
-  const calculateTotals = useCallback(() => {
-    const steps: StepProgress[] = [];
-    
-    for (let i = 1; i <= totalSteps; i++) {
-      const storageKey = `checklist-${moduleId}-step${i}`;
-      try {
-        const stored = localStorage.getItem(storageKey);
-        if (stored) {
-          const data = JSON.parse(stored);
-          // Validate data structure
-          if (typeof data === 'object' && data !== null) {
-            const entries = Object.entries(data);
-            // Only count boolean values (filter out any corrupted data)
-            const validEntries = entries.filter(([, value]) => typeof value === 'boolean');
-            const completedCount = validEntries.filter(([, checked]) => checked === true).length;
-            const totalCount = validEntries.length;
-            
-            if (totalCount > 0) {
-              steps.push({ stepNumber: i, completed: completedCount, total: totalCount });
-            }
-          }
-        }
-      } catch (error) {
-        console.error(`Error reading step ${i} progress:`, error);
-      }
-    }
-    
-    return steps;
-  }, [moduleId, totalSteps]);
-
-  const loadProgress = useCallback(() => {
-    const steps = calculateTotals();
-    setStepProgress(steps);
-    
-    // Calculate overall progress from checklist items
-    const totalCompleted = steps.reduce((sum, s) => sum + s.completed, 0);
-    const totalItems = steps.reduce((sum, s) => sum + s.total, 0);
-    
-    // State transition logic:
-    // 1. If no items checked and module is complete or in-progress → should revert to in-progress (store handles this)
-    // 2. If some items checked but was not-started → upgrade to in-progress
-    // 3. If was complete but items unchecked (not all complete) → revert to in-progress
-    
-    if (totalItems > 0) {
-      if (totalCompleted === 0 && moduleStatus.status !== ModuleStatus.NOT_STARTED) {
-        // All items unchecked - this will be handled by the ChecklistSection component
-        // which calls updateChecklistItem on the store
-      } else if (totalCompleted > 0 && moduleStatus.status === ModuleStatus.NOT_STARTED) {
-        // Some items checked, upgrade to in-progress
-        markModuleInProgress(moduleId, false);
-      } else if (moduleStatus.status === ModuleStatus.COMPLETE && totalCompleted < totalItems) {
-        // Was complete but not all items checked anymore - revert to in-progress
-        markModuleInProgress(moduleId, false);
-      }
-    }
-  }, [calculateTotals, moduleId, moduleStatus.status, markModuleInProgress]);
-
-  useEffect(() => {
-    loadProgress();
-
-    // Listen for checklist changes
-    const handleChecklistChange = () => {
-      loadProgress();
-    };
-
-    window.addEventListener('checklist-item-changed', handleChecklistChange);
-    window.addEventListener('checklist-reset', handleChecklistChange);
-    window.addEventListener('storage', handleChecklistChange);
-
-    return () => {
-      window.removeEventListener('checklist-item-changed', handleChecklistChange);
-      window.removeEventListener('checklist-reset', handleChecklistChange);
-      window.removeEventListener('storage', handleChecklistChange);
-    };
-  }, [loadProgress]);
+  const { completedItems, totalItems, percentage, isComplete } = useModuleChecklistProgress(moduleId);
 
   const handleResetAll = useCallback(() => {
-    // Clear all step data for this module
-    for (let i = 1; i <= totalSteps; i++) {
-      const storageKey = `checklist-${moduleId}-step${i}`;
-      try {
-        localStorage.removeItem(storageKey);
-      } catch (error) {
-        console.error(`Error clearing step ${i}:`, error);
-      }
-    }
-    
-    // Reset module status to not-started via Zustand store
-    resetModuleProgress(moduleId, false);
-    
-    // Reload progress
-    setStepProgress([]);
-    
-    // Dispatch event for UI updates
-    window.dispatchEvent(new CustomEvent('checklist-reset', { detail: { moduleId } }));
-    
-    toast.success("Progress Reset", {
-      description: "All checklist progress for this module has been reset to Not Started.",
-    });
-  }, [moduleId, totalSteps, resetModuleProgress]);
+    resetModuleProgress(moduleId);
+  }, [moduleId, resetModuleProgress]);
 
-  // Aggregate totals from all steps (single source of truth from localStorage)
-  const totalCompleted = stepProgress.reduce((sum, s) => sum + s.completed, 0);
-  const totalItems = stepProgress.reduce((sum, s) => sum + s.total, 0);
-  // Calculate percentage using consistent formula: Math.round((X / Y) * 100)
-  const overallProgress = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
-  // Module is complete when ALL items are checked
-  const isComplete = totalCompleted === totalItems && totalItems > 0;
-
-  // Don't render if no items tracked yet
   if (totalItems === 0) {
     return null;
   }
@@ -182,20 +62,20 @@ export function ModuleChecklistProgress({
             </div>
             <div className="flex items-center gap-4">
               <Progress 
-                value={overallProgress} 
+                value={percentage} 
                 className="h-3 flex-1 max-w-md"
-                aria-label={`Module progress: ${overallProgress}%`}
+                aria-label={`Module progress: ${percentage}%`}
               />
               <span className={cn(
                 "text-sm font-semibold min-w-[80px]",
                 isComplete ? "text-accent" : "text-foreground"
               )}>
-                {totalCompleted} of {totalItems} ({overallProgress}%)
+                {completedItems} of {totalItems} ({percentage}%)
               </span>
             </div>
           </div>
 
-          {totalCompleted > 0 && (
+          {completedItems > 0 && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" size="sm" className="text-muted-foreground hover:text-destructive">
