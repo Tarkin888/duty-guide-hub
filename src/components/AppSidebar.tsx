@@ -43,7 +43,20 @@ type NavigationEntry = NavigationItem | NavigationGroup;
 const navigationItems: (NavigationEntry | { title: string; url: string; icon: LucideIcon; group: null })[] = [
   { title: "Dashboard", url: "/", icon: Home, group: null },
   {
-    title: "Foundation Modules",
+    title: "Ongoing Compliance",
+    group: true,
+    icon: RefreshCw,
+    items: [
+      { title: "Monitor Outcomes (MI)", url: "/monitoring/mi-monitoring", icon: BarChart3 },
+      { title: "Evidence Management", url: "/cross-cutting/data-evidence", icon: Database },
+      { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube },
+      { title: "Board Report & Attestation", url: "/monitoring/board-reporting", icon: PresentationIcon },
+      { title: "Continuous Improvement", url: "/monitoring/continuous-improvement", icon: TrendingUp },
+      { title: "Maturity Assessment", url: "/maturity-assessment", icon: Compass },
+    ],
+  },
+  {
+    title: "Knowledge Base: Foundation",
     group: true,
     icon: Building2,
     items: [
