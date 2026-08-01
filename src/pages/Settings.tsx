@@ -51,7 +51,7 @@ export default function Settings() {
         <CardHeader>
           <CardTitle className="text-xl">Your progress</CardTitle>
           <CardDescription>
-            {overall.completedModules} of {TOTAL_MODULES} modules complete ({overall.percentage}%).
+            {overall.completed} of {TOTAL_MODULES} modules complete ({overall.percentage}%).
           </CardDescription>
         </CardHeader>
         <CardContent>
