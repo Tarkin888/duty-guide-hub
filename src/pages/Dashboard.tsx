@@ -29,7 +29,8 @@ import {
   RotateCcw,
   HelpCircle,
   RefreshCw,
-  ClipboardCheck
+  ClipboardCheck,
+  Settings
 } from "lucide-react";
 import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
 import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
