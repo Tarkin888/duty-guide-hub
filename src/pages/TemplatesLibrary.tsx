@@ -134,9 +134,14 @@ export default function TemplatesLibrary() {
               <span className="ml-2 text-primary-foreground/80">Templates</span>
             </div>
             <div className="bg-primary-foreground/10 rounded-lg px-4 py-2">
+              <span className="text-2xl font-bold">{availableTemplates.length}</span>
+              <span className="ml-2 text-primary-foreground/80">Files available now</span>
+            </div>
+            <div className="bg-primary-foreground/10 rounded-lg px-4 py-2">
               <span className="text-2xl font-bold">{Object.keys(categoryLabels).length}</span>
               <span className="ml-2 text-primary-foreground/80">Categories</span>
             </div>
+
             <div className="bg-primary-foreground/10 rounded-lg px-4 py-2 flex gap-2 items-center">
               <Badge variant="secondary" className="bg-success/20 text-success">Excel</Badge>
               <Badge variant="secondary" className="bg-info/20 text-info">Word</Badge>
