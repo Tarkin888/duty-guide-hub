@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { X, Send, Loader2, MessageCircle, Bot, User } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { sendChatMessage } from '@/utils/chatbotApi';
@@ -33,6 +34,23 @@ function getCurrentContext(pathname: string): string | undefined {
   return undefined;
 }
 
+// Strict allow-list for rendering AI-generated content
+const chatbotSanitizeConfig = {
+  ALLOWED_TAGS: ['strong', 'em', 'code', 'br'],
+  ALLOWED_ATTR: ['class'],
+  ALLOW_DATA_ATTR: false,
+};
+
+// Escape any HTML present in the model output before applying markdown formatting
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Format message content with basic markdown-like parsing
 function formatMessageContent(content: string): React.ReactNode {
   // Split by double newlines for paragraphs
@@ -55,16 +73,18 @@ function formatMessageContent(content: string): React.ReactNode {
       );
     }
     
-    // Regular paragraph with inline formatting
-    const formattedText = paragraph
+    // Regular paragraph with inline formatting (HTML escaped first, then sanitised)
+    const formattedText = escapeHtml(paragraph)
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/`(.*?)`/g, '<code class="bg-muted px-1 rounded text-xs">$1</code>');
-    
+
+    const safeHtml = DOMPurify.sanitize(formattedText, chatbotSanitizeConfig);
+
     return (
       <p 
         key={pIndex} 
         className="mb-2 last:mb-0"
-        dangerouslySetInnerHTML={{ __html: formattedText }}
+        dangerouslySetInnerHTML={{ __html: safeHtml }}
       />
     );
   });

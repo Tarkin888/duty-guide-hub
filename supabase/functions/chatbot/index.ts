@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -136,11 +137,20 @@ const RATE_LIMIT_WINDOW_MS = 60000;
 
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-function getClientId(req: Request): string {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-         req.headers.get('x-real-ip') ||
-         req.headers.get('cf-connecting-ip') ||
-         'unknown';
+// Authenticate the caller and return their user id (used as the rate-limit key)
+async function getAuthenticatedUserId(req: Request): Promise<string | null> {
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) return null;
+
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    { global: { headers: { Authorization: authHeader } } }
+  );
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return null;
+  return data.user.id;
 }
 
 function checkRateLimit(clientId: string): { allowed: boolean; remaining: number; resetIn: number } {
@@ -221,11 +231,18 @@ serve(async (req) => {
   }
 
   try {
-    const clientId = getClientId(req);
+    const clientId = await getAuthenticatedUserId(req);
+    if (!clientId) {
+      return new Response(JSON.stringify({ error: 'Authentication required.' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const rateLimit = checkRateLimit(clientId);
     
     if (!rateLimit.allowed) {
-      console.log('Rate limit exceeded for client:', clientId);
+      console.log('Rate limit exceeded for user');
       return new Response(JSON.stringify({ 
         error: 'Rate limit exceeded. Please wait a moment and try again.',
         retryAfter: Math.ceil(rateLimit.resetIn / 1000)
