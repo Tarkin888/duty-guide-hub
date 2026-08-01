@@ -262,10 +262,19 @@ html, body {
   }
 
   /* Action buttons never print; keep disclosure triggers (accordions) visible */
-  button:not([aria-expanded]),
+  button:not([aria-expanded]):not([role="checkbox"]):not([role="radio"]),
   a[role="button"],
   [data-print-hidden] {
     display: none !important;
+  }
+
+  /* Checklist state must survive on paper */
+  [role="checkbox"] {
+    display: inline-flex !important;
+    border: 1pt solid #4b5563 !important;
+    color: #1e3a8a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   button[aria-expanded] {
