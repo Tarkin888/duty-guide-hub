@@ -652,116 +652,28 @@ const RegulatoryReferences = () => {
           </div>
         ) : (
           <div className="space-y-10">
-            {/* Primary Sources */}
-            {primarySources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Scale className="h-6 w-6 text-primary" />
-                  Primary Consumer Duty Sources
-                </h2>
-                <p className="text-muted-foreground mb-4">Essential FCA guidance and rules that form the foundation of Consumer Duty</p>
-                <div className="space-y-4">
-                  {primarySources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Other Policy Sources */}
-            {otherPolicySources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <FileText className="h-6 w-6 text-primary" />
-                  Additional Policy & Guidance
-                </h2>
-                <div className="space-y-4">
-                  {otherPolicySources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Multi-firm Reviews */}
-            {multiFilmReviews.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Target className="h-6 w-6 text-primary" />
-                  Supervisory Feedback & Reviews
-                </h2>
-                <p className="text-muted-foreground mb-4">FCA findings from sector-wide reviews highlighting good practice and areas for improvement</p>
-                <div className="space-y-4">
-                  {multiFilmReviews.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Speeches */}
-            {speeches.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <MessageSquare className="h-6 w-6 text-primary" />
-                  FCA Speeches & Publications
-                </h2>
-                <p className="text-muted-foreground mb-4">Key speeches from FCA leadership on Consumer Duty expectations</p>
-                <div className="space-y-4">
-                  {speeches.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Dear CEO Letters */}
-            {dearCeoLetters.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Mail className="h-6 w-6 text-primary" />
-                  Dear CEO Letters
-                </h2>
-                <p className="text-muted-foreground mb-4">Direct communications to firm leadership on regulatory expectations</p>
-                <div className="space-y-4">
-                  {dearCeoLetters.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Enforcement Actions */}
-            {enforcementActions.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Gavel className="h-6 w-6 text-red-600" />
-                  Enforcement Actions
-                </h2>
-                <p className="text-muted-foreground mb-4">Regulatory enforcement cases with lessons learned for compliance</p>
-                <div className="space-y-4">
-                  {enforcementActions.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Industry Guidance */}
-            {industryGuidance.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Building2 className="h-6 w-6 text-primary" />
-                  Industry Guidance & Resources
-                </h2>
-                <p className="text-muted-foreground mb-4">Sector-specific guidance from trade bodies (supplementary to FCA requirements)</p>
-                <div className="space-y-4">
-                  {industryGuidance.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
-
-            {/* Academic Resources */}
-            {academicResources.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                  Academic & Research Resources
-                </h2>
-                <p className="text-muted-foreground mb-4">Research papers and academic analysis on Consumer Duty topics</p>
-                <div className="space-y-4">
-                  {academicResources.map(renderReferenceCard)}
-                </div>
-              </section>
-            )}
+            {referenceThemeOrder.map((theme) => {
+              const themeRefs = referencesByTheme[theme];
+              if (!themeRefs || themeRefs.length === 0) return null;
+              const config = referenceThemeConfig[theme];
+              return (
+                <section key={theme} id={`theme-${theme}`}>
+                  <div className="border-l-4 border-accent pl-4 mb-4">
+                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                      <Scale className="h-6 w-6 text-primary" />
+                      {config.label}
+                    </h2>
+                    <p className="text-muted-foreground">{config.description}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {themeRefs.length} {themeRefs.length === 1 ? 'reference' : 'references'}
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    {themeRefs.map(renderReferenceCard)}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
       </main>
