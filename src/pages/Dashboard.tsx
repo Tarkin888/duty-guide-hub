@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { CircularProgress } from "@/components/CircularProgress";
 import { PhaseProgressCard } from "@/components/PhaseProgressCard";
 import { ActivityTimeline } from "@/components/ActivityTimeline";
-import { ResetProgressModal } from "@/components/ResetProgressModal";
 import { RecommendedPath } from "@/components/RecommendedPath";
 import { WelcomeModal, resetOnboarding } from "@/components/WelcomeModal";
 import { 
@@ -150,7 +149,6 @@ export default function Dashboard() {
   const { overall: calculatedProgress, categories: categoryProgress, inProgressModules: progressInProgressModules } = useProgressCalculation();
 
   const [lastUpdated, setLastUpdated] = useState("");
-  const [resetModalOpen, setResetModalOpen] = useState(false);
   const [resetDateDialogOpen, setResetDateDialogOpen] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const [regulatoryUpdatesOpen, setRegulatoryUpdatesOpen] = useState(false);
@@ -907,13 +905,11 @@ export default function Dashboard() {
             Reset Start Date
           </Button>
         )}
-        <Button 
-          variant="outline" 
-          className="text-destructive border-destructive hover:bg-destructive/10 gap-2"
-          onClick={() => setResetModalOpen(true)}
-        >
-          <AlertTriangle className="h-4 w-4" />
-          Reset All Progress
+        <Button asChild variant="outline" className="gap-2">
+          <Link to="/settings">
+            <Settings className="h-4 w-4" />
+            Settings (reset progress)
+          </Link>
         </Button>
       </div>
 
@@ -940,11 +936,6 @@ export default function Dashboard() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      <ResetProgressModal 
-        open={resetModalOpen} 
-        onOpenChange={setResetModalOpen} 
-      />
 
       <RegulatoryUpdatesDialog
         open={regulatoryUpdatesOpen}
