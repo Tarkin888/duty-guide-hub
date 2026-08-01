@@ -5,6 +5,15 @@ import fs from 'fs';
   console.log('wrote', name);
 };
 const { useProgressStore } = await import('@/stores/progressStore');
+const { MODULE_REGISTRY } = await import('@/config/moduleRegistry.generated');
+const checked: Record<string, boolean> = {};
+const meta: Record<string, any> = {};
+const mods = (MODULE_REGISTRY as any[]);
+mods.slice(0, 5).forEach((m, i) => {
+  m.items.forEach((it: string) => { checked[`${m.id}::${it}`] = true; });
+  meta[m.id] = { completedAt: new Date(Date.now() - i * 86400000).toISOString(), manualComplete: true };
+});
+mods.slice(5, 8).forEach((m) => { if (m.items[0]) checked[`${m.id}::${m.items[0]}`] = true; });
+useProgressStore.setState({ checkedItems: checked, moduleMeta: meta, startDate: new Date(Date.now() - 45 * 86400000).toISOString() } as any);
 const { exportProgressToPDF } = await import('@/utils/exportProgress');
-const reg = await import('@/config/moduleRegistry.generated');
-console.log(Object.keys(reg));
+exportProgressToPDF();
