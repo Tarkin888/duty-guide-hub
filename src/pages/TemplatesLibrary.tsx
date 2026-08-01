@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Search, Download, Eye, FileSpreadsheet, FileText, Presentation, File, X, ChevronDown, Filter, Star, Clock, TrendingUp } from "lucide-react";
+import { Search, Download, Eye, FileSpreadsheet, FileText, Presentation, File, X, ChevronDown, Filter, Star, Clock, CheckCircle2 } from "lucide-react";
 import { 
   templates, 
   Template, 
