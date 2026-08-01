@@ -11,10 +11,10 @@ const checked: Record<string, boolean> = {};
 const meta: Record<string, any> = {};
 const mods = (MODULE_REGISTRY as any[]);
 mods.slice(0, 5).forEach((m, i) => {
-  m.items.forEach((it: string) => { checked[makeItemKey(m.id, it)] = true; });
+  m.items.forEach((it: string) => { checked[it] = true; });
   meta[m.id] = { completedAt: new Date(Date.now() - i * 86400000).toISOString(), manualComplete: true };
 });
-mods.slice(5, 8).forEach((m) => { if (m.items[0]) checked[makeItemKey(m.id, m.items[0])] = true; });
+mods.slice(5, 8).forEach((m) => { if (m.items[0]) checked[m.items[0]] = true; });
 useProgressStore.setState({ checkedItems: checked, moduleMeta: meta, startDate: new Date(Date.now() - 45 * 86400000).toISOString() } as any);
 const { exportProgressToPDF } = await import('@/utils/exportProgress');
 console.log('calling'); exportProgressToPDF(); console.log('done');
