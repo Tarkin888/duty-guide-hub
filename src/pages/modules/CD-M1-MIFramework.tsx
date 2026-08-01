@@ -234,9 +234,67 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Regulatory Foundation</CardTitle>
-                  <CardDescription>FCA expectations and requirements for MI and outcome monitoring</CardDescription>
+                  <CardDescription>The regulatory basis for ongoing outcomes monitoring and MI</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">
+                      <h3 className="font-semibold mb-2">Primary basis</h3>
+                      <p className="text-sm text-muted-foreground">
+                        PRIN 2A.9 (monitoring of consumer outcomes) and FG22/5 Chapter 11. Confirm exact sub-paragraphs against the Handbook.
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                      <h3 className="font-semibold">What the FCA expects firms to improve</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Source: FCA insurance multi-firm review of outcomes monitoring, 26 June 2024; the FCA stated the findings apply to all retail firms.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        The FCA concluded that many firms must improve monitoring before they can genuinely determine whether they deliver good outcomes. The recurring weakness was over-reliance on process-completion metrics - counting whether a value assessment, product review or communications review had been done - rather than measuring the outcome the customer received. Completing a document review alone does not assure that customers can make properly informed decisions. Metrics were often reported with little insight into findings, learnings or actions. Some firms relied on repackaged existing data, which the FCA had already warned is insufficient. Some presented data in ways unlikely to support board scrutiny or challenge.
+                      </p>
+                    </div>
+
+                    <div className="rounded-lg border p-4 space-y-3">
+                      <h3 className="font-semibold">What good looks like</h3>
+                      <p className="text-xs text-muted-foreground">
+                        Source: FCA insurance multi-firm review of outcomes monitoring, 26 June 2024.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Stronger firms first articulated the foreseeable harms attached to a product, then worked backwards to the data needed to detect them. They drew on a defined range of data categories: SLA compliance, product performance data, second- and third-line reviews, customer feedback, quality assurance, complaints analysis, process completion, product governance findings, employee surveys and deep-dive analysis.
+                      </p>
+                      <div>
+                        <p className="text-sm font-medium mb-2">The FCA's named improvement areas</p>
+                        <div className="space-y-2">
+                          {[
+                            "Range and type of metrics",
+                            "Thresholds and targets",
+                            "Oversight",
+                            "Monitoring outcomes for different customer groups including vulnerable customers",
+                            "Actions taken as a result"
+                          ].map((area, index) => (
+                            <div key={index} className="flex items-start gap-2">
+                              <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-muted-foreground">{area}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border-l-4 border-warning bg-warning/10 p-4">
+                      <h3 className="font-semibold mb-2">Current direction</h3>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Source: FCA review of Year 2 board reports, 16 April 2026.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        The FCA told firms to move past MI dashboards to analysis that draws conclusions, and to monitor outcomes delivered through distribution chains.
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 className="font-semibold text-lg pt-2">Supporting reference material</h3>
+
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="mi-quality">
                       <AccordionTrigger className="text-lg font-semibold">
