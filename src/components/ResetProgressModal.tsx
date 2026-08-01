@@ -26,7 +26,8 @@ export function ResetProgressModal({ open, onOpenChange }: ResetProgressModalPro
   const [confirmText, setConfirmText] = useState('');
   const [understood, setUnderstood] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
-  const { resetAllProgress, getCompletedModulesCount, modules, activities, startDate } = useProgressStore();
+  const { resetAllProgress, getCompletedModulesCount, activities, startDate } = useProgressStore();
+  const modules = useModulesMap();
 
   const completedCount = getCompletedModulesCount();
   const isConfirmationValid = confirmText.toLowerCase() === 'reset' && understood;

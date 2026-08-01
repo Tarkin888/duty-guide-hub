@@ -183,7 +183,7 @@ function PhaseBlock({ phase, description, modules, isParallel, moduleStatuses, o
 
 export function RecommendedPath() {
   const navigate = useNavigate();
-  const modules = useProgressStore((state) => state.modules);
+  const modules = useModulesMap();
 
   // Determine status for each module
   const moduleStatuses = useMemo(() => {

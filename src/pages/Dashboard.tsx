@@ -137,7 +137,7 @@ function getDaysIconColorClass(days: number): string {
 
 export default function Dashboard() {
   // Use Zustand store for activities and start date
-  const modules = useProgressStore((state) => state.modules);
+  const modules = useModulesMap();
   const storeActivities = useProgressStore((state) => state.activities);
   const storeStartDate = useProgressStore((state) => state.startDate);
   const resetAllProgress = useProgressStore((state) => state.resetAllProgress);

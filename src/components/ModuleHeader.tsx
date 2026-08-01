@@ -77,7 +77,7 @@ export const ModuleHeader = ({
   const [dontShowReset, setDontShowReset] = useState(false);
   
   // Get completion date from progress store
-  const modules = useProgressStore((state) => state.modules);
+  const modules = useModulesMap();
   const canonicalId = normalizeModuleId(storageKey);
   const moduleProgress = modules[canonicalId];
   const completedAt = moduleProgress?.completedAt;

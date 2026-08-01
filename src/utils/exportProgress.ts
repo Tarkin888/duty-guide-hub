@@ -43,7 +43,7 @@ interface ProgressData {
 const getProgressData = (): ProgressData => {
   const state = useProgressStore.getState();
   return {
-    modules: state.modules,
+    modules: getModulesMap(),
     startDate: state.startDate,
     activities: state.activities
   };

@@ -750,3 +750,30 @@ export function useCheckedItemsCount(): { checked: number; total: number; percen
 }
 
 export { STORAGE_ID_TO_MODULE_ID, ALL_MODULE_IDS, getModuleDefinition, getModuleItemKeys };
+
+/**
+ * Derived map of every module's progress, keyed by canonical module id.
+ * Kept for views that need to look modules up by id - it is always derived,
+ * never stored.
+ */
+export function deriveModulesMap(
+  checkedItems: Record<string, boolean>,
+  moduleMeta: Record<string, ModuleMeta>
+): Record<string, ModuleProgress> {
+  const map: Record<string, ModuleProgress> = {};
+  for (const id of ALL_MODULE_IDS) {
+    map[id] = deriveModuleProgress(id, checkedItems, moduleMeta);
+  }
+  return map;
+}
+
+export function getModulesMap(): Record<string, ModuleProgress> {
+  const state = useProgressStore.getState();
+  return deriveModulesMap(state.checkedItems, state.moduleMeta);
+}
+
+export function useModulesMap(): Record<string, ModuleProgress> {
+  const checkedItems = useProgressStore((state) => state.checkedItems);
+  const moduleMeta = useProgressStore((state) => state.moduleMeta);
+  return deriveModulesMap(checkedItems, moduleMeta);
+}
