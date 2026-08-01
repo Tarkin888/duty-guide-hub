@@ -394,3 +394,33 @@ html, body {
     padding-top: 6mm;
   }
 }
+
+/* Small-screen responsive safeguards (PR6) */
+@media (max-width: 479px) {
+  /* Horizontally scrollable tables */
+  table {
+    display: table;
+  }
+
+  /* Minimum 44x44px touch targets */
+  button,
+  [role="button"],
+  [role="checkbox"],
+  [role="tab"],
+  a[href],
+  summary,
+  select,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Inline links inside prose keep natural flow */
+  p a[href],
+  li a[href],
+  span a[href] {
+    min-height: 0;
+    min-width: 0;
+  }
+}
