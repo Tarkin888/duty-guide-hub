@@ -538,6 +538,60 @@ const RegulatoryReferences = () => {
         </div>
       </div>
 
+      {/* Featured references */}
+      {featuredReferences.length > 0 && (
+        <section className="container mx-auto px-4 mt-8" aria-labelledby="featured-heading">
+          <h2 id="featured-heading" className="text-xl font-bold mb-3 flex items-center gap-2">
+            <Target className="h-5 w-5 text-accent" />
+            Start here
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {featuredReferences.map((ref) => (
+              <Card key={ref.id} className="border-l-4 border-l-accent bg-accent/5">
+                <CardHeader className="pb-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <Badge className="bg-accent text-accent-foreground text-xs">Featured</Badge>
+                    <Badge variant="outline" className="text-xs">{ref.reference}</Badge>
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {ref.published}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg">{ref.title}</CardTitle>
+                  <CardDescription>{ref.summary}</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="flex flex-wrap gap-2">
+                    {ref.externalUrl && (
+                      <Button asChild size="sm" variant="outline">
+                        <a href={ref.externalUrl} target="_blank" rel="noopener noreferrer">
+                          Read on fca.org.uk
+                          <ExternalLink className="h-3.5 w-3.5 ml-1" />
+                        </a>
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setTypeFilter("all");
+                        setOutcomeFilter("all");
+                        setDateFilter("all");
+                        setExpandedCards((prev) => new Set(prev).add(ref.id));
+                        document.getElementById(`theme-${ref.theme}`)?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      View full summary
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Search & Filters */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b py-4 mt-6">
         <div className="container mx-auto px-4">
