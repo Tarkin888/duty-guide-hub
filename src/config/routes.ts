@@ -69,7 +69,7 @@ export const MODULE_ROUTE_CONFIG: ModuleRouteConfig[] = [
   { code: 'CD-T3B', path: '/enablement/technology-part2', title: 'Technology Requirements Part 2', category: 'Enablement', relatedModules: ['CD-T3A', 'CD-I7A'], isPart2: true },
 
   // Monitoring & Assurance
-  { code: 'CD-M1', path: '/monitoring/mi-monitoring', title: 'MI Framework', category: 'Monitoring', relatedModules: ['CD-M2', 'CD-M3', 'CD-I7A', 'CD-F3'] },
+  { code: 'CD-M1', path: '/monitoring/mi-monitoring', title: 'Ongoing Monitoring & MI Framework', category: 'Monitoring', relatedModules: ['CD-M2', 'CD-M3', 'CD-I7A', 'CD-F3'] },
   { code: 'CD-M2', path: '/monitoring/testing-assurance', title: 'Testing & Assurance', category: 'Monitoring', relatedModules: ['CD-M1', 'CD-M3'] },
   { code: 'CD-M2A', path: '/monitoring/testing-assurance-part1', title: 'Testing & Assurance Part 1', category: 'Monitoring', relatedModules: ['CD-M2B', 'CD-M1'] },
   { code: 'CD-M2B', path: '/monitoring/testing-assurance-part2', title: 'Testing & Assurance Part 2', category: 'Monitoring', relatedModules: ['CD-M2A', 'CD-M3'], isPart2: true },
