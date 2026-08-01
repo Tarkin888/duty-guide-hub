@@ -710,8 +710,20 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Annual Attestation Cycle */}
+      <div className="mb-8">
+        <AnnualAttestationCycle />
+      </div>
+
       {/* Recommended Path */}
       <div className="mb-8">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-foreground">Knowledge base and onboarding reference</h2>
+          <p className="text-sm text-muted-foreground">
+            The implementation modules remain available as reference material for onboarding and for evidencing how
+            your framework was built.
+          </p>
+        </div>
         <RecommendedPath />
       </div>
 
