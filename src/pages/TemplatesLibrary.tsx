@@ -453,7 +453,9 @@ export default function TemplatesLibrary() {
                   </div>
                   <div>
                     <span className="text-muted-foreground">Size:</span>
-                    <span className="ml-2 font-medium">{selectedTemplate.fileSize} KB</span>
+                    <span className="ml-2 font-medium">
+                      {selectedTemplate.fileStatus === 'available' ? `${selectedTemplate.fileSize} KB` : 'To be confirmed'}
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Complexity:</span>
@@ -462,6 +464,16 @@ export default function TemplatesLibrary() {
                   <div>
                     <span className="text-muted-foreground">Module:</span>
                     <span className="ml-2 font-medium">{selectedTemplate.moduleReference}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Last updated:</span>
+                    <span className="ml-2 font-medium">{selectedTemplate.lastUpdated}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Availability:</span>
+                    <span className="ml-2 font-medium">
+                      {selectedTemplate.fileStatus === 'available' ? 'Available to download' : 'Coming soon'}
+                    </span>
                   </div>
                   <div className="col-span-2">
                     <span className="text-muted-foreground">Target Users:</span>
@@ -472,9 +484,16 @@ export default function TemplatesLibrary() {
             )}
           </ScrollArea>
           <div className="flex gap-3 pt-4 border-t">
-            <Button className="flex-1" onClick={() => selectedTemplate && handleDownload(selectedTemplate)}>
-              <Download className="h-4 w-4 mr-2" /> Download Template
-            </Button>
+            {selectedTemplate?.fileStatus === 'available' ? (
+              <Button className="flex-1" onClick={() => handleDownload(selectedTemplate)}>
+                <Download className="h-4 w-4 mr-2" /> Download Template
+              </Button>
+            ) : (
+              <Button className="flex-1 cursor-not-allowed" variant="outline" disabled>
+                <Clock className="h-4 w-4 mr-2" /> Coming soon
+              </Button>
+            )}
+
             <Button variant="outline" onClick={() => toggleFavorite(selectedTemplate?.id || '')}>
               <Star className={`h-4 w-4 mr-2 ${selectedTemplate && favorites.includes(selectedTemplate.id) ? 'fill-warning text-warning' : ''}`} />
               {selectedTemplate && favorites.includes(selectedTemplate.id) ? 'Favorited' : 'Add to Favorites'}
