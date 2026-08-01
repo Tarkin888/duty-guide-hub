@@ -104,15 +104,23 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Module Overview</CardTitle>
-                  <CardDescription>Understanding the MI & Outcome Monitoring Framework</CardDescription>
+                  <CardDescription>Running outcomes monitoring and MI as business-as-usual</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border-l-4 border-primary bg-primary/5 p-4">
+                    <p className="text-sm font-semibold mb-1">This is a recurring annual cycle, not a project</p>
+                    <p className="text-sm text-muted-foreground">
+                      Monitoring does not finish. Each year the firm monitors outcomes continuously, gathers evidence, assesses whether customers actually received good outcomes, reports conclusions to the board and supports the annual attestation. The material below is the standing operating framework for that cycle, refreshed each year rather than completed once.
+                    </p>
+                  </div>
+
                   <div>
                     <h3 className="font-semibold text-lg mb-3">Purpose</h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      Establish a comprehensive Management Information (MI) framework to evidence good outcomes across all four Consumer Duty outcomes and enable data-driven decision-making. MI is the engine of Consumer Duty compliance - without robust data, firms cannot evidence they're delivering good outcomes.
+                      Help the firm run continuous outcomes monitoring and produce management information that evidences good outcomes for the annual board report - not just process metrics. The test is not whether reviews were completed on time; it is whether the data shows customers received the outcome intended, and whether the firm can explain what it concluded and what it changed as a result.
                     </p>
                   </div>
+
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
