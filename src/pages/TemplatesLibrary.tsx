@@ -290,24 +290,31 @@ export default function TemplatesLibrary() {
               </CollapsibleContent>
             </Collapsible>
 
-            {/* Top Downloaded */}
+            {/* Available now */}
             <div className="mt-8">
               <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" /> Most Popular
+                <CheckCircle2 className="h-4 w-4" /> Available to download
               </h3>
-              <div className="space-y-2">
-                {topDownloaded.map(t => (
-                  <button
-                    key={t.id}
-                    onClick={() => setSelectedTemplate(t)}
-                    className="w-full text-left text-sm p-2 rounded hover:bg-muted transition-colors"
-                  >
-                    <div className="font-medium truncate">{t.name}</div>
-                    <div className="text-muted-foreground text-xs">{t.downloadCount.toLocaleString()} downloads</div>
-                  </button>
-                ))}
-              </div>
+              {availableTemplates.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No template files are published yet. Every template is marked "Coming soon" until its file is available.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {availableTemplates.slice(0, 5).map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setSelectedTemplate(t)}
+                      className="w-full text-left text-sm p-2 rounded hover:bg-muted transition-colors"
+                    >
+                      <div className="font-medium truncate">{t.name}</div>
+                      <div className="text-muted-foreground text-xs">{t.moduleReference} · {fileTypeLabels[t.fileType]}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
+
           </aside>
 
           {/* Main Content */}
