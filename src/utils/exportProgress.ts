@@ -116,18 +116,30 @@ const calculateTimeline = (modules: ProgressData['modules'], startDate: string |
   };
 };
 
+const NAVY: [number, number, number] = [30, 58, 138]; // #1e3a8a
+const GOLD: [number, number, number] = [245, 158, 11]; // #f59e0b
+const SLATE: [number, number, number] = [100, 116, 139];
+
+const getRecommendedNextModule = (modules: ProgressData['modules']) => {
+  const order = Object.keys(MODULE_DETAILS);
+  const inProgress = order.find(id => modules[id]?.status === 'in-progress');
+  const target = inProgress || order.find(id => (modules[id]?.status || 'not-started') === 'not-started');
+  if (!target) return null;
+  return { id: target, ...MODULE_DETAILS[target], status: modules[target]?.status || 'not-started' };
+};
+
 export const exportProgressToPDF = () => {
   const { modules, startDate } = getProgressData();
   const stats = calculateStats(modules);
   const categoryStats = getCategoryStats(modules);
   const timeline = calculateTimeline(modules, startDate);
-  
+  const recommended = getRecommendedNextModule(modules);
+
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 20;
   let yPos = 20;
-  
-  // Helper functions
+
   const addNewPageIfNeeded = (requiredSpace: number) => {
     if (yPos + requiredSpace > 270) {
       doc.addPage();
@@ -136,164 +148,296 @@ export const exportProgressToPDF = () => {
     }
     return false;
   };
-  
+
   const drawProgressBar = (x: number, y: number, width: number, percentage: number) => {
-    doc.setFillColor(229, 231, 235); // gray-200
+    doc.setFillColor(226, 232, 240);
     doc.roundedRect(x, y, width, 4, 2, 2, 'F');
     if (percentage > 0) {
-      doc.setFillColor(34, 197, 94); // green-500
+      doc.setFillColor(...GOLD);
       doc.roundedRect(x, y, (width * percentage) / 100, 4, 2, 2, 'F');
     }
   };
 
-  // Header with branding
-  doc.setFillColor(15, 23, 42); // slate-900
+  // Circular completion figure (navy track, gold arc)
+  const drawProgressCircle = (cx: number, cy: number, radius: number, percentage: number) => {
+    doc.setDrawColor(226, 232, 240);
+    doc.setLineWidth(3.5);
+    doc.circle(cx, cy, radius, 'S');
+
+    if (percentage > 0) {
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(3.5);
+      const segments = Math.max(1, Math.round((percentage / 100) * 72));
+      const step = (Math.PI * 2) / 72;
+      for (let i = 0; i < segments; i++) {
+        const a1 = -Math.PI / 2 + i * step;
+        const a2 = -Math.PI / 2 + (i + 1) * step;
+        doc.line(
+          cx + radius * Math.cos(a1),
+          cy + radius * Math.sin(a1),
+          cx + radius * Math.cos(a2),
+          cy + radius * Math.sin(a2)
+        );
+      }
+    }
+    doc.setLineWidth(0.2);
+
+    doc.setTextColor(...NAVY);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text(`${percentage}%`, cx, cy + 2, { align: 'center' });
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...SLATE);
+    doc.text('Complete', cx, cy + 8, { align: 'center' });
+  };
+
+  // Header with navy/gold branding
+  doc.setFillColor(...NAVY);
   doc.rect(0, 0, pageWidth, 40, 'F');
-  
+  doc.setFillColor(...GOLD);
+  doc.rect(0, 40, pageWidth, 2, 'F');
+
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(22);
+  doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
   doc.text('Consumer Duty Implementation Playbook', margin, 18);
-  
-  doc.setFontSize(14);
+
+  doc.setFontSize(13);
   doc.setFont('helvetica', 'normal');
-  doc.text('Progress Report', margin, 28);
-  
-  doc.setFontSize(10);
-  doc.text(`Generated: ${format(new Date(), 'dd MMMM yyyy, HH:mm')}`, margin, 36);
-  
+  doc.text('Progress Report', margin, 27);
+
+  doc.setFontSize(9);
+  doc.text(`Generated: ${format(new Date(), 'dd MMMM yyyy, HH:mm')}`, margin, 35);
+
   yPos = 55;
   doc.setTextColor(0, 0, 0);
-  
-  // Executive Summary Box
-  doc.setFillColor(248, 250, 252); // slate-50
-  doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 45, 3, 3, 'F');
-  doc.setDrawColor(226, 232, 240); // slate-200
-  doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 45, 3, 3, 'S');
-  
-  doc.setFontSize(14);
+
+  // Executive Summary box with circular figure
+  const boxHeight = 50;
+  doc.setFillColor(248, 250, 252);
+  doc.roundedRect(margin, yPos, pageWidth - margin * 2, boxHeight, 3, 3, 'F');
+  doc.setDrawColor(226, 232, 240);
+  doc.roundedRect(margin, yPos, pageWidth - margin * 2, boxHeight, 3, 3, 'S');
+
+  doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
-  doc.text('Executive Summary', margin + 5, yPos + 10);
-  
-  // Large percentage display
-  doc.setFontSize(36);
-  doc.setTextColor(34, 197, 94); // green-500
-  doc.text(`${stats.percentage}%`, margin + 5, yPos + 32);
-  
-  doc.setFontSize(10);
-  doc.setTextColor(100, 116, 139); // slate-500
-  doc.text('Overall Completion', margin + 5, yPos + 40);
-  
-  // Stats columns
-  doc.setTextColor(0, 0, 0);
-  doc.setFontSize(11);
-  const col1X = margin + 55;
-  const col2X = margin + 95;
-  const col3X = margin + 135;
-  
+  doc.setTextColor(...NAVY);
+  doc.text('Overall Completion', margin + 5, yPos + 10);
+
+  drawProgressCircle(margin + 25, yPos + 30, 14, stats.percentage);
+
+  doc.setTextColor(...NAVY);
+  doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text(`${stats.completed}`, col1X, yPos + 25);
-  doc.text(`${stats.inProgress}`, col2X, yPos + 25);
-  doc.text(`${stats.notStarted}`, col3X, yPos + 25);
-  
+  const col1X = margin + 60;
+  const col2X = margin + 100;
+  const col3X = margin + 140;
+  doc.text(`${stats.completed}`, col1X, yPos + 28);
+  doc.text(`${stats.inProgress}`, col2X, yPos + 28);
+  doc.text(`${stats.notStarted}`, col3X, yPos + 28);
+
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  doc.setTextColor(100, 116, 139);
-  doc.text('Completed', col1X, yPos + 32);
-  doc.text('In Progress', col2X, yPos + 32);
-  doc.text('Not Started', col3X, yPos + 32);
-  
-  yPos += 55;
-  
-  // Timeline Section
+  doc.setTextColor(...SLATE);
+  doc.text('Completed', col1X, yPos + 35);
+  doc.text('In Progress', col2X, yPos + 35);
+  doc.text('Not Started', col3X, yPos + 35);
+  doc.text(`${stats.completed} of ${TOTAL_MODULES} modules complete`, col1X, yPos + 43);
+
+  yPos += boxHeight + 12;
+
+  // Timeline
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...NAVY);
+  doc.text('Timeline', margin, yPos);
+  yPos += 8;
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(71, 85, 105);
+
   if (timeline) {
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(0, 0, 0);
-    doc.text('Timeline & Projections', margin, yPos);
-    yPos += 8;
-    
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(71, 85, 105);
-    
-    doc.text(`• Implementation started: ${timeline.startDate}`, margin + 5, yPos);
+    doc.text(`Implementation started: ${timeline.startDate}`, margin + 5, yPos);
     yPos += 6;
-    doc.text(`• Days since start: ${timeline.daysSinceStart}`, margin + 5, yPos);
+    doc.text(`Days since started: ${timeline.daysSinceStart}`, margin + 5, yPos);
     yPos += 6;
     if (timeline.avgDaysPerModule > 0) {
-      doc.text(`• Average pace: ${timeline.avgDaysPerModule} days per module`, margin + 5, yPos);
+      doc.text(`Average pace: ${timeline.avgDaysPerModule} days per module`, margin + 5, yPos);
       yPos += 6;
     }
     if (timeline.estimatedCompletion) {
-      doc.text(`• Projected completion: ${timeline.estimatedCompletion} (${timeline.estimatedDaysRemaining} days remaining)`, margin + 5, yPos);
+      doc.text(
+        `Projected completion: ${timeline.estimatedCompletion} (${timeline.estimatedDaysRemaining} days remaining)`,
+        margin + 5,
+        yPos
+      );
       yPos += 6;
     }
-    yPos += 8;
+  } else {
+    doc.text('Implementation not yet started.', margin + 5, yPos);
+    yPos += 6;
   }
-  
-  // Progress by Section
-  doc.setFontSize(14);
+  yPos += 8;
+
+  // Recommended next module
+  addNewPageIfNeeded(30);
+  doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(0, 0, 0);
-  doc.text('Progress by Section', margin, yPos);
+  doc.setTextColor(...NAVY);
+  doc.text('Recommended Next Module', margin, yPos);
+  yPos += 8;
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(71, 85, 105);
+  if (recommended) {
+    doc.setFillColor(254, 249, 235);
+    doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 14, 2, 2, 'F');
+    doc.setDrawColor(...GOLD);
+    doc.roundedRect(margin, yPos - 5, pageWidth - margin * 2, 14, 2, 2, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...NAVY);
+    doc.text(`${recommended.id}: ${recommended.name}`, margin + 4, yPos + 2);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...SLATE);
+    doc.text(
+      recommended.status === 'in-progress' ? 'Continue in progress' : 'Not started',
+      pageWidth - margin - 4,
+      yPos + 2,
+      { align: 'right' }
+    );
+    yPos += 18;
+  } else {
+    doc.text('All modules complete. Focus on continuous improvement and monitoring.', margin + 5, yPos);
+    yPos += 10;
+  }
+
+  // Completed modules
+  const completedModules = Object.entries(MODULE_DETAILS)
+    .filter(([id]) => modules[id]?.status === 'complete')
+    .map(([id, d]) => ({ id, ...d, completedAt: modules[id]?.completedAt }));
+  const inProgressModules = Object.entries(MODULE_DETAILS)
+    .filter(([id]) => modules[id]?.status === 'in-progress')
+    .map(([id, d]) => ({ id, ...d }));
+
+  addNewPageIfNeeded(30);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...NAVY);
+  doc.text(`Completed Modules (${completedModules.length})`, margin, yPos);
+  yPos += 8;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+
+  if (completedModules.length === 0) {
+    doc.setTextColor(...SLATE);
+    doc.text('No modules completed yet.', margin + 5, yPos);
+    yPos += 8;
+  } else {
+    completedModules.forEach(module => {
+      addNewPageIfNeeded(8);
+      doc.setTextColor(51, 65, 85);
+      doc.text(`${module.id}: ${module.name}`, margin + 5, yPos);
+      doc.setTextColor(...SLATE);
+      doc.text(
+        module.completedAt
+          ? `Completed ${format(new Date(module.completedAt), 'dd MMM yyyy')}`
+          : 'Completion date not recorded',
+        pageWidth - margin,
+        yPos,
+        { align: 'right' }
+      );
+      yPos += 6;
+    });
+    yPos += 4;
+  }
+
+  addNewPageIfNeeded(30);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...NAVY);
+  doc.text(`In Progress Modules (${inProgressModules.length})`, margin, yPos);
+  yPos += 8;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+
+  if (inProgressModules.length === 0) {
+    doc.setTextColor(...SLATE);
+    doc.text('No modules currently in progress.', margin + 5, yPos);
+    yPos += 8;
+  } else {
+    inProgressModules.forEach(module => {
+      addNewPageIfNeeded(8);
+      doc.setTextColor(51, 65, 85);
+      doc.text(`${module.id}: ${module.name}`, margin + 5, yPos);
+      doc.setTextColor(...SLATE);
+      doc.text(module.category, pageWidth - margin, yPos, { align: 'right' });
+      yPos += 6;
+    });
+    yPos += 4;
+  }
+
+  // Progress by Section
+  addNewPageIfNeeded(30);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(...NAVY);
+  doc.text('Progress by Category', margin, yPos);
   yPos += 10;
-  
+
   CATEGORY_ORDER.forEach(category => {
     addNewPageIfNeeded(50);
-    
+
     const catStats = categoryStats[category];
     const catPercentage = catStats.total > 0 ? Math.round((catStats.completed / catStats.total) * 100) : 0;
-    
-    // Category header
+
     doc.setFillColor(248, 250, 252);
-    doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 8, 2, 2, 'F');
-    
+    doc.roundedRect(margin, yPos, pageWidth - margin * 2, 8, 2, 2, 'F');
+
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(...NAVY);
     doc.text(category, margin + 3, yPos + 6);
-    
+
     doc.setFont('helvetica', 'normal');
-    doc.text(`${catStats.completed}/${catStats.total} Complete (${catPercentage}%)`, pageWidth - margin - 50, yPos + 6);
-    
+    doc.text(`${catStats.completed}/${catStats.total} Complete (${catPercentage}%)`, pageWidth - margin - 3, yPos + 6, {
+      align: 'right',
+    });
+
     yPos += 12;
-    
-    // Progress bar
-    drawProgressBar(margin, yPos, pageWidth - (margin * 2), catPercentage);
+
+    drawProgressBar(margin, yPos, pageWidth - margin * 2, catPercentage);
     yPos += 8;
-    
-    // Module list
+
     doc.setFontSize(9);
     catStats.modules.forEach(module => {
       addNewPageIfNeeded(8);
-      
-      const statusIcon = module.status === 'complete' ? '✓' : 
-                         module.status === 'in-progress' ? '◐' : '○';
-      const statusColor = module.status === 'complete' ? [34, 197, 94] : 
-                          module.status === 'in-progress' ? [234, 179, 8] : [148, 163, 184];
-      
-      doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
-      doc.text(statusIcon, margin + 5, yPos);
-      
+
+      const label =
+        module.status === 'complete' ? 'Complete' : module.status === 'in-progress' ? 'In Progress' : 'Not Started';
+
       doc.setTextColor(51, 65, 85);
-      doc.text(`${module.id}: ${module.name}`, margin + 12, yPos);
-      
-      if (module.status === 'complete' && module.completedAt) {
-        doc.setTextColor(148, 163, 184);
-        doc.text(`Completed ${format(new Date(module.completedAt), 'dd MMM yyyy')}`, pageWidth - margin - 45, yPos);
-      } else if (module.status === 'in-progress') {
-        doc.setTextColor(234, 179, 8);
-        doc.text('In Progress', pageWidth - margin - 25, yPos);
-      }
-      
+      doc.text(`${module.id}: ${module.name}`, margin + 5, yPos);
+
+      doc.setTextColor(...SLATE);
+      doc.text(
+        module.status === 'complete' && module.completedAt
+          ? `${label} - ${format(new Date(module.completedAt), 'dd MMM yyyy')}`
+          : label,
+        pageWidth - margin,
+        yPos,
+        { align: 'right' }
+      );
+
       yPos += 6;
     });
-    
+
     yPos += 6;
   });
-  
-  // Footer on last page
+
+  // Footer
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -306,10 +450,10 @@ export const exportProgressToPDF = () => {
       { align: 'center' }
     );
   }
-  
-  // Save
+
   doc.save(`Consumer-Duty-Progress-Report-${format(new Date(), 'yyyy-MM-dd')}.pdf`);
 };
+
 
 export const exportProgressToCSV = () => {
   const { modules, startDate } = getProgressData();
