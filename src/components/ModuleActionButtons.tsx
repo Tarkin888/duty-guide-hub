@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Clock, RotateCcw, Calendar } from 'lucide-react';
-import { useProgressStore } from '@/stores/progressStore';
+import { useProgressStore, useModuleProgress } from '@/stores/progressStore';
 import { format } from 'date-fns';
 
 interface ModuleActionButtonsProps {
