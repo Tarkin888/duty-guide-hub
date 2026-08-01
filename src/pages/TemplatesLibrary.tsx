@@ -357,21 +357,39 @@ export default function TemplatesLibrary() {
                         {complexityLabels[template.complexity]}
                       </Badge>
                       <Badge variant="outline">{template.moduleReference}</Badge>
+                      {template.fileStatus === 'coming-soon' && (
+                        <Badge variant="outline" className="bg-muted text-muted-foreground border-border">
+                          Coming soon
+                        </Badge>
+                      )}
                     </div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                      <span>{template.fileSize} KB</span>
+                      <span>{template.fileStatus === 'available' ? `${template.fileSize} KB` : 'File size to be confirmed'}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" /> {template.lastUpdated}
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" className="flex-1" onClick={() => handleDownload(template)}>
-                        <Download className="h-4 w-4 mr-1" /> Download
-                      </Button>
+                      {template.fileStatus === 'available' ? (
+                        <Button size="sm" className="flex-1" onClick={() => handleDownload(template)}>
+                          <Download className="h-4 w-4 mr-1" /> Download
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 cursor-not-allowed"
+                          disabled
+                          aria-label={`${template.name} — coming soon, not yet available to download`}
+                        >
+                          <Clock className="h-4 w-4 mr-1" /> Coming soon
+                        </Button>
+                      )}
                       <Button size="sm" variant="outline" onClick={() => setSelectedTemplate(template)}>
                         <Eye className="h-4 w-4" />
                       </Button>
                     </div>
+
                   </CardContent>
                 </Card>
               ))}
