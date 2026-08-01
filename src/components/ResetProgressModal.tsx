@@ -13,7 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle, Download, Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
-import { useProgressStore } from '@/stores/progressStore';
+import { useProgressStore, useModulesMap } from '@/stores/progressStore';
 import { toast } from 'sonner';
 
 interface ResetProgressModalProps {

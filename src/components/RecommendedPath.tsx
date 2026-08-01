@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useProgressStore, MODULE_CATEGORIES } from '@/stores/progressStore';
+import { useProgressStore, useModulesMap, MODULE_CATEGORIES } from '@/stores/progressStore';
 import { ArrowRight, CheckCircle2, Circle, PlayCircle, Map } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {

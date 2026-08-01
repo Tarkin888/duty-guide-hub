@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { useProgressStore, MODULE_CATEGORIES, TOTAL_MODULES } from '@/stores/progressStore';
+import { useProgressStore, getModulesMap, MODULE_CATEGORIES, TOTAL_MODULES } from '@/stores/progressStore';
 import { format } from 'date-fns';
 
 const MODULE_DETAILS: Record<string, { name: string; category: string; route: string }> = {

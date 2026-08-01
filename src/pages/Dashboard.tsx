@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import { RegulatoryUpdatesDialog } from "@/components/RegulatoryUpdatesDialog";
 import { useRegulatoryUpdates } from "@/hooks/useRegulatoryUpdates";
-import { useProgressStore, TOTAL_MODULES } from "@/stores/progressStore";
+import { useProgressStore, useModulesMap, TOTAL_MODULES } from "@/stores/progressStore";
 import { useProgressCalculation } from "@/lib/progressUtils";
 import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";

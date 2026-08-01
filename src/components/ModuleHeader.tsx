@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, Circle, Clock, Printer, Calendar, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { getModuleStatus, updateModuleStatus } from '@/lib/storage';
-import { useProgressStore, normalizeModuleId } from '@/stores/progressStore';
+import { useProgressStore, useModulesMap, normalizeModuleId } from '@/stores/progressStore';
 import { format } from 'date-fns';
 import { ModuleBreadcrumb } from './ModuleBreadcrumb';
 import {
