@@ -92,6 +92,7 @@ export interface ResourceRouteConfig {
 export const RESOURCE_ROUTE_CONFIG: ResourceRouteConfig[] = [
   { path: '/', title: 'Dashboard', description: 'Main dashboard with progress overview' },
   { path: '/ongoing/fair-value', title: 'Annual Fair Value Assessment & Monitoring', description: 'Recurring fair value assessment cycle (OC-3)' },
+  { path: '/ongoing/outcomes-testing', title: 'Outcomes Testing & Consumer Understanding', description: 'Recurring communication testing cycle (OC-4)' },
   { path: '/resources/templates', title: 'Templates Library', description: 'Implementation templates and documents' },
   { path: '/resources/glossary', title: 'Glossary', description: 'Consumer Duty terminology' },
   { path: '/resources/regulatory-references', title: 'Regulatory References', description: 'FCA guidance and regulations' },

@@ -49,6 +49,7 @@ import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
 import MaturityAssessment from "./pages/MaturityAssessment";
 import OC3FairValueAssessment from "./pages/modules/OC-3-FairValueAssessment";
+import OC4OutcomesTesting from "./pages/modules/OC-4-OutcomesTesting";
 import SiteHealth from "./pages/SiteHealth";
 import SettingsPage from "./pages/Settings";
 import { FileText } from "lucide-react";
@@ -143,6 +144,7 @@ const App = () => (
 
                               {/* Ongoing Compliance */}
                               <Route path="/ongoing/fair-value" element={<OC3FairValueAssessment />} />
+                              <Route path="/ongoing/outcomes-testing" element={<OC4OutcomesTesting />} />
 
                               {/* Monitoring & Assurance */}
                               <Route path="/monitoring/mi-monitoring" element={<CDM1MIFramework />} />
