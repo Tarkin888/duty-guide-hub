@@ -990,9 +990,24 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Success Criteria</CardTitle>
-                  <CardDescription>Evidence that your MI framework is effective and regulatory-ready</CardDescription>
+                  <CardDescription>Evidence that ongoing outcomes monitoring is working</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                  <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 space-y-3">
+                    <h3 className="font-semibold text-lg">Core tests for the annual cycle</h3>
+                    {[
+                      "Outcome metrics are defined for all four Consumer Duty outcomes, not process-completion counts.",
+                      "Thresholds and targets are documented for every metric, with the rationale for each recorded.",
+                      "Differential-outcome analysis is in place, covering vulnerable customers and other identified customer groups.",
+                      "MI draws conclusions rather than listing numbers: each pack states findings, learnings and the actions taken."
+                    ].map((criterion, index) => (
+                      <div key={index} className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{criterion}</span>
+                      </div>
+                    ))}
+                  </div>
+
                   <div className="space-y-6">
                     <div>
                       <h3 className="font-semibold text-lg mb-3">MI Framework Establishment</h3>
