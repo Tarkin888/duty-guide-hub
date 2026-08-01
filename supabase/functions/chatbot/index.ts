@@ -231,11 +231,18 @@ serve(async (req) => {
   }
 
   try {
-    const clientId = getClientId(req);
+    const clientId = await getAuthenticatedUserId(req);
+    if (!clientId) {
+      return new Response(JSON.stringify({ error: 'Authentication required.' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const rateLimit = checkRateLimit(clientId);
     
     if (!rateLimit.allowed) {
-      console.log('Rate limit exceeded for client:', clientId);
+      console.log('Rate limit exceeded for user');
       return new Response(JSON.stringify({ 
         error: 'Rate limit exceeded. Please wait a moment and try again.',
         retryAfter: Math.ceil(rateLimit.resetIn / 1000)
