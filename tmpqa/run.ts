@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import fs from 'fs';
-(jsPDF as any).prototype.save = function (name: string) {
+(jsPDF as any).API.save = function (name: string) {
   fs.writeFileSync('/tmp/pdfqa/' + name, Buffer.from(this.output('arraybuffer')));
   console.log('wrote', name);
 };
@@ -16,4 +16,4 @@ mods.slice(0, 5).forEach((m, i) => {
 mods.slice(5, 8).forEach((m) => { if (m.items[0]) checked[`${m.id}::${m.items[0]}`] = true; });
 useProgressStore.setState({ checkedItems: checked, moduleMeta: meta, startDate: new Date(Date.now() - 45 * 86400000).toISOString() } as any);
 const { exportProgressToPDF } = await import('@/utils/exportProgress');
-exportProgressToPDF();
+console.log('calling'); exportProgressToPDF(); console.log('done');
