@@ -48,6 +48,7 @@ import TemplatesLibrary from "./pages/TemplatesLibrary";
 import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
 import MaturityAssessment from "./pages/MaturityAssessment";
+import OC3FairValueAssessment from "./pages/modules/OC-3-FairValueAssessment";
 import SiteHealth from "./pages/SiteHealth";
 import SettingsPage from "./pages/Settings";
 import { FileText } from "lucide-react";
@@ -139,6 +140,9 @@ const App = () => (
                               <Route path="/enablement/technology" element={<CDT3ATechnologyRequirementsPart1 />} />
                               <Route path="/enablement/technology-part1" element={<CDT3ATechnologyRequirementsPart1 />} />
                               <Route path="/enablement/technology-part2" element={<CDT3BTechnologyRequirementsPart2 />} />
+
+                              {/* Ongoing Compliance */}
+                              <Route path="/ongoing/fair-value" element={<OC3FairValueAssessment />} />
 
                               {/* Monitoring & Assurance */}
                               <Route path="/monitoring/mi-monitoring" element={<CDM1MIFramework />} />
