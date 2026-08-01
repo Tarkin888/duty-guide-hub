@@ -14,7 +14,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_F3_TEMPLATES } from "@/data/cdF3Templates";
-import { getModuleStatus, updateModuleStatus } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
 
 const STORAGE_KEY = "cd-f3-risk-assessment";
@@ -35,7 +35,6 @@ export default function CDRiskAssessment() {
   };
 
   const handleMarkComplete = () => {
-    updateModuleStatus(STORAGE_KEY, "completed");
     setStatus("completed");
     toast.success("Module Complete", {
       description: "Risk & Impact Assessment marked as complete!",
@@ -43,7 +42,6 @@ export default function CDRiskAssessment() {
   };
 
   const handleMarkInProgress = () => {
-    updateModuleStatus(STORAGE_KEY, "in-progress");
     setStatus("in-progress");
     toast.info("Module In Progress", {
       description: "Risk & Impact Assessment marked as in progress",

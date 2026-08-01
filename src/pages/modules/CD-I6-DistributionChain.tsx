@@ -13,19 +13,14 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
-import { updateModuleStatus, addActivity } from "@/lib/storage";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
 
 export default function CDI6DistributionChain() {
-  const [status, setStatus] = useState<"not-started" | "in-progress" | "completed">(() => {
-    const stored = localStorage.getItem("module-cd-i6-status");
-    return (stored as "not-started" | "in-progress" | "completed") || "not-started";
-  });
+  const { status, setStatus } = useModuleStatusControls("cd-i6");
 
   const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
-    updateModuleStatus("cd-i6", newStatus);
-    addActivity("status_updated", "CD-I6: Distribution Chain Management");
     toast.success(`Module status updated to ${newStatus}`);
   };
 
