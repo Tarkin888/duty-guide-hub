@@ -1182,9 +1182,46 @@ export default function CDM1MIFramework() {
               <Card>
                 <CardHeader>
                   <CardTitle>Common Pitfalls</CardTitle>
-                  <CardDescription>Issues to avoid when implementing your MI framework</CardDescription>
+                  <CardDescription>Issues to avoid when running ongoing outcomes monitoring</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <PitfallCard
+                    title="Process-completion metrics mistaken for outcome evidence"
+                    description="Reporting that value assessments, product reviews or communications reviews were completed, and treating that as evidence of a good outcome."
+                    impact="The board cannot tell whether customers actually received the intended outcome. The FCA has identified this as the single most common weakness."
+                    prevention="For every process metric, pair an outcome metric that measures what the customer experienced."
+                  />
+                  <PitfallCard
+                    title="Repackaged existing data"
+                    description="Re-presenting pre-Duty management data under Consumer Duty headings without asking what new data is needed."
+                    impact="The FCA has already warned firms that repackaged data is insufficient to determine outcomes."
+                    prevention="Start from the foreseeable harms for each product and work backwards to the data required to detect them."
+                  />
+                  <PitfallCard
+                    title="Dashboards without analysis"
+                    description="MI packs that present numbers and trend lines with no findings, learnings, conclusions or actions."
+                    impact="The FCA has told firms to move past MI dashboards to analysis that draws conclusions."
+                    prevention="Require every metric pack to state what the data shows, what the firm concluded, and what it will do."
+                  />
+                  <PitfallCard
+                    title="No thresholds or targets"
+                    description="Metrics reported without a defined acceptable range, so no result can trigger action."
+                    impact="Deterioration goes unchallenged and escalation never fires."
+                    prevention="Set a threshold and target for each metric with documented rationale, and review them annually."
+                  />
+                  <PitfallCard
+                    title="Vulnerability MI absent"
+                    description="Outcomes reported only as an overall average, with no breakdown for vulnerable customers or other customer groups."
+                    impact="Differential harm remains invisible; this is a named FCA improvement area."
+                    prevention="Segment every core outcome metric and analyse gaps between groups explicitly."
+                  />
+                  <PitfallCard
+                    title="Weak distribution-chain outcome monitoring"
+                    description="Little or no data on the outcomes customers receive through intermediaries, brokers or other distributors."
+                    impact="The FCA's Year 2 board report review specifically directs firms to monitor outcomes delivered through distribution chains."
+                    prevention="Agree outcome data exchange with each distributor and monitor it on the same cadence as direct business."
+                  />
+
                   <PitfallCard
                     title="Simply Repackaging Existing MI"
                     description="Firms repackage existing MI without considering what new data is needed to truly understand customer outcomes. Example: Reporting complaint volumes without categorizing by outcome or analyzing root causes."
