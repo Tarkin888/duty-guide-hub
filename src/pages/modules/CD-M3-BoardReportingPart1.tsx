@@ -65,11 +65,11 @@ export default function CDM3BoardReportingPart1() {
                 <FileText className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">CD-M3: Board & Executive Reporting</h1>
-                <p className="text-muted-foreground mt-1">Part 1: Foundation & Structure</p>
+                <h1 className="text-3xl font-bold text-foreground">CD-M3: Annual Board Attestation &amp; Reporting</h1>
+                <p className="text-muted-foreground mt-1">Part 1: Foundation &amp; Structure</p>
                 <div className="flex gap-2 mt-2">
-                  <Badge variant="outline">Monitoring & Assurance</Badge>
-                  <Badge variant="secondary">6-8 Weeks + Ongoing</Badge>
+                  <Badge variant="outline">Ongoing Compliance</Badge>
+                  <Badge variant="secondary">Annual cycle</Badge>
                 </div>
               </div>
             </div>
@@ -92,6 +92,27 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            <Card className="border-l-4 border-l-accent">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-accent" />
+                  The primary annual regulatory touchpoint
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-lg text-foreground">
+                  The annual board report is the single point at which the firm states, in writing, whether it is delivering good
+                  outcomes for retail customers. This module helps you produce a report the governing body can genuinely scrutinise,
+                  and prepare the evidence pack that sits behind the annual attestation.
+                </p>
+                <p className="text-muted-foreground">
+                  Treat this as a recurring annual rhythm rather than a one-off project. Evidence is gathered continuously through the
+                  year, conclusions are drawn and challenged at the board, actions are tracked to closure, and the cycle begins again.
+                </p>
+              </CardContent>
+            </Card>
+
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -260,6 +281,113 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Regulatory Foundation Tab */}
           <TabsContent value="regulatory" className="space-y-6">
+            <Card className="border-l-4 border-l-primary">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Gavel className="h-5 w-5 text-primary" />
+                  Primary basis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-foreground">
+                  PRIN 2A.8 (the annual board report requirement). Confirm exact sub-paragraphs against the Handbook.
+                </p>
+                <p className="text-muted-foreground">
+                  Source: FCA, Consumer Duty board reports - good practice and areas for improvement, 11 December 2024,
+                  a thematic review of the first annual board reports from 180 firms including 55 smaller firms.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-accent" />
+                  The FCA's five areas for improvement
+                </CardTitle>
+                <CardDescription>
+                  FCA, Consumer Duty board reports - good practice and areas for improvement, 11 December 2024
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ol className="space-y-4">
+                  {[
+                    { t: "Data quality", d: "Some firms did not have sufficient data quality to justify conclusions or give the governing body adequate assurance, and MI often lacked the explanation needed to show it evidenced good outcomes." },
+                    { t: "A comprehensive view across distribution chains", d: "Some reports lacked evidence that appropriate information had been shared between the firm and third parties across the chain." },
+                    { t: "Analysis of different customer types", d: "Especially those with characteristics of vulnerability." },
+                    { t: "Challenge from the board", d: "It was not always evident that the governing body had effectively challenged the report, for example through board minutes." },
+                    { t: "Taking effective action", d: "Action plans that lacked timescales, owners and clarity on the data required to evidence improvement." },
+                  ].map((s, i) => (
+                    <li key={i} className="flex gap-4">
+                      <span className="shrink-0 h-8 w-8 rounded-full bg-accent/15 text-accent flex items-center justify-center font-semibold">{i + 1}</span>
+                      <div>
+                        <p className="font-semibold text-foreground">{s.t}</p>
+                        <p className="text-muted-foreground">{s.d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  What good looks like
+                </CardTitle>
+                <CardDescription>
+                  FCA, Consumer Duty board reports - good practice and areas for improvement, 11 December 2024
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {[
+                    "The best reports were structured so the board could scrutinise the elements the rules expect.",
+                    "Dedicated sections for each of the four outcomes, describing what a good outcome looks like for customers holding the product.",
+                    "MI that genuinely supported the conclusions drawn.",
+                    "Analysis of different customer groups.",
+                    "Clear, well-governed processes for producing the report on time.",
+                  ].map((item, i) => (
+                    <li key={i} className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                      <span className="text-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  Companion source and current direction
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="font-semibold text-foreground">
+                    FCA feedback on complaints and root cause analysis, 11 December 2024
+                  </p>
+                  <p className="text-muted-foreground">
+                    The FCA treats root cause analysis of poor outcomes as best practice for the monitoring section that feeds the board report.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">
+                    FCA review of Year 2 board reports, 16 April 2026
+                  </p>
+                  <p className="text-muted-foreground">
+                    Boards must document their challenge, push past dashboards to conclusions, and evidence outcomes delivered through
+                    distribution chains. Distribution-chain accountability is a live FCA consultation area with proposals expected in the
+                    first half of 2026.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -902,6 +1030,40 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Implementation Steps Tab */}
           <TabsContent value="implementation" className="space-y-6">
+            <Card className="border-l-4 border-l-accent">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-accent" />
+                  The annual reporting cycle: seven steps
+                </CardTitle>
+                <CardDescription>
+                  Run these each year in the run-up to the board report and attestation. The phased guidance below supports first-time set-up.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ol className="space-y-4">
+                  {[
+                    { t: "Confirm the board-pack structure", d: "Agree the report structure with a dedicated section for each of the four outcomes, each stating what a good outcome looks like for customers holding the product, the conclusion reached and the grounds for it." },
+                    { t: "Assemble the evidence pack mapped to each conclusion", d: "For every conclusion in the report, record the MI, review, complaint analysis or testing that supports it, with a note on data quality and any limitations." },
+                    { t: "Build in vulnerability and differential-outcome analysis", d: "Split outcome results by customer group, including customers with characteristics of vulnerability, and explain any material differences and the action taken." },
+                    { t: "Document distribution-chain information sharing", d: "Record the information requested from and provided to manufacturers, distributors and other third parties, any gaps, and what the responses show about outcomes delivered through the chain." },
+                    { t: "Record board challenge in minutes", d: "Allocate agenda time for genuine scrutiny and minute the questions asked, the responses given, points contested and any further work commissioned." },
+                    { t: "Set action plans with owners, timescales and success measures", d: "Every action has a named owner, a completion date, a defined success measure and a statement of the data required to evidence the improvement." },
+                    { t: "Draft the attestation statement", d: "Prepare the governing body's statement confirming the firm is delivering good outcomes, setting out the basis, scope, limitations and the action plan relied upon." },
+                  ].map((s, i) => (
+                    <li key={i} className="flex gap-4">
+                      <span className="shrink-0 h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold">{i + 1}</span>
+                      <div>
+                        <p className="font-semibold text-foreground">{s.t}</p>
+                        <p className="text-muted-foreground">{s.d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </CardContent>
+            </Card>
+
+
             <Card>
               <CardHeader>
                 <CardTitle>Phase 1: Establishing the Reporting Framework (Weeks 1-2)</CardTitle>
@@ -998,6 +1160,49 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Templates & Tools Tab */}
           <TabsContent value="templates" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ClipboardList className="h-5 w-5 text-primary" />
+                  Core annual attestation tools
+                </CardTitle>
+                <CardDescription>
+                  The three tools that carry the annual board report and the evidence pack behind the attestation.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <TemplateCard
+                    title="Board-pack structure template"
+                    description="Section-by-section structure for the annual report, with a dedicated section per outcome setting out what a good outcome looks like, the conclusion reached and the reasonable grounds for it."
+                    format="Word"
+                    complexity="Intermediate"
+                    onDownload={() => toast.success("Template download started")}
+                    onPreview={() => toast.info("Preview functionality coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Evidence-pack checklist (four outcomes)"
+                    description="Checklist mapping each board report conclusion to its supporting evidence across the four outcomes, including vulnerability analysis and distribution-chain information sharing."
+                    format="Excel"
+                    complexity="Intermediate"
+                    onDownload={() => toast.success("Template download started")}
+                    onPreview={() => toast.info("Preview functionality coming soon")}
+                  />
+
+                  <TemplateCard
+                    title="Attestation statement template"
+                    description="Drafting template for the governing body's annual attestation, including the basis of the conclusion, scope, limitations, minuted challenge and the action plan referenced."
+                    format="Word"
+                    complexity="Quick Start"
+                    onDownload={() => toast.success("Template download started")}
+                    onPreview={() => toast.info("Preview functionality coming soon")}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <TemplateCard
                 title="Annual Board Report Template"
@@ -1415,6 +1620,36 @@ export default function CDM3BoardReportingPart1() {
 
           {/* Success Criteria Tab */}
           <TabsContent value="success" className="space-y-6">
+            <Card className="border-l-4 border-l-primary">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  Annual attestation: the six tests
+                </CardTitle>
+                <CardDescription>
+                  Apply these before the board pack is issued. Each maps directly to an FCA area for improvement.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {[
+                    "The report is structured for board scrutiny, with a dedicated section for each of the four outcomes describing what a good outcome looks like for customers holding the product.",
+                    "Every conclusion is backed by MI that is explained, not simply displayed, and the data quality behind it is stated.",
+                    "Analysis of different customer types is present, including customers with characteristics of vulnerability, with differences explained.",
+                    "Distribution-chain oversight is evidenced, covering information shared with and received from third parties across the chain.",
+                    "Board challenge is minuted, showing the questions asked, the responses given and any further work commissioned.",
+                    "Action plans carry named owners, timescales, success measures and the data required to evidence improvement.",
+                  ].map((item, i) => (
+                    <li key={i} className="flex gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                      <span className="text-foreground">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -1566,6 +1801,48 @@ export default function CDM3BoardReportingPart1() {
           {/* Common Pitfalls Tab */}
           <TabsContent value="pitfalls" className="space-y-6">
             <div className="grid gap-6">
+              <PitfallCard
+                title="MI presented without explanation"
+                description="Charts and tables are included in the board pack with no narrative explaining what the data shows, why it moved, or what it means for customer outcomes."
+                impact="The governing body cannot judge whether outcomes are good. The FCA found MI often lacked the explanation needed to show it evidenced good outcomes."
+                prevention="Require every exhibit to carry a short 'what this tells us' note and a stated conclusion. Reject board pack sections that present numbers without interpretation."
+              />
+
+              <PitfallCard
+                title="No vulnerability breakdown"
+                description="Outcomes are reported only in aggregate, with no analysis of customers with characteristics of vulnerability or other distinct customer groups."
+                impact="Poorer outcomes for vulnerable customers stay hidden in the average. This is one of the FCA's five named areas for improvement."
+                prevention="Report each of the four outcomes split by customer group, including vulnerability, and explain any material differences and the action taken."
+              />
+
+              <PitfallCard
+                title="Missing distribution-chain evidence"
+                description="The report says nothing about information shared with manufacturers, distributors or other third parties, or about outcomes delivered through the chain."
+                impact="No comprehensive view of the customer journey. The FCA has said reports must evidence outcomes delivered through distribution chains."
+                prevention="Include a distribution-chain section covering information requested, information received, gaps, and the outcome conclusions drawn from it."
+              />
+
+              <PitfallCard
+                title="No visible board challenge"
+                description="Board minutes record that the report was 'noted' or 'approved' with no record of questions asked, points contested or further work commissioned."
+                impact="The FCA looks to minutes for evidence of effective challenge. Silent approval suggests the board did not genuinely scrutinise the report."
+                prevention="Minute specific questions, the responses given, and any actions or deferrals arising. Allocate sufficient agenda time for genuine debate."
+              />
+
+              <PitfallCard
+                title="Vague action plans"
+                description="Actions are recorded as intentions without an owner, a completion date, or a statement of the data that will show the improvement has landed."
+                impact="Improvements are not delivered and the following year's report repeats the same findings. The FCA named this as an area for improvement."
+                prevention="Every action carries a named owner, a timescale, a success measure, and the data required to evidence completion. Track to closure at each meeting."
+              />
+
+              <PitfallCard
+                title="Dashboards presented as conclusions"
+                description="The pack is a set of dashboards. Nobody states, in words, whether the firm delivered good outcomes and on what basis."
+                impact="The board is left to draw its own conclusions from raw MI. The FCA has told firms to move past dashboards to analysis that draws conclusions."
+                prevention="Open each outcome section with a written conclusion and the reasonable grounds for it, then use the MI as supporting evidence beneath it."
+              />
+
               <PitfallCard
                 title="Poor MI Quality"
                 description="Data insufficient to justify conclusions, lacking clear explanation. Board reports making assertions without supporting evidence or with low-quality data."

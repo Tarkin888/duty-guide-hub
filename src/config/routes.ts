@@ -73,7 +73,7 @@ export const MODULE_ROUTE_CONFIG: ModuleRouteConfig[] = [
   { code: 'CD-M2', path: '/monitoring/testing-assurance', title: 'Testing & Assurance', category: 'Monitoring', relatedModules: ['CD-M1', 'CD-M3'] },
   { code: 'CD-M2A', path: '/monitoring/testing-assurance-part1', title: 'Testing & Assurance Part 1', category: 'Monitoring', relatedModules: ['CD-M2B', 'CD-M1'] },
   { code: 'CD-M2B', path: '/monitoring/testing-assurance-part2', title: 'Testing & Assurance Part 2', category: 'Monitoring', relatedModules: ['CD-M2A', 'CD-M3'], isPart2: true },
-  { code: 'CD-M3', path: '/monitoring/board-reporting', title: 'Board Reporting', category: 'Monitoring', relatedModules: ['CD-M4', 'CD-P1'] },
+  { code: 'CD-M3', path: '/monitoring/board-reporting', title: 'Annual Board Attestation & Reporting', category: 'Monitoring', relatedModules: ['CD-M4', 'CD-P1'] },
   { code: 'CD-M3-Part2', path: '/monitoring/board-reporting-part2', title: 'Board Reporting Part 2', category: 'Monitoring', relatedModules: ['CD-M3', 'CD-M4'], isPart2: true },
   { code: 'CD-M4', path: '/monitoring/continuous-improvement', title: 'Continuous Improvement', category: 'Monitoring', relatedModules: ['CD-M1', 'CD-M3'] },
   { code: 'CD-M4-Part2', path: '/monitoring/continuous-improvement-part2', title: 'Continuous Improvement Part 2', category: 'Monitoring', relatedModules: ['CD-M4', 'CD-M1'], isPart2: true },
