@@ -2,6 +2,15 @@ import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
+import { getPrintModeSnapshot, subscribeToPrintMode } from "@/lib/printMode";
+
+function usePrintMode() {
+  return React.useSyncExternalStore(
+    subscribeToPrintMode,
+    getPrintModeSnapshot,
+    () => false,
+  );
+}
 
 const Tabs = TabsPrimitive.Root;
 
@@ -38,16 +47,22 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      className,
-    )}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const isPrinting = usePrintMode();
+  return (
+    <TabsPrimitive.Content
+      ref={ref}
+      // While printing, every panel is mounted so the whole module prints.
+      forceMount={isPrinting ? true : undefined}
+      className={cn(
+        "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "print-tab-panel",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };
