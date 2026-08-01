@@ -112,9 +112,10 @@ export default function TemplatesLibrary() {
 
   const activeFiltersCount = selectedCategories.length + selectedFileTypes.length + selectedRoles.length + (selectedComplexity ? 1 : 0);
 
-  const topDownloaded = useMemo(() => 
-    [...templates].sort((a, b) => b.downloadCount - a.downloadCount).slice(0, 5),
+  const availableTemplates = useMemo(
+    () => templates.filter(t => t.fileStatus === 'available'),
   []);
+
 
   return (
     <div className="min-h-screen bg-muted/30">
