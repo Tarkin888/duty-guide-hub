@@ -898,7 +898,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     relevantFor: ['All customer-facing teams', 'Training', 'Compliance'],
     rootCauses: [
       'No vulnerability identification process',
-      'Staff not trained to recognize indicators',
+      'Staff not trained to recognise indicators',
       'No adjusted processes for vulnerable customers',
     ],
     lessons: [
@@ -1202,7 +1202,7 @@ export const regulatoryReferences: RegulatoryReference[] = [
     practicalApplications: [
       'Communication design principles',
       'Testing methodologies',
-      'Readability optimization',
+      'Readability optimisation',
     ],
     outcomes: ['consumer-understanding'],
     relatedModules: ['CD-I3'],
