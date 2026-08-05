@@ -37,6 +37,22 @@ export const sendChatMessage = async (
     return data.response;
   } catch (error) {
     console.error('Chatbot API Error:', error);
+    void reportChatbotFailure(error);
     throw error;
+  }
+};
+
+/**
+ * Sends failure detail to the backend so chatbot outages are visible in
+ * server-side logs for monitoring. Never throws.
+ */
+export const reportChatbotFailure = async (error: unknown): Promise<void> => {
+  try {
+    const detail = error instanceof Error ? error.message : String(error);
+    await supabase.functions.invoke('chatbot', {
+      body: { clientError: `${detail} | path: ${window.location.pathname}` },
+    });
+  } catch {
+    // Monitoring must never surface to the user.
   }
 };
