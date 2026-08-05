@@ -151,10 +151,10 @@ const CDT3BTechnologyRequirementsPart2 = () => {
                 <Link className="h-5 w-5 text-info" />
                 <div>
                   <p className="font-medium text-foreground">This is Part 2 of the Technology Enablement module</p>
-                  <p className="text-sm text-muted-foreground">Part 1 covers Foundation & Selection (Phases 1-2, Steps 1-7)</p>
+                  <p className="text-sm text-muted-foreground">Part 1 covers Steps 1-13: requirements, solution selection, architecture, build and go-live preparation</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm" onClick={() => navigate("/modules/cd-t3a-technology-requirements-part1")}>
+              <Button variant="outline" size="sm" onClick={() => navigate("/enablement/technology")}>
                 View Part 1
               </Button>
             </div>
@@ -522,63 +522,63 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <CardContent className="space-y-6">
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={8}
+                  stepNumber={14}
                   title="Configure Core Systems for Consumer Duty"
                   items={[
-                    { id: "8.1", label: "CRM vulnerability flagging capability configured", details: "Status, details, communication format, adjustments, review date fields" },
-                    { id: "8.2", label: "CRM visibility and alerts set up", details: "Pop-up alerts, banners, vulnerability icons on customer profiles" },
-                    { id: "8.3", label: "Product suitability tracking enabled", details: "Target market match, negative target market checks, governance links" },
-                    { id: "8.4", label: "Consumer Understanding testing results captured", details: "Test history, scores, outcomes, re-communication triggers" },
-                    { id: "8.5", label: "Value assessment outcomes linked to customers", details: "FVA outcome display, poor-value alerts, value-based segmentation" },
-                    { id: "8.6", label: "Communication preferences expanded", details: "Format needs, optimal contact times, language preferences" },
-                    { id: "8.7", label: "Product management system enhancements complete", details: "Target markets, FVA integration, distribution tracking, review workflows" },
-                    { id: "8.8", label: "Complaints system configured", details: "Root cause analysis, vulnerability flagging, MI and reporting" },
-                    { id: "8.9", label: "Contact centre systems enhanced", details: "Call routing, screen-pop context, quality monitoring, knowledge base" },
-                    { id: "8.10", label: "Document management structure created", details: "Evidence repository, Board pack assembly, version control" }
+                    { id: "14.1", label: "CRM vulnerability flagging capability configured", details: "Status, details, communication format, adjustments, review date fields" },
+                    { id: "14.2", label: "CRM visibility and alerts set up", details: "Pop-up alerts, banners, vulnerability icons on customer profiles" },
+                    { id: "14.3", label: "Product suitability tracking enabled", details: "Target market match, negative target market checks, governance links" },
+                    { id: "14.4", label: "Consumer Understanding testing results captured", details: "Test history, scores, outcomes, re-communication triggers" },
+                    { id: "14.5", label: "Value assessment outcomes linked to customers", details: "FVA outcome display, poor-value alerts, value-based segmentation" },
+                    { id: "14.6", label: "Communication preferences expanded", details: "Format needs, optimal contact times, language preferences" },
+                    { id: "14.7", label: "Product management system enhancements complete", details: "Target markets, FVA integration, distribution tracking, review workflows" },
+                    { id: "14.8", label: "Complaints system configured", details: "Root cause analysis, vulnerability flagging, MI and reporting" },
+                    { id: "14.9", label: "Contact centre systems enhanced", details: "Call routing, screen-pop context, quality monitoring, knowledge base" },
+                    { id: "14.10", label: "Document management structure created", details: "Evidence repository, Board pack assembly, version control" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={9}
+                  stepNumber={15}
                   title="Build/Integrate MI Dashboards"
                   items={[
-                    { id: "9.1", label: "Dashboard development approach decided", details: "Build vs integrate, UI design, refresh schedule, access controls" },
-                    { id: "9.2", label: "Overall Consumer Duty Performance Dashboard built", details: "RAG ratings for all outcomes, key issues, remediation actions" },
-                    { id: "9.3", label: "Products & Services Outcome Dashboard built", details: "Product reviews, target market compliance, distribution metrics" },
-                    { id: "9.4", label: "Price & Value Outcome Dashboard built", details: "FVA ratings, poor-value products, value improvement tracking" },
-                    { id: "9.5", label: "Consumer Understanding Outcome Dashboard built", details: "Testing scores, pass rates, re-communication actions" },
-                    { id: "9.6", label: "Consumer Support Outcome Dashboard built", details: "CSAT, FCR, sludge audit scores, support complaints" },
-                    { id: "9.7", label: "Vulnerable Customers Dashboard built", details: "Flagged customers by driver, outcome parity analysis, adjustments" },
-                    { id: "9.8", label: "Complaints & Issues Dashboard built", details: "Volumes by outcome, root causes, FOS referrals, remediation status" },
-                    { id: "9.9", label: "Drill-down capabilities configured", details: "Click through to underlying data, filters, exports" },
-                    { id: "9.10", label: "Automated alerts set up", details: "RAG rating changes, threshold breaches, overdue reviews" }
+                    { id: "15.1", label: "Dashboard development approach decided", details: "Build vs integrate, UI design, refresh schedule, access controls" },
+                    { id: "15.2", label: "Overall Consumer Duty Performance Dashboard built", details: "RAG ratings for all outcomes, key issues, remediation actions" },
+                    { id: "15.3", label: "Products & Services Outcome Dashboard built", details: "Product reviews, target market compliance, distribution metrics" },
+                    { id: "15.4", label: "Price & Value Outcome Dashboard built", details: "FVA ratings, poor-value products, value improvement tracking" },
+                    { id: "15.5", label: "Consumer Understanding Outcome Dashboard built", details: "Testing scores, pass rates, re-communication actions" },
+                    { id: "15.6", label: "Consumer Support Outcome Dashboard built", details: "CSAT, FCR, sludge audit scores, support complaints" },
+                    { id: "15.7", label: "Vulnerable Customers Dashboard built", details: "Flagged customers by driver, outcome parity analysis, adjustments" },
+                    { id: "15.8", label: "Complaints & Issues Dashboard built", details: "Volumes by outcome, root causes, FOS referrals, remediation status" },
+                    { id: "15.9", label: "Drill-down capabilities configured", details: "Click through to underlying data, filters, exports" },
+                    { id: "15.10", label: "Automated alerts set up", details: "RAG rating changes, threshold breaches, overdue reviews" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={10}
+                  stepNumber={16}
                   title="Implement Data Collection Automation"
                   items={[
-                    { id: "10.1", label: "Automated data extraction configured", details: "CRM, product systems, complaints, communications, support" },
-                    { id: "10.2", label: "Data transformation and enrichment implemented", details: "Derived metrics, business rules, external data enrichment" },
-                    { id: "10.3", label: "Data loading to MI database scheduled", details: "ETL processes, error handling, quality checks, logging" },
-                    { id: "10.4", label: "API integrations built where needed", details: "Real-time data, third-party sources, web analytics" },
-                    { id: "10.5", label: "End-to-end automation testing complete", details: "Data accuracy, calculation validation, refresh timing, alerts" }
+                    { id: "16.1", label: "Automated data extraction configured", details: "CRM, product systems, complaints, communications, support" },
+                    { id: "16.2", label: "Data transformation and enrichment implemented", details: "Derived metrics, business rules, external data enrichment" },
+                    { id: "16.3", label: "Data loading to MI database scheduled", details: "ETL processes, error handling, quality checks, logging" },
+                    { id: "16.4", label: "API integrations built where needed", details: "Real-time data, third-party sources, web analytics" },
+                    { id: "16.5", label: "End-to-end automation testing complete", details: "Data accuracy, calculation validation, refresh timing, alerts" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={11}
+                  stepNumber={17}
                   title="Develop Communication Testing Tools"
                   items={[
-                    { id: "11.1", label: "Digital comprehension testing platform implemented", details: "Survey integration, embedded questions, scoring, reporting" },
-                    { id: "11.2", label: "A/B testing capability established", details: "Traffic splitting, statistical testing, winner selection" },
-                    { id: "11.3", label: "Behavioural testing tools deployed", details: "Screen recording, heatmaps, funnel analysis, CES measurement" },
-                    { id: "11.4", label: "Readability checking integrated", details: "Flesch scoring, complex sentence highlighting, accessibility checking" },
-                    { id: "11.5", label: "Testing results repository created", details: "Central storage, linked to communications, trend tracking" }
+                    { id: "17.1", label: "Digital comprehension testing platform implemented", details: "Survey integration, embedded questions, scoring, reporting" },
+                    { id: "17.2", label: "A/B testing capability established", details: "Traffic splitting, statistical testing, winner selection" },
+                    { id: "17.3", label: "Behavioural testing tools deployed", details: "Screen recording, heatmaps, funnel analysis, CES measurement" },
+                    { id: "17.4", label: "Readability checking integrated", details: "Flesch scoring, complex sentence highlighting, accessibility checking" },
+                    { id: "17.5", label: "Testing results repository created", details: "Central storage, linked to communications, trend tracking" }
                   ]}
                 />
               </CardContent>
@@ -595,27 +595,27 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <CardContent className="space-y-6">
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={12}
+                  stepNumber={18}
                   title="Migrate Relevant Historical Data"
                   items={[
-                    { id: "12.1", label: "Data scope identified", details: "Complaints 2+ years, FVAs, product reviews, testing results, support metrics" },
-                    { id: "12.2", label: "Data cleansing completed", details: "Duplicates removed, formats standardised, mandatory fields filled" },
-                    { id: "12.3", label: "Data mapping documented", details: "Old fields to new, type conversions, business rules, assumptions" },
-                    { id: "12.4", label: "Migration executed", details: "Test migration, sample validation, full migration, reconciliation" },
-                    { id: "12.5", label: "Post-migration validation complete", details: "Report comparison, spot checks, UAT, issue documentation" }
+                    { id: "18.1", label: "Data scope identified", details: "Complaints 2+ years, FVAs, product reviews, testing results, support metrics" },
+                    { id: "18.2", label: "Data cleansing completed", details: "Duplicates removed, formats standardised, mandatory fields filled" },
+                    { id: "18.3", label: "Data mapping documented", details: "Old fields to new, type conversions, business rules, assumptions" },
+                    { id: "18.4", label: "Migration executed", details: "Test migration, sample validation, full migration, reconciliation" },
+                    { id: "18.5", label: "Post-migration validation complete", details: "Report comparison, spot checks, UAT, issue documentation" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={13}
+                  stepNumber={19}
                   title="Integrate Third-Party Systems"
                   items={[
-                    { id: "13.1", label: "Distributor data feeds configured", details: "Sales data, complaints, customer feedback, claims" },
-                    { id: "13.2", label: "Data sending to distributors enabled", details: "Target market updates, FVA outcomes, product information" },
-                    { id: "13.3", label: "Email marketing platform integrated", details: "Segment syncing, campaign tracking, A/B results" },
-                    { id: "13.4", label: "Customer feedback tools connected", details: "Survey triggers, response collection, review monitoring" },
-                    { id: "13.5", label: "External data sources integrated", details: "Credit reference, deprivation indices, market data, FOS database" }
+                    { id: "19.1", label: "Distributor data feeds configured", details: "Sales data, complaints, customer feedback, claims" },
+                    { id: "19.2", label: "Data sending to distributors enabled", details: "Target market updates, FVA outcomes, product information" },
+                    { id: "19.3", label: "Email marketing platform integrated", details: "Segment syncing, campaign tracking, A/B results" },
+                    { id: "19.4", label: "Customer feedback tools connected", details: "Survey triggers, response collection, review monitoring" },
+                    { id: "19.5", label: "External data sources integrated", details: "Credit reference, deprivation indices, market data, FOS database" }
                   ]}
                 />
               </CardContent>
@@ -632,28 +632,28 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <CardContent className="space-y-6">
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={14}
+                  stepNumber={20}
                   title="System Testing"
                   items={[
-                    { id: "14.1", label: "Unit testing complete", details: "Individual components, calculations, validations, workflows" },
-                    { id: "14.2", label: "Integration testing complete", details: "Data flows, API connections, automated collection, dashboard accuracy" },
-                    { id: "14.3", label: "User acceptance testing complete", details: "Role-based testing, scenarios, feedback, issues documented" },
-                    { id: "14.4", label: "Performance testing complete", details: "Load testing, stress testing, response times, report generation" },
-                    { id: "14.5", label: "Security testing complete", details: "Penetration testing, access controls, encryption, vulnerability scanning" },
-                    { id: "14.6", label: "Disaster recovery testing complete", details: "Backup/restore, failover, data integrity, business continuity" }
+                    { id: "20.1", label: "Unit testing complete", details: "Individual components, calculations, validations, workflows" },
+                    { id: "20.2", label: "Integration testing complete", details: "Data flows, API connections, automated collection, dashboard accuracy" },
+                    { id: "20.3", label: "User acceptance testing complete", details: "Role-based testing, scenarios, feedback, issues documented" },
+                    { id: "20.4", label: "Performance testing complete", details: "Load testing, stress testing, response times, report generation" },
+                    { id: "20.5", label: "Security testing complete", details: "Penetration testing, access controls, encryption, vulnerability scanning" },
+                    { id: "20.6", label: "Disaster recovery testing complete", details: "Backup/restore, failover, data integrity, business continuity" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={15}
+                  stepNumber={21}
                   title="Create Training Materials for New Systems"
                   items={[
-                    { id: "15.1", label: "System user guides created", details: "Role-based guides, step-by-step instructions, troubleshooting, FAQ" },
-                    { id: "15.2", label: "Video tutorials produced", details: "5-10 minute videos, system walkthroughs, accessible on intranet" },
-                    { id: "15.3", label: "Quick reference cards designed", details: "One-pagers for common tasks, laminated for desks, digital versions" },
-                    { id: "15.4", label: "Dashboard interpretation guides written", details: "What each metric means, good looks like, action to take, escalation" },
-                    { id: "15.5", label: "Admin/power user documentation prepared", details: "Configuration, report creation, user administration, troubleshooting" }
+                    { id: "21.1", label: "System user guides created", details: "Role-based guides, step-by-step instructions, troubleshooting, FAQ" },
+                    { id: "21.2", label: "Video tutorials produced", details: "5-10 minute videos, system walkthroughs, accessible on intranet" },
+                    { id: "21.3", label: "Quick reference cards designed", details: "One-pagers for common tasks, laminated for desks, digital versions" },
+                    { id: "21.4", label: "Dashboard interpretation guides written", details: "What each metric means, good looks like, action to take, escalation" },
+                    { id: "21.5", label: "Admin/power user documentation prepared", details: "Configuration, report creation, user administration, troubleshooting" }
                   ]}
                 />
               </CardContent>
@@ -670,25 +670,25 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <CardContent className="space-y-6">
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={16}
+                  stepNumber={22}
                   title="Phased Roll-Out Strategy"
                   items={[
-                    { id: "16.1", label: "Phase 1 Pilot completed (Weeks 16-17)", details: "Small pilot group, intensive support, daily feedback, quick fixes" },
-                    { id: "16.2", label: "Phase 2 Expanded Pilot completed (Week 18)", details: "Larger group, performance monitoring, continued feedback" },
-                    { id: "16.3", label: "Phase 3 Full Roll-Out executed (Weeks 19-20)", details: "All users, go-live communications, support on standby" },
-                    { id: "16.4", label: "Post go-live stabilisation in progress", details: "Daily check-ins first week, weekly first month, feedback gathering" }
+                    { id: "22.1", label: "Phase 1 Pilot completed (Weeks 16-17)", details: "Small pilot group, intensive support, daily feedback, quick fixes" },
+                    { id: "22.2", label: "Phase 2 Expanded Pilot completed (Week 18)", details: "Larger group, performance monitoring, continued feedback" },
+                    { id: "22.3", label: "Phase 3 Full Roll-Out executed (Weeks 19-20)", details: "All users, go-live communications, support on standby" },
+                    { id: "22.4", label: "Post go-live stabilisation in progress", details: "Daily check-ins first week, weekly first month, feedback gathering" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={17}
+                  stepNumber={23}
                   title="Establish Technology Support Model"
                   items={[
-                    { id: "17.1", label: "First-line support established", details: "Help desk, knowledge base, escalation procedures, SLAs" },
-                    { id: "17.2", label: "Second-line support established", details: "IT team, technical issues, configuration support, performance monitoring" },
-                    { id: "17.3", label: "Third-line support arranged", details: "Vendor support contracts, specialist support, escalation procedures" },
-                    { id: "17.4", label: "Support documentation created", details: "Known issues log, resolution procedures, contacts, maintenance schedules" }
+                    { id: "23.1", label: "First-line support established", details: "Help desk, knowledge base, escalation procedures, SLAs" },
+                    { id: "23.2", label: "Second-line support established", details: "IT team, technical issues, configuration support, performance monitoring" },
+                    { id: "23.3", label: "Third-line support arranged", details: "Vendor support contracts, specialist support, escalation procedures" },
+                    { id: "23.4", label: "Support documentation created", details: "Known issues log, resolution procedures, contacts, maintenance schedules" }
                   ]}
                 />
               </CardContent>
@@ -705,37 +705,37 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <CardContent className="space-y-6">
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={18}
+                  stepNumber={24}
                   title="Monitor Technology Effectiveness"
                   items={[
-                    { id: "18.1", label: "User adoption metrics tracked", details: "Login frequency, feature usage, time in system, satisfaction surveys" },
-                    { id: "18.2", label: "System performance metrics monitored", details: "Uptime, response times, dashboard refresh, error rates" },
-                    { id: "18.3", label: "Data quality metrics assessed", details: "Completeness, accuracy, timeliness, consistency" },
-                    { id: "18.4", label: "Business value metrics evaluated", details: "Time saved, improved decisions, faster issue identification, risk reduction" },
-                    { id: "18.5", label: "Quarterly effectiveness reviews scheduled", details: "Regular review cadence, improvement identification" }
+                    { id: "24.1", label: "User adoption metrics tracked", details: "Login frequency, feature usage, time in system, satisfaction surveys" },
+                    { id: "24.2", label: "System performance metrics monitored", details: "Uptime, response times, dashboard refresh, error rates" },
+                    { id: "24.3", label: "Data quality metrics assessed", details: "Completeness, accuracy, timeliness, consistency" },
+                    { id: "24.4", label: "Business value metrics evaluated", details: "Time saved, improved decisions, faster issue identification, risk reduction" },
+                    { id: "24.5", label: "Quarterly effectiveness reviews scheduled", details: "Regular review cadence, improvement identification" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={19}
+                  stepNumber={25}
                   title="Implement Enhancement Pipeline"
                   items={[
-                    { id: "19.1", label: "User feedback collection mechanism operational", details: "Surveys, focus groups, ticket analysis, executive feedback" },
-                    { id: "19.2", label: "Enhancement prioritisation process defined", details: "Impact vs effort matrix, regulatory imperative, user demand" },
-                    { id: "19.3", label: "Enhancement backlog management in place", details: "Grooming sessions, sprint planning, release planning" },
-                    { id: "19.4", label: "Enhancement delivery process established", details: "Development, testing, communication, training update, deployment" }
+                    { id: "25.1", label: "User feedback collection mechanism operational", details: "Surveys, focus groups, ticket analysis, executive feedback" },
+                    { id: "25.2", label: "Enhancement prioritisation process defined", details: "Impact vs effort matrix, regulatory imperative, user demand" },
+                    { id: "25.3", label: "Enhancement backlog management in place", details: "Grooming sessions, sprint planning, release planning" },
+                    { id: "25.4", label: "Enhancement delivery process established", details: "Development, testing, communication, training update, deployment" }
                   ]}
                 />
 
                 <ChecklistSection
                   moduleId={MODULE_ID}
-                  stepNumber={20}
+                  stepNumber={26}
                   title="Technology Roadmap Review"
                   items={[
-                    { id: "20.1", label: "Annual technology review scheduled", details: "Fitness assessment, emerging opportunities, vendor review, strategy update" },
-                    { id: "20.2", label: "Regulatory technology scanning in place", details: "RegTech innovations, industry events, pilot programmes, peer learning" },
-                    { id: "20.3", label: "Multi-year technology roadmap defined", details: "12 months detailed, 1-3 years strategic, 3+ years vision" }
+                    { id: "26.1", label: "Annual technology review scheduled", details: "Fitness assessment, emerging opportunities, vendor review, strategy update" },
+                    { id: "26.2", label: "Regulatory technology scanning in place", details: "RegTech innovations, industry events, pilot programmes, peer learning" },
+                    { id: "26.3", label: "Multi-year technology roadmap defined", details: "12 months detailed, 1-3 years strategic, 3+ years vision" }
                   ]}
                 />
               </CardContent>
@@ -1155,7 +1155,7 @@ const CDT3BTechnologyRequirementsPart2 = () => {
 
         {/* Navigation Footer */}
         <div className="mt-8 flex flex-col sm:flex-row justify-between gap-4">
-          <Button variant="outline" onClick={() => navigate("/modules/cd-t3a-technology-requirements-part1")}>
+          <Button variant="outline" onClick={() => navigate("/enablement/technology")}>
             ← Part 1: Foundation & Selection
           </Button>
           <Button onClick={() => navigate("/dashboard")}>

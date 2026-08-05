@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -34,7 +34,8 @@ import {
   Target,
   Users,
   Landmark,
-  Search
+  Search,
+  ArrowRight
 } from "lucide-react";
 
 const MODULE_ID = 'CD-I7';
@@ -1494,6 +1495,28 @@ export default function CDI7ADataEvidenceManagementPart1() {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
+              </CardContent>
+            </Card>
+
+            {/* Continue to Part 2 */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ArrowRight className="h-5 w-5 text-primary" />
+                  Continue to Part 2
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Part 2 continues with Steps 12-19, covering the attestation framework, Board evidence packs,
+                  evidence challenge, regulatory examination readiness, evidence governance, and escalation protocols.
+                </p>
+                <Button asChild>
+                  <Link to="/cross-cutting/data-evidence-part2">
+                    Continue to Part 2: Attestation &amp; Governance
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>

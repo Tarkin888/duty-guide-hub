@@ -73,7 +73,9 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     icon: Shield,
     items: [
       { title: "Governance Framework", url: "/governance/framework", icon: Shield, moduleId: "cd-p1-governance-framework" },
+      { title: "CD-P1: Governance Framework (Part 2)", url: "/governance/framework-part2", icon: Shield },
       { title: "Policy Development", url: "/governance/policy", icon: FileText, moduleId: "cd-p2-policy-framework" },
+      { title: "CD-P2: Policy Development (Part 2)", url: "/governance/policy-part2", icon: FileText },
       { title: "Implementation Roadmap", url: "/governance/roadmap", icon: Target, moduleId: "cd-p3-implementation-roadmap" },
     ],
   },
@@ -96,6 +98,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
       { title: "Vulnerable Customers", url: "/cross-cutting/vulnerable-customers", icon: Users, moduleId: "cd-i5-vulnerable-customers" },
       { title: "Distribution Chain", url: "/cross-cutting/distribution-chain", icon: Link2, moduleId: "cd-i6-distribution-chain" },
       { title: "Data & Evidence", url: "/cross-cutting/data-evidence", icon: Database, moduleId: "cd-i7-data-evidence" },
+      { title: "CD-I7: Data & Evidence (Part 2)", url: "/cross-cutting/data-evidence-part2", icon: Database },
     ],
   },
   {
@@ -104,8 +107,10 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     icon: GraduationCap,
     items: [
       { title: "Training", url: "/enablement/training", icon: GraduationCap, moduleId: "cd-t1-training" },
+      { title: "CD-T1: Training (Part 2)", url: "/enablement/training-part2", icon: GraduationCap },
       { title: "Change Management", url: "/enablement/change-management", icon: RefreshCw, moduleId: "cd-t2-communications-change" },
       { title: "Technology", url: "/enablement/technology", icon: Settings, moduleId: "cd-t3-technology-requirements" },
+      { title: "CD-T3: Technology (Part 2)", url: "/enablement/technology-part2", icon: Settings },
     ],
   },
   {
