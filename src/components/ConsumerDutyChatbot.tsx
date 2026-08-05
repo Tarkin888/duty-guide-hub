@@ -174,14 +174,17 @@ export const ConsumerDutyChatbot: React.FC<ConsumerDutyChatbotProps> = ({
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to get response. Please try again.';
-      setError(errorMessage);
+      const rawMessage = err instanceof Error ? err.message : String(err);
+      const isRateLimited = /rate limit/i.test(rawMessage);
+      const friendlyMessage = isRateLimited
+        ? 'You have sent a lot of questions in a short time - please wait a moment and try again.'
+        : 'The assistant is temporarily unavailable - please try again shortly';
+      setError(friendlyMessage);
 
       const errorMsg: Message = {
         id: (Date.now() + 2).toString(),
         role: 'assistant',
-        content: `I apologise, but I encountered an error: ${errorMessage}. Please try again or contact support if the issue persists.`,
+        content: friendlyMessage,
         timestamp: new Date(),
       };
 

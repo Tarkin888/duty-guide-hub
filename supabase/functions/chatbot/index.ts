@@ -259,6 +259,16 @@ serve(async (req) => {
     }
 
     const body = await req.json();
+
+    // Client-side failure telemetry: log server-side for monitoring, no AI call.
+    if (body && typeof body === 'object' && typeof (body as Record<string, unknown>).clientError === 'string') {
+      const detail = String((body as Record<string, unknown>).clientError).slice(0, 1000);
+      console.error('Chatbot client failure reported:', detail);
+      return new Response(JSON.stringify({ logged: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const validation = validateInput(body);
     
     if (!validation.valid) {
