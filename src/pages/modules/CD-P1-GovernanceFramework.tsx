@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,7 +28,8 @@ import {
   ClipboardList,
   Calendar,
   GitBranch,
-  Layers
+  Layers,
+  ArrowRight
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -200,7 +202,7 @@ export default function CDP1GovernanceFramework() {
               <CardHeader>
                 <CardTitle>Module Scope</CardTitle>
                 <CardDescription>
-                  Part 1 covers foundational governance structures. Part 2 (separate module) covers 
+                  Part 1 covers foundational governance structures (Steps 1-8). Part 2 continues with Steps 9-16, covering 
                   accountability mechanisms, integration with existing governance, and ongoing operations.
                 </CardDescription>
               </CardHeader>
@@ -231,7 +233,7 @@ export default function CDP1GovernanceFramework() {
                 <div className="border-t pt-4">
                   <h4 className="font-semibold mb-3 flex items-center gap-2 text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    Part 2 Deliverables (Covered in Separate Module)
+                    Part 2 Deliverables (Steps 9-16, available now)
                   </h4>
                   <ul className="grid md:grid-cols-2 gap-2 text-muted-foreground">
                     {[
@@ -1103,6 +1105,29 @@ export default function CDP1GovernanceFramework() {
                 </div>
               </Card>
             </div>
+
+            {/* Continue to Part 2 */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <GitBranch className="h-5 w-5 text-primary" />
+                  Continue to Part 2
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Part 2 continues with Steps 9-16, covering the complete RACI matrix, decision authority,
+                  risk appetite for consumer outcomes, integration with existing committees, Board training,
+                  and governance effectiveness metrics.
+                </p>
+                <Button asChild>
+                  <Link to="/governance/framework-part2">
+                    Continue to Part 2: Accountability &amp; Ongoing Governance
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* TEMPLATES & TOOLS TAB */}
@@ -1388,10 +1413,10 @@ export default function CDP1GovernanceFramework() {
             <Card className="p-4 border-dashed">
               <h4 className="font-semibold mb-3 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-muted-foreground" />
-                Coming in Part 2
+                Continues in Part 2
               </h4>
               <p className="text-sm text-muted-foreground mb-3">
-                Part 2 (CD-P1 continued) will cover accountability mechanisms, integration, and ongoing governance:
+                Part 2 continues with Steps 9-16, covering accountability mechanisms, integration, and ongoing governance:
               </p>
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Complete RACI Matrix (all workstreams)</li>
