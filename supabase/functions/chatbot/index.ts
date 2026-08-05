@@ -273,9 +273,9 @@ serve(async (req) => {
     
     console.log('Processing message. Length:', message.length, 'History:', conversationHistory.length, 'Context:', currentContext || 'none');
 
-    const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+    const apiKey = Deno.env.get('LOVABLE_API_KEY');
     if (!apiKey) {
-      throw new Error('ANTHROPIC_API_KEY is not configured');
+      throw new Error('LOVABLE_API_KEY is not configured');
     }
 
     // Build system prompt with optional current context
@@ -285,39 +285,52 @@ serve(async (req) => {
     }
 
     const messages = [
+      { role: 'system', content: systemPrompt },
       ...conversationHistory.map(item => ({ role: item.role, content: item.content })),
       { role: 'user', content: message }
     ];
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'Lovable-API-Key': apiKey,
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'google/gemini-3.6-flash',
         max_tokens: 1024,
-        system: systemPrompt,
         messages,
       }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Anthropic API error:', errorData);
-      throw new Error(`API Error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+      const errorText = await response.text();
+      console.error('AI gateway error:', response.status, errorText);
+      if (response.status === 429) {
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please wait a moment and try again.' }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: 'AI credits exhausted. Please top up to continue.' }), {
+          status: 402,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      throw new Error(`AI Error: ${response.status}`);
     }
 
     const data = await response.json();
+    const text = data?.choices?.[0]?.message?.content;
 
-    if (!data.content || !data.content[0] || !data.content[0].text) {
-      throw new Error('Invalid response format from API');
+    if (!text) {
+      console.error('Unexpected AI response shape:', JSON.stringify(data).slice(0, 500));
+      throw new Error('Invalid response format from AI');
     }
 
     return new Response(JSON.stringify({ 
-      response: data.content[0].text 
+      response: text 
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
