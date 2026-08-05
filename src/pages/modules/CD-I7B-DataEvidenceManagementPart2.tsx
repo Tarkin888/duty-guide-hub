@@ -928,17 +928,17 @@ export default function CDI7BDataEvidenceManagementPart2() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <ChecklistSection
-                  stepNumber={10}
-                  title="Step 10: Develop Attestation Framework"
+                  stepNumber={12}
+                  title="Step 12: Develop Attestation Framework"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "10.1", label: "Map all attestation requirements (Board, SMF, process-level)" },
-                    { id: "10.2", label: "Define what each attestation covers" },
-                    { id: "10.3", label: "Specify evidence required for each attestation" },
-                    { id: "10.4", label: "Create attestation statement templates" },
-                    { id: "10.5", label: "Define sign-off procedures and workflows" },
-                    { id: "10.6", label: "Set review/renewal frequencies" },
-                    { id: "10.7", label: "Implement attestation tracking system" },
+                    { id: "12.1", label: "Map all attestation requirements (Board, SMF, process-level)" },
+                    { id: "12.2", label: "Define what each attestation covers" },
+                    { id: "12.3", label: "Specify evidence required for each attestation" },
+                    { id: "12.4", label: "Create attestation statement templates" },
+                    { id: "12.5", label: "Define sign-off procedures and workflows" },
+                    { id: "12.6", label: "Set review/renewal frequencies" },
+                    { id: "12.7", label: "Implement attestation tracking system" },
                   ]}
                 />
 
@@ -979,16 +979,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
                 </div>
 
                 <ChecklistSection
-                  stepNumber={11}
-                  title="Step 11: Create Board Reporting Evidence Pack Structure"
+                  stepNumber={13}
+                  title="Step 13: Create Board Reporting Evidence Pack Structure"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "11.1", label: "Define core evidence requirements for annual assessment" },
-                    { id: "11.2", label: "Create evidence pack template with all sections" },
-                    { id: "11.3", label: "Specify data requirements for each section" },
-                    { id: "11.4", label: "Define review and challenge process before Board" },
-                    { id: "11.5", label: "Establish version control for Board packs" },
-                    { id: "11.6", label: "Train teams on completing evidence pack" },
+                    { id: "13.1", label: "Define core evidence requirements for annual assessment" },
+                    { id: "13.2", label: "Create evidence pack template with all sections" },
+                    { id: "13.3", label: "Specify data requirements for each section" },
+                    { id: "13.4", label: "Define review and challenge process before Board" },
+                    { id: "13.5", label: "Establish version control for Board packs" },
+                    { id: "13.6", label: "Train teams on completing evidence pack" },
                   ]}
                 />
 
@@ -1017,16 +1017,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
                 </div>
 
                 <ChecklistSection
-                  stepNumber={12}
-                  title="Step 12: Implement Evidence Challenge Process"
+                  stepNumber={14}
+                  title="Step 14: Implement Evidence Challenge Process"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "12.1", label: "Define challenge requirements (who challenges what)" },
-                    { id: "12.2", label: "Create challenge checklist and question bank" },
-                    { id: "12.3", label: "Establish challenge forum (pre-Board review meeting)" },
-                    { id: "12.4", label: "Train challengers (NEDs, Compliance, Internal Audit)" },
-                    { id: "12.5", label: "Document challenge and response process" },
-                    { id: "12.6", label: "Escalate unresolved challenges to Board" },
+                    { id: "14.1", label: "Define challenge requirements (who challenges what)" },
+                    { id: "14.2", label: "Create challenge checklist and question bank" },
+                    { id: "14.3", label: "Establish challenge forum (pre-Board review meeting)" },
+                    { id: "14.4", label: "Train challengers (NEDs, Compliance, Internal Audit)" },
+                    { id: "14.5", label: "Document challenge and response process" },
+                    { id: "14.6", label: "Escalate unresolved challenges to Board" },
                   ]}
                 />
 
@@ -1056,16 +1056,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <ChecklistSection
-                  stepNumber={13}
-                  title="Step 13: Conduct Regulatory Examination Readiness Assessment"
+                  stepNumber={15}
+                  title="Step 15: Conduct Regulatory Examination Readiness Assessment"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "13.1", label: "Review FCA examination priorities (2025/26 focus areas)" },
-                    { id: "13.2", label: "Self-assess readiness across all areas" },
-                    { id: "13.3", label: "Conduct mock document request exercise" },
-                    { id: "13.4", label: "Test document retrieval speed (can find within 48 hours?)" },
-                    { id: "13.5", label: "Identify evidence gaps and remediate" },
-                    { id: "13.6", label: "Conduct mock interviews with Board/SMFs" },
+                    { id: "15.1", label: "Review FCA examination priorities (2025/26 focus areas)" },
+                    { id: "15.2", label: "Self-assess readiness across all areas" },
+                    { id: "15.3", label: "Conduct mock document request exercise" },
+                    { id: "15.4", label: "Test document retrieval speed (can find within 48 hours?)" },
+                    { id: "15.5", label: "Identify evidence gaps and remediate" },
+                    { id: "15.6", label: "Conduct mock interviews with Board/SMFs" },
                   ]}
                 />
 
@@ -1189,16 +1189,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
                 </div>
 
                 <ChecklistSection
-                  stepNumber={14}
-                  title="Step 14: Prepare Board and SMFs for Regulatory Interaction"
+                  stepNumber={16}
+                  title="Step 16: Prepare Board and SMFs for Regulatory Interaction"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "14.1", label: "Briefing sessions for Board/NEDs on FCA examination" },
-                    { id: "14.2", label: "SMF coaching on demonstrating reasonable steps" },
-                    { id: "14.3", label: "Practice interviews (mock examination)" },
-                    { id: "14.4", label: "Review key evidence each individual may be asked about" },
-                    { id: "14.5", label: "Messaging alignment (consistent narrative)" },
-                    { id: "14.6", label: "FAQ development for common questions" },
+                    { id: "16.1", label: "Briefing sessions for Board/NEDs on FCA examination" },
+                    { id: "16.2", label: "SMF coaching on demonstrating reasonable steps" },
+                    { id: "16.3", label: "Practice interviews (mock examination)" },
+                    { id: "16.4", label: "Review key evidence each individual may be asked about" },
+                    { id: "16.5", label: "Messaging alignment (consistent narrative)" },
+                    { id: "16.6", label: "FAQ development for common questions" },
                   ]}
                 />
 
@@ -1238,16 +1238,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <ChecklistSection
-                  stepNumber={15}
-                  title="Step 15: Establish Evidence Governance Committee"
+                  stepNumber={17}
+                  title="Step 17: Establish Evidence Governance Committee"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "15.1", label: "Define committee purpose and scope" },
-                    { id: "15.2", label: "Establish membership (cross-functional)" },
-                    { id: "15.3", label: "Create terms of reference" },
-                    { id: "15.4", label: "Set meeting frequency (quarterly minimum)" },
-                    { id: "15.5", label: "Define agenda and reporting" },
-                    { id: "15.6", label: "Link to Consumer Duty Oversight Committee" },
+                    { id: "17.1", label: "Define committee purpose and scope" },
+                    { id: "17.2", label: "Establish membership (cross-functional)" },
+                    { id: "17.3", label: "Create terms of reference" },
+                    { id: "17.4", label: "Set meeting frequency (quarterly minimum)" },
+                    { id: "17.5", label: "Define agenda and reporting" },
+                    { id: "17.6", label: "Link to Consumer Duty Oversight Committee" },
                   ]}
                 />
 
@@ -1287,16 +1287,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
                 </div>
 
                 <ChecklistSection
-                  stepNumber={16}
-                  title="Step 16: Implement Evidence Quality Monitoring"
+                  stepNumber={18}
+                  title="Step 18: Implement Evidence Quality Monitoring"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "16.1", label: "Define evidence quality metrics" },
-                    { id: "16.2", label: "Set targets for each metric" },
-                    { id: "16.3", label: "Implement spot-check sampling programme" },
-                    { id: "16.4", label: "Review quality quarterly" },
-                    { id: "16.5", label: "Address systemic issues identified" },
-                    { id: "16.6", label: "Report to Evidence Governance Committee" },
+                    { id: "18.1", label: "Define evidence quality metrics" },
+                    { id: "18.2", label: "Set targets for each metric" },
+                    { id: "18.3", label: "Implement spot-check sampling programme" },
+                    { id: "18.4", label: "Review quality quarterly" },
+                    { id: "18.5", label: "Address systemic issues identified" },
+                    { id: "18.6", label: "Report to Evidence Governance Committee" },
                   ]}
                 />
 
@@ -1346,16 +1346,16 @@ export default function CDI7BDataEvidenceManagementPart2() {
                 </div>
 
                 <ChecklistSection
-                  stepNumber={17}
-                  title="Step 17: Establish Evidence Escalation Protocols"
+                  stepNumber={19}
+                  title="Step 19: Establish Evidence Escalation Protocols"
                   moduleId="cd-i7b"
                   items={[
-                    { id: "17.1", label: "Define what constitutes an evidence issue requiring escalation" },
-                    { id: "17.2", label: "Create escalation pathways by severity" },
-                    { id: "17.3", label: "Define roles and responsibilities in escalation" },
-                    { id: "17.4", label: "Set response timeframes" },
-                    { id: "17.5", label: "Establish resolution tracking" },
-                    { id: "17.6", label: "Report escalations to governance" },
+                    { id: "19.1", label: "Define what constitutes an evidence issue requiring escalation" },
+                    { id: "19.2", label: "Create escalation pathways by severity" },
+                    { id: "19.3", label: "Define roles and responsibilities in escalation" },
+                    { id: "19.4", label: "Set response timeframes" },
+                    { id: "19.5", label: "Establish resolution tracking" },
+                    { id: "19.6", label: "Report escalations to governance" },
                   ]}
                 />
 
