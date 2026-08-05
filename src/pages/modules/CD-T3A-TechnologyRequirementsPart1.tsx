@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,7 +33,8 @@ import {
   Zap,
   Cloud,
   HardDrive,
-  Network
+  Network,
+  ArrowRight
 } from "lucide-react";
 
 const MODULE_ID = "cd-t3a";
@@ -1075,6 +1076,28 @@ const CDT3ATechnologyRequirementsPart1 = () => {
                     { id: "13-9", label: "Monitor closely for first 48 hours" },
                   ]}
                 />
+              </CardContent>
+            </Card>
+
+            {/* Continue to Part 2 */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ArrowRight className="h-5 w-5 text-primary" />
+                  Continue to Part 2
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Part 2 continues with Steps 14-26, covering system testing, training materials, phased
+                  roll-out, the technology support model, effectiveness monitoring, and the enhancement pipeline.
+                </p>
+                <Button asChild>
+                  <Link to="/enablement/technology-part2">
+                    Continue to Part 2: Operations &amp; Embedding
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
