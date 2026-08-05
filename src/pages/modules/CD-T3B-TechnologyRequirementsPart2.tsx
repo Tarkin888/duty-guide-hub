@@ -151,10 +151,10 @@ const CDT3BTechnologyRequirementsPart2 = () => {
                 <Link className="h-5 w-5 text-info" />
                 <div>
                   <p className="font-medium text-foreground">This is Part 2 of the Technology Enablement module</p>
-                  <p className="text-sm text-muted-foreground">Part 1 covers Foundation & Selection (Phases 1-2, Steps 1-7)</p>
+                  <p className="text-sm text-muted-foreground">Part 1 covers Steps 1-13: requirements, solution selection, architecture, build and go-live preparation</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm" onClick={() => navigate("/modules/cd-t3a-technology-requirements-part1")}>
+              <Button variant="outline" size="sm" onClick={() => navigate("/enablement/technology")}>
                 View Part 1
               </Button>
             </div>
@@ -1155,7 +1155,7 @@ const CDT3BTechnologyRequirementsPart2 = () => {
 
         {/* Navigation Footer */}
         <div className="mt-8 flex flex-col sm:flex-row justify-between gap-4">
-          <Button variant="outline" onClick={() => navigate("/modules/cd-t3a-technology-requirements-part1")}>
+          <Button variant="outline" onClick={() => navigate("/enablement/technology")}>
             ← Part 1: Foundation & Selection
           </Button>
           <Button onClick={() => navigate("/dashboard")}>
