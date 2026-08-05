@@ -26,9 +26,17 @@ import {
   Printer
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
+import { toast } from "sonner";
 
 export default function CDM2ATestingAssurancePart1() {
   const navigate = useNavigate();
+  const { status, setStatus } = useModuleStatusControls("cd-m2-testing-assurance");
+
+  const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
+    setStatus(newStatus);
+    toast.success(`Module status updated to ${newStatus.replace("-", " ")}`);
+  };
 
   const handlePrint = () => {
     window.print();
@@ -52,7 +60,20 @@ export default function CDM2ATestingAssurancePart1() {
               Testing Framework Design & Methodology
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <select
+              value={status}
+              onChange={(e) => handleStatusChange(e.target.value as "not-started" | "in-progress" | "completed")}
+              aria-label="Module status"
+              className="px-3 py-2 border rounded-md text-sm bg-background"
+            >
+              <option value="not-started">Not Started</option>
+              <option value="in-progress">Mark In Progress</option>
+              <option value="completed">Mark Complete</option>
+            </select>
+            <Badge variant="secondary" className="text-sm">
+              {status.replace("-", " ").toUpperCase()}
+            </Badge>
             <Button variant="outline" size="sm" onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Print
@@ -1264,8 +1285,8 @@ export default function CDM2ATestingAssurancePart1() {
         <Button variant="outline" onClick={() => navigate("/modules/cd-m1-mi-framework")}>
           Previous: CD-M1 MI Framework
         </Button>
-        <Button onClick={() => navigate("/modules/cd-m2b-testing-assurance-part2")}>
-          Next: CD-M2B Testing Execution
+        <Button onClick={() => navigate("/monitoring/board-reporting")}>
+          Next: CD-M3 Annual Board Attestation &amp; Reporting
         </Button>
       </div>
     </div>
