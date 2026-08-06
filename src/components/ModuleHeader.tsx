@@ -234,10 +234,16 @@ export const ModuleHeader = ({
               )}
 
               {status === 'complete' ? (
-                <Button variant="outline" size="sm" onClick={handleResetClick}>
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Reset Progress
-                </Button>
+                <>
+                  <Button variant="secondary" size="sm" onClick={handleReopen}>
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Reopen Module
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={handleResetClick}>
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Reset Progress
+                  </Button>
+                </>
               ) : (
                 <Button size="sm" onClick={handleMarkCompleteClick}>
                   <CheckCircle2 className="h-4 w-4 mr-2" />
