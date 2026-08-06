@@ -254,7 +254,7 @@ export default function CDRiskAssessment() {
                 </div>
                 <div className="flex items-start gap-2">
                   <Badge variant="outline">Feeds into</Badge>
-                  <span className="text-sm">CD-P4 (Implementation roadmap), CD-I1-I4 (Four outcomes), CD-M1 (MI framework)</span>
+                  <span className="text-sm">CD-P3 (Implementation roadmap), CD-I1-I4 (Four outcomes), CD-M1 (MI framework)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Badge variant="outline">Parallel with</Badge>
@@ -798,14 +798,6 @@ export default function CDRiskAssessment() {
 
           {/* Implementation Steps Tab - Part 1 */}
           <TabsContent value="implementation" className="space-y-6">
-            <Alert className="border-primary/50 bg-primary/5">
-              <BookOpen className="h-5 w-5 text-primary" />
-              <AlertTitle>Note: Implementation Part 1</AlertTitle>
-              <AlertDescription>
-                This tab contains Steps 1-3 covering Risk Assessment Preparation and Risk Identification (Weeks 1-3). 
-                Steps 4-6 (Impact Assessment, Mitigation Strategy, and Board Reporting) will be covered in Part 2.
-              </AlertDescription>
-            </Alert>
 
             <div className="space-y-6">
               {/* Phase 1 */}

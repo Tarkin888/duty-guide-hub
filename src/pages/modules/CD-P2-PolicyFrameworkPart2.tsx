@@ -40,7 +40,7 @@ export default function CDP2PolicyFrameworkPart2() {
             <span>/</span>
             <span>Governance & Planning</span>
             <span>/</span>
-            <span className="text-foreground">CD-P2: Policy Framework - Part 2</span>
+            <span className="text-foreground">CD-P2B: Policy Framework - Part 2</span>
           </div>
           
           <div className="flex items-start justify-between">
