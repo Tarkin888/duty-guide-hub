@@ -71,9 +71,12 @@ export interface AggregateProgress {
 interface ModuleMeta {
   completedAt?: string;
   lastAccessedAt?: string;
-  /** Only used for modules that have no checklist items at all */
+  /** Explicitly marked complete by the user: forces this module to 100% */
   manualComplete?: boolean;
+  /** Explicitly marked in progress by the user (persists with zero ticked items) */
+  manualInProgress?: boolean;
 }
+
 
 interface ProgressState {
   /** THE single source of truth: which checklist items are ticked */
