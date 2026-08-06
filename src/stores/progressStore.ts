@@ -508,8 +508,9 @@ export const useProgressStore = create<ProgressState>()(
         window.dispatchEvent(new Event('module-progress-updated'));
 
         toast.info('Module reopened', {
-          description: `${getModuleDisplayName(canonicalId)} is back in progress; your ticked items have been kept.`,
-
+          description: hasCheckedItems
+            ? `${getModuleDisplayName(canonicalId)} is back in progress; your ticked items have been kept.`
+            : `${getModuleDisplayName(canonicalId)} is back to not started; no items are currently ticked.`,
         });
       },
 
