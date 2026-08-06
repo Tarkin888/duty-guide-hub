@@ -820,3 +820,50 @@ export function useModulesMap(): Record<string, ModuleProgress> {
   const moduleMeta = useProgressStore((state) => state.moduleMeta);
   return deriveModulesMap(checkedItems, moduleMeta);
 }
+
+// ---------------------------------------------------------------------------
+// THE single progress calculation entry point.
+// Every view (dashboard circle, category bars, badges, counters) resolves a
+// module's numbers through this one function.
+// ---------------------------------------------------------------------------
+
+export interface ModuleProgressSummary {
+  moduleId: string;
+  checkedItems: number;
+  totalItems: number;
+  percentComplete: number;
+  isMarkedComplete: boolean;
+  status: ModuleStatusValue;
+}
+
+function toSummary(progress: ModuleProgress): ModuleProgressSummary {
+  return {
+    moduleId: progress.moduleId,
+    checkedItems: progress.completedItems,
+    totalItems: progress.totalItems,
+    percentComplete: progress.percentage,
+    isMarkedComplete: progress.isMarkedComplete,
+    status: progress.status,
+  };
+}
+
+/** Non-reactive read (event handlers, exports, tests) */
+export function getModuleProgressSummary(moduleCode: string): ModuleProgressSummary {
+  const state = useProgressStore.getState();
+  return toSummary(deriveModuleProgress(moduleCode, state.checkedItems, state.moduleMeta));
+}
+
+/** Reactive read for components */
+export function useModuleProgressSummary(moduleCode: string): ModuleProgressSummary {
+  return toSummary(useModuleProgress(moduleCode));
+}
+
+// Cross-tab sync: another tab writing progress rehydrates this one, so open
+// pages update without a manual refresh.
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY) {
+      void useProgressStore.persist?.rehydrate();
+    }
+  });
+}
