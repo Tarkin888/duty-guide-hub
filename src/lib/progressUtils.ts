@@ -182,6 +182,8 @@ export function getModuleChecklistProgress(moduleId: string): ChecklistProgress 
     totalItems: progress.totalItems,
     percentage: progress.percentage,
     isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
+    isMarkedComplete: progress.isMarkedComplete === true,
+    itemPercentage: progress.itemPercentage,
   };
 }
 
@@ -247,6 +249,8 @@ export function useModuleChecklistProgress(moduleId: string): ChecklistProgress 
     totalItems: progress.totalItems,
     percentage: progress.percentage,
     isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
+    isMarkedComplete: progress.isMarkedComplete === true,
+    itemPercentage: progress.itemPercentage,
     status: progress.status,
   };
 }
