@@ -25,7 +25,6 @@ export const useMaturityAssessment = () => {
   const { toast } = useToast();
   const hasLoadedOnce = useRef(false);
 
-  const { loading: authLoading } = useAuth();
   const userId = user?.id || null;
 
   const fetchAssessments = async () => {
