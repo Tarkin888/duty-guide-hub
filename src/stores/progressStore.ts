@@ -43,8 +43,14 @@ export interface ModuleProgress {
   completedItems: number;
   /** Fixed number of checklist items for this module (from the static registry) */
   totalItems: number;
+  /** Proportional completion: 100 when the module is explicitly marked complete */
   percentage: number;
+  /** Percentage derived purely from ticked checklist items */
+  itemPercentage: number;
+  /** True when the user has explicitly forced this module to 100% */
+  isMarkedComplete: boolean;
 }
+
 
 export interface Activity {
   id: string;
