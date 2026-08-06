@@ -43,8 +43,14 @@ export interface ModuleProgress {
   completedItems: number;
   /** Fixed number of checklist items for this module (from the static registry) */
   totalItems: number;
+  /** Proportional completion: 100 when the module is explicitly marked complete */
   percentage: number;
+  /** Percentage derived purely from ticked checklist items */
+  itemPercentage: number;
+  /** True when the user has explicitly forced this module to 100% */
+  isMarkedComplete: boolean;
 }
+
 
 export interface Activity {
   id: string;
@@ -65,9 +71,12 @@ export interface AggregateProgress {
 interface ModuleMeta {
   completedAt?: string;
   lastAccessedAt?: string;
-  /** Only used for modules that have no checklist items at all */
+  /** Explicitly marked complete by the user: forces this module to 100% */
   manualComplete?: boolean;
+  /** Explicitly marked in progress by the user (persists with zero ticked items) */
+  manualInProgress?: boolean;
 }
+
 
 interface ProgressState {
   /** THE single source of truth: which checklist items are ticked */
@@ -126,13 +135,17 @@ export function deriveModuleProgress(
     0
   );
 
+  const itemPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+  const isMarkedComplete = meta.manualComplete === true;
+
   let status: ModuleStatusValue = 'not-started';
-  if (totalItems > 0) {
-    if (completedItems === totalItems) status = 'complete';
-    else if (completedItems > 0) status = 'in-progress';
-  } else if (meta.manualComplete) {
+  if (isMarkedComplete) {
     status = 'complete';
-  } else if (meta.lastAccessedAt) {
+  } else if (totalItems > 0 && completedItems === totalItems) {
+    status = 'complete';
+  } else if (completedItems > 0 || meta.manualInProgress === true) {
+    status = 'in-progress';
+  } else if (totalItems === 0 && meta.lastAccessedAt) {
     status = 'in-progress';
   }
 
@@ -143,10 +156,17 @@ export function deriveModuleProgress(
     lastAccessedAt: meta.lastAccessedAt,
     completedItems,
     totalItems,
-    percentage: totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0,
+    // Marked complete forces 100%; otherwise the module's own item proportion
+    percentage: isMarkedComplete ? 100 : itemPercentage,
+    itemPercentage,
+    isMarkedComplete,
   };
 }
 
+/**
+ * Aggregate for a set of modules. The percentage is PROPORTIONAL: each module
+ * contributes its own completion share, so ticking a single item moves the bar.
+ */
 function deriveAggregate(
   moduleIds: string[],
   checkedItems: Record<string, boolean>,
@@ -154,10 +174,12 @@ function deriveAggregate(
 ): AggregateProgress {
   let completed = 0;
   let inProgress = 0;
+  let percentSum = 0;
   for (const id of moduleIds) {
-    const status = deriveModuleProgress(id, checkedItems, moduleMeta).status;
-    if (status === 'complete') completed++;
-    else if (status === 'in-progress') inProgress++;
+    const progress = deriveModuleProgress(id, checkedItems, moduleMeta);
+    if (progress.status === 'complete') completed++;
+    else if (progress.status === 'in-progress') inProgress++;
+    percentSum += progress.percentage;
   }
   const total = moduleIds.length;
   return {
@@ -165,8 +187,9 @@ function deriveAggregate(
     inProgress,
     notStarted: total - completed - inProgress,
     total,
-    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    percentage: total > 0 ? Math.round(percentSum / total) : 0,
   };
+
 }
 
 export function deriveCheckedItemsCount(checkedItems: Record<string, boolean>): number {
@@ -393,37 +416,33 @@ export const useProgressStore = create<ProgressState>()(
 
       markModuleComplete: (moduleId, showToast = true) => {
         const canonicalId = normalizeModuleId(moduleId);
-        const definition = getModuleDefinition(canonicalId);
         const now = new Date().toISOString();
 
-        set((state) => {
-          const checkedItems = { ...state.checkedItems };
-          definition?.items.forEach((key) => {
-            checkedItems[key] = true;
-          });
-          return {
-            checkedItems,
-            moduleMeta: {
-              ...state.moduleMeta,
-              [canonicalId]: {
-                ...state.moduleMeta[canonicalId],
-                completedAt: state.moduleMeta[canonicalId]?.completedAt || now,
-                lastAccessedAt: now,
-                manualComplete: definition && definition.items.length === 0 ? true : undefined,
-              },
+        // Mark Complete sets an explicit flag that forces this module to 100%.
+        // Individual checklist ticks are left untouched, so unchecking items
+        // after reopening the module lowers the percentage again.
+        set((state) => ({
+          moduleMeta: {
+            ...state.moduleMeta,
+            [canonicalId]: {
+              ...state.moduleMeta[canonicalId],
+              completedAt: state.moduleMeta[canonicalId]?.completedAt || now,
+              lastAccessedAt: now,
+              manualComplete: true,
+              manualInProgress: undefined,
             },
-            activities: [
-              newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
-              ...state.activities,
-            ].slice(0, 50),
-            startDate: state.startDate || now,
-          };
-        });
+          },
+          activities: [
+            newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
+            ...state.activities,
+          ].slice(0, 50),
+          startDate: state.startDate || now,
+        }));
 
         window.dispatchEvent(new Event('module-progress-updated'));
 
         if (showToast) {
-          toast.success('Module complete', {
+          toast.success('Status updated', {
             description: `${getModuleDisplayName(canonicalId)} marked as complete.`,
           });
         }
@@ -439,7 +458,9 @@ export const useProgressStore = create<ProgressState>()(
             [canonicalId]: {
               ...state.moduleMeta[canonicalId],
               lastAccessedAt: now,
+              completedAt: undefined,
               manualComplete: undefined,
+              manualInProgress: true,
             },
           },
           activities: [
@@ -452,7 +473,7 @@ export const useProgressStore = create<ProgressState>()(
         window.dispatchEvent(new Event('module-progress-updated'));
 
         if (showToast) {
-          toast.info('Module in progress', {
+          toast.success('Status updated', {
             description: `${getModuleDisplayName(canonicalId)} is now in progress.`,
           });
         }
@@ -460,33 +481,28 @@ export const useProgressStore = create<ProgressState>()(
 
       reopenModule: (moduleId) => {
         const canonicalId = normalizeModuleId(moduleId);
-        const definition = getModuleDefinition(canonicalId);
         const now = new Date().toISOString();
 
-        set((state) => {
-          const checkedItems = { ...state.checkedItems };
-          // Completion is derived from the checklist, so reopening clears the ticks
-          definition?.items.forEach((key) => {
-            delete checkedItems[key];
-          });
-          return {
-            checkedItems,
-            moduleMeta: {
-              ...state.moduleMeta,
-              [canonicalId]: {
-                ...state.moduleMeta[canonicalId],
-                completedAt: undefined,
-                lastAccessedAt: now,
-                manualComplete: undefined,
-              },
+        // Clears only the explicit completion flag - ticked checklist items are
+        // preserved, so the module falls back to its real item-based percentage.
+        set((state) => ({
+          moduleMeta: {
+            ...state.moduleMeta,
+            [canonicalId]: {
+              ...state.moduleMeta[canonicalId],
+              completedAt: undefined,
+              lastAccessedAt: now,
+              manualComplete: undefined,
+              manualInProgress: true,
             },
-          };
-        });
+          },
+        }));
 
         window.dispatchEvent(new Event('module-progress-updated'));
 
         toast.info('Module reopened', {
-          description: `${getModuleDisplayName(canonicalId)} is back in progress and its checklist has been cleared.`,
+          description: `${getModuleDisplayName(canonicalId)} is back in progress; your ticked items have been kept.`,
+
         });
       },
 
@@ -693,7 +709,7 @@ export const useProgressStore = create<ProgressState>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         checkedItems: state.checkedItems,
@@ -702,6 +718,32 @@ export const useProgressStore = create<ProgressState>()(
         startDate: state.startDate,
         migratedLegacy: state.migratedLegacy,
       }),
+      /**
+       * v3 -> v4 (proportional calculation model). No data is lost: ticked
+       * items and module meta carry over untouched. Modules previously marked
+       * complete had every item ticked, so they keep their explicit 100% via
+       * the manualComplete flag. Runs once, guarded by the persisted version.
+       */
+      migrate: (persisted, fromVersion) => {
+        const state = (persisted || {}) as Partial<ProgressState>;
+        if (fromVersion >= 4) return state as ProgressState;
+
+        const checkedItems = state.checkedItems || {};
+        const moduleMeta: Record<string, ModuleMeta> = { ...(state.moduleMeta || {}) };
+
+        for (const moduleId of ALL_MODULE_IDS) {
+          const itemKeys = getModuleItemKeys(moduleId);
+          const meta = moduleMeta[moduleId];
+          if (!meta) continue;
+          const allTicked =
+            itemKeys.length > 0 && itemKeys.every((key) => checkedItems[key] === true);
+          if (allTicked || meta.manualComplete) {
+            moduleMeta[moduleId] = { ...meta, manualComplete: true };
+          }
+        }
+
+        return { ...state, moduleMeta } as ProgressState;
+      },
       onRehydrateStorage: () => (state) => {
         if (!state || state.migratedLegacy) return;
 
@@ -714,6 +756,7 @@ export const useProgressStore = create<ProgressState>()(
         state.migratedLegacy = true;
       },
     }
+
   )
 );
 
@@ -776,4 +819,51 @@ export function useModulesMap(): Record<string, ModuleProgress> {
   const checkedItems = useProgressStore((state) => state.checkedItems);
   const moduleMeta = useProgressStore((state) => state.moduleMeta);
   return deriveModulesMap(checkedItems, moduleMeta);
+}
+
+// ---------------------------------------------------------------------------
+// THE single progress calculation entry point.
+// Every view (dashboard circle, category bars, badges, counters) resolves a
+// module's numbers through this one function.
+// ---------------------------------------------------------------------------
+
+export interface ModuleProgressSummary {
+  moduleId: string;
+  checkedItems: number;
+  totalItems: number;
+  percentComplete: number;
+  isMarkedComplete: boolean;
+  status: ModuleStatusValue;
+}
+
+function toSummary(progress: ModuleProgress): ModuleProgressSummary {
+  return {
+    moduleId: progress.moduleId,
+    checkedItems: progress.completedItems,
+    totalItems: progress.totalItems,
+    percentComplete: progress.percentage,
+    isMarkedComplete: progress.isMarkedComplete,
+    status: progress.status,
+  };
+}
+
+/** Non-reactive read (event handlers, exports, tests) */
+export function getModuleProgressSummary(moduleCode: string): ModuleProgressSummary {
+  const state = useProgressStore.getState();
+  return toSummary(deriveModuleProgress(moduleCode, state.checkedItems, state.moduleMeta));
+}
+
+/** Reactive read for components */
+export function useModuleProgressSummary(moduleCode: string): ModuleProgressSummary {
+  return toSummary(useModuleProgress(moduleCode));
+}
+
+// Cross-tab sync: another tab writing progress rehydrates this one, so open
+// pages update without a manual refresh.
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY) {
+      void useProgressStore.persist?.rehydrate();
+    }
+  });
 }

@@ -117,11 +117,14 @@ function buildCategoryProgress(
   const moduleIds = MODULE_CATEGORIES[categoryKey] || [];
   let completed = 0;
   let inProgress = 0;
+  let percentSum = 0;
 
   for (const moduleId of moduleIds) {
-    const status = statuses.get(moduleId)?.status || ModuleStatus.NOT_STARTED;
+    const info = statuses.get(moduleId);
+    const status = info?.status || ModuleStatus.NOT_STARTED;
     if (status === ModuleStatus.COMPLETE) completed++;
     else if (status === ModuleStatus.IN_PROGRESS) inProgress++;
+    percentSum += info?.percentage ?? 0;
   }
 
   const total = moduleIds.length;
@@ -132,9 +135,11 @@ function buildCategoryProgress(
     inProgress,
     notStarted: total - completed - inProgress,
     total,
-    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    // Proportional: each module contributes its own completion share
+    percentage: total > 0 ? Math.round(percentSum / total) : 0,
   };
 }
+
 
 export function calculateCategoryProgress(categoryKey: CategoryKey): CategoryProgress {
   return buildCategoryProgress(categoryKey, getAllModuleStatuses());
@@ -197,9 +202,11 @@ export function useProgressCalculation() {
 
   let completed = 0;
   let inProgress = 0;
+  let percentSum = 0;
   for (const [, info] of moduleStatuses) {
     if (info.status === ModuleStatus.COMPLETE) completed++;
     else if (info.status === ModuleStatus.IN_PROGRESS) inProgress++;
+    percentSum += info.percentage;
   }
 
   const overall: OverallProgress = {
@@ -207,8 +214,9 @@ export function useProgressCalculation() {
     inProgress,
     notStarted: TOTAL_MODULES - completed - inProgress,
     total: TOTAL_MODULES,
-    percentage: Math.round((completed / TOTAL_MODULES) * 100),
+    percentage: Math.round(percentSum / TOTAL_MODULES),
   };
+
 
   const categories = CATEGORY_KEYS.reduce((acc, key) => {
     acc[key] = buildCategoryProgress(key, moduleStatuses);

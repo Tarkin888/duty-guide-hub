@@ -434,38 +434,45 @@ export default function Dashboard() {
                     title="Foundation" 
                     completed={foundationProgress.completed}
                     total={foundationProgress.total}
+                    percentage={foundationProgress.percentage}
                     icon={BookOpen}
                   />
                   <PhaseProgressCard 
                     title="Governance & Planning" 
                     completed={governanceProgress.completed}
                     total={governanceProgress.total}
+                    percentage={governanceProgress.percentage}
                     icon={Shield}
                   />
                   <PhaseProgressCard 
                     title="Four Outcomes" 
                     completed={outcomesProgress.completed}
                     total={outcomesProgress.total}
+                    percentage={outcomesProgress.percentage}
                     icon={ListChecks}
                   />
                   <PhaseProgressCard 
                     title="Cross-Cutting" 
                     completed={crossCuttingProgress.completed}
                     total={crossCuttingProgress.total}
+                    percentage={crossCuttingProgress.percentage}
                     icon={Users}
                   />
                   <PhaseProgressCard 
                     title="Enablement" 
                     completed={enablementProgress.completed}
                     total={enablementProgress.total}
+                    percentage={enablementProgress.percentage}
                     icon={GraduationCap}
                   />
                   <PhaseProgressCard 
                     title="Monitoring & Assurance" 
                     completed={monitoringProgress.completed}
                     total={monitoringProgress.total}
+                    percentage={monitoringProgress.percentage}
                     icon={BarChart3}
                   />
+
                 </div>
 
                 {completionEstimate.weeks !== null && !completionEstimate.isComplete && (

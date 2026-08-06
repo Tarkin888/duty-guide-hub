@@ -17,11 +17,22 @@ export function useModuleStatusControls(storageId: string) {
 
   const status: LegacyStatus = progress.status === 'complete' ? 'completed' : progress.status;
 
-  const setStatus = useCallback((next: LegacyStatus) => {
-    if (next === 'completed') markModuleComplete(canonicalId, false);
-    else if (next === 'in-progress') markModuleInProgress(canonicalId, false);
-    else resetModuleProgress(canonicalId, false);
+  /** Persists the status and returns true only if the store actually saved it. */
+  const setStatus = useCallback((next: LegacyStatus): boolean => {
+    try {
+      if (next === 'completed') markModuleComplete(canonicalId, false);
+      else if (next === 'in-progress') markModuleInProgress(canonicalId, false);
+      else resetModuleProgress(canonicalId, false);
+
+      const saved = useProgressStore.getState().getModuleStatus(canonicalId).status;
+      const expected = next === 'completed' ? 'complete' : next;
+      return saved === expected;
+    } catch (error) {
+      console.error('[useModuleStatusControls] Failed to save status:', error);
+      return false;
+    }
   }, [canonicalId, markModuleComplete, markModuleInProgress, resetModuleProgress]);
 
   return { status, setStatus, canonicalId };
 }
+
