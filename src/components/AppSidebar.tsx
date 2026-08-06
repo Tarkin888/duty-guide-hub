@@ -47,7 +47,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     group: true,
     icon: RefreshCw,
     items: [
-      { title: "Ongoing Monitoring & MI Framework", url: "/monitoring/mi-monitoring", icon: BarChart3 },
+      { title: "Ongoing Monitoring & MI Framework", url: "/ongoing/mi-monitoring", icon: BarChart3 },
       { title: "Evidence Management", url: "/cross-cutting/data-evidence", icon: Database },
       { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube },
       { title: "Annual Fair Value Assessment", url: "/ongoing/fair-value", icon: Scale },
