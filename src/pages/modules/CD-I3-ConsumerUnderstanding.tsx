@@ -40,16 +40,10 @@ const CDI3ConsumerUnderstanding = () => {
 
   const handleMarkComplete = () => {
     setStatus("completed");
-    sonnerToast.success("Module Complete", {
-      description: "Consumer Understanding marked as complete!",
-    });
   };
 
   const handleMarkInProgress = () => {
     setStatus("in-progress");
-    sonnerToast.info("Module In Progress", {
-      description: "Consumer Understanding marked as in progress",
-    });
   };
 
   return (
