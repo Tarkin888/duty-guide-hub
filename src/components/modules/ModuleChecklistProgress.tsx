@@ -34,11 +34,12 @@ interface ModuleChecklistProgressProps {
  */
 export function ModuleChecklistProgress({ moduleId, moduleName }: ModuleChecklistProgressProps) {
   const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
-  const { completedItems, totalItems, percentage, isComplete, isMarkedComplete } =
+  const { completedItems, totalItems, percentage, isComplete, isMarkedComplete, itemPercentage } =
     useModuleChecklistProgress(moduleId);
   // "Mark Complete" forces the percentage to 100% without ticking items, so the
   // count and the percentage describe different things. Label them separately.
   const showsManualOverride = isMarkedComplete && completedItems < totalItems;
+  const itemPercentageLabel = `${itemPercentage}%`;
 
   const handleResetAll = useCallback(() => {
     resetModuleProgress(moduleId);
