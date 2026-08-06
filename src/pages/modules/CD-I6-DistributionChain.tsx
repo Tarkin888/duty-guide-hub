@@ -21,7 +21,6 @@ export default function CDI6DistributionChain() {
 
   const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
     setStatus(newStatus);
-    toast.success(`Module status updated to ${newStatus}`);
   };
 
   const handlePrint = () => {

@@ -1,7 +1,14 @@
 import { useCallback } from 'react';
+import { toast } from 'sonner';
 import { useProgressStore, useModuleProgress, normalizeModuleId } from '@/stores/progressStore';
 
 export type LegacyStatus = 'not-started' | 'in-progress' | 'completed';
+
+const STATUS_LABELS: Record<LegacyStatus, string> = {
+  'not-started': 'Not Started',
+  'in-progress': 'In Progress',
+  completed: 'Complete',
+};
 
 /**
  * Reads module status from the single progress store and exposes setters that
@@ -17,7 +24,11 @@ export function useModuleStatusControls(storageId: string) {
 
   const status: LegacyStatus = progress.status === 'complete' ? 'completed' : progress.status;
 
-  /** Persists the status and returns true only if the store actually saved it. */
+  /**
+   * Persists the status and returns true only if the store actually saved it.
+   * Always confirms the change to the user with a toast, so dropdown-style
+   * controls give the same feedback as the button-style ones.
+   */
   const setStatus = useCallback((next: LegacyStatus): boolean => {
     try {
       if (next === 'completed') markModuleComplete(canonicalId, false);
@@ -26,9 +37,18 @@ export function useModuleStatusControls(storageId: string) {
 
       const saved = useProgressStore.getState().getModuleStatus(canonicalId).status;
       const expected = next === 'completed' ? 'complete' : next;
-      return saved === expected;
+      const didSave = saved === expected;
+
+      if (didSave) {
+        toast.success(`Status updated to ${STATUS_LABELS[next]}`);
+      } else {
+        toast.error('Could not save the status change. Please try again.');
+      }
+
+      return didSave;
     } catch (error) {
       console.error('[useModuleStatusControls] Failed to save status:', error);
+      toast.error('Could not save the status change. Please try again.');
       return false;
     }
   }, [canonicalId, markModuleComplete, markModuleInProgress, resetModuleProgress]);
