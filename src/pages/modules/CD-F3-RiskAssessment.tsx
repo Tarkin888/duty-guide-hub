@@ -796,7 +796,7 @@ export default function CDRiskAssessment() {
             </Accordion>
           </TabsContent>
 
-          {/* Implementation Steps Tab - Part 1 */}
+          {/* Implementation Steps Tab */}
           <TabsContent value="implementation" className="space-y-6">
 
             <div className="space-y-6">
