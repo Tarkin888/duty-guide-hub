@@ -145,7 +145,7 @@ export const useMaturityAssessment = () => {
 
   useEffect(() => {
     fetchAssessments();
-  }, [userId]);
+  }, [userId, authLoading]);
 
   return {
     assessments,
