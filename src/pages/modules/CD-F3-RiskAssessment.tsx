@@ -958,16 +958,9 @@ export default function CDRiskAssessment() {
             </div>
           </TabsContent>
 
-          {/* Templates & Tools Tab - Part 1 */}
+          {/* Templates & Tools Tab */}
           <TabsContent value="templates" className="space-y-6">
-            <Alert className="border-primary/50 bg-primary/5">
-              <FileCheck className="h-5 w-5 text-primary" />
-              <AlertTitle>Note: Templates Part 1</AlertTitle>
-              <AlertDescription>
-                This tab contains core templates for Risk Assessment Preparation and Risk Identification (Part 1). 
-                Additional templates for impact assessment, mitigation planning, and board reporting will be in Part 2.
-              </AlertDescription>
-            </Alert>
+
 
             <div className="grid md:grid-cols-2 gap-6">
               {CD_F3_TEMPLATES.slice(0, 3).map((template) => (
