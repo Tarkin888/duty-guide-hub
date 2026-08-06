@@ -132,13 +132,17 @@ export function deriveModuleProgress(
     0
   );
 
+  const itemPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+  const isMarkedComplete = meta.manualComplete === true;
+
   let status: ModuleStatusValue = 'not-started';
-  if (totalItems > 0) {
-    if (completedItems === totalItems) status = 'complete';
-    else if (completedItems > 0) status = 'in-progress';
-  } else if (meta.manualComplete) {
+  if (isMarkedComplete) {
     status = 'complete';
-  } else if (meta.lastAccessedAt) {
+  } else if (totalItems > 0 && completedItems === totalItems) {
+    status = 'complete';
+  } else if (completedItems > 0 || meta.manualInProgress === true) {
+    status = 'in-progress';
+  } else if (totalItems === 0 && meta.lastAccessedAt) {
     status = 'in-progress';
   }
 
@@ -149,10 +153,17 @@ export function deriveModuleProgress(
     lastAccessedAt: meta.lastAccessedAt,
     completedItems,
     totalItems,
-    percentage: totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0,
+    // Marked complete forces 100%; otherwise the module's own item proportion
+    percentage: isMarkedComplete ? 100 : itemPercentage,
+    itemPercentage,
+    isMarkedComplete,
   };
 }
 
+/**
+ * Aggregate for a set of modules. The percentage is PROPORTIONAL: each module
+ * contributes its own completion share, so ticking a single item moves the bar.
+ */
 function deriveAggregate(
   moduleIds: string[],
   checkedItems: Record<string, boolean>,
@@ -160,10 +171,12 @@ function deriveAggregate(
 ): AggregateProgress {
   let completed = 0;
   let inProgress = 0;
+  let percentSum = 0;
   for (const id of moduleIds) {
-    const status = deriveModuleProgress(id, checkedItems, moduleMeta).status;
-    if (status === 'complete') completed++;
-    else if (status === 'in-progress') inProgress++;
+    const progress = deriveModuleProgress(id, checkedItems, moduleMeta);
+    if (progress.status === 'complete') completed++;
+    else if (progress.status === 'in-progress') inProgress++;
+    percentSum += progress.percentage;
   }
   const total = moduleIds.length;
   return {
@@ -171,8 +184,9 @@ function deriveAggregate(
     inProgress,
     notStarted: total - completed - inProgress,
     total,
-    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    percentage: total > 0 ? Math.round(percentSum / total) : 0,
   };
+
 }
 
 export function deriveCheckedItemsCount(checkedItems: Record<string, boolean>): number {
