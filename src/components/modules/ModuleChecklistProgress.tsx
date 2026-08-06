@@ -16,11 +16,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import { useProgressStore } from "@/stores/progressStore";
+import { useProgressStore, getModuleDisplayName } from "@/stores/progressStore";
 import { useModuleChecklistProgress } from "@/lib/progressUtils";
 
 interface ModuleChecklistProgressProps {
   moduleId: string;
+  /** Display name used in the reset confirmation copy */
+  moduleName?: string;
   /** Retained for backwards compatibility; totals come from the module registry */
   totalSteps?: number;
 }
@@ -30,7 +32,7 @@ interface ModuleChecklistProgressProps {
  * from the single progress store and the static module registry, so the numbers
  * are identical here, on the dashboard and in every badge.
  */
-export function ModuleChecklistProgress({ moduleId }: ModuleChecklistProgressProps) {
+export function ModuleChecklistProgress({ moduleId, moduleName }: ModuleChecklistProgressProps) {
   const resetModuleProgress = useProgressStore((state) => state.resetModuleProgress);
   const { completedItems, totalItems, percentage, isComplete } = useModuleChecklistProgress(moduleId);
 
@@ -87,8 +89,9 @@ export function ModuleChecklistProgress({ moduleId }: ModuleChecklistProgressPro
                 <AlertDialogHeader>
                   <AlertDialogTitle>Reset all checklist progress?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will uncheck all {totalItems} items across all steps in this module. 
-                    The module status will also be reset to "Not Started". This action cannot be undone.
+                    This will clear all checked items and completion status for{" "}
+                    <strong>{moduleName || getModuleDisplayName(moduleId)}</strong> only
+                    ({totalItems} items across all steps). This cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
