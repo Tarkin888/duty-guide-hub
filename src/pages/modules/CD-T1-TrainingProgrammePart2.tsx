@@ -23,10 +23,6 @@ export default function CDT1TrainingProgrammePart2() {
 
   const handleMarkComplete = () => {
     setStatus("completed");
-    toast({
-      title: "Part 2 Complete",
-      description: "Training Programme Rollout & Embedding marked as complete!",
-    });
   };
 
   const handlePrint = () => window.print();

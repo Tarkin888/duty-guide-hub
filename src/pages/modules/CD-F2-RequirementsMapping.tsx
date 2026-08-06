@@ -32,10 +32,6 @@ export default function CDF2RequirementsMapping() {
 
   const handleMarkComplete = () => {
     setStatus("completed");
-    toast({
-      title: "Module Complete",
-      description: "Module marked as complete!",
-    });
   };
 
   const handlePrint = () => window.print();

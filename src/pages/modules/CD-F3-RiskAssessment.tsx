@@ -37,16 +37,10 @@ export default function CDRiskAssessment() {
 
   const handleMarkComplete = () => {
     setStatus("completed");
-    toast.success("Module Complete", {
-      description: "Risk & Impact Assessment marked as complete!",
-    });
   };
 
   const handleMarkInProgress = () => {
     setStatus("in-progress");
-    toast.info("Module In Progress", {
-      description: "Risk & Impact Assessment marked as in progress",
-    });
   };
 
   return (
