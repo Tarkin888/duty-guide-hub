@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,13 +16,14 @@ interface AssessmentResult {
 }
 
 export const useMaturityAssessment = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [assessments, setAssessments] = useState<AssessmentResult[]>([]);
   const [latestAssessment, setLatestAssessment] = useState<AssessmentResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [canRetake, setCanRetake] = useState(true);
   const [daysUntilRetake, setDaysUntilRetake] = useState(0);
   const { toast } = useToast();
+  const hasLoadedOnce = useRef(false);
 
   const userId = user?.id || null;
 
@@ -30,11 +31,16 @@ export const useMaturityAssessment = () => {
     if (!userId) {
       setAssessments([]);
       setLatestAssessment(null);
-      setIsLoading(false);
+      if (!authLoading) {
+        hasLoadedOnce.current = true;
+        setIsLoading(false);
+      }
       return;
     }
 
-    setIsLoading(true);
+    // Only show the blocking spinner on the very first load; later refreshes
+    // happen in the background so in-progress UI state is never interrupted.
+    if (!hasLoadedOnce.current) setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('maturity_assessments')
@@ -81,6 +87,7 @@ export const useMaturityAssessment = () => {
         variant: 'destructive',
       });
     } finally {
+      hasLoadedOnce.current = true;
       setIsLoading(false);
     }
   };
@@ -138,7 +145,7 @@ export const useMaturityAssessment = () => {
 
   useEffect(() => {
     fetchAssessments();
-  }, [userId]);
+  }, [userId, authLoading]);
 
   return {
     assessments,
