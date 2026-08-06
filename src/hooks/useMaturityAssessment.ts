@@ -87,6 +87,7 @@ export const useMaturityAssessment = () => {
         variant: 'destructive',
       });
     } finally {
+      hasLoadedOnce.current = true;
       setIsLoading(false);
     }
   };
