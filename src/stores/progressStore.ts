@@ -709,7 +709,7 @@ export const useProgressStore = create<ProgressState>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         checkedItems: state.checkedItems,
@@ -718,6 +718,32 @@ export const useProgressStore = create<ProgressState>()(
         startDate: state.startDate,
         migratedLegacy: state.migratedLegacy,
       }),
+      /**
+       * v3 -> v4 (proportional calculation model). No data is lost: ticked
+       * items and module meta carry over untouched. Modules previously marked
+       * complete had every item ticked, so they keep their explicit 100% via
+       * the manualComplete flag. Runs once, guarded by the persisted version.
+       */
+      migrate: (persisted, fromVersion) => {
+        const state = (persisted || {}) as Partial<ProgressState>;
+        if (fromVersion >= 4) return state as ProgressState;
+
+        const checkedItems = state.checkedItems || {};
+        const moduleMeta: Record<string, ModuleMeta> = { ...(state.moduleMeta || {}) };
+
+        for (const moduleId of ALL_MODULE_IDS) {
+          const itemKeys = getModuleItemKeys(moduleId);
+          const meta = moduleMeta[moduleId];
+          if (!meta) continue;
+          const allTicked =
+            itemKeys.length > 0 && itemKeys.every((key) => checkedItems[key] === true);
+          if (allTicked || meta.manualComplete) {
+            moduleMeta[moduleId] = { ...meta, manualComplete: true };
+          }
+        }
+
+        return { ...state, moduleMeta } as ProgressState;
+      },
       onRehydrateStorage: () => (state) => {
         if (!state || state.migratedLegacy) return;
 
@@ -730,6 +756,7 @@ export const useProgressStore = create<ProgressState>()(
         state.migratedLegacy = true;
       },
     }
+
   )
 );
 
