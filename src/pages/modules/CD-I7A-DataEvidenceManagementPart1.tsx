@@ -1228,7 +1228,7 @@ export default function CDI7ADataEvidenceManagementPart1() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Accordion type="multiple" className="w-full" defaultValue={["phase1"]}>
+                <Accordion type="multiple" className="w-full" defaultValue={["phase1", "phase2", "phase3"]}>
                   <AccordionItem value="phase1">
                     <AccordionTrigger className="text-lg font-semibold">
                       Phase 1: Evidence Requirements Definition (Weeks 1-2)
