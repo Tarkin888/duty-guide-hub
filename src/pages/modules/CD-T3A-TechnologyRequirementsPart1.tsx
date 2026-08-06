@@ -174,11 +174,11 @@ const CDT3ATechnologyRequirementsPart1 = () => {
           <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 h-auto gap-2 bg-transparent p-0">
             {[
               { value: "overview", label: "Overview" },
-              { value: "regulatory", label: "Regulatory Foundation" },
-              { value: "steps", label: "Implementation Steps" },
-              { value: "templates", label: "Templates & Tools" },
+              { value: "regulatory", label: "Regulatory" },
+              { value: "steps", label: "Implementation" },
+              { value: "templates", label: "Templates" },
               { value: "success", label: "Success Criteria" },
-              { value: "pitfalls", label: "Common Pitfalls" },
+              { value: "pitfalls", label: "Pitfalls" },
             ].map((tab) => (
               <TabsTrigger
                 key={tab.value}

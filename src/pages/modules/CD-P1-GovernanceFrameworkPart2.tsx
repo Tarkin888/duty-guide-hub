@@ -95,7 +95,7 @@ export default function CDP1GovernanceFrameworkPart2() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>

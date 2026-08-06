@@ -84,7 +84,7 @@ export default function CDP2PolicyFrameworkPart2() {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>

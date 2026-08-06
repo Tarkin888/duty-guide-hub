@@ -66,7 +66,7 @@ export default function CDP3ImplementationRoadmapPart2() {
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-6 w-full">
+          <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>

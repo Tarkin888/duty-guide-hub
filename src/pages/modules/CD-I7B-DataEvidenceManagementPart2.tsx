@@ -119,7 +119,7 @@ export default function CDI7BDataEvidenceManagementPart2() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 print:hidden">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 print:hidden">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
