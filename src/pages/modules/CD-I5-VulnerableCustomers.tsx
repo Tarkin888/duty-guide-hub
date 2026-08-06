@@ -626,7 +626,7 @@ export default function CDI5VulnerableCustomers() {
 
               <ChecklistSection
                 stepNumber={9}
-                title="3.3 System &amp; Process Updates"
+                title="3.3 System & Process Updates"
                 moduleId="cd-i5"
                 items={[
                   { id: "i5-s9-1", label: "Implement vulnerability flags in CRM" },
