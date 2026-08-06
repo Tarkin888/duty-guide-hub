@@ -106,20 +106,12 @@ export const ModuleHeader = ({
     });
   };
 
+  // Reset is destructive, so it always requires an explicit confirmation step.
   const handleResetClick = () => {
-    const prefs = getConfirmPreferences();
-    if (prefs.skipResetConfirm) {
-      confirmReset();
-    } else {
-      setResetDialogOpen(true);
-    }
+    setResetDialogOpen(true);
   };
 
   const confirmReset = () => {
-    if (dontShowReset) {
-      saveConfirmPreferences({ skipResetConfirm: true });
-    }
-    
     resetModuleProgress(canonicalId, false);
     setResetDialogOpen(false);
     
@@ -293,19 +285,9 @@ export const ModuleHeader = ({
           <AlertDialogHeader>
             <AlertDialogTitle>Reset Module Progress?</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to reset progress for <strong>{title}</strong>? This will change the status back to "Not Started".
+              This will clear all checked items and completion status for <strong>{title}</strong> only. This cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="flex items-center space-x-2 py-2">
-            <Checkbox 
-              id="dont-show-reset" 
-              checked={dontShowReset}
-              onCheckedChange={(checked) => setDontShowReset(checked === true)}
-            />
-            <Label htmlFor="dont-show-reset" className="text-sm text-muted-foreground">
-              Don't show this again
-            </Label>
-          </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmReset} className="bg-destructive hover:bg-destructive/90">
