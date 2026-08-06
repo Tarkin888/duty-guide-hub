@@ -140,7 +140,7 @@ export default function CDI4ConsumerSupport() {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-6 mb-8">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
             <TabsTrigger value="steps">Implementation Steps</TabsTrigger>

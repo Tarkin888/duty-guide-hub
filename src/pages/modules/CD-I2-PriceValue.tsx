@@ -92,7 +92,7 @@ export default function CDI2PriceValue() {
 
         {/* Tabbed Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
             <TabsTrigger value="steps">Implementation Steps</TabsTrigger>
