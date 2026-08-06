@@ -35,10 +35,11 @@ import {
   Layers,
   PieChart
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function CDM3BoardReportingPart1() {
+  const isOngoingView = useLocation().pathname === "/ongoing/board-attestation";
   const [notes, setNotes] = useState("");
 
   const handleSaveNotes = () => {
@@ -65,8 +66,16 @@ export default function CDM3BoardReportingPart1() {
                 <FileText className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">CD-M3: Annual Board Attestation &amp; Reporting</h1>
+                <h1 className="text-3xl font-bold text-foreground">
+                  {isOngoingView ? "OC-2" : "CD-M3"}: Annual Board Attestation &amp; Reporting
+                </h1>
                 <p className="text-muted-foreground mt-1">Part 1: Foundation &amp; Structure</p>
+                {isOngoingView && (
+                  <p className="text-sm text-muted-foreground mt-2 max-w-3xl rounded-md border border-border bg-muted/40 p-3">
+                    Same framework as CD-M3 in the knowledge base, applied to the ongoing annual cycle rather than a
+                    separate build. Progress and checklist items are shared.
+                  </p>
+                )}
                 <div className="flex gap-2 mt-2">
                   <Badge variant="outline">Ongoing Compliance</Badge>
                   <Badge variant="secondary">Annual cycle</Badge>
