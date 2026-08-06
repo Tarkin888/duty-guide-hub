@@ -71,7 +71,7 @@ const CDP2PolicyFrameworkPart1 = () => {
             <span>/</span>
             <span>Governance & Planning</span>
             <span>/</span>
-            <span className="text-foreground">CD-P2: Policy & Framework Development</span>
+            <span className="text-foreground">CD-P2A: Policy & Framework Development</span>
           </div>
           
           <div className="flex items-start justify-between">
@@ -81,7 +81,7 @@ const CDP2PolicyFrameworkPart1 = () => {
                   <FileText className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-foreground">CD-P2: Policy & Framework Development</h1>
+                  <h1 className="text-3xl font-bold text-foreground">CD-P2A: Policy & Framework Development</h1>
                   <p className="text-lg text-muted-foreground">Part 1: Core Policy Architecture</p>
                 </div>
               </div>

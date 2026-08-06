@@ -78,7 +78,7 @@ export default function CDP1GovernanceFramework() {
                   <Badge variant="outline">Planning Module</Badge>
                   <Badge variant="secondary">Part 1 of 2</Badge>
                 </div>
-                <h1 className="text-2xl font-bold">CD-P1: Governance Framework Design</h1>
+                <h1 className="text-2xl font-bold">CD-P1A: Governance Framework Design</h1>
                 <p className="text-muted-foreground">Foundation & Structure</p>
               </div>
             </div>

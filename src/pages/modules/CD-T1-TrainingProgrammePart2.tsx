@@ -45,7 +45,7 @@ export default function CDT1TrainingProgrammePart2() {
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-3 flex-wrap">
-              <Badge variant="outline" className="text-sm">CD-T1</Badge>
+              <Badge variant="outline" className="text-sm">CD-T1B</Badge>
               <Badge className="text-sm bg-accent text-accent-foreground">Enablement</Badge>
               <Badge variant="secondary">Part 2 of 2</Badge>
               <Badge variant={status === "completed" ? "default" : status === "in-progress" ? "secondary" : "outline"}>
