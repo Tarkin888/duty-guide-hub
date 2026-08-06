@@ -35,10 +35,11 @@ import {
   Layers,
   PieChart
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function CDM3BoardReportingPart1() {
+  const isOngoingView = useLocation().pathname === "/ongoing/board-attestation";
   const [notes, setNotes] = useState("");
 
   const handleSaveNotes = () => {
