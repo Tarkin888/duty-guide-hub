@@ -1578,18 +1578,6 @@ const CDI3ConsumerUnderstanding = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Action Buttons */}
-      <Card className="mt-8">
-        <CardContent className="pt-6">
-          <div className="flex gap-4 flex-wrap">
-            <Button>Mark Module Complete</Button>
-            <Button variant="outline">Print Module</Button>
-            <Button variant="outline">Export Summary</Button>
-            <Button variant="outline">Save Progress</Button>
-          </div>
-        </CardContent>
-      </Card>
-
       <ModuleInsights moduleCode="CD-I3" moduleTitle="Consumer Understanding" />
       </div>
     </div>
