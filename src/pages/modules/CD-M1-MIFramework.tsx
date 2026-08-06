@@ -57,10 +57,18 @@ export default function CDM1MIFramework() {
                   <Badge variant="outline">Ongoing Compliance</Badge>
                   <Badge variant="secondary">{status.replace("-", " ").toUpperCase()}</Badge>
                 </div>
-                <h1 className="text-3xl font-bold">CD-M1: Ongoing Monitoring &amp; MI Framework</h1>
+                <h1 className="text-3xl font-bold">
+                  {isOngoingView ? "OC-1" : "CD-M1"}: Ongoing Monitoring &amp; MI Framework
+                </h1>
               </div>
             </div>
-            <p className="text-muted-foreground text-lg">
+            {isOngoingView && (
+              <p className="text-sm text-muted-foreground mt-2 rounded-md border border-border bg-muted/40 p-3">
+                Same framework as CD-M1 in the knowledge base, applied to the ongoing annual cycle rather than a
+                separate build. Progress and checklist items are shared.
+              </p>
+            )}
+            <p className="text-muted-foreground text-lg mt-2">
               Run continuous outcomes monitoring as business-as-usual and produce management information that evidences good customer outcomes for the annual board report
             </p>
           </div>
