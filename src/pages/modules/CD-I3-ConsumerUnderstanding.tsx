@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { useNavigate } from "react-router-dom";
 import { MessageSquare, ArrowLeft, CheckCircle2, Clock, FileText, Printer } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,16 +105,7 @@ const CDI3ConsumerUnderstanding = () => {
                 <Printer className="h-4 w-4 mr-2" />
                 Print
               </Button>
-              {status === "not-started" && (
-                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
-                  <Clock className="h-4 w-4 mr-2" />
-                  Mark In Progress
-                </Button>
-              )}
-              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
-                <CheckCircle2 className="h-4 w-4 mr-2" />
-                {status === "completed" ? "Completed" : "Mark Complete"}
-              </Button>
+              <ModuleActionButtons moduleId={STORAGE_KEY} />
             </div>
           </div>
         </div>

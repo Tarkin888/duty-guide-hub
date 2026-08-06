@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -82,10 +83,7 @@ export default function CDF2RequirementsMapping() {
               <Printer className="h-4 w-4 mr-2" />
               Print
             </Button>
-            <Button onClick={handleMarkComplete} disabled={status === "completed"}>
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Mark Complete
-            </Button>
+            <ModuleActionButtons moduleId="cd-f2-requirements" />
           </div>
         </div>
         
