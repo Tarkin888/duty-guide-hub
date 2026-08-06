@@ -101,7 +101,9 @@ const MaturityAssessment = () => {
   const isLastQuestion = currentQuestion === assessmentQuestions.length - 1;
   const allQuestionsAnswered = Object.keys(answers).length === assessmentQuestions.length;
 
-  if (isLoading) {
+  // An assessment in progress always wins over loading/results states so a
+  // background refresh can never interrupt or swallow the first click.
+  if (isLoading && !isAssessing) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
