@@ -119,6 +119,10 @@ export const ModuleHeader = ({
     });
   };
 
+  const handleReopen = () => {
+    useProgressStore.getState().reopenModule(canonicalId);
+  };
+
   const handleMarkInProgress = () => {
     markModuleInProgress(canonicalId, false);
     
