@@ -23,18 +23,25 @@ export const useMaturityAssessment = () => {
   const [canRetake, setCanRetake] = useState(true);
   const [daysUntilRetake, setDaysUntilRetake] = useState(0);
   const { toast } = useToast();
+  const hasLoadedOnce = useRef(false);
 
+  const { loading: authLoading } = useAuth();
   const userId = user?.id || null;
 
   const fetchAssessments = async () => {
     if (!userId) {
       setAssessments([]);
       setLatestAssessment(null);
-      setIsLoading(false);
+      if (!authLoading) {
+        hasLoadedOnce.current = true;
+        setIsLoading(false);
+      }
       return;
     }
 
-    setIsLoading(true);
+    // Only show the blocking spinner on the very first load; later refreshes
+    // happen in the background so in-progress UI state is never interrupted.
+    if (!hasLoadedOnce.current) setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('maturity_assessments')
