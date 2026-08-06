@@ -16,7 +16,7 @@ interface AssessmentResult {
 }
 
 export const useMaturityAssessment = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [assessments, setAssessments] = useState<AssessmentResult[]>([]);
   const [latestAssessment, setLatestAssessment] = useState<AssessmentResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
