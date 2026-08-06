@@ -76,6 +76,10 @@ export interface ChecklistProgress {
   totalItems: number;
   percentage: number;
   isComplete: boolean;
+  /** True when the user pressed "Mark Complete" rather than ticking every item */
+  isMarkedComplete: boolean;
+  /** Real item-based percentage, ignoring any manual completion override */
+  itemPercentage: number;
 }
 
 function toInfo(progress: ModuleProgress): ModuleProgressInfo {
@@ -178,6 +182,8 @@ export function getModuleChecklistProgress(moduleId: string): ChecklistProgress 
     totalItems: progress.totalItems,
     percentage: progress.percentage,
     isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
+    isMarkedComplete: progress.isMarkedComplete === true,
+    itemPercentage: progress.itemPercentage,
   };
 }
 
@@ -243,6 +249,8 @@ export function useModuleChecklistProgress(moduleId: string): ChecklistProgress 
     totalItems: progress.totalItems,
     percentage: progress.percentage,
     isComplete: progress.totalItems > 0 && progress.completedItems === progress.totalItems,
+    isMarkedComplete: progress.isMarkedComplete === true,
+    itemPercentage: progress.itemPercentage,
     status: progress.status,
   };
 }
