@@ -113,7 +113,7 @@ export default function CDI6DistributionChain() {
       <Card>
         <CardContent className="pt-6">
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
               <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
