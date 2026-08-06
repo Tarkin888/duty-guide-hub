@@ -512,186 +512,158 @@ export default function CDI5VulnerableCustomers() {
 
           {/* Implementation Steps Tab */}
           <TabsContent value="implementation" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Phase 1: Assessment & Gap Analysis (Weeks 1-3)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                      1.1 Customer Base Analysis
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Analyse customer demographics and characteristics</li>
-                      <li>• Review existing vulnerability data and indicators</li>
-                      <li>• Estimate prevalence of vulnerability across customer base</li>
-                      <li>• Identify high-risk customer segments</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                      1.2 Current State Review
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Review existing vulnerability policies and procedures</li>
-                      <li>• Assess current staff training and capability</li>
-                      <li>• Evaluate support channels and accessibility</li>
-                      <li>• Review customer feedback and complaints data</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                      1.3 Gap Analysis
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Compare current state against FG21/1 expectations</li>
-                      <li>• Identify gaps in identification, support and monitoring</li>
-                      <li>• Prioritise gaps by risk and impact</li>
-                      <li>• Develop remediation roadmap</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <ModuleChecklistProgress moduleId="cd-i5" />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Phase 2: Framework Design (Weeks 4-6)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-primary" />
-                      2.1 Policy Development
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Draft vulnerable customer policy for Board approval</li>
-                      <li>• Define vulnerability categories and indicators</li>
-                      <li>• Establish roles and responsibilities</li>
-                      <li>• Set standards for identification and response</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Wrench className="h-4 w-4 text-primary" />
-                      2.2 Process Design
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Design vulnerability identification triggers</li>
-                      <li>• Create customer journey touchpoint maps</li>
-                      <li>• Develop escalation and referral pathways</li>
-                      <li>• Define recording and data sharing protocols</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Accessibility className="h-4 w-4 text-primary" />
-                      2.3 Support Channel Design
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Define accessible channel options</li>
-                      <li>• Design reasonable adjustments catalogue</li>
-                      <li>• Create third-party authority processes</li>
-                      <li>• Establish specialist support team structure</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold">Phase 1: Assessment &amp; Gap Analysis (Weeks 1-3)</h3>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Phase 3: Implementation (Weeks 7-10)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-primary" />
-                      3.1 Staff Training Rollout
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Develop role-based training modules</li>
-                      <li>• Train frontline staff on recognition and response</li>
-                      <li>• Train managers on oversight and escalation</li>
-                      <li>• Provide specialist training for support teams</li>
-                      <li>• Include staff wellbeing and self-care guidance</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <MessageCircle className="h-4 w-4 text-primary" />
-                      3.2 Communications Update
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Review and update customer communications</li>
-                      <li>• Create accessible format alternatives</li>
-                      <li>• Develop vulnerability-specific scripts and guides</li>
-                      <li>• Update website accessibility</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-primary" />
-                      3.3 System & Process Updates
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Implement vulnerability flags in CRM</li>
-                      <li>• Configure alerts and prompts</li>
-                      <li>• Update call scripts and workflows</li>
-                      <li>• Enable secure information sharing</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <ChecklistSection
+                stepNumber={1}
+                title="1.1 Customer Base Analysis"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s1-1", label: "Analyse customer demographics and characteristics" },
+                  { id: "i5-s1-2", label: "Review existing vulnerability data and indicators" },
+                  { id: "i5-s1-3", label: "Estimate prevalence of vulnerability across customer base" },
+                  { id: "i5-s1-4", label: "Identify high-risk customer segments" },
+                ]}
+              />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Phase 4: Monitoring & Continuous Improvement (Weeks 11-12+)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <Target className="h-4 w-4 text-primary" />
-                      4.1 MI Development
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Define vulnerability outcome metrics</li>
-                      <li>• Create comparison reporting (vulnerable vs non-vulnerable)</li>
-                      <li>• Establish escalation triggers and thresholds</li>
-                      <li>• Design Board-level vulnerability dashboard</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                      4.2 Quality Assurance
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                      <li>• Implement vulnerability-focused QA criteria</li>
-                      <li>• Conduct call listening and case reviews</li>
-                      <li>• Gather customer feedback from vulnerable customers</li>
-                      <li>• Review complaints for vulnerability themes</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <ChecklistSection
+                stepNumber={2}
+                title="1.2 Current State Review"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s2-1", label: "Review existing vulnerability policies and procedures" },
+                  { id: "i5-s2-2", label: "Assess current staff training and capability" },
+                  { id: "i5-s2-3", label: "Evaluate support channels and accessibility" },
+                  { id: "i5-s2-4", label: "Review customer feedback and complaints data" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={3}
+                title="1.3 Gap Analysis"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s3-1", label: "Compare current state against FG21/1 expectations" },
+                  { id: "i5-s3-2", label: "Identify gaps in identification, support and monitoring" },
+                  { id: "i5-s3-3", label: "Prioritise gaps by risk and impact" },
+                  { id: "i5-s3-4", label: "Develop remediation roadmap" },
+                ]}
+              />
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold">Phase 2: Framework Design (Weeks 4-6)</h3>
+
+              <ChecklistSection
+                stepNumber={4}
+                title="2.1 Policy Development"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s4-1", label: "Draft vulnerable customer policy for Board approval" },
+                  { id: "i5-s4-2", label: "Define vulnerability categories and indicators" },
+                  { id: "i5-s4-3", label: "Establish roles and responsibilities" },
+                  { id: "i5-s4-4", label: "Set standards for identification and response" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={5}
+                title="2.2 Process Design"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s5-1", label: "Design vulnerability identification triggers" },
+                  { id: "i5-s5-2", label: "Create customer journey touchpoint maps" },
+                  { id: "i5-s5-3", label: "Develop escalation and referral pathways" },
+                  { id: "i5-s5-4", label: "Define recording and data sharing protocols" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={6}
+                title="2.3 Support Channel Design"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s6-1", label: "Define accessible channel options" },
+                  { id: "i5-s6-2", label: "Design reasonable adjustments catalogue" },
+                  { id: "i5-s6-3", label: "Create third-party authority processes" },
+                  { id: "i5-s6-4", label: "Establish specialist support team structure" },
+                ]}
+              />
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold">Phase 3: Implementation (Weeks 7-10)</h3>
+
+              <ChecklistSection
+                stepNumber={7}
+                title="3.1 Staff Training Rollout"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s7-1", label: "Develop role-based training modules" },
+                  { id: "i5-s7-2", label: "Train frontline staff on recognition and response" },
+                  { id: "i5-s7-3", label: "Train managers on oversight and escalation" },
+                  { id: "i5-s7-4", label: "Provide specialist training for support teams" },
+                  { id: "i5-s7-5", label: "Include staff wellbeing and self-care guidance" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={8}
+                title="3.2 Communications Update"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s8-1", label: "Review and update customer communications" },
+                  { id: "i5-s8-2", label: "Create accessible format alternatives" },
+                  { id: "i5-s8-3", label: "Develop vulnerability-specific scripts and guides" },
+                  { id: "i5-s8-4", label: "Update website accessibility" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={9}
+                title="3.3 System &amp; Process Updates"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s9-1", label: "Implement vulnerability flags in CRM" },
+                  { id: "i5-s9-2", label: "Configure alerts and prompts" },
+                  { id: "i5-s9-3", label: "Update call scripts and workflows" },
+                  { id: "i5-s9-4", label: "Enable secure information sharing" },
+                ]}
+              />
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold">Phase 4: Monitoring &amp; Continuous Improvement (Weeks 11-12+)</h3>
+
+              <ChecklistSection
+                stepNumber={10}
+                title="4.1 MI Development"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s10-1", label: "Define vulnerability outcome metrics" },
+                  { id: "i5-s10-2", label: "Create comparison reporting (vulnerable vs non-vulnerable)" },
+                  { id: "i5-s10-3", label: "Establish escalation triggers and thresholds" },
+                  { id: "i5-s10-4", label: "Design Board-level vulnerability dashboard" },
+                ]}
+              />
+
+              <ChecklistSection
+                stepNumber={11}
+                title="4.2 Quality Assurance"
+                moduleId="cd-i5"
+                items={[
+                  { id: "i5-s11-1", label: "Implement vulnerability-focused QA criteria" },
+                  { id: "i5-s11-2", label: "Conduct call listening and case reviews" },
+                  { id: "i5-s11-3", label: "Gather customer feedback from vulnerable customers" },
+                  { id: "i5-s11-4", label: "Review complaints for vulnerability themes" },
+                ]}
+              />
+            </div>
           </TabsContent>
+
 
           {/* Templates & Tools Tab */}
           <TabsContent value="templates" className="space-y-6">
