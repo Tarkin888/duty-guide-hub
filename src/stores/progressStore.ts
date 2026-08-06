@@ -416,37 +416,33 @@ export const useProgressStore = create<ProgressState>()(
 
       markModuleComplete: (moduleId, showToast = true) => {
         const canonicalId = normalizeModuleId(moduleId);
-        const definition = getModuleDefinition(canonicalId);
         const now = new Date().toISOString();
 
-        set((state) => {
-          const checkedItems = { ...state.checkedItems };
-          definition?.items.forEach((key) => {
-            checkedItems[key] = true;
-          });
-          return {
-            checkedItems,
-            moduleMeta: {
-              ...state.moduleMeta,
-              [canonicalId]: {
-                ...state.moduleMeta[canonicalId],
-                completedAt: state.moduleMeta[canonicalId]?.completedAt || now,
-                lastAccessedAt: now,
-                manualComplete: definition && definition.items.length === 0 ? true : undefined,
-              },
+        // Mark Complete sets an explicit flag that forces this module to 100%.
+        // Individual checklist ticks are left untouched, so unchecking items
+        // after reopening the module lowers the percentage again.
+        set((state) => ({
+          moduleMeta: {
+            ...state.moduleMeta,
+            [canonicalId]: {
+              ...state.moduleMeta[canonicalId],
+              completedAt: state.moduleMeta[canonicalId]?.completedAt || now,
+              lastAccessedAt: now,
+              manualComplete: true,
+              manualInProgress: undefined,
             },
-            activities: [
-              newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
-              ...state.activities,
-            ].slice(0, 50),
-            startDate: state.startDate || now,
-          };
-        });
+          },
+          activities: [
+            newActivity('module_completed', canonicalId, getModuleDisplayName(canonicalId), now),
+            ...state.activities,
+          ].slice(0, 50),
+          startDate: state.startDate || now,
+        }));
 
         window.dispatchEvent(new Event('module-progress-updated'));
 
         if (showToast) {
-          toast.success('Module complete', {
+          toast.success('Status updated', {
             description: `${getModuleDisplayName(canonicalId)} marked as complete.`,
           });
         }
@@ -462,7 +458,9 @@ export const useProgressStore = create<ProgressState>()(
             [canonicalId]: {
               ...state.moduleMeta[canonicalId],
               lastAccessedAt: now,
+              completedAt: undefined,
               manualComplete: undefined,
+              manualInProgress: true,
             },
           },
           activities: [
@@ -475,7 +473,7 @@ export const useProgressStore = create<ProgressState>()(
         window.dispatchEvent(new Event('module-progress-updated'));
 
         if (showToast) {
-          toast.info('Module in progress', {
+          toast.success('Status updated', {
             description: `${getModuleDisplayName(canonicalId)} is now in progress.`,
           });
         }
@@ -483,33 +481,28 @@ export const useProgressStore = create<ProgressState>()(
 
       reopenModule: (moduleId) => {
         const canonicalId = normalizeModuleId(moduleId);
-        const definition = getModuleDefinition(canonicalId);
         const now = new Date().toISOString();
 
-        set((state) => {
-          const checkedItems = { ...state.checkedItems };
-          // Completion is derived from the checklist, so reopening clears the ticks
-          definition?.items.forEach((key) => {
-            delete checkedItems[key];
-          });
-          return {
-            checkedItems,
-            moduleMeta: {
-              ...state.moduleMeta,
-              [canonicalId]: {
-                ...state.moduleMeta[canonicalId],
-                completedAt: undefined,
-                lastAccessedAt: now,
-                manualComplete: undefined,
-              },
+        // Clears only the explicit completion flag - ticked checklist items are
+        // preserved, so the module falls back to its real item-based percentage.
+        set((state) => ({
+          moduleMeta: {
+            ...state.moduleMeta,
+            [canonicalId]: {
+              ...state.moduleMeta[canonicalId],
+              completedAt: undefined,
+              lastAccessedAt: now,
+              manualComplete: undefined,
+              manualInProgress: true,
             },
-          };
-        });
+          },
+        }));
 
         window.dispatchEvent(new Event('module-progress-updated'));
 
         toast.info('Module reopened', {
-          description: `${getModuleDisplayName(canonicalId)} is back in progress and its checklist has been cleared.`,
+          description: `${getModuleDisplayName(canonicalId)} is back in progress; your ticked items have been kept.`,
+
         });
       },
 
