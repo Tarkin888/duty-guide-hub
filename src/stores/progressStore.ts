@@ -485,6 +485,13 @@ export const useProgressStore = create<ProgressState>()(
 
         // Clears only the explicit completion flag - ticked checklist items are
         // preserved, so the module falls back to its real item-based percentage.
+        // The status label must reflect the real ticked count: with zero items
+        // checked the module is "Not Started", not "In Progress".
+        const checkedItems = get().checkedItems;
+        const hasCheckedItems = getModuleItemKeys(canonicalId).some(
+          (key) => checkedItems[key] === true
+        );
+
         set((state) => ({
           moduleMeta: {
             ...state.moduleMeta,
@@ -493,7 +500,7 @@ export const useProgressStore = create<ProgressState>()(
               completedAt: undefined,
               lastAccessedAt: now,
               manualComplete: undefined,
-              manualInProgress: true,
+              manualInProgress: hasCheckedItems ? true : undefined,
             },
           },
         }));
