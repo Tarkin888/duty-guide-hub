@@ -111,13 +111,13 @@ export default function CDRiskAssessment() {
       {/* Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="relative z-20 grid w-full grid-cols-2 lg:grid-cols-6">
+          <TabsList className="relative z-20 grid w-full grid-cols-3 lg:grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
-            <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
-            <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
+            <TabsTrigger value="implementation">Implementation</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
-            <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
+            <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}

@@ -99,13 +99,13 @@ export default function CDM1MIFramework() {
       <Card>
         <CardContent className="pt-6">
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid grid-cols-6 w-full">
+            <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
-              <TabsTrigger value="steps">Implementation Steps</TabsTrigger>
-              <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+              <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
+              <TabsTrigger value="steps">Implementation</TabsTrigger>
+              <TabsTrigger value="templates">Templates</TabsTrigger>
               <TabsTrigger value="success">Success Criteria</TabsTrigger>
-              <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
+              <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
             </TabsList>
 
             {/* OVERVIEW TAB */}
