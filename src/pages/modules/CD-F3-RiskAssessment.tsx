@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileCheck, Scale, AlertTriangle, BookOpen, Target, ChevronRight, CheckCircle2, Clock, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -101,16 +102,7 @@ export default function CDRiskAssessment() {
                 <Printer className="h-4 w-4 mr-2" />
                 Print
               </Button>
-              {status === "not-started" && (
-                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
-                  <Clock className="h-4 w-4 mr-2" />
-                  Mark In Progress
-                </Button>
-              )}
-              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
-                <CheckCircle2 className="h-4 w-4 mr-2" />
-                {status === "completed" ? "Completed" : "Mark Complete"}
-              </Button>
+              <ModuleActionButtons moduleId={STORAGE_KEY} />
             </div>
           </div>
         </div>
