@@ -95,7 +95,7 @@ export const TrackedTabsTrigger = React.forwardRef<
         "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:pointer-events-none disabled:opacity-50",
-        "gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[40px]",
+        "gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[40px] min-w-0 truncate",
         className,
       )}
       {...props}

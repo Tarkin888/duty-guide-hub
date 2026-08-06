@@ -62,12 +62,12 @@ export default function CDP3ImplementationRoadmapPart1() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid grid-cols-7 w-full">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
-            <TabsTrigger value="steps">Implementation Steps</TabsTrigger>
-            <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
+            <TabsTrigger value="steps">Implementation</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
-            <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
+            <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}

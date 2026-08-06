@@ -121,11 +121,11 @@ export default function CDI7BDataEvidenceManagementPart2() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-6 print:hidden">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
-            <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
-            <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+            <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
+            <TabsTrigger value="implementation">Implementation</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
-            <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
+            <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}

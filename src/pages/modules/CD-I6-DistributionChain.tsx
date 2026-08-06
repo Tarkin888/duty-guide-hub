@@ -115,11 +115,11 @@ export default function CDI6DistributionChain() {
           <Tabs defaultValue="overview" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="regulatory">Regulatory Foundation</TabsTrigger>
-              <TabsTrigger value="implementation">Implementation Steps</TabsTrigger>
-              <TabsTrigger value="templates">Templates & Tools</TabsTrigger>
+              <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
+              <TabsTrigger value="implementation">Implementation</TabsTrigger>
+              <TabsTrigger value="templates">Templates</TabsTrigger>
               <TabsTrigger value="success">Success Criteria</TabsTrigger>
-              <TabsTrigger value="pitfalls">Common Pitfalls</TabsTrigger>
+              <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
             </TabsList>
 
             {/* OVERVIEW TAB */}
