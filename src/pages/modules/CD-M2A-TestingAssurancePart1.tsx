@@ -34,9 +34,14 @@ export default function CDM2ATestingAssurancePart1() {
   const { status, setStatus } = useModuleStatusControls("cd-m2-testing-assurance");
 
   const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
-    setStatus(newStatus);
-    toast.success(`Module status updated to ${newStatus.replace("-", " ")}`);
+    const saved = setStatus(newStatus);
+    if (saved) {
+      toast.success("Status updated");
+    } else {
+      toast.error("Failed to save status - please try again");
+    }
   };
+
 
   const handlePrint = () => {
     window.print();
