@@ -16,6 +16,7 @@ import { toast } from "sonner";
 
 export default function CDM1MIFramework() {
   const navigate = useNavigate();
+  const isOngoingView = useLocation().pathname === "/ongoing/mi-monitoring";
   const { status, setStatus } = useModuleStatusControls("cd-m1");
 
   const handleStatusChange = (newStatus: "not-started" | "in-progress" | "completed") => {
