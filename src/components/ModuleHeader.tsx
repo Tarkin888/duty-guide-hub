@@ -72,7 +72,6 @@ export const ModuleHeader = ({
   const [completeDialogOpen, setCompleteDialogOpen] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [dontShowComplete, setDontShowComplete] = useState(false);
-  const [dontShowReset, setDontShowReset] = useState(false);
 
   // Single source of truth: the progress store
   const canonicalId = normalizeModuleId(storageKey);
