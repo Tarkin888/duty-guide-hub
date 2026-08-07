@@ -151,14 +151,17 @@ interface NavItemProps {
   isMobile: boolean;
   isActive: boolean;
   searchTerm?: string;
+  isTopLevel?: boolean;
 }
 
-function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm = "" }: NavItemProps) {
+function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm = "", isTopLevel = false }: NavItemProps) {
   const baseClasses = cn(
-    "flex items-center gap-3 px-3 py-2 rounded-md min-h-[44px] transition-all duration-200 w-full",
-    "hover:bg-sidebar-accent text-sidebar-foreground",
-    isActive && "bg-primary text-primary-foreground font-medium relative",
-    isActive && "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-accent before:rounded-l-md",
+    "flex items-center gap-2 pl-2 pr-3 py-2 rounded-md min-h-[44px] transition-colors duration-200 w-full group/navitem",
+    "text-sidebar-foreground/[0.88] hover:bg-sidebar-foreground/[0.04] hover:text-sidebar-foreground",
+    isTopLevel && "text-[15px] font-semibold text-sidebar-foreground",
+    !isTopLevel && "text-sm font-medium leading-[1.3]",
+    isActive && "bg-sidebar-foreground/[0.08] text-sidebar-foreground font-medium relative",
+    isActive && "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-sidebar-primary before:rounded-l-md",
     isCollapsed && !isMobile && "justify-center px-2"
   );
 
@@ -169,12 +172,19 @@ function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm 
       aria-current={isActive ? "page" : undefined}
       aria-label={isCollapsed && !isMobile ? item.title : undefined}
     >
-      <item.icon className="h-5 w-5 shrink-0" />
+      <span className={cn("flex w-6 shrink-0 items-center justify-center", isCollapsed && !isMobile && "w-auto")}>
+        <item.icon
+          className={cn(
+            "h-[18px] w-[18px] shrink-0 transition-colors",
+            isActive ? "text-sidebar-primary" : "text-sidebar-foreground/55 group-hover/navitem:text-sidebar-primary"
+          )}
+        />
+      </span>
       {(!isCollapsed || isMobile) && (
         <HighlightText 
           text={item.title} 
           highlight={searchTerm}
-          className="transition-opacity duration-300"
+          className="transition-opacity duration-300 text-balance"
         />
       )}
     </NavLink>
@@ -202,6 +212,7 @@ function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm 
 
   return content;
 }
+
 
 export function AppSidebar() {
   const { state, isMobile, openMobile, setOpenMobile, toggleSidebar } = useSidebar();
@@ -372,14 +383,18 @@ export function AppSidebar() {
               
               return (
                 <Collapsible key={index} defaultOpen={groupIsActive || !isCollapsed}>
-                  <SidebarGroup>
+                  <SidebarGroup className="py-0">
+                    {index > 1 && (
+                      <div className="-mx-2 mt-1.5 border-t border-sidebar-foreground/[0.08]" aria-hidden="true" />
+                    )}
                     <CollapsibleTrigger asChild>
-                      <SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent text-sidebar-foreground transition-colors duration-200">
-                        <GroupIcon className="h-4 w-4 mr-2" />
-                        <span className="flex-1">{item.title}</span>
-                        <ChevronDown className="h-4 w-4 transition-transform duration-200 ui-expanded:rotate-180" />
+                      <SidebarGroupLabel className="cursor-pointer -mx-2 w-auto h-auto rounded-none bg-sidebar-foreground/[0.04] px-3 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-sidebar-primary hover:bg-sidebar-foreground/[0.08] transition-colors duration-200">
+                        <GroupIcon className="h-[18px] w-[18px] mr-2 shrink-0 text-sidebar-primary" />
+                        <span className="flex-1 text-left">{item.title}</span>
+                        <ChevronDown className="h-4 w-4 shrink-0 text-sidebar-primary transition-transform duration-200 ui-expanded:rotate-180" />
                       </SidebarGroupLabel>
                     </CollapsibleTrigger>
+
                     <CollapsibleContent className="transition-all duration-300">
                       <SidebarGroupContent>
                         <SidebarMenu>
@@ -410,7 +425,7 @@ export function AppSidebar() {
             if ('url' in item && 'icon' in item) {
               const isActive = isActiveRoute(item.url);
               return (
-                <SidebarMenuItem key={item.url}>
+                <SidebarMenuItem key={item.url} className="px-2 py-1">
                   <SidebarMenuButton asChild>
                     <NavItemWithTooltip
                       item={item}
@@ -418,9 +433,11 @@ export function AppSidebar() {
                       isMobile={isMobile}
                       isActive={isActive}
                       searchTerm={search}
+                      isTopLevel
                     />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+
               );
             }
 
