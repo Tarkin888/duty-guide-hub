@@ -83,15 +83,35 @@ export default function CDf1ReadinessAssessment() {
             </p>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap items-center">
             <Button variant="outline" size="sm" onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Print
             </Button>
-            <Button onClick={handleMarkComplete} disabled={status === "completed"}>
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Mark Complete
-            </Button>
+            {status === "completed" ? (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-2"
+                onClick={() => reopenModule(MODULE_ID)}
+              >
+                <RotateCcw className="h-4 w-4" />
+                Reopen Module
+              </Button>
+            ) : (
+              <>
+                {status === "not-started" && (
+                  <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    Mark In Progress
+                  </Button>
+                )}
+                <Button size="sm" onClick={handleMarkComplete}>
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  Mark Complete
+                </Button>
+              </>
+            )}
           </div>
         </div>
         
