@@ -84,15 +84,12 @@ export default function CDI1ProductsServices() {
             </p>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap items-center">
             <Button variant="outline" size="sm" onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Print
             </Button>
-            <Button onClick={handleMarkComplete} disabled={status === "completed"}>
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Mark Complete
-            </Button>
+            <ModuleActionButtons moduleId={MODULE_ID} />
           </div>
         </div>
         
