@@ -67,7 +67,7 @@ export default function CDM3BoardReportingPart1() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-foreground">
-                  {isOngoingView ? "OC-2" : "CD-M3"}: Annual Board Attestation &amp; Reporting
+                  {isOngoingView ? "OC-2" : "CD-M3A"}: Annual Board Attestation &amp; Reporting
                 </h1>
                 <p className="text-muted-foreground mt-1">Part 1: Foundation &amp; Structure</p>
                 {isOngoingView && (
@@ -78,6 +78,7 @@ export default function CDM3BoardReportingPart1() {
                 )}
                 <div className="flex gap-2 mt-2">
                   <Badge variant="outline">Ongoing Compliance</Badge>
+                  {!isOngoingView && <Badge variant="secondary">Part 1 of 2</Badge>}
                   <Badge variant="secondary">Annual cycle</Badge>
                 </div>
               </div>
