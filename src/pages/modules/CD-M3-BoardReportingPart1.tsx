@@ -1943,10 +1943,10 @@ export default function CDM3BoardReportingPart1() {
 
         {/* Module Navigation */}
         <div className="flex justify-between mt-8 pt-6 border-t">
-          <Link to="/monitoring/testing-assurance-part2">
+          <Link to="/monitoring/testing-assurance">
             <Button variant="outline">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Previous: CD-M2B Testing & Assurance Part 2
+              Previous: CD-M2 Testing &amp; Assurance
             </Button>
           </Link>
           <Link to="/monitoring/board-reporting-part2">
