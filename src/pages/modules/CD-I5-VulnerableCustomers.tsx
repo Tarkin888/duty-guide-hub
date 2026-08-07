@@ -94,21 +94,12 @@ export default function CDI5VulnerableCustomers() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2 shrink-0 flex-wrap">
               <Button variant="outline" size="sm" onClick={() => window.print()}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print
               </Button>
-              {status === "not-started" && (
-                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
-                  <Clock className="h-4 w-4 mr-2" />
-                  Mark In Progress
-                </Button>
-              )}
-              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
-                <CheckCircle2 className="h-4 w-4 mr-2" />
-                {status === "completed" ? "Completed" : "Mark Complete"}
-              </Button>
+              <ModuleActionButtons moduleId={canonicalId} />
             </div>
           </div>
         </div>
