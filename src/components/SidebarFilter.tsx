@@ -46,11 +46,12 @@ export function SidebarFilter({ value, onChange, isCollapsed }: SidebarFilterPro
   ];
 
   return (
-    <div className="px-3 py-2 border-b border-sidebar-border">
+    <div className="px-4 py-2 border-b border-sidebar-border">
       <div className="flex items-center gap-1.5 mb-2">
         <Filter className="h-3.5 w-3.5 text-sidebar-foreground/60" />
         <span className="text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wide">Filter</span>
       </div>
+
       <div className="flex flex-wrap gap-1">
         {options.map((option) => (
           <button
