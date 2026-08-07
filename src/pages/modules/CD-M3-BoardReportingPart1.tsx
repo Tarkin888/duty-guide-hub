@@ -77,9 +77,9 @@ export default function CDM3BoardReportingPart1() {
                   </p>
                 )}
                 <div className="flex gap-2 mt-2">
-                  <Badge variant="outline">Ongoing Compliance</Badge>
+                  <Badge variant="outline">{isOngoingView ? "Ongoing Compliance" : "Monitoring & Assurance"}</Badge>
                   {!isOngoingView && <Badge variant="secondary">Part 1 of 2</Badge>}
-                  <Badge variant="secondary">Annual cycle</Badge>
+                  {isOngoingView && <Badge variant="secondary">Annual cycle</Badge>}
                 </div>
               </div>
             </div>

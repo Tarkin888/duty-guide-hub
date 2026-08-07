@@ -90,7 +90,7 @@ export default function CDM3BoardReportingPart2() {
               <Link to="/monitoring/board-reporting-part1">
                 <Button variant="outline" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Part A: Foundation
+                  CD-M3A: Foundation
                 </Button>
               </Link>
               <Button onClick={handlePrint} variant="outline" size="sm">
