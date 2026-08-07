@@ -20,7 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 export default function CDI2PriceValue() {
   const { toast } = useToast();
   const moduleId = "cd-i2";
-  const [status, setStatus] = useState<string>("not-started");
+  const status = useModuleProgress(moduleId).status;
   const [previewTemplate, setPreviewTemplate] = useState<TemplateDetails | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 
