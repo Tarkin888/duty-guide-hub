@@ -35,7 +35,7 @@ export default function CDP3ImplementationRoadmapPart1() {
       <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Breadcrumb Navigation */}
         <div className="mb-6">
-          <ModuleBreadcrumb moduleId="CD-P3" moduleName="Implementation Roadmap Development" part="Part 1 of 2" className="mb-4" />
+          <ModuleBreadcrumb moduleId="CD-P3" moduleName="Implementation Roadmap Development" className="mb-4" />
           
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
@@ -45,10 +45,9 @@ export default function CDP3ImplementationRoadmapPart1() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="outline">Governance & Planning</Badge>
-                  <Badge className="bg-amber-500/10 text-amber-600 border-amber-200">Part 1 of 2</Badge>
                 </div>
                 <h1 className="text-3xl font-bold text-foreground">CD-P3: Implementation Roadmap Development</h1>
-                <p className="text-muted-foreground mt-1">Part 1: Strategic Planning</p>
+                <p className="text-muted-foreground mt-1">Strategic planning through to delivery monitoring</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -227,7 +226,7 @@ export default function CDP3ImplementationRoadmapPart1() {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-medium mb-3 text-green-700 dark:text-green-400">✓ In Scope (Part 1)</h4>
+                    <h4 className="font-medium mb-3 text-green-700 dark:text-green-400">✓ Strategic planning</h4>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Strategic planning framework</li>
                       <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Phasing and sequencing logic</li>
@@ -240,14 +239,14 @@ export default function CDP3ImplementationRoadmapPart1() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-3 text-muted-foreground">→ Part 2 Coverage</h4>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Detailed delivery planning</li>
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Workstream-level plans</li>
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Execution monitoring framework</li>
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Change control processes</li>
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Progress reporting mechanisms</li>
-                      <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4" /> Issue and risk management</li>
+                    <h4 className="font-medium mb-3 text-green-700 dark:text-green-400">✓ Delivery and monitoring</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Detailed delivery planning</li>
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Workstream-level plans</li>
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Execution monitoring framework</li>
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Change control processes</li>
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Progress reporting mechanisms</li>
+                      <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-green-600" /> Issue and risk management</li>
                     </ul>
                   </div>
                 </div>
