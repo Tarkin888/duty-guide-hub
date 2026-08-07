@@ -16,6 +16,7 @@ import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistPro
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 
 const STORAGE_KEY = "cd-i5-vulnerable-customers";
 
