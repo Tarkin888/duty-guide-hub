@@ -42,7 +42,7 @@ export const CATEGORY_NAMES: Record<CategoryKey, string> = {
 export const MODULE_REGISTRY: ModuleDefinition[] = [
   {
     id: 'CD-F1',
-    name: "Readiness Assessment",
+    name: "Consumer Duty Readiness Assessment",
     category: 'foundation',
     storageIds: ['cd-f1-readiness'],
     items: [
@@ -76,7 +76,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-F2',
-    name: "Requirements Mapping",
+    name: "Regulatory Requirements Mapping",
     category: 'foundation',
     storageIds: ['cd-f2-requirements'],
     items: [
@@ -153,7 +153,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-P1',
-    name: "Governance Framework",
+    name: "Governance Framework Design",
     category: 'governance',
     storageIds: ['cd-p1-governance-framework', 'cd-p1-governance-framework-part2'],
     items: [
@@ -277,7 +277,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-P2',
-    name: "Policy Framework",
+    name: "Policy & Framework Development",
     category: 'governance',
     storageIds: ['cd-p2-part1', 'cd-p2-part2'],
     items: [
@@ -465,7 +465,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-P3',
-    name: "Implementation Roadmap",
+    name: "Implementation Roadmap Development",
     category: 'governance',
     storageIds: ['cd-p3-part1'],
     items: [
@@ -549,7 +549,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I1',
-    name: "Products & Services",
+    name: "Products & Services Outcome Implementation",
     category: 'outcomes',
     storageIds: ['cd-i1-products'],
     items: [
@@ -615,7 +615,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I2',
-    name: "Price & Value",
+    name: "Price & Value Outcome Implementation",
     category: 'outcomes',
     storageIds: ['cd-i2'],
     items: [
@@ -692,7 +692,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I3',
-    name: "Consumer Understanding",
+    name: "Consumer Understanding Outcome Implementation",
     category: 'outcomes',
     storageIds: ['cd-i3'],
     items: [
@@ -785,7 +785,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I4',
-    name: "Consumer Support",
+    name: "Consumer Support Outcome Implementation",
     category: 'outcomes',
     storageIds: ['cd-i4'],
     items: [
@@ -881,7 +881,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I5',
-    name: "Vulnerable Customers",
+    name: "Vulnerable Customers Framework",
     category: 'crossCutting',
     storageIds: ['cd-i5'],
     items: [
@@ -935,7 +935,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   {
 
     id: 'CD-I6',
-    name: "Distribution Chain",
+    name: "Distribution Chain Management",
     category: 'crossCutting',
     storageIds: ['cd-i6'],
     items: [
@@ -966,7 +966,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-I7',
-    name: "Data & Evidence",
+    name: "Data & Evidence Management Framework",
     category: 'crossCutting',
     storageIds: ['cd-i7a', 'cd-i7b'],
     items: [
@@ -1103,7 +1103,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-T1',
-    name: "Training Programme",
+    name: "Training Programme Delivery",
     category: 'enablement',
     storageIds: ['cd-t1-part1', 'cd-t1-part2'],
     items: [
@@ -1163,7 +1163,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-T2',
-    name: "Communications & Change",
+    name: "Communications & Change Management",
     category: 'enablement',
     storageIds: ['cd-t2-part1', 'cd-t2-part2'],
     items: [
@@ -1221,7 +1221,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-T3',
-    name: "Technology Requirements",
+    name: "Technology Requirements & System Configuration",
     category: 'enablement',
     storageIds: ['cd-t3a', 'cd-t3b'],
     items: [
@@ -1393,7 +1393,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-M1',
-    name: "MI Framework",
+    name: "Ongoing Monitoring & MI Framework",
     category: 'monitoring',
     storageIds: ['cd-m1'],
     items: [
@@ -1416,7 +1416,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-M2',
-    name: "Testing & Assurance",
+    name: "Testing & Assurance Programme",
     category: 'monitoring',
     storageIds: ['cd-m2a'],
     items: [
@@ -1478,7 +1478,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-M3',
-    name: "Board Reporting",
+    name: "Annual Board Attestation & Reporting",
     category: 'monitoring',
     storageIds: ['cdm3-part1', 'cdm3-part2'],
     items: [
@@ -1532,7 +1532,7 @@ export const MODULE_REGISTRY: ModuleDefinition[] = [
   },
   {
     id: 'CD-M4',
-    name: "Continuous Improvement",
+    name: "Continuous Improvement Framework",
     category: 'monitoring',
     storageIds: ['cdm4-part1', 'cdm4-part2'],
     items: [
