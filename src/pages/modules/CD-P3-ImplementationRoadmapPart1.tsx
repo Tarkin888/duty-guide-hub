@@ -1535,22 +1535,21 @@ export default function CDP3ImplementationRoadmapPart1() {
               <CardContent>
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
                   <p className="text-sm mb-4">
-                    This completes Part 1 of Implementation Roadmap Development, establishing the strategic planning framework 
-                    and Board approval. Part 2 will cover detailed delivery planning, workstream-level plans, execution monitoring, 
-                    and change control processes.
+                    This completes Implementation Roadmap Development: the strategic planning framework, Board approval,
+                    detailed delivery planning, workstream-level plans, execution monitoring and change control.
+                    The next step is to embed ongoing monitoring through the MI framework.
                   </p>
-                  <Button onClick={() => navigate("/governance/roadmap-part2")} disabled>
-                    Continue to Part 2: Detailed Delivery Planning
+                  <Button onClick={() => navigate("/monitoring/mi-framework")}>
+                    Next: CD-M1 MI Framework
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
-                  <p className="text-xs text-muted-foreground mt-2">Part 2 coming soon</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-      <ModuleInsights moduleCode="CD-P3A" moduleTitle="Implementation Roadmap Part 1" />
+      <ModuleInsights moduleCode="CD-P3" moduleTitle="Implementation Roadmap Development" />
     </div>
   );
 }
