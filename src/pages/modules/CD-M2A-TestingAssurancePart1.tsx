@@ -49,12 +49,12 @@ export default function CDM2ATestingAssurancePart1() {
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
           <span>Monitoring & Assurance</span>
           <span>/</span>
-          <span>CD-M2A</span>
+          <span>CD-M2</span>
         </div>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
-              Testing & Assurance Programme - Part 1
+              Testing &amp; Assurance Programme
             </h1>
             <p className="text-lg text-muted-foreground">
               Testing Framework Design & Methodology
@@ -204,7 +204,7 @@ export default function CDM2ATestingAssurancePart1() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Key Deliverables - Part 1</CardTitle>
+              <CardTitle>Key Deliverables</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
@@ -1278,7 +1278,7 @@ export default function CDM2ATestingAssurancePart1() {
         </TabsContent>
       </Tabs>
 
-      <ModuleInsights moduleCode="CD-M2A" moduleTitle="Testing & Assurance Part 1" />
+      <ModuleInsights moduleCode="CD-M2" moduleTitle="Testing &amp; Assurance" />
 
       {/* Navigation */}
       <div className="mt-8 flex justify-between">
