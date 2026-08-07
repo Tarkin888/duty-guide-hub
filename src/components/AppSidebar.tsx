@@ -383,14 +383,18 @@ export function AppSidebar() {
               
               return (
                 <Collapsible key={index} defaultOpen={groupIsActive || !isCollapsed}>
-                  <SidebarGroup>
+                  <SidebarGroup className="py-0">
+                    {index > 1 && (
+                      <div className="-mx-2 mt-1.5 border-t border-sidebar-foreground/[0.08]" aria-hidden="true" />
+                    )}
                     <CollapsibleTrigger asChild>
-                      <SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent text-sidebar-foreground transition-colors duration-200">
-                        <GroupIcon className="h-4 w-4 mr-2" />
-                        <span className="flex-1">{item.title}</span>
-                        <ChevronDown className="h-4 w-4 transition-transform duration-200 ui-expanded:rotate-180" />
+                      <SidebarGroupLabel className="cursor-pointer -mx-2 w-auto h-auto rounded-none bg-sidebar-foreground/[0.04] px-3 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-sidebar-primary hover:bg-sidebar-foreground/[0.08] transition-colors duration-200">
+                        <GroupIcon className="h-[18px] w-[18px] mr-2 shrink-0 text-sidebar-primary" />
+                        <span className="flex-1 text-left">{item.title}</span>
+                        <ChevronDown className="h-4 w-4 shrink-0 text-sidebar-primary transition-transform duration-200 ui-expanded:rotate-180" />
                       </SidebarGroupLabel>
                     </CollapsibleTrigger>
+
                     <CollapsibleContent className="transition-all duration-300">
                       <SidebarGroupContent>
                         <SidebarMenu>
