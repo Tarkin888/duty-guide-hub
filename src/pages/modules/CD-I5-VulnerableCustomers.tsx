@@ -26,25 +26,9 @@ export default function CDI5VulnerableCustomers() {
   const canonicalId = normalizeModuleId(STORAGE_KEY);
   const moduleProgress = useModuleProgress(canonicalId);
   const status = moduleProgress.status === "complete" ? "completed" : moduleProgress.status;
-  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
-  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
 
   const handlePreview = (templateName: string) => {
     toast.info(`Opening preview for: ${templateName}`);
-  };
-
-  const handleMarkComplete = () => {
-    markModuleComplete(canonicalId, false);
-    toast.success("Module Complete", {
-      description: "Vulnerable Customers Framework marked as complete!",
-    });
-  };
-
-  const handleMarkInProgress = () => {
-    markModuleInProgress(canonicalId, false);
-    toast.info("Module In Progress", {
-      description: "Vulnerable Customers Framework marked as in progress",
-    });
   };
 
   return (
