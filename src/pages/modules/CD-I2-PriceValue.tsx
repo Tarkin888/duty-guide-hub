@@ -16,6 +16,8 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_I2_TEMPLATES } from "@/data/cdI2Templates";
 import { useToast } from "@/hooks/use-toast";
+import { useModuleProgress } from "@/stores/progressStore";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 
 export default function CDI2PriceValue() {
   const { toast } = useToast();
@@ -41,14 +43,6 @@ export default function CDI2PriceValue() {
 
   const handlePrint = () => {
     window.print();
-  };
-
-  const handleMarkComplete = () => {
-    setStatus("complete");
-    toast({
-      title: "Module Completed",
-      description: "CD-I2: Price & Value Outcome Implementation marked as complete",
-    });
   };
 
   return (
@@ -83,10 +77,7 @@ export default function CDI2PriceValue() {
               <Printer className="mr-2 h-4 w-4" />
               Print Module
             </Button>
-            <Button onClick={handleMarkComplete} disabled={status === "complete"}>
-              <CheckCircle2 className="mr-2 h-4 w-4" />
-              Mark Complete
-            </Button>
+            <ModuleActionButtons moduleId={moduleId} />
           </div>
         </div>
 
