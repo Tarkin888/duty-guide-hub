@@ -335,16 +335,19 @@ export function AppSidebar() {
                       <TooltipTrigger asChild>
                         <div
                           className={cn(
-                            "flex items-center justify-center w-full p-2 rounded-md cursor-pointer transition-all duration-200",
-                            "hover:bg-sidebar-accent min-h-[44px]",
-                            groupIsActive && "bg-primary/10 text-primary"
+                            "group/groupicon flex items-center justify-center w-full p-2 rounded-md cursor-pointer transition-colors duration-200",
+                            "min-h-[44px] hover:bg-sidebar-foreground/[0.04]",
+                            groupIsActive && "bg-sidebar-foreground/[0.08] relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[3px] before:bg-sidebar-primary before:rounded-l-md"
                           )}
                         >
                           <GroupIcon className={cn(
-                            "h-5 w-5",
-                            groupIsActive && "text-primary"
+                            "h-[18px] w-[18px] shrink-0 opacity-100 transition-colors",
+                            groupIsActive
+                              ? "text-sidebar-primary"
+                              : "text-sidebar-foreground/55 group-hover/groupicon:text-sidebar-primary"
                           )} />
                         </div>
+
                       </TooltipTrigger>
                       <TooltipContent
                         side="right"
