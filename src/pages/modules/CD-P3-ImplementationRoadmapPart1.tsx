@@ -153,12 +153,12 @@ export default function CDP3ImplementationRoadmapPart1() {
               </CardContent>
             </Card>
 
-            {/* Part 1 Deliverables */}
+            {/* Module Deliverables */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  Part 1 Deliverables
+                  Module Deliverables
                 </CardTitle>
                 <CardDescription>Strategic planning outputs required for Board approval</CardDescription>
               </CardHeader>
@@ -835,18 +835,14 @@ export default function CDP3ImplementationRoadmapPart1() {
           <TabsContent value="steps" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Implementation Steps - Part 1: Strategic Planning</CardTitle>
+                <CardTitle>Implementation Steps</CardTitle>
                 <CardDescription>
-                  Complete these steps to develop your strategic implementation plan for Board approval.
-                  Part 2 will cover detailed delivery planning and execution monitoring.
+                  Complete these steps to develop your strategic implementation plan for Board approval,
+                  then move into detailed delivery planning and execution monitoring.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-amber-700 dark:text-amber-300">
-                    <strong>Note:</strong> This is Part 1 focusing on strategic planning. Part 2 will cover detailed delivery planning and execution monitoring.
-                  </p>
-                </div>
+
 
                 <Accordion type="multiple" className="w-full space-y-4">
                   {/* Phase 1 */}
@@ -1329,7 +1325,7 @@ export default function CDP3ImplementationRoadmapPart1() {
           <TabsContent value="success" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Success Criteria - Part 1</CardTitle>
+                <CardTitle>Success Criteria</CardTitle>
                 <CardDescription>
                   Key criteria to confirm successful completion of strategic planning phase
                 </CardDescription>
