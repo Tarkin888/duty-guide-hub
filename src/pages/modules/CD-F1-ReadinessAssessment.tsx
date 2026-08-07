@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb } from "lucide-react";
+import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb, RotateCcw } from "lucide-react";
 import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
@@ -27,7 +27,7 @@ export default function CDf1ReadinessAssessment() {
   const [previewOpen, setPreviewOpen] = useState(false);
   
   // Use Zustand store
-  const { markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const { markModuleInProgress, updateLastAccessed, reopenModule } = useProgressStore();
   const moduleStatus = useModuleProgress(MODULE_ID);
   const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
 
@@ -83,15 +83,35 @@ export default function CDf1ReadinessAssessment() {
             </p>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap items-center">
             <Button variant="outline" size="sm" onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Print
             </Button>
-            <Button onClick={handleMarkComplete} disabled={status === "completed"}>
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Mark Complete
-            </Button>
+            {status === "completed" ? (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-2"
+                onClick={() => reopenModule(MODULE_ID)}
+              >
+                <RotateCcw className="h-4 w-4" />
+                Reopen Module
+              </Button>
+            ) : (
+              <>
+                {status === "not-started" && (
+                  <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
+                    <Clock className="h-4 w-4 mr-2" />
+                    Mark In Progress
+                  </Button>
+                )}
+                <Button size="sm" onClick={handleMarkComplete}>
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  Mark Complete
+                </Button>
+              </>
+            )}
           </div>
         </div>
         

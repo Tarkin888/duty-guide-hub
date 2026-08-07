@@ -10,12 +10,13 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { useProgressStore, useModuleProgress, normalizeModuleId } from "@/stores/progressStore";
+import { useModuleProgress, normalizeModuleId } from "@/stores/progressStore";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { ModuleChecklistProgress } from "@/components/modules/ModuleChecklistProgress";
 import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 
 const STORAGE_KEY = "cd-i5-vulnerable-customers";
 
@@ -25,25 +26,9 @@ export default function CDI5VulnerableCustomers() {
   const canonicalId = normalizeModuleId(STORAGE_KEY);
   const moduleProgress = useModuleProgress(canonicalId);
   const status = moduleProgress.status === "complete" ? "completed" : moduleProgress.status;
-  const markModuleComplete = useProgressStore((state) => state.markModuleComplete);
-  const markModuleInProgress = useProgressStore((state) => state.markModuleInProgress);
 
   const handlePreview = (templateName: string) => {
     toast.info(`Opening preview for: ${templateName}`);
-  };
-
-  const handleMarkComplete = () => {
-    markModuleComplete(canonicalId, false);
-    toast.success("Module Complete", {
-      description: "Vulnerable Customers Framework marked as complete!",
-    });
-  };
-
-  const handleMarkInProgress = () => {
-    markModuleInProgress(canonicalId, false);
-    toast.info("Module In Progress", {
-      description: "Vulnerable Customers Framework marked as in progress",
-    });
   };
 
   return (
@@ -94,21 +79,12 @@ export default function CDI5VulnerableCustomers() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2 shrink-0 flex-wrap">
               <Button variant="outline" size="sm" onClick={() => window.print()}>
                 <Printer className="h-4 w-4 mr-2" />
                 Print
               </Button>
-              {status === "not-started" && (
-                <Button variant="outline" size="sm" onClick={handleMarkInProgress}>
-                  <Clock className="h-4 w-4 mr-2" />
-                  Mark In Progress
-                </Button>
-              )}
-              <Button size="sm" onClick={handleMarkComplete} disabled={status === "completed"}>
-                <CheckCircle2 className="h-4 w-4 mr-2" />
-                {status === "completed" ? "Completed" : "Mark Complete"}
-              </Button>
+              <ModuleActionButtons moduleId={canonicalId} />
             </div>
           </div>
         </div>

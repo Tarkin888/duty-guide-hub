@@ -67,6 +67,13 @@ export const STORAGE_ID_TO_MODULE_ID: Record<string, string> = (() => {
     'cd-i6-distribution-chain': 'CD-I6',
     'cd-i7-data-evidence': 'CD-I7',
     'cd-t1-training': 'CD-T1',
+    'cd-t1-training-part1': 'CD-T1',
+    'cd-t1-training-part2': 'CD-T1',
+    'cd-t1-part1': 'CD-T1',
+    'cd-t1-part2': 'CD-T1',
+    'cd-i1-products': 'CD-I1',
+    'cd-f1-readiness': 'CD-F1',
+    'cd-f2-requirements': 'CD-F2',
     'cd-t2-communications': 'CD-T2',
     'cd-t2-communications-change': 'CD-T2',
     'cd-t3-technology': 'CD-T3',
@@ -80,9 +87,21 @@ export const STORAGE_ID_TO_MODULE_ID: Record<string, string> = (() => {
   return { ...legacyAliases, ...map };
 })();
 
-/** Resolve any module id variant to its canonical id */
+/**
+ * Resolve any module id variant to its canonical id.
+ * Falls back to the "cd-x9" prefix of a slug (e.g. "cd-t1-training-part2" -> "CD-T1")
+ * so a new or unmapped page storage id can never surface a raw slug in the UI.
+ */
 export function normalizeModuleId(moduleId: string): string {
-  return STORAGE_ID_TO_MODULE_ID[moduleId] || moduleId;
+  const mapped = STORAGE_ID_TO_MODULE_ID[moduleId];
+  if (mapped) return mapped;
+
+  const prefixMatch = /^(cd-[a-z]\d+)/i.exec(moduleId);
+  if (prefixMatch) {
+    const candidate = prefixMatch[1].toUpperCase();
+    if (MODULE_BY_ID.has(candidate)) return candidate;
+  }
+  return moduleId;
 }
 
 export function getModuleDefinition(moduleId: string): ModuleDefinition | undefined {
