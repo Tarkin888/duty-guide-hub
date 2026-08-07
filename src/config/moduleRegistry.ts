@@ -71,7 +71,6 @@ export const STORAGE_ID_TO_MODULE_ID: Record<string, string> = (() => {
     'cd-t1-training-part2': 'CD-T1',
     'cd-t1-part1': 'CD-T1',
     'cd-t1-part2': 'CD-T1',
-    'cd-i5-vulnerable-customers': 'CD-I5',
     'cd-i1-products': 'CD-I1',
     'cd-f1-readiness': 'CD-F1',
     'cd-f2-requirements': 'CD-F2',
