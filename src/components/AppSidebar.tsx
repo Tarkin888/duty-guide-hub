@@ -425,7 +425,7 @@ export function AppSidebar() {
             if ('url' in item && 'icon' in item) {
               const isActive = isActiveRoute(item.url);
               return (
-                <SidebarMenuItem key={item.url}>
+                <SidebarMenuItem key={item.url} className="px-2 py-1">
                   <SidebarMenuButton asChild>
                     <NavItemWithTooltip
                       item={item}
@@ -433,9 +433,11 @@ export function AppSidebar() {
                       isMobile={isMobile}
                       isActive={isActive}
                       searchTerm={search}
+                      isTopLevel
                     />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+
               );
             }
 
