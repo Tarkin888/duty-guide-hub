@@ -138,7 +138,7 @@ export default function CDM4ContinuousImprovementPart2() {
         {/* Main Content */}
         <Tabs defaultValue="implementation" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
-            <TabsTrigger value="implementation">Implementation (Part 2)</TabsTrigger>
+            <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
