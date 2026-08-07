@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { getModuleDisplayName, normalizeModuleId, MODULE_REGISTRY } from '../src/config/moduleRegistry';
+import { getModuleDisplayName, normalizeModuleId, MODULE_REGISTRY } from '@/config/moduleRegistry';
 
 const dir = 'src/pages/modules';
 const ids = new Set<string>();
