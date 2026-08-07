@@ -111,7 +111,7 @@ export default function CDT2CommunicationsChangePart2() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="outline" className="text-xs">CD-T2</Badge>
+                  <Badge variant="outline" className="text-xs">CD-T2B</Badge>
                   <Badge className="bg-accent text-accent-foreground text-xs">Part 2 of 2</Badge>
                   <Badge variant="secondary" className="text-xs">Enablement</Badge>
                 </div>

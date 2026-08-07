@@ -50,7 +50,7 @@ export default function CDP2PolicyFrameworkPart2() {
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold text-foreground">Policy & Framework Development</h1>
+                  <h1 className="text-3xl font-bold text-foreground">CD-P2B: Policy & Framework Development</h1>
                   <Badge variant="secondary">Part 2 of 2</Badge>
                 </div>
                 <p className="text-lg text-muted-foreground max-w-2xl">

@@ -77,10 +77,11 @@ export default function CDM3BoardReportingPart2() {
                 <FileText className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">CD-M3: Board & Executive Reporting</h1>
+                <h1 className="text-3xl font-bold text-foreground">CD-M3B: Board & Executive Reporting</h1>
                 <p className="text-muted-foreground mt-1">Part 2: Report Production & Quality</p>
                 <div className="flex gap-2 mt-2 flex-wrap">
                   <Badge variant="outline">Monitoring & Assurance</Badge>
+                  <Badge variant="secondary">Part 2 of 2</Badge>
                   <Badge variant="secondary">Weeks 10-16 + Ongoing</Badge>
                 </div>
               </div>

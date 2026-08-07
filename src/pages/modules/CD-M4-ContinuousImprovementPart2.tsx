@@ -90,10 +90,11 @@ export default function CDM4ContinuousImprovementPart2() {
                 <RefreshCw className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">CD-M4: Continuous Improvement Framework</h1>
+                <h1 className="text-3xl font-bold text-foreground">CD-M4B: Continuous Improvement Framework</h1>
                 <p className="text-muted-foreground mt-1">Part 2: Prioritisation, Maturity & Innovation</p>
                 <div className="flex gap-2 mt-2 flex-wrap">
                   <Badge variant="outline">Monitoring & Assurance</Badge>
+                  <Badge variant="secondary">Part 2 of 2</Badge>
                   <Badge variant="secondary">Ongoing Programme</Badge>
                 </div>
               </div>
