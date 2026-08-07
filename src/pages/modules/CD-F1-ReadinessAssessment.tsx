@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb } from "lucide-react";
+import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb, RotateCcw } from "lucide-react";
 import { ModuleBreadcrumb } from "@/components/ModuleBreadcrumb";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
@@ -27,7 +27,7 @@ export default function CDf1ReadinessAssessment() {
   const [previewOpen, setPreviewOpen] = useState(false);
   
   // Use Zustand store
-  const { markModuleInProgress, updateLastAccessed } = useProgressStore();
+  const { markModuleInProgress, updateLastAccessed, reopenModule } = useProgressStore();
   const moduleStatus = useModuleProgress(MODULE_ID);
   const status = moduleStatus.status === 'complete' ? 'completed' : moduleStatus.status;
 
