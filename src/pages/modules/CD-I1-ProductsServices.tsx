@@ -17,6 +17,7 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/TemplatePreviewDialog";
 import { CD_I1_TEMPLATES } from "@/data/cdI1Templates";
 import { toast } from "@/hooks/use-toast";
+import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 
 const MODULE_ID = "cd-i1-products-services";
