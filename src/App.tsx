@@ -168,6 +168,7 @@ const App = () => (
 
                               {/* Tools */}
                               <Route path="/maturity-assessment" element={<MaturityAssessment />} />
+                              <Route path="/regulatory-updates" element={<RegulatoryUpdates />} />
                               <Route path="/admin/site-health" element={<SiteHealth />} />
                               <Route path="/settings" element={<SettingsPage />} />
 
