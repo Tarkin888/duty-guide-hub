@@ -46,6 +46,7 @@ import TemplatesLibrary from "./pages/TemplatesLibrary";
 import Glossary from "./pages/Glossary";
 import RegulatoryReferences from "./pages/RegulatoryReferences";
 import MaturityAssessment from "./pages/MaturityAssessment";
+import RegulatoryUpdates from "./pages/RegulatoryUpdates";
 import OC3FairValueAssessment from "./pages/modules/OC-3-FairValueAssessment";
 import OC4OutcomesTesting from "./pages/modules/OC-4-OutcomesTesting";
 import SiteHealth from "./pages/SiteHealth";
@@ -167,6 +168,7 @@ const App = () => (
 
                               {/* Tools */}
                               <Route path="/maturity-assessment" element={<MaturityAssessment />} />
+                              <Route path="/regulatory-updates" element={<RegulatoryUpdates />} />
                               <Route path="/admin/site-health" element={<SiteHealth />} />
                               <Route path="/settings" element={<SettingsPage />} />
 
