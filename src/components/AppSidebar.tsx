@@ -130,6 +130,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     icon: FolderOpen,
     items: [
       { title: "Templates Library", url: "/resources/templates", icon: FolderOpen },
+      { title: "Regulatory Updates", url: "/regulatory-updates", icon: CalendarClock },
       { title: "Glossary", url: "/resources/glossary", icon: BookOpen },
       { title: "Regulatory References", url: "/resources/regulatory", icon: Scale },
     ],
