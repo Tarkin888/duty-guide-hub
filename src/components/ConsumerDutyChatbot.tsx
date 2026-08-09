@@ -337,6 +337,9 @@ export const ConsumerDutyChatbot: React.FC<ConsumerDutyChatbotProps> = ({
             <Send className="h-4 w-4" />
           </Button>
         </div>
+        <p className="text-[11px] text-muted-foreground mt-2 text-center leading-tight">
+          Guidance only, not regulated advice. Check against FCA source material.
+        </p>
       </form>
     </div>
   );
