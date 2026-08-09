@@ -98,6 +98,7 @@ export const RESOURCE_ROUTE_CONFIG: ResourceRouteConfig[] = [
   { path: '/resources/regulatory-references', title: 'Regulatory References', description: 'FCA guidance and regulations' },
   { path: '/maturity-assessment', title: 'Maturity Assessment', description: 'Assess your Consumer Duty maturity' },
   { path: '/regulatory-updates', title: 'Regulatory Updates', description: 'FCA Consumer Duty developments since November 2025' },
+  { path: '/consumer-duty-primer', title: 'Consumer Duty Primer', description: 'Educational orientation to the Consumer Duty framework' },
   { path: '/admin/site-health', title: 'Site Health', description: 'Internal link validation' },
 ];
 
