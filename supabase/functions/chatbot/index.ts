@@ -67,6 +67,7 @@ These directly address FCA's four outcomes under PRIN 2A:
 - **Templates Library**: Downloadable templates for each module at /resources/templates
 - **Glossary**: Consumer Duty terminology definitions at /resources/glossary
 - **Regulatory References**: FCA guidance links (FG22/5, PS22/9, PRIN 2A) at /resources/regulatory-references
+- **Regulatory Updates**: Dated log of recent FCA Consumer Duty developments (2025-2026) at /regulatory-updates. Use this for "what is new" or "latest developments" questions. This is different from Regulatory References above, which is the static list of core FCA guidance documents.
 - **Maturity Assessment**: Interactive self-assessment tool at /maturity-assessment
 
 ## RECOMMENDED IMPLEMENTATION PATH
