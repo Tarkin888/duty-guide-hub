@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consumer Duty Primer — A Regulatory Learning Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#191823;
+  --ink-soft:#3c3a4a;
+  --paper:#ffffff;
+  --paper-raised:#f9fafb;
+  --line:#e5e7eb;
+  --navy:#1e3a8a;
+  --navy-deep:#0f172a;
+  --gold:#d4af37;
+  --gold-soft:#fef3c7;
+  --brick:#a1402b;
+  --brick-soft:#f1dcd3;
+  --ok:#3f6b4f;
+  --ok-soft:#dde9df;
+  --sans: 'Inter', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --maxw: 1080px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+a{color:var(--navy-deep);}
+::selection{background:var(--gold-soft);}
+:focus-visible{outline:3px solid var(--navy); outline-offset:2px;}
+
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:var(--maxw); margin:0 auto; padding:12px 28px 0;
+}
+.brandmark{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--navy-deep); font-weight:600; white-space:nowrap; margin-bottom:10px;
+}
+
+/* ===== Folder tabs ===== */
+.tabbar-scroll{overflow-x:auto; overflow-y:hidden; scrollbar-width:thin; padding-bottom:0;}
+.tabbar{
+  display:flex; gap:3px; min-width:max-content; padding:0 0 0 0;
+}
+.tabbtn{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:0.02em; white-space:nowrap;
+  background:var(--paper); border:1px solid var(--line); border-bottom:none;
+  color:var(--ink-soft); padding:10px 16px 12px; cursor:pointer;
+  border-radius:6px 6px 0 0; position:relative; top:1px;
+  display:flex; align-items:center; gap:7px; transition:background .15s ease, color .15s ease;
+}
+.tabbtn .tn{color:var(--gold); font-weight:600;}
+.tabbtn:hover{background:var(--paper-raised); color:var(--ink);}
+.tabbtn.active{
+  background:var(--paper-raised); color:var(--ink); border-color:var(--line);
+  border-bottom:1px solid var(--paper-raised);
+  font-weight:600;
+}
+.tabbtn.active .tn{color:var(--navy);}
+
+/* ===== Hero ===== */
+.hero{
+  padding:88px 0 64px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+  background:var(--paper);
+}
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--navy-deep); background:var(--gold-soft); border:1px solid var(--gold);
+  padding:6px 12px; border-radius:100px; margin-bottom:28px;
+}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 2.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+h1.hero-title{
+  font-family:var(--sans); font-weight:700; font-size:clamp(2.4rem, 5.2vw, 4.1rem);
+  line-height:1.04; margin:0 0 26px; max-width:14ch; letter-spacing:-0.01em;
+}
+h1.hero-title em{font-style:italic; color:var(--navy);}
+.hero-sub{
+  font-size:1.15rem; color:var(--ink-soft); max-width:56ch; margin:0 0 40px;
+}
+.hero-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:8px;}
+.hero-stat{background:var(--paper-raised); padding:20px 18px;}
+.hero-stat .num{font-family:var(--sans); font-size:2rem; font-weight:700; color:var(--navy-deep); line-height:1;}
+.hero-stat .lbl{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); margin-top:8px;}
+@media (max-width:720px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
+
+/* ===== Panel scaffolding ===== */
+.panel-outer{background:var(--paper-raised); border-bottom:1px solid var(--line);}
+section.panel{padding:56px 0; display:none;}
+section.panel.active{display:block;}
+.tab-label{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--navy); border-left:3px solid var(--navy); padding-left:10px; margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.tab-label .idx{color:var(--gold); font-weight:600;}
+h2.block-title{
+  font-family:var(--sans); font-weight:700; font-size:clamp(1.7rem,3vw,2.4rem);
+  margin:0 0 18px; letter-spacing:-0.01em;
+}
+.block-intro{font-size:1.02rem; color:var(--ink-soft); max-width:64ch; margin-bottom:36px;}
+
+/* pager (prev/next between panels) */
+.pager{display:flex; justify-content:space-between; margin-top:48px; border-top:1px solid var(--line); padding-top:22px; gap:16px;}
+.pager-btn{
+  font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.04em;
+  background:none; border:1px solid var(--line); padding:10px 16px; cursor:pointer;
+  color:var(--ink-soft); display:flex; align-items:center; gap:8px; transition:border-color .15s ease, color .15s ease;
+}
+.pager-btn:hover{border-color:var(--navy); color:var(--ink);}
+.pager-btn.next{margin-left:auto;}
+.pager-btn:disabled{opacity:0.3; cursor:default;}
+.pager-btn:disabled:hover{border-color:var(--line); color:var(--ink-soft);}
+
+/* ===== Why it matters ===== */
+.why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+.why-card{background:var(--paper); border:1px solid var(--line); padding:24px 22px;}
+.why-card .icon{font-family:var(--sans); font-size:1.6rem; color:var(--navy); margin-bottom:10px;}
+.why-card h3{font-family:var(--sans); font-size:1.02rem; font-weight:600; margin:0 0 8px;}
+.why-card p{font-size:0.94rem; color:var(--ink-soft); margin:0;}
+@media (max-width:800px){.why-grid{grid-template-columns:1fr;}}
+
+/* ===== Timeline ===== */
+.timeline{position:relative; margin-top:20px; padding-left:26px;}
+.timeline::before{content:"";position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--line);}
+.tl-item{position:relative; padding:0 0 30px 24px; cursor:pointer;}
+.tl-item::before{
+  content:""; position:absolute; left:-19px; top:4px; width:14px; height:14px; border-radius:50%;
+  background:var(--paper); border:2px solid var(--navy); transition:all .2s ease;
+}
+.tl-item.past::before{background:var(--navy);}
+.tl-item:hover::before, .tl-item.open::before{background:var(--gold); border-color:var(--gold); transform:scale(1.15);}
+.tl-date{font-family:var(--mono); font-size:12.5px; color:var(--navy-deep); font-weight:600; letter-spacing:0.02em;}
+.tl-title{font-family:var(--sans); font-size:1.15rem; font-weight:600; margin:4px 0 6px;}
+.tl-body{
+  max-height:0; overflow:hidden; transition:max-height .3s ease;
+  font-size:0.92rem; color:var(--ink-soft);
+}
+.tl-item.open .tl-body{max-height:200px; margin-top:6px;}
+.tl-tag{
+  display:inline-block; font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:0.05em; padding:2px 8px; border-radius:100px; margin-left:8px;
+  background:var(--ok-soft); color:var(--ok); position:relative; top:-2px;
+}
+.tl-tag.gov{background:var(--gold-soft); color:#7a5c0e;}
+
+/* ===== Scope ===== */
+.scope-layout{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:start;}
+.scope-list{list-style:none; margin:0; padding:0;}
+.scope-list li{
+  display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--line);
+}
+.scope-list li:last-child{border-bottom:none;}
+.scope-mark{font-family:var(--mono); color:var(--navy); font-weight:600; flex-shrink:0;}
+.scope-note{background:var(--gold-soft); border:1px solid var(--gold); padding:22px; font-size:0.92rem;}
+.scope-note strong{display:block; font-family:var(--sans); font-size:1.05rem; margin-bottom:8px;}
+@media (max-width:800px){.scope-layout{grid-template-columns:1fr;}}
+
+/* ===== Compass (signature element) ===== */
+.compass-wrap{display:grid; grid-template-columns:auto 1fr; gap:48px; align-items:center;}
+.compass-svg{width:100%; max-width:420px;}
+.compass-seg{cursor:pointer; transition:opacity .2s ease, transform .2s ease; transform-origin:center;}
+.compass-seg:hover, .compass-seg.active{opacity:0.85;}
+.compass-panel{min-height:220px;}
+.compass-eyebrow{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--navy); margin-bottom:8px;}
+.compass-panel h3{font-family:var(--sans); font-size:1.5rem; margin:0 0 12px; font-weight:700;}
+.compass-panel p{color:var(--ink-soft); margin:0 0 10px; font-size:0.97rem;}
+.compass-hint{font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-top:16px; opacity:0.7;}
+@media (max-width:820px){.compass-wrap{grid-template-columns:1fr; justify-items:center;}}
+
+/* ===== Outcomes cards ===== */
+.outcomes-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+.outcome-card{
+  background:var(--paper); border:1px solid var(--line); padding:0; overflow:hidden;
+}
+.outcome-head{
+  padding:20px 22px; display:flex; align-items:baseline; gap:12px; cursor:pointer;
+  border-bottom:1px solid transparent;
+}
+.outcome-num{font-family:var(--mono); font-size:12px; color:var(--gold); font-weight:600;}
+.outcome-head h3{font-family:var(--sans); font-size:1.2rem; margin:0; flex:1; font-weight:700;}
+.outcome-toggle{font-family:var(--mono); color:var(--navy); font-size:14px; transition:transform .2s ease;}
+.outcome-card.open .outcome-toggle{transform:rotate(45deg);}
+.outcome-card.open .outcome-head{border-bottom-color:var(--line);}
+.outcome-body{max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 22px;}
+.outcome-card.open .outcome-body{max-height:420px; padding:18px 22px 22px;}
+.outcome-body h4{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--navy-deep); margin:0 0 6px;}
+.outcome-body p{font-size:0.92rem; color:var(--ink-soft); margin:0 0 16px;}
+.outcome-body a{font-size:0.85rem;}
+@media (max-width:800px){.outcomes-grid{grid-template-columns:1fr;}}
+
+/* ===== Cross-cutting rules ===== */
+.rules-row{display:flex; gap:2px; background:var(--line); border:1px solid var(--line);}
+.rule-col{flex:1; background:var(--paper); padding:26px 22px; position:relative;}
+.rule-col .rn{font-family:var(--sans); font-size:2.2rem; color:rgba(212,175,55,0.3); -webkit-text-stroke:1.5px var(--gold); position:absolute; top:14px; right:16px; font-weight:700;}
+.rule-col h3{font-family:var(--sans); font-weight:600; font-size:1rem; margin:0 0 10px; max-width:16ch;}
+.rule-col p{font-size:0.9rem; color:var(--ink-soft); margin:0;}
+@media (max-width:800px){.rules-row{flex-direction:column;}}
+
+/* ===== Governance ===== */
+.gov-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+.gov-card{border:1px solid var(--line); padding:24px; background:var(--paper);}
+.gov-card h3{font-family:var(--sans); font-size:1.15rem; margin:0 0 10px; font-weight:700;}
+.gov-card p{font-size:0.92rem; color:var(--ink-soft);}
+.callout{border:1px solid var(--navy); background:transparent; padding:20px 22px; margin-top:26px; display:flex; gap:14px; align-items:flex-start;}
+.callout .mark{font-family:var(--mono); font-weight:700; color:var(--navy); flex-shrink:0;}
+.callout p{margin:0; font-size:0.92rem;}
+@media (max-width:800px){.gov-grid{grid-template-columns:1fr;}}
+
+/* ===== Monitoring ===== */
+.mon-flow{display:flex; align-items:stretch; gap:0; margin-top:10px; flex-wrap:wrap;}
+.mon-step{flex:1; min-width:150px; background:var(--paper); border:1px solid var(--line); padding:20px; position:relative;}
+.mon-step:not(:last-child)::after{
+  content:"→"; position:absolute; right:-14px; top:50%; transform:translateY(-50%);
+  font-family:var(--mono); color:var(--navy); font-size:14px; z-index:2; background:var(--paper-raised); width:24px; text-align:center;
+}
+.mon-step .n{font-family:var(--mono); font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.05em;}
+.mon-step h4{font-family:var(--sans); font-size:1.02rem; margin:8px 0 6px; font-weight:700;}
+.mon-step p{font-size:0.85rem; color:var(--ink-soft); margin:0;}
+@media (max-width:900px){.mon-step::after{display:none;}}
+
+/* ===== Vulnerability ===== */
+.vuln-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.vuln-card{border:1px solid var(--line); padding:18px; text-align:left; background:var(--paper);}
+.vuln-card .letter{font-family:var(--sans); font-size:1.6rem; color:var(--navy); font-weight:700;}
+.vuln-card h4{margin:8px 0 6px; font-size:0.95rem; font-weight:700;}
+.vuln-card p{font-size:0.85rem; color:var(--ink-soft); margin:0;}
+@media (max-width:800px){.vuln-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ===== Comparison table ===== */
+.compare-table{width:100%; border-collapse:collapse; margin-top:10px;}
+.compare-table th, .compare-table td{text-align:left; padding:14px 16px; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:top;}
+.compare-table thead th{font-family:var(--mono); text-transform:uppercase; font-size:11px; letter-spacing:0.05em; color:var(--ink-soft); border-bottom:2px solid var(--ink);}
+.compare-table td.must{color:var(--ink-soft);}
+.compare-table td.good{color:var(--ok); font-weight:500;}
+.compare-table td.good::before{content:"✓ "; color:var(--ok);}
+.compare-table tr:hover{background:rgba(30,58,140,0.04);}
+.table-scroll{overflow-x:auto;}
+
+/* Risk flags */
+.risk-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:32px;}
+.risk-flag{
+  border:1px solid var(--brick); background:var(--brick-soft); padding:16px 18px;
+  cursor:pointer; transition:transform .15s ease;
+}
+.risk-flag:hover{transform:translateY(-2px);}
+.risk-flag .rf-head{display:flex; gap:8px; align-items:center; font-weight:600; font-size:0.9rem; color:#7a2c1c;}
+.risk-flag .rf-body{max-height:0; overflow:hidden; transition:max-height .25s ease; font-size:0.84rem; color:#7a2c1c; margin-top:0;}
+.risk-flag.open .rf-body{max-height:140px; margin-top:8px;}
+@media (max-width:800px){.risk-grid{grid-template-columns:1fr;}}
+
+/* ===== Crosslink section ===== */
+.crosslink-section{
+  background:var(--gold-soft); border:1px solid var(--gold); padding:32px; border-radius:8px; margin-top:32px;
+}
+.crosslink-section h3{font-family:var(--sans); font-size:1.15rem; margin:0 0 12px; font-weight:700; color:var(--navy-deep);}
+.crosslink-section p{margin:0 0 12px; color:var(--ink-soft); font-size:0.95rem;}
+.crosslink-section a{font-weight:600; color:var(--navy-deep);}
+
+/* ===== FAQ ===== */
+.faq-list{display:flex; flex-direction:column; gap:0;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{
+  width:100%; background:none; border:none; padding:18px 0; text-align:left;
+  font-size:1rem; color:var(--ink); cursor:pointer; display:flex; justify-content:space-between;
+  align-items:center; font-weight:600; transition:color .15s ease;
+}
+.faq-q:hover{color:var(--navy);}
+.faq-q .plus{font-family:var(--mono); font-weight:700; color:var(--navy); transition:transform .2s ease;}
+.faq-item.open .faq-q .plus{transform:rotate(45deg);}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+.faq-item.open .faq-a{max-height:200px; padding-bottom:12px;}
+.faq-a p{margin:0; font-size:0.92rem; color:var(--ink-soft);}
+
+/* ===== Resources ===== */
+.res-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:20px;}
+.res-card{
+  display:block; background:var(--paper); border:1px solid var(--line); padding:22px;
+  text-decoration:none; transition:all .15s ease;
+}
+.res-card:hover{border-color:var(--navy); transform:translateY(-2px); box-shadow:0 4px 12px rgba(30,58,140,0.1);}
+.res-card .tag{
+  display:inline-block; font-family:var(--mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:0.05em; padding:3px 8px; background:var(--paper-raised); color:var(--navy);
+  font-weight:600; margin-bottom:8px;
+}
+.res-card h4{margin:8px 0; font-size:1rem; color:var(--ink); font-weight:700;}
+.res-card .url{display:block; font-family:var(--mono); font-size:11px; color:var(--ink-soft);}
+@media (max-width:1000px){.res-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:600px){.res-grid{grid-template-columns:1fr;}}
+
+footer{border-top:1px solid var(--line); margin-top:56px; padding:32px 0; background:var(--paper-raised);}
+.disclaimer{font-size:0.9rem; color:var(--ink-soft); max-width:100%; margin-bottom:20px;}
+.foot-meta{display:flex; gap:40px; font-size:0.85rem; color:var(--ink-soft);}
+@media (max-width:600px){.foot-meta{flex-direction:column; gap:12px;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandmark">Consumer Duty Primer</div>
+    <div class="tabbar-scroll">
+      <div class="tabbar">
+        <button class="tabbtn active" data-panel="p1"><span class="tn">01</span> Why it matters</button>
+        <button class="tabbtn" data-panel="p2"><span class="tn">02</span> Timeline</button>
+        <button class="tabbtn" data-panel="p3"><span class="tn">03</span> Scope</button>
+        <button class="tabbtn" data-panel="p4"><span class="tn">04</span> Framework</button>
+        <button class="tabbtn" data-panel="p5"><span class="tn">05</span> Cross-cutting rules</button>
+        <button class="tabbtn" data-panel="p6"><span class="tn">06</span> Four outcomes</button>
+        <button class="tabbtn" data-panel="p7"><span class="tn">07</span> Governance</button>
+        <button class="tabbtn" data-panel="p8"><span class="tn">08</span> Monitoring</button>
+        <button class="tabbtn" data-panel="p9"><span class="tn">09</span> Vulnerability</button>
+        <button class="tabbtn" data-panel="p10"><span class="tn">10</span> Practice &amp; pitfalls</button>
+        <button class="tabbtn" data-panel="p11"><span class="tn">11</span> FAQ</button>
+        <button class="tabbtn" data-panel="p12"><span class="tn">12</span> Resources</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow"><span class="dot"></span> Embedded - orientation for the whole framework</div>
+    <h1 class="hero-title">Deliver good outcomes, <em>and prove it.</em></h1>
+    <p class="hero-sub">The Consumer Duty is the FCA's standard of care for retail customers. It asks every firm to act to deliver good outcomes - and to hold evidence, not just policy, that shows it is happening. This primer walks you through what the Duty requires, how it is structured, and where firms most often fall short.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">1</div><div class="lbl">Consumer Principle</div></div>
+      <div class="hero-stat"><div class="num">3</div><div class="lbl">Cross-cutting rules</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">Outcomes</div></div>
+      <div class="hero-stat"><div class="num">2023</div><div class="lbl">In force since 31 Jul</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="panel-outer">
+<div class="wrap">
+
+<!-- 01 WHY IT MATTERS -->
+<section class="panel active" id="p1">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">01</span> Why it matters</div>
+    <h2 class="block-title">A shift from checklists to outcomes</h2>
+    <p class="block-intro">The Duty moves regulation beyond "did you follow the process?" towards "can you show the customer was actually better off?" That change in question is the whole point.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon">✦</div>
+        <h3>Raises the bar</h3>
+        <p>Sets a higher, clearer standard of care than the old Treating Customers Fairly regime - firms must act to deliver good outcomes, not merely avoid poor ones.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">✦</div>
+        <h3>Outcomes over process</h3>
+        <p>Firms are judged on the results customers actually experience - value received, understanding gained, support given - not on whether a policy document exists.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">✦</div>
+        <h3>Whole relationship, whole lifecycle</h3>
+        <p>The Duty applies from product design through sale, communication and ongoing support - including to closed books, switching and cancelling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 TIMELINE -->
+<section class="panel" id="p2">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">02</span> Timeline</div>
+    <h2 class="block-title">How the Duty has landed, step by step</h2>
+    <p class="block-intro">Click any milestone for the detail. The Duty did not stop at go-live - the FCA continues to publish good and poor practice findings and adjust governance expectations.</p>
+    <div class="timeline" id="timeline">
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">31 October 2022</div>
+        <div class="tl-title">Implementation plans due</div>
+        <div class="tl-body">Firms were expected to have board-approved implementation plans in place, setting out how they would embed the Duty ahead of the first live date.</div>
+      </div>
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">31 July 2023 <span class="tl-tag">Went live</span></div>
+        <div class="tl-title">Duty in force for open products and services</div>
+        <div class="tl-body">The Consumer Duty came into force for all new and existing products or services that were open to sale or renewal. From this date, the four outcomes and cross-cutting rules applied in full.</div>
+      </div>
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">31 July 2024 <span class="tl-tag">Went live</span></div>
+        <div class="tl-title">Duty extended to closed products and services</div>
+        <div class="tl-body">Coverage extended to closed products and services - those no longer marketed or distributed, including by renewal, on or after 31 July 2023. A product only closed after that date is not treated as "closed" for Duty purposes.</div>
+      </div>
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">27 February 2025 <span class="tl-tag gov">Governance</span></div>
+        <div class="tl-title">Board champion expectation removed</div>
+        <div class="tl-body">The FCA confirmed it no longer expects firms to have a dedicated Consumer Duty Board champion. Boards may retain the role if they judge it useful, but it is no longer a stated expectation in FCA guidance.</div>
+      </div>
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">2025-26</div>
+        <div class="tl-title">Focus areas and simplification work</div>
+        <div class="tl-body">The FCA published its Consumer Duty focus areas for 2025/26, setting cross-cutting and sector priorities, alongside wider work to simplify Handbook requirements where it can without weakening protection.</div>
+      </div>
+      <div class="tl-item past" data-open="false">
+        <div class="tl-date">July 2026</div>
+        <div class="tl-title">Latest good and poor practice findings</div>
+        <div class="tl-body">Recent publications cover outcomes monitoring, and products and services good practice - part of a continuing programme of thematic reviews rather than a one-off implementation exercise.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SCOPE -->
+<section class="panel" id="p3">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">03</span> Scope</div>
+    <h2 class="block-title">Who the Duty applies to</h2>
+    <p class="block-intro">The Duty applies across the distribution chain, not just to the firm with the customer relationship.</p>
+    <div class="scope-layout">
+      <ul class="scope-list">
+        <li><span class="scope-mark">01</span><span>Firms that manufacture, design or approve products and services for retail customers.</span></li>
+        <li><span class="scope-mark">02</span><span>Firms that distribute, advise on or arrange those products and services, even without direct customer contact.</span></li>
+        <li><span class="scope-mark">03</span><span>Firms serving retail customers directly, including consumers, and - in defined circumstances - small businesses and charities treated as retail clients.</span></li>
+        <li><span class="scope-mark">04</span><span>Both open products sold today and closed products no longer on sale, since 31 July 2024.</span></li>
+      </ul>
+      <div class="scope-note">
+        <strong>Proportionality for smaller firms</strong>
+        Smaller firms must still deliver the same good outcomes, but how they evidence this can reflect their size and complexity. The Duty is outcomes-based, not process-heavy - evidence should be proportionate, not identical to a large firm's.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 FRAMEWORK / COMPASS -->
+<section class="panel" id="p4">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">04</span> The framework</div>
+    <h2 class="block-title">One principle, three rules, four outcomes</h2>
+    <p class="block-intro">The Consumer Duty Compass below is the FCA's framework in one diagram. Click a segment to read what it means.</p>
+    <div class="compass-wrap">
+      <svg class="compass-svg" viewBox="0 0 400 400" id="compassSvg" role="img" aria-label="Consumer Duty framework diagram">
+        <g id="outcomeSegs">
+          <path class="compass-seg" data-key="o1" d="M200,200 L200,40 A160,160 0 0,1 341.9,120 Z" fill="#1e3a8a"/>
+          <path class="compass-seg" data-key="o2" d="M200,200 L341.9,120 A160,160 0 0,1 341.9,280 Z" fill="#3b82f6"/>
+          <path class="compass-seg" data-key="o3" d="M200,200 L341.9,280 A160,160 0 0,1 58.1,280 Z" fill="#60a5fa"/>
+          <path class="compass-seg" data-key="o4" d="M200,200 L58.1,280 A160,160 0 0,1 58.1,120 Z" fill="#93c5fd"/>
+          <path class="compass-seg" data-key="o1b" d="M200,200 L58.1,120 A160,160 0 0,1 200,40 Z" fill="#1e3a8a" opacity="0"/>
+        </g>
+        <g id="ruleSegs">
+          <path class="compass-seg" data-key="r1" d="M200,200 L200,110 A90,90 0 0,1 277.9,155 Z" fill="#d4af37"/>
+          <path class="compass-seg" data-key="r2" d="M200,200 L277.9,155 A90,90 0 0,1 200,290 A90,0 0,1 122.1,245 Z" fill="#fbbf24"/>
+          <path class="compass-seg" data-key="r3" d="M200,200 L122.1,245 A90,90 0 0,1 200,110 Z" fill="#fcd34d"/>
+        </g>
+        <circle cx="200" cy="200" r="46" fill="#0f172a" class="compass-seg" data-key="center"/>
+        <text x="200" y="195" text-anchor="middle" fill="#ffffff" font-family="IBM Plex Mono" font-size="9" letter-spacing="0.5">CONSUMER</text>
+        <text x="200" y="209" text-anchor="middle" fill="#ffffff" font-family="IBM Plex Mono" font-size="9" letter-spacing="0.5">PRINCIPLE</text>
+        <text x="270" y="85" fill="#fff" font-family="IBM Plex Mono" font-size="9.5" text-anchor="middle">Products &amp;</text>
+        <text x="270" y="96" fill="#fff" font-family="IBM Plex Mono" font-size="9.5" text-anchor="middle">Services</text>
+        <text x="303" y="205" fill="#fff" font-family="IBM Plex Mono" font-size="9.5" text-anchor="middle">Price &amp;</text>
+        <text x="303" y="216" fill="#fff" font-family="IBM Plex Mono" font-size="9.5" text-anchor="middle">Value</text>
+        <text x="130" y="313" fill="#fff" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">Consumer</text>
+        <text x="130" y="324" fill="#fff" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">Understanding</text>
+        <text x="97" y="205" fill="#fff" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">Consumer</text>
+        <text x="97" y="216" fill="#fff" font-family="IBM Plex Mono" font-size="9" text-anchor="middle">Support</text>
+      </svg>
+      <div class="compass-panel" id="compassPanel">
+        <div class="compass-eyebrow">Centre - the Consumer Principle</div>
+        <h3>"A firm must act to deliver good outcomes for retail customers."</h3>
+        <p>This is the overarching standard the whole Duty sits beneath. Everything else - the cross-cutting rules and the four outcomes - exists to make this one sentence operational and evidenced.</p>
+        <div class="compass-hint">Click the gold inner ring for the cross-cutting rules, or the navy outer ring for the four outcomes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CROSS-CUTTING RULES -->
+<section class="panel" id="p5">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">05</span> Cross-cutting rules</div>
+    <h2 class="block-title">How firms must behave, throughout</h2>
+    <p class="block-intro">Three rules that sit beneath the Consumer Principle and inform how every one of the four outcomes should be interpreted.</p>
+    <div class="rules-row">
+      <div class="rule-col">
+        <div class="rn">1</div>
+        <h3>Act in good faith towards customers</h3>
+        <p>Treat customers honestly and fairly - this is the baseline standard of conduct expected in every interaction.</p>
+      </div>
+      <div class="rule-col">
+        <div class="rn">2</div>
+        <h3>Avoid causing foreseeable harm</h3>
+        <p>Identify and mitigate risks to customers before they materialise, rather than reacting once harm has occurred.</p>
+      </div>
+      <div class="rule-col">
+        <div class="rn">3</div>
+        <h3>Enable and support financial objectives</h3>
+        <p>Give customers clear information and effective support so they can pursue what they are actually trying to achieve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 FOUR OUTCOMES -->
+<section class="panel" id="p6">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">06</span> The four outcomes</div>
+    <h2 class="block-title">What firms must actually deliver</h2>
+    <p class="block-intro">Each outcome covers a distinct part of the firm-customer relationship. Click to expand what the FCA wants, and what it expects to see in practice.</p>
+    <div class="outcomes-grid" id="outcomesGrid">
+      <div class="outcome-card">
+        <div class="outcome-head"><span class="outcome-num">01</span><h3>Products &amp; services</h3><span class="outcome-toggle">+</span></div>
+        <div class="outcome-body">
+          <h4>What the FCA wants</h4>
+          <p>Consumers sold products and services that meet their needs, characteristics and objectives, and that work the way they expect.</p>
+          <h4>What is expected</h4>
+          <p>A clearly defined target market, products suitable for that market, and regular monitoring to confirm they still meet customer needs.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-head"><span class="outcome-num">02</span><h3>Price &amp; value</h3><span class="outcome-toggle">+</span></div>
+        <div class="outcome-body">
+          <h4>What the FCA wants</h4>
+          <p>Products and services that offer fair value - a reasonable relationship between the price charged and the overall benefits received.</p>
+          <h4>What is expected</h4>
+          <p>Fair value is more than price: firms should regularly review fees and charges against benefits, limitations and non-financial costs, and avoid hidden costs or poor value propositions.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-head"><span class="outcome-num">03</span><h3>Consumer understanding</h3><span class="outcome-toggle">+</span></div>
+        <div class="outcome-body">
+          <h4>What the FCA wants</h4>
+          <p>Consumers who understand the information they are given and can make timely, informed decisions.</p>
+          <h4>What is expected</h4>
+          <p>Clear, timely, accessible communications free of jargon, tailored to the customer's level of financial literacy, and tested to confirm key information actually lands.</p>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-head"><span class="outcome-num">04</span><h3>Consumer support</h3><span class="outcome-toggle">+</span></div>
+        <div class="outcome-body">
+          <h4>What the FCA wants</h4>
+          <p>Customers should not face unreasonable barriers to accessing support or switching providers.</p>
+          <h4>What is expected</h4>
+          <p>Support is as easy to access as sales. Clear, responsive, and accessible channels for help, switching and cancelling, without artificial friction or delay.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 GOVERNANCE -->
+<section class="panel" id="p7">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">07</span> Governance</div>
+    <h2 class="block-title">Ownership at the top</h2>
+    <p class="block-intro">Consumer Duty is the board's responsibility. It is not a compliance-department project or a once-a-year report.</p>
+    <div class="gov-grid">
+      <div class="gov-card">
+        <h3>Board and Chair</h3>
+        <p>The board must collectively own the Consumer Duty and actively scrutinise delivery. This is not delegable. The chair sets the tone, and boards must regularly challenge management on outcomes evidence.</p>
+      </div>
+      <div class="gov-card">
+        <h3>Senior Management Functions</h3>
+        <p>CEOs, Chief Risk Officers, and business-line leads each have Consumer Duty accountability within their domains. They must own the framework and evidence, not pass it down.</p>
+      </div>
+      <div class="gov-card">
+        <h3>Annual board report and review</h3>
+        <p>The FCA expects an annual board report on how the firm is delivering good outcomes. This is not a box to tick: boards must analyse the evidence, identify what is working and what is not, and drive action.</p>
+      </div>
+      <div class="gov-card">
+        <h3>Continuous scrutiny</h3>
+        <p>Boards are expected to review evidence on how the firm is delivering good outcomes at least annually, using it to identify issues, agree action and track remediation.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="mark">i</span>
+      <p><strong>What changed on 27 February 2025:</strong> the FCA removed its expectation for a dedicated Consumer Duty Board champion, giving firms flexibility over governance arrangements. This did not reduce the underlying requirement for boards to discuss Duty performance and management information, and to properly scrutinise and challenge the annual Consumer Duty board report.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 MONITORING -->
+<section class="panel" id="p8">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">08</span> Monitoring &amp; evidence</div>
+    <h2 class="block-title">From dashboards to conclusions</h2>
+    <p class="block-intro">The FCA's evidential bar has risen since go-live. In its April 2026 review of Year 2 board reports, it told firms to move past management-information dashboards to genuine analysis.</p>
+    <div class="mon-flow">
+      <div class="mon-step"><div class="n">Collect</div><h4>Management information</h4><p>Complaints, cancellations, call data, vulnerability flags, product performance.</p></div>
+      <div class="mon-step"><div class="n">Analyse</div><h4>Draw conclusions</h4><p>Identify good and poor outcomes and understand their causes, not just report the numbers.</p></div>
+      <div class="mon-step"><div class="n">Challenge</div><h4>Board scrutiny</h4><p>Document the challenge boards actually give management, not just that a report was presented.</p></div>
+      <div class="mon-step"><div class="n">Act</div><h4>Close the loop</h4><p>Take appropriate action and track it through to a demonstrable improvement in outcomes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 VULNERABILITY -->
+<section class="panel" id="p9">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">09</span> Vulnerability &amp; fair treatment</div>
+    <h2 class="block-title">Understanding customers in vulnerable circumstances</h2>
+    <p class="block-intro">Vulnerability is not a separate outcome - it runs through all four. The FCA expects firms to understand the needs of their customer base, including those with characteristics of vulnerability, and to respond accordingly.</p>
+    <div class="vuln-grid">
+      <div class="vuln-card"><div class="letter">H</div><h4>Health</h4><p>Conditions or illnesses affecting day-to-day capability, including mental health.</p></div>
+      <div class="vuln-card"><div class="letter">L</div><h4>Life events</h4><p>Bereavement, job loss, relationship breakdown or other significant life changes.</p></div>
+      <div class="vuln-card"><div class="letter">R</div><h4>Resilience</h4><p>Low financial resilience - limited ability to withstand financial shocks.</p></div>
+      <div class="vuln-card"><div class="letter">C</div><h4>Capability</h4><p>Low knowledge of financial matters, or low confidence managing money or using digital services.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 PRACTICE & PITFALLS -->
+<section class="panel" id="p10">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">10</span> Practice &amp; pitfalls</div>
+    <h2 class="block-title">What firms must do vs. what good looks like</h2>
+    <p class="block-intro">Meeting the minimum and demonstrating genuine good practice are different bars. The comparison below illustrates the gap.</p>
+    <div class="table-scroll">
+      <table class="compare-table">
+        <thead><tr><th>Area</th><th>Firms must do</th><th>Good practice looks like</th></tr></thead>
+        <tbody>
+          <tr><td>Target market</td><td class="must">Define a target market for each product</td><td class="good">Granular segmentation tested against real customer data, reviewed on a cycle</td></tr>
+          <tr><td>Fair value</td><td class="must">Complete a fair value assessment</td><td class="good">Assessments that compare price to benefits, limitations and non-financial costs, refreshed when terms change</td></tr>
+          <tr><td>Communications</td><td class="must">Avoid misleading information</td><td class="good">Plain-English testing with real customers, including those with low financial literacy</td></tr>
+          <tr><td>Support</td><td class="must">Provide a way to contact the firm</td><td class="good">Support as easy to access as sales, with no extra friction to switch or cancel</td></tr>
+          <tr><td>Board reporting</td><td class="must">Produce an annual Duty report</td><td class="good">Analysis that draws conclusions, documents challenge, and tracks action to closure</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--sans); font-size:1.3rem; margin:44px 0 4px; font-weight:700;">Common failure points</h3>
+    <p class="block-intro" style="margin-bottom:16px;">Click a flag for the detail the FCA has raised in its good and poor practice reviews.</p>
+    <div class="risk-grid" id="riskGrid">
+      <div class="risk-flag"><div class="rf-head">⚑ Dashboard without analysis</div><div class="rf-body">MI is collected and presented, but no one draws a conclusion about what it means for customers or what should change.</div></div>
+      <div class="risk-flag"><div class="rf-head">⚑ Stale fair value assessments</div><div class="rf-body">Assessments completed once at launch and not revisited when pricing, benefits or the market moves.</div></div>
+      <div class="risk-flag"><div class="rf-head">⚑ Vulnerability not embedded</div><div class="rf-body">Vulnerability treated as a specialist team's job rather than built into product design, communications and support end to end.</div></div>
+      <div class="risk-flag"><div class="rf-head">⚑ Sludge in cancellation journeys</div><div class="rf-body">Signing up is fast; leaving, switching or getting help is deliberately or accidentally slower and harder.</div></div>
+      <div class="risk-flag"><div class="rf-head">⚑ Jargon-heavy communications</div><div class="rf-body">Key information is technically present but not actually understandable to the intended audience.</div></div>
+      <div class="risk-flag"><div class="rf-head">⚑ Governance without challenge</div><div class="rf-body">Board reports presented and noted, without evidence of genuine scrutiny, questioning or follow-up action.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 FAQ -->
+<section class="panel" id="p11">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">11</span> FAQ</div>
+    <h2 class="block-title">Common questions</h2>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">Does the Consumer Duty replace Treating Customers Fairly? <span class="plus">+</span></button>
+        <div class="faq-a"><p>The Duty sets a higher standard than the previous Treating Customers Fairly principles. It shifts the test from avoiding poor outcomes to actively delivering good ones, backed by evidence rather than policy alone.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do small firms need to do everything a large firm does? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. The Duty is outcomes-based rather than process-heavy, and evidence should be proportionate to a firm's size, customer base and complexity - while still delivering the same good outcomes.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is a Consumer Duty Board champion still required? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No - from 27 February 2025 the FCA no longer expects firms to have one. Firms can retain the role if they find it useful, but the underlying expectation that boards actively discuss and scrutinise Duty performance remains.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What counts as a "closed" product? <span class="plus">+</span></button>
+        <div class="faq-a"><p>A product not marketed or distributed, including by renewal, on or after 31 July 2023. A product only closed to new business after that date is not treated as closed for Duty purposes and falls under the earlier deadline.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is this page regulatory advice? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. It is an educational summary intended to orient teams and boards. Always check current FCA rules, guidance and your own legal or compliance advice before making decisions.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 RESOURCES -->
+<section class="panel" id="p12">
+  <div class="panel-inner">
+    <div class="tab-label"><span class="idx">12</span> Further reading</div>
+    <h2 class="block-title">FCA source pages</h2>
+    
+    <div class="crosslink-section">
+      <h3>Latest Consumer Duty developments</h3>
+      <p>For the most recent FCA publications, good and poor practice findings, and regulatory updates spanning the full calendar, visit the Regulatory Updates page.</p>
+      <p><a href="/regulatory-updates">Go to Regulatory Updates</a></p>
+    </div>
+
+    <h3 style="font-family:var(--sans); font-size:1.15rem; margin:44px 0 18px; font-weight:700;">Key FCA resources</h3>
+    <div class="res-grid">
+      <a class="res-card" href="https://www.fca.org.uk/firms/consumer-duty" target="_blank" rel="noopener">
+        <div class="tag">Hub</div><h4>Consumer Duty homepage</h4><span class="url">fca.org.uk/firms/consumer-duty</span>
+      </a>
+      <a class="res-card" href="https://www.fca.org.uk/firms/consumer-duty/about" target="_blank" rel="noopener">
+        <div class="tag">Overview</div><h4>About the Consumer Duty</h4><span class="url">fca.org.uk/firms/consumer-duty/about</span>
+      </a>
+      <a class="res-card" href="https://www.fca.org.uk/publications/policy-statements/ps22-9-new-consumer-duty" target="_blank" rel="noopener">
+        <div class="tag">Rules</div><h4>PS22/9: final rules and guidance</h4><span class="url">fca.org.uk/publications/policy-statements/ps22-9</span>
+      </a>
+      <a class="res-card" href="https://www.fca.org.uk/firms/consumer-duty/information-firms" target="_blank" rel="noopener">
+        <div class="tag">Guidance</div><h4>Information for firms</h4><span class="url">fca.org.uk/firms/consumer-duty/information-firms</span>
+      </a>
+      <a class="res-card" href="https://www.fca.org.uk/firms/consumer-duty/publications-resources" target="_blank" rel="noopener">
+        <div class="tag">Resources</div><h4>Publications and resources</h4><span class="url">fca.org.uk/firms/consumer-duty/publications-resources</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="pager">
+  <button class="pager-btn prev" id="pagerPrev">← Previous</button>
+  <button class="pager-btn next" id="pagerNext">Next →</button>
+</div>
+
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="disclaimer">
+      <strong>Educational summary, not regulatory advice.</strong> This page is designed to help teams and boards navigate and understand the Consumer Duty. It is not a substitute for reading the FCA's current rules and guidance in full, and does not constitute legal, compliance or regulatory advice. Always verify against the FCA's own publications before acting.
+    </div>
+    <div class="foot-meta">
+      <span>Sources: FCA Consumer Duty hub and publications, current as at August 2026</span>
+      <span>Built as a learning aid - link to FCA pages for authoritative detail</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== Tab navigation =====
+const tabs = Array.from(document.querySelectorAll('.tabbtn'));
+const panels = Array.from(document.querySelectorAll('section.panel'));
+
+function activatePanel(id, opts){
+  opts = opts || {};
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.panel === id));
+  panels.forEach(p => p.classList.toggle('active', p.id === id));
+  updatePager(id);
+  if(!opts.skipScroll){
+    document.querySelector('.topbar').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  const activeTab = tabs.find(t => t.dataset.panel === id);
+  if(activeTab) activeTab.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+}
+
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=> activatePanel(t.dataset.panel));
+});
+
+function updatePager(id){
+  const idx = panels.findIndex(p => p.id === id);
+  document.getElementById('pagerPrev').disabled = idx <= 0;
+  document.getElementById('pagerNext').disabled = idx >= panels.length - 1;
+  document.getElementById('pagerPrev').dataset.target = idx > 0 ? panels[idx-1].id : '';
+  document.getElementById('pagerNext').dataset.target = idx < panels.length-1 ? panels[idx+1].id : '';
+}
+document.getElementById('pagerPrev').addEventListener('click', (e)=>{
+  const target = e.currentTarget.dataset.target;
+  if(target) activatePanel(target);
+});
+document.getElementById('pagerNext').addEventListener('click', (e)=>{
+  const target = e.currentTarget.dataset.target;
+  if(target) activatePanel(target);
+});
+updatePager('p1');
+
+// Timeline accordion
+document.querySelectorAll('.tl-item').forEach(item=>{
+  item.addEventListener('click', ()=>{
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.tl-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+// Outcomes accordion
+document.querySelectorAll('.outcome-card').forEach(card=>{
+  card.querySelector('.outcome-head').addEventListener('click', ()=>{
+    card.classList.toggle('open');
+  });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click', ()=>{
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+// Risk flags
+document.querySelectorAll('.risk-flag').forEach(flag=>{
+  flag.addEventListener('click', ()=> flag.classList.toggle('open'));
+});
+
+// Compass interactivity
+const compassContent = {
+  center: {eyebrow:"Centre - the Consumer Principle", title:'"A firm must act to deliver good outcomes for retail customers."', body:"This is the overarching standard the whole Duty sits beneath. Everything else exists to make this sentence operational and evidenced."},
+  r1: {eyebrow:"Cross-cutting rule 1", title:"Act in good faith", body:"Treat customers honestly and fairly in every interaction - the baseline standard the other rules build on."},
+  r2: {eyebrow:"Cross-cutting rule 2", title:"Avoid foreseeable harm", body:"Identify and mitigate risks to customers before they materialise, rather than responding only after harm has occurred."},
+  r3: {eyebrow:"Cross-cutting rule 3", title:"Enable financial objectives", body:"Give customers clear information and effective support so they can pursue what they are actually trying to achieve."},
+  o1: {eyebrow:"Outcome - Products and services", title:"Fit for purpose, sold to the right people", body:"Products should meet the needs, characteristics and objectives of a clearly defined target market, and be monitored regularly."},
+  o1b:{eyebrow:"Outcome - Products and services", title:"Fit for purpose, sold to the right people", body:"Products should meet the needs, characteristics and objectives of a clearly defined target market, and be monitored regularly."},
+  o2: {eyebrow:"Outcome - Price and value", title:"A fair relationship between price and benefit", body:"Fees and charges should be reasonable against the benefits, limitations and non-financial costs customers receive - reviewed regularly, not set once."},
+  o3: {eyebrow:"Outcome - Consumer understanding", title:"Clear, timely, testable communication", body:"Information should be accessible and jargon-free, tailored to the audience, and tested to confirm it is actually understood."},
+  o4: {eyebrow:"Outcome - Consumer support", title:"Support as easy to access as sales", body:"Customers should not face unreasonable barriers getting help, switching or cancelling - support should match the ease of onboarding."}
+};
+const panel = document.getElementById('compassPanel');
+document.querySelectorAll('.compass-seg').forEach(seg=>{
+  seg.addEventListener('click', ()=>{
+    document.querySelectorAll('.compass-seg').forEach(s=>s.classList.remove('active'));
+    seg.classList.add('active');
+    const d = compassContent[seg.dataset.key];
+    if(d){
+      panel.innerHTML = `<div class="compass-eyebrow">${d.eyebrow}</div><h3>${d.title}</h3><p>${d.body}</p><div class="compass-hint">Click another segment to keep exploring the framework.</div>`;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
