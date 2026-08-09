@@ -51,6 +51,7 @@ import OC3FairValueAssessment from "./pages/modules/OC-3-FairValueAssessment";
 import OC4OutcomesTesting from "./pages/modules/OC-4-OutcomesTesting";
 import SiteHealth from "./pages/SiteHealth";
 import SettingsPage from "./pages/Settings";
+import ConsumerDutyPrimer from "./components/ConsumerDutyPrimer";
 import { FileText } from "lucide-react";
 
 const queryClient = new QueryClient();
