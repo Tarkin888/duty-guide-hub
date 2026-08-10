@@ -423,8 +423,22 @@ export function AppSidebar() {
                 );
               }
               
+              const isModuleGroup = Boolean((item as NavigationGroup).moduleGroup);
+              const groupOpen = isModuleGroup
+                ? (search.trim().length > 0 ? true : (openModuleGroups[item.title] ?? false))
+                : undefined;
+
               return (
-                <Collapsible key={index} defaultOpen={groupIsActive || !isCollapsed}>
+                <Collapsible
+                  key={index}
+                  {...(isModuleGroup
+                    ? {
+                        open: groupOpen,
+                        onOpenChange: (open: boolean) =>
+                          setOpenModuleGroups((prev) => ({ ...prev, [item.title]: open })),
+                      }
+                    : { defaultOpen: groupIsActive || !isCollapsed })}
+                >
                   <SidebarGroup className="py-0">
                     {index > 1 && (
                       <div className="-mx-2 mt-1.5 border-t border-sidebar-foreground/[0.08]" aria-hidden="true" />
@@ -433,7 +447,10 @@ export function AppSidebar() {
                       <SidebarGroupLabel className="cursor-pointer -mx-2 w-auto h-auto rounded-none bg-sidebar-foreground/[0.04] px-3 py-1.5 text-[13px] font-bold uppercase tracking-[0.06em] text-sidebar-primary hover:bg-sidebar-foreground/[0.08] transition-colors duration-200">
                         <GroupIcon className="h-[18px] w-[18px] mr-2 shrink-0 text-sidebar-primary" />
                         <span className="flex-1 text-left">{item.title}</span>
-                        <ChevronDown className="h-4 w-4 shrink-0 text-sidebar-primary transition-transform duration-200 ui-expanded:rotate-180" />
+                        <ChevronDown className={cn(
+                          "h-4 w-4 shrink-0 text-sidebar-primary transition-transform duration-200 ui-expanded:rotate-180",
+                          isModuleGroup && groupOpen && "rotate-180"
+                        )} />
                       </SidebarGroupLabel>
                     </CollapsibleTrigger>
 
@@ -441,7 +458,8 @@ export function AppSidebar() {
                       <SidebarGroupContent>
                         <SidebarMenu>
                           {filteredItems.map((subItem) => {
-                            const isActive = isActiveRoute(subItem.url);
+                            const isActive = isItemActive(subItem);
+
                             return (
                               <SidebarMenuItem key={subItem.url}>
                                 <SidebarMenuButton asChild tooltip={isCollapsed && !isMobile ? subItem.title : undefined}>
