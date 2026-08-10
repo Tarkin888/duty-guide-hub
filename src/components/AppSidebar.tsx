@@ -248,6 +248,26 @@ export function AppSidebar() {
     return location.pathname.startsWith(url);
   };
 
+  // An item is active if the current route matches its own url or any of its parts
+  const isItemActive = (item: NavigationItem) =>
+    isActiveRoute(item.url) || (item.partUrls ?? []).some(isActiveRoute);
+
+  // Session-only expand state for playbook module categories:
+  // on load, only the category containing the active module is expanded.
+  const [openModuleGroups, setOpenModuleGroups] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    navigationItems.forEach((entry) => {
+      if ('group' in entry && entry.group && 'items' in entry && (entry as NavigationGroup).moduleGroup) {
+        const group = entry as NavigationGroup;
+        initial[group.title] = group.items.some(
+          (i) => i.url !== "/" && (location.pathname.startsWith(i.url) || (i.partUrls ?? []).some((u) => location.pathname.startsWith(u)))
+        );
+      }
+    });
+    return initial;
+  });
+
+
   // Check if any item in a group is active
   const isGroupActive = (items: NavigationItem[]) => {
     return items.some(item => isActiveRoute(item.url));
