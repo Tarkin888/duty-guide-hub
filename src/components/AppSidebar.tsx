@@ -390,8 +390,9 @@ export function AppSidebar() {
                       </TooltipTrigger>
                       <TooltipContent
                         side="right"
-                        className="p-0 bg-sidebar border border-sidebar-border shadow-lg"
                         sideOffset={12}
+                        className="p-0 bg-sidebar text-sidebar-foreground border border-sidebar-border shadow-xl"
+                        style={{ backgroundColor: "hsl(var(--sidebar-background))", opacity: 1 }}
                       >
                         <div className="min-w-[200px]">
                           <div className="px-3 py-2 border-b border-sidebar-border">
