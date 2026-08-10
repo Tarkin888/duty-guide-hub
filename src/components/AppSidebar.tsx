@@ -28,12 +28,15 @@ interface NavigationItem {
   url: string;
   icon: LucideIcon;
   moduleId?: string; // Maps to storage key for status lookup
+  parts?: number; // Number of parts for multi-part modules
+  partUrls?: string[]; // Additional routes belonging to this module (e.g. Part 2)
 }
 
 interface NavigationGroup {
   title: string;
   group: true;
   icon: LucideIcon; // Icon for collapsed state
+  moduleGroup?: boolean; // Playbook module category (session-only expand state)
   items: NavigationItem[];
 }
 
@@ -58,8 +61,9 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     ],
   },
   {
-    title: "Knowledge Base: Foundation",
+    title: "Foundation & Assessment",
     group: true,
+    moduleGroup: true,
     icon: Building2,
     items: [
       { title: "Readiness Assessment", url: "/foundation/readiness", icon: ClipboardCheck, moduleId: "cd-f1-readiness" },
@@ -70,18 +74,18 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Governance & Planning",
     group: true,
+    moduleGroup: true,
     icon: Shield,
     items: [
-      { title: "Governance Framework", url: "/governance/framework", icon: Shield, moduleId: "cd-p1-governance-framework" },
-      { title: "CD-P1: Governance Framework (Part 2)", url: "/governance/framework-part2", icon: Shield },
-      { title: "Policy Development", url: "/governance/policy", icon: FileText, moduleId: "cd-p2-policy-framework" },
-      { title: "CD-P2: Policy Development (Part 2)", url: "/governance/policy-part2", icon: FileText },
+      { title: "Governance Framework", url: "/governance/framework", icon: Shield, moduleId: "cd-p1-governance-framework", parts: 2, partUrls: ["/governance/framework-part2"] },
+      { title: "Policy Development", url: "/governance/policy", icon: FileText, moduleId: "cd-p2-policy-framework", parts: 2, partUrls: ["/governance/policy-part2"] },
       { title: "Implementation Roadmap", url: "/governance/roadmap", icon: Target, moduleId: "cd-p3-implementation-roadmap" },
     ],
   },
   {
     title: "Four Outcomes",
     group: true,
+    moduleGroup: true,
     icon: Compass,
     items: [
       { title: "Products & Services", url: "/outcomes/products-services", icon: ListChecks, moduleId: "cd-i1-products-services" },
@@ -93,35 +97,35 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
   {
     title: "Cross-Cutting",
     group: true,
+    moduleGroup: true,
     icon: Layers,
     items: [
       { title: "Vulnerable Customers", url: "/cross-cutting/vulnerable-customers", icon: Users, moduleId: "cd-i5-vulnerable-customers" },
       { title: "Distribution Chain", url: "/cross-cutting/distribution-chain", icon: Link2, moduleId: "cd-i6-distribution-chain" },
-      { title: "Data & Evidence", url: "/cross-cutting/data-evidence", icon: Database, moduleId: "cd-i7-data-evidence" },
-      { title: "CD-I7: Data & Evidence (Part 2)", url: "/cross-cutting/data-evidence-part2", icon: Database },
+      { title: "Data & Evidence", url: "/cross-cutting/data-evidence", icon: Database, moduleId: "cd-i7-data-evidence", parts: 2, partUrls: ["/cross-cutting/data-evidence-part2"] },
     ],
   },
   {
     title: "Enablement",
     group: true,
+    moduleGroup: true,
     icon: GraduationCap,
     items: [
-      { title: "Training", url: "/enablement/training", icon: GraduationCap, moduleId: "cd-t1-training" },
-      { title: "CD-T1: Training (Part 2)", url: "/enablement/training-part2", icon: GraduationCap },
-      { title: "Change Management", url: "/enablement/change-management", icon: RefreshCw, moduleId: "cd-t2-communications-change" },
-      { title: "Technology", url: "/enablement/technology", icon: Settings, moduleId: "cd-t3-technology-requirements" },
-      { title: "CD-T3: Technology (Part 2)", url: "/enablement/technology-part2", icon: Settings },
+      { title: "Training", url: "/enablement/training", icon: GraduationCap, moduleId: "cd-t1-training", parts: 2, partUrls: ["/enablement/training-part2"] },
+      { title: "Change Management", url: "/enablement/change-management", icon: RefreshCw, moduleId: "cd-t2-communications-change", parts: 2, partUrls: ["/enablement/communications-part2"] },
+      { title: "Technology", url: "/enablement/technology", icon: Settings, moduleId: "cd-t3-technology-requirements", parts: 2, partUrls: ["/enablement/technology-part2"] },
     ],
   },
   {
-    title: "Knowledge Base: Monitoring & Assurance",
+    title: "Monitoring & Assurance",
     group: true,
+    moduleGroup: true,
     icon: MonitorCheck,
     items: [
       { title: "MI & Monitoring", url: "/monitoring/mi-monitoring", icon: BarChart3, moduleId: "cd-m1-mi-framework" },
       { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube, moduleId: "cd-m2-testing-assurance" },
-      { title: "Board Reporting", url: "/monitoring/board-reporting", icon: PresentationIcon, moduleId: "cd-m3-board-reporting" },
-      { title: "Continuous Improvement", url: "/monitoring/continuous-improvement", icon: TrendingUp, moduleId: "cd-m4-continuous-improvement" },
+      { title: "Board Reporting", url: "/monitoring/board-reporting", icon: PresentationIcon, moduleId: "cd-m3-board-reporting", parts: 2, partUrls: ["/monitoring/board-reporting-part2"] },
+      { title: "Continuous Improvement", url: "/monitoring/continuous-improvement", icon: TrendingUp, moduleId: "cd-m4-continuous-improvement", parts: 2, partUrls: ["/monitoring/continuous-improvement-part2"] },
     ],
   },
   {
@@ -146,6 +150,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     ],
   },
 ];
+
 
 interface NavItemProps {
   item: NavigationItem;
