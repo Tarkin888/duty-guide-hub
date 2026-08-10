@@ -188,12 +188,23 @@ function NavItemWithTooltip({ item, isCollapsed, isMobile, isActive, searchTerm 
         />
       </span>
       {(!isCollapsed || isMobile) && (
-        <HighlightText 
-          text={item.title} 
-          highlight={searchTerm}
-          className="transition-opacity duration-300 text-balance"
-        />
+        <>
+          <HighlightText
+            text={item.title}
+            highlight={searchTerm}
+            className="transition-opacity duration-300 text-balance"
+          />
+          {item.parts === 2 && (
+            <span
+              className="ml-auto shrink-0 rounded-full border border-sidebar-primary/40 px-1.5 py-0.5 text-[11px] font-medium text-sidebar-primary"
+              aria-label="This module has two parts"
+            >
+              2 pt
+            </span>
+          )}
+        </>
       )}
+
     </NavLink>
   );
 
