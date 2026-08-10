@@ -270,8 +270,9 @@ export function AppSidebar() {
 
   // Check if any item in a group is active
   const isGroupActive = (items: NavigationItem[]) => {
-    return items.some(item => isActiveRoute(item.url));
+    return items.some(item => isItemActive(item));
   };
+
 
   // Get module status from progress data
   const getModuleStatus = (moduleId?: string): "not-started" | "in-progress" | "completed" => {
