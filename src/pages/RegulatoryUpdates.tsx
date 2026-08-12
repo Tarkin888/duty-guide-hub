@@ -45,10 +45,12 @@ export default function RegulatoryUpdates() {
         </div>
         <h1 className="text-3xl font-bold text-foreground">Regulatory Updates</h1>
         <p className="mt-3 text-base text-muted-foreground">
-          Key FCA Consumer Duty developments since November 2025. This tracker summarises finalised
-          guidance, reviews and live consultations. Consultation items are proposals, not current rules.
+          Recent FCA Consumer Duty developments. This tracker summarises finalised guidance, reviews
+          and live consultations. Consultation items are proposals, not current rules.
         </p>
-        <p className="mt-2 text-sm text-muted-foreground">Last updated: August 2026</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Last updated: {regulatoryUpdates[0]?.date}
+        </p>
       </header>
 
       <div

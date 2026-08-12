@@ -164,8 +164,9 @@ export function deriveModuleProgress(
 }
 
 /**
- * Aggregate for a set of modules. The percentage is PROPORTIONAL: each module
- * contributes its own completion share, so ticking a single item moves the bar.
+ * Aggregate for a set of modules. The percentage is the raw completion ratio:
+ * (completed modules / total modules) * 100, so it always matches the
+ * "Completed: X of Y" count shown alongside it in the UI.
  */
 function deriveAggregate(
   moduleIds: string[],
@@ -174,12 +175,10 @@ function deriveAggregate(
 ): AggregateProgress {
   let completed = 0;
   let inProgress = 0;
-  let percentSum = 0;
   for (const id of moduleIds) {
     const progress = deriveModuleProgress(id, checkedItems, moduleMeta);
     if (progress.status === 'complete') completed++;
     else if (progress.status === 'in-progress') inProgress++;
-    percentSum += progress.percentage;
   }
   const total = moduleIds.length;
   return {
@@ -187,9 +186,8 @@ function deriveAggregate(
     inProgress,
     notStarted: total - completed - inProgress,
     total,
-    percentage: total > 0 ? Math.round(percentSum / total) : 0,
+    percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
   };
-
 }
 
 export function deriveCheckedItemsCount(checkedItems: Record<string, boolean>): number {
