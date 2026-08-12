@@ -46,21 +46,6 @@ type NavigationEntry = NavigationItem | NavigationGroup;
 const navigationItems: (NavigationEntry | { title: string; url: string; icon: LucideIcon; group: null })[] = [
   { title: "Dashboard", url: "/", icon: Home, group: null },
   {
-    title: "Ongoing Compliance",
-    group: true,
-    icon: RefreshCw,
-    items: [
-      { title: "Ongoing Monitoring & MI Framework", url: "/ongoing/mi-monitoring", icon: BarChart3 },
-      { title: "Evidence Management", url: "/cross-cutting/data-evidence", icon: Database },
-      { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube },
-      { title: "Annual Fair Value Assessment", url: "/ongoing/fair-value", icon: Scale },
-      { title: "Outcomes Testing & Consumer Understanding", url: "/ongoing/outcomes-testing", icon: MessageSquare },
-      { title: "Annual Board Attestation & Reporting", url: "/ongoing/board-attestation", icon: PresentationIcon },
-      { title: "Continuous Improvement", url: "/monitoring/continuous-improvement", icon: TrendingUp },
-      { title: "Maturity Assessment", url: "/maturity-assessment", icon: Compass },
-    ],
-  },
-  {
     title: "Foundation & Assessment",
     group: true,
     moduleGroup: true,
