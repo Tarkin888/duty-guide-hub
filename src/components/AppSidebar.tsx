@@ -530,7 +530,8 @@ export function AppSidebar() {
         {!isCollapsed && !isMobile && (
           <div className="text-xs text-sidebar-foreground/60 px-3 pt-2 transition-opacity duration-300">
             <p>Version 1.0.0</p>
-            <p className="mt-1">© 2025 Consumer Duty Playbook</p>
+            <p className="mt-1">© 2026 Duty Guide Hub. All rights reserved.</p>
+            <p className="mt-1">Duty Guide Hub is developed by Zia Rezvi (Accelerated Growth Consulting Ltd)</p>
           </div>
         )}
       </SidebarFooter>
