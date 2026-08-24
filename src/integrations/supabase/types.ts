@@ -245,14 +245,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      note_is_owned_by: {
-        Args: { _note_id: string; _user_id: string }
-        Returns: boolean
-      }
-      note_is_shared_with: {
-        Args: { _note_id: string; _user_id: string }
-        Returns: boolean
-      }
+      note_owned_by_me: { Args: { _note_id: string }; Returns: boolean }
+      note_shared_with_me: { Args: { _note_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
