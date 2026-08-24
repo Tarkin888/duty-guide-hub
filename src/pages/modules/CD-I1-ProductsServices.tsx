@@ -19,6 +19,7 @@ import { CD_I1_TEMPLATES } from "@/data/cdI1Templates";
 import { toast } from "@/hooks/use-toast";
 import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const MODULE_ID = "cd-i1-products-services";
 
@@ -110,13 +111,14 @@ export default function CDI1ProductsServices() {
 
       {/* Tabbed Content */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
           <TabsTrigger value="steps">Implementation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="success">Success Criteria</TabsTrigger>
           <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* TAB 1: OVERVIEW */}
@@ -1407,7 +1409,12 @@ export default function CDI1ProductsServices() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-i1" />
+        </TabsContent>
+
+</Tabs>
 
       <ModuleInsights moduleCode="CD-I1" moduleTitle="Products & Services" />
     </div>

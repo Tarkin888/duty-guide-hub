@@ -11,6 +11,7 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
+import { NotesTab } from "@/components/notes/NotesTab";
 import { 
   ArrowLeft, 
   Printer, 
@@ -163,13 +164,14 @@ const CDT3BTechnologyRequirementsPart2 = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-2 h-auto p-2 bg-muted/50">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-2 h-auto p-2 bg-muted/50">
             <TabsTrigger value="overview" className="data-[state=active]:bg-background">Overview</TabsTrigger>
             <TabsTrigger value="regulatory" className="data-[state=active]:bg-background">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation" className="data-[state=active]:bg-background">Implementation</TabsTrigger>
             <TabsTrigger value="templates" className="data-[state=active]:bg-background">Templates</TabsTrigger>
             <TabsTrigger value="success" className="data-[state=active]:bg-background">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls" className="data-[state=active]:bg-background">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1151,7 +1153,12 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-t3b-part2" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Navigation Footer */}
         <div className="mt-8 flex flex-col sm:flex-row justify-between gap-4">

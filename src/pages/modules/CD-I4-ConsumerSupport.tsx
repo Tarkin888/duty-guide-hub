@@ -15,6 +15,7 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
 import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 import { toast as sonnerToast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const MODULE_ID = "cd-i4-consumer-support";
 
@@ -132,13 +133,14 @@ export default function CDI4ConsumerSupport() {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="steps">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -1147,7 +1149,12 @@ export default function CDI4ConsumerSupport() {
               />
             </div>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-i4" />
+          </TabsContent>
+
+</Tabs>
       </div>
 
       <ModuleInsights moduleCode="CD-I4" moduleTitle="Consumer Support" />

@@ -15,6 +15,7 @@ import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { PhaseCalendarScheduler } from "@/components/calendar/PhaseCalendarScheduler";
 import { QuickCalendarEvents } from "@/components/calendar/QuickCalendarEvents";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDP3ImplementationRoadmapPart1() {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ export default function CDP3ImplementationRoadmapPart1() {
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -1547,7 +1549,12 @@ export default function CDP3ImplementationRoadmapPart1() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-p3-part1" />
+          </TabsContent>
+
+</Tabs>
       </div>
       <ModuleInsights moduleCode="CD-P3" moduleTitle="Implementation Roadmap Development" />
     </div>

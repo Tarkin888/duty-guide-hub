@@ -14,6 +14,7 @@ import { ModuleStatusBadge } from "@/components/ModuleStatusBadge";
 import { ModuleActionButtons } from "@/components/ModuleActionButtons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import { NotesTab } from "@/components/notes/NotesTab";
 import { 
   ArrowLeft, 
   Printer, 
@@ -120,13 +121,14 @@ export default function CDI7ADataEvidenceManagementPart1() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 print:hidden">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 print:hidden">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1924,7 +1926,12 @@ export default function CDI7ADataEvidenceManagementPart1() {
               prevention="Include evidence requirements in process design. Make documentation a process step, not optional add-on. Review processes for evidence completeness before go-live."
             />
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-i7a-part1" />
+          </TabsContent>
+
+</Tabs>
       </main>
 
       <ModuleInsights moduleCode="CD-I7A" moduleTitle="Data & Evidence Part 1" />

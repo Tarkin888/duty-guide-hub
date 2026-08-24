@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 import { useModuleCompletion } from "@/hooks/useModuleCompletion";
 import { CD_F1_TEMPLATES } from "@/data/cdF1Templates";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const MODULE_ID = "cd-f1-readiness";
 
@@ -132,13 +133,14 @@ export default function CDf1ReadinessAssessment() {
 
       {/* Tabbed Content */}
       <TrackedTabs moduleId={MODULE_ID} defaultValue="overview" className="space-y-6">
-        <TrackedTabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TrackedTabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TrackedTabsTrigger value="overview">Overview</TrackedTabsTrigger>
           <TrackedTabsTrigger value="regulatory">Regulatory</TrackedTabsTrigger>
           <TrackedTabsTrigger value="steps">Implementation</TrackedTabsTrigger>
           <TrackedTabsTrigger value="templates">Templates</TrackedTabsTrigger>
           <TrackedTabsTrigger value="success">Success Criteria</TrackedTabsTrigger>
           <TrackedTabsTrigger value="pitfalls">Pitfalls</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="notes">Notes</TrackedTabsTrigger>
         </TrackedTabsList>
 
         {/* TAB 1: OVERVIEW */}
@@ -776,7 +778,12 @@ export default function CDf1ReadinessAssessment() {
             </CardContent>
           </Card>
         </TrackedTabsContent>
-      </TrackedTabs>
+              {/* TAB: NOTES */}
+        <TrackedTabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-f1" />
+        </TrackedTabsContent>
+
+</TrackedTabs>
 
       <ModuleInsights moduleCode="CD-F1" moduleTitle="Readiness Assessment" />
 

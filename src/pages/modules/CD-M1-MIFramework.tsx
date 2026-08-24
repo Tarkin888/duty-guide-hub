@@ -13,6 +13,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDM1MIFramework() {
   const navigate = useNavigate();
@@ -98,13 +99,14 @@ export default function CDM1MIFramework() {
       <Card>
         <CardContent className="pt-6">
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid grid-cols-3 lg:grid-cols-6 w-full">
+            <TabsList className="grid grid-cols-3 lg:grid-cols-7 w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
               <TabsTrigger value="steps">Implementation</TabsTrigger>
               <TabsTrigger value="templates">Templates</TabsTrigger>
               <TabsTrigger value="success">Success Criteria</TabsTrigger>
               <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+              <TabsTrigger value="notes">Notes</TabsTrigger>
             </TabsList>
 
             {/* OVERVIEW TAB */}
@@ -1428,7 +1430,12 @@ export default function CDM1MIFramework() {
                 </CardContent>
               </Card>
             </TabsContent>
-          </Tabs>
+                      {/* TAB: NOTES */}
+            <TabsContent value="notes" className="space-y-6">
+              <NotesTab moduleId="cd-m1" />
+            </TabsContent>
+
+</Tabs>
         </CardContent>
       </Card>
 

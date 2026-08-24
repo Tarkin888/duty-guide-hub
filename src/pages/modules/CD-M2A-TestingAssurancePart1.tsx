@@ -28,6 +28,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDM2ATestingAssurancePart1() {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ export default function CDM2ATestingAssurancePart1() {
 
       {/* Main Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <Target className="h-4 w-4" />
             <span className="hidden sm:inline">Overview</span>
@@ -112,6 +113,7 @@ export default function CDM2ATestingAssurancePart1() {
             <AlertTriangle className="h-4 w-4" />
             <span className="hidden sm:inline">Pitfalls</span>
           </TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* OVERVIEW TAB */}
@@ -1276,7 +1278,12 @@ export default function CDM2ATestingAssurancePart1() {
             />
           </div>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-m2a-part1" />
+        </TabsContent>
+
+</Tabs>
 
       <ModuleInsights moduleCode="CD-M2" moduleTitle="Testing &amp; Assurance" />
 

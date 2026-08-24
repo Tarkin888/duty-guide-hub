@@ -32,6 +32,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const MODULE_ID = "cd-p1-governance-framework";
 
@@ -99,13 +100,14 @@ export default function CDP1GovernanceFramework() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* OVERVIEW TAB */}
@@ -2001,7 +2003,12 @@ export default function CDP1GovernanceFramework() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-p1" />
+          </TabsContent>
+
+</Tabs>
       </div>
 
       <ModuleInsights moduleCode="CD-P1" moduleTitle="Governance Framework" />

@@ -17,6 +17,7 @@ import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/Tem
 import { CD_F3_TEMPLATES } from "@/data/cdF3Templates";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const STORAGE_KEY = "cd-f3-risk-assessment";
 
@@ -105,13 +106,14 @@ export default function CDRiskAssessment() {
       {/* Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="relative z-20 grid w-full grid-cols-3 lg:grid-cols-6">
+          <TabsList className="relative z-20 grid w-full grid-cols-3 lg:grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1516,7 +1518,12 @@ export default function CDRiskAssessment() {
               </ul>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-f3" />
+          </TabsContent>
+
+</Tabs>
       </div>
 
       <ModuleInsights moduleCode="CD-F3" moduleTitle="Risk Assessment" />
