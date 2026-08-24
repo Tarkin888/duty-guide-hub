@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb, RotateCcw } from "lucide-react";
@@ -19,6 +20,7 @@ import { toast } from "sonner";
 import { useProgressStore, useModuleProgress } from "@/stores/progressStore";
 import { useModuleCompletion } from "@/hooks/useModuleCompletion";
 import { CD_F1_TEMPLATES } from "@/data/cdF1Templates";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const MODULE_ID = "cd-f1-readiness";
 
@@ -131,17 +133,32 @@ export default function CDf1ReadinessAssessment() {
 
       {/* Tabbed Content */}
       <TrackedTabs moduleId={MODULE_ID} defaultValue="overview" className="space-y-6">
-        <TrackedTabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TrackedTabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TrackedTabsTrigger value="overview">Overview</TrackedTabsTrigger>
           <TrackedTabsTrigger value="regulatory">Regulatory</TrackedTabsTrigger>
           <TrackedTabsTrigger value="steps">Implementation</TrackedTabsTrigger>
           <TrackedTabsTrigger value="templates">Templates</TrackedTabsTrigger>
           <TrackedTabsTrigger value="success">Success Criteria</TrackedTabsTrigger>
           <TrackedTabsTrigger value="pitfalls">Pitfalls</TrackedTabsTrigger>
+          <TrackedTabsTrigger value="notes">Notes</TrackedTabsTrigger>
         </TrackedTabsList>
 
         {/* TAB 1: OVERVIEW */}
         <TrackedTabsContent value="overview" className="space-y-6">
+          <Card className="border-primary/30">
+            <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6">
+              <div>
+                <h3 className="font-semibold text-base mb-1">Maturity Assessment</h3>
+                <p className="text-sm text-muted-foreground">
+                  Score your maturity across six categories and compare it with the target benchmark.
+                </p>
+              </div>
+              <Button asChild>
+                <Link to="/modules/cd-f1/assessment">View Maturity Assessment</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -761,7 +778,12 @@ export default function CDf1ReadinessAssessment() {
             </CardContent>
           </Card>
         </TrackedTabsContent>
-      </TrackedTabs>
+              {/* TAB: NOTES */}
+        <TrackedTabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-f1" />
+        </TrackedTabsContent>
+
+</TrackedTabs>
 
       <ModuleInsights moduleCode="CD-F1" moduleTitle="Readiness Assessment" />
 

@@ -53,6 +53,63 @@ export type Database = {
         }
         Relationships: []
       }
+      maturity_snapshots: {
+        Row: {
+          comments_1: string | null
+          comments_2: string | null
+          comments_3: string | null
+          comments_4: string | null
+          comments_5: string | null
+          comments_6: string | null
+          created_at: string
+          id: string
+          score_1: number
+          score_2: number
+          score_3: number
+          score_4: number
+          score_5: number
+          score_6: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comments_1?: string | null
+          comments_2?: string | null
+          comments_3?: string | null
+          comments_4?: string | null
+          comments_5?: string | null
+          comments_6?: string | null
+          created_at?: string
+          id?: string
+          score_1: number
+          score_2: number
+          score_3: number
+          score_4: number
+          score_5: number
+          score_6: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comments_1?: string | null
+          comments_2?: string | null
+          comments_3?: string | null
+          comments_4?: string | null
+          comments_5?: string | null
+          comments_6?: string | null
+          created_at?: string
+          id?: string
+          score_1?: number
+          score_2?: number
+          score_3?: number
+          score_4?: number
+          score_5?: number
+          score_6?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       module_notes: {
         Row: {
           category: string | null

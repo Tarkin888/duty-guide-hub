@@ -16,6 +16,7 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { toast } from "@/hooks/use-toast";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDT1TrainingProgrammePart1() {
   const navigate = useNavigate();
@@ -90,13 +91,14 @@ export default function CDT1TrainingProgrammePart1() {
       <Separator />
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
           <TabsTrigger value="steps">Implementation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="success">Success Criteria</TabsTrigger>
           <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* TAB 1: OVERVIEW */}
@@ -711,7 +713,12 @@ export default function CDT1TrainingProgrammePart1() {
             />
           </div>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-t1-part1" />
+        </TabsContent>
+
+</Tabs>
       <ModuleInsights moduleCode="CD-T1A" moduleTitle="Training Programme Part 1" />
     </div>
   );

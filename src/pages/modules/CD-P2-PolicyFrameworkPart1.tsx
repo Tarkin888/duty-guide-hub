@@ -36,6 +36,7 @@ import {
   ClipboardList
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const CDP2PolicyFrameworkPart1 = () => {
   const [notes, setNotes] = useState(() => {
@@ -111,13 +112,14 @@ const CDP2PolicyFrameworkPart1 = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1235,7 +1237,12 @@ const CDP2PolicyFrameworkPart1 = () => {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-p2-part1" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Next Steps */}
         <Card className="mt-8 border-primary/30 bg-primary/5">

@@ -28,6 +28,7 @@ import {
   Settings
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDP2PolicyFrameworkPart2() {
   return (
@@ -84,13 +85,14 @@ export default function CDP2PolicyFrameworkPart2() {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1198,7 +1200,12 @@ export default function CDP2PolicyFrameworkPart2() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-p2-part2" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Module Completion Note */}
         <Card className="mt-8 border-success/20 bg-success/5">

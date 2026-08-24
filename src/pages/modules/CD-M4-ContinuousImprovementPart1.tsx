@@ -47,6 +47,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDM4ContinuousImprovementPart1() {
   const [notes, setNotes] = useState("");
@@ -114,13 +115,14 @@ export default function CDM4ContinuousImprovementPart1() {
 
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1425,7 +1427,12 @@ export default function CDM4ContinuousImprovementPart1() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-m4-part1" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Navigation Footer */}
         <Card className="mt-8 border-primary/30">

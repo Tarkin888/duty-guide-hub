@@ -17,6 +17,7 @@ import { RegulatoryQuote } from "@/components/modules/RegulatoryQuote";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { ModuleActionButtons } from "@/components/ModuleActionButtons";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const STORAGE_KEY = "cd-i5-vulnerable-customers";
 
@@ -93,13 +94,14 @@ export default function CDI5VulnerableCustomers() {
       {/* Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -906,7 +908,12 @@ export default function CDI5VulnerableCustomers() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-i5" />
+          </TabsContent>
+
+</Tabs>
       </div>
 
       <ModuleInsights moduleCode="CD-I5" moduleTitle="Vulnerable Customers" />

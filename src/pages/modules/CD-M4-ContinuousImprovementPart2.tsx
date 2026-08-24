@@ -57,6 +57,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDM4ContinuousImprovementPart2() {
   const [notes, setNotes] = useState("");
@@ -142,6 +143,7 @@ export default function CDM4ContinuousImprovementPart2() {
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Implementation Tab - Part 2 */}
@@ -1442,7 +1444,12 @@ export default function CDM4ContinuousImprovementPart2() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-m4-part2" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Notes Section */}
         <Card className="mt-8">

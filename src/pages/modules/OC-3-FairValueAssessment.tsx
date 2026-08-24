@@ -18,6 +18,9 @@ import {
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { toast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
+
+const NOTES_KEY = "oc-3";
 
 const cycleSteps = [
   {
@@ -182,13 +185,14 @@ export default function OC3FairValueAssessment() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
           <TabsTrigger value="implementation">Implementation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="success">Success Criteria</TabsTrigger>
           <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* Overview */}
@@ -468,7 +472,12 @@ export default function OC3FairValueAssessment() {
             ))}
           </div>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId={NOTES_KEY} />
+        </TabsContent>
+
+</Tabs>
     </div>
   );
 }

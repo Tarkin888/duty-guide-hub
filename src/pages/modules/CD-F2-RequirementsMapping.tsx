@@ -19,6 +19,7 @@ import { TemplatePreviewDialog, TemplateDetails } from "@/components/modules/Tem
 import { CD_F2_TEMPLATES } from "@/data/cdF2Templates";
 import { toast } from "@/hooks/use-toast";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDF2RequirementsMapping() {
   const navigate = useNavigate();
@@ -99,13 +100,14 @@ export default function CDF2RequirementsMapping() {
 
       {/* Tabbed Content */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
           <TabsTrigger value="steps">Implementation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="success">Success Criteria</TabsTrigger>
           <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* TAB 1: OVERVIEW */}
@@ -809,7 +811,12 @@ export default function CDF2RequirementsMapping() {
             />
           </div>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-f2" />
+        </TabsContent>
+
+</Tabs>
 
       <ModuleInsights moduleCode="CD-F2" moduleTitle="Requirements Mapping" />
 

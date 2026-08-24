@@ -42,6 +42,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDT2CommunicationsChangePart2() {
   const [activeTab, setActiveTab] = useState("implementation");
@@ -148,6 +149,7 @@ export default function CDT2CommunicationsChangePart2() {
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Implementation Steps Tab */}
@@ -924,7 +926,12 @@ export default function CDT2CommunicationsChangePart2() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-t2-part2" />
+          </TabsContent>
+
+</Tabs>
 
         {/* Navigation Footer */}
         <div className="mt-8 flex justify-between">

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useModuleStatusControls } from "@/hooks/useModuleStatusControls";
 import { toast as sonnerToast } from "sonner";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 const STORAGE_KEY = "cd-i3-consumer-understanding";
 
@@ -110,13 +111,14 @@ const CDI3ConsumerUnderstanding = () => {
 
       {/* Tabbed Content */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
           <TabsTrigger value="implementation">Implementation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
           <TabsTrigger value="success">Success Criteria</TabsTrigger>
           <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
         </TabsList>
 
         {/* OVERVIEW TAB */}
@@ -1570,7 +1572,12 @@ const CDI3ConsumerUnderstanding = () => {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+              {/* TAB: NOTES */}
+        <TabsContent value="notes" className="space-y-6">
+          <NotesTab moduleId="cd-i3" />
+        </TabsContent>
+
+</Tabs>
 
       <ModuleInsights moduleCode="CD-I3" moduleTitle="Consumer Understanding" />
       </div>

@@ -36,6 +36,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { TemplateCard } from "@/components/modules/TemplateCard";
 import { ChecklistSection } from "@/components/modules/ChecklistSection";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { NotesTab } from "@/components/notes/NotesTab";
 
 export default function CDT2CommunicationsChangePart1() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -154,13 +155,14 @@ export default function CDT2CommunicationsChangePart1() {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="regulatory">Regulatory</TabsTrigger>
             <TabsTrigger value="implementation">Implementation</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
             <TabsTrigger value="success">Success Criteria</TabsTrigger>
             <TabsTrigger value="pitfalls">Pitfalls</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -1545,7 +1547,12 @@ export default function CDT2CommunicationsChangePart1() {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+                  {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-t2-part1" />
+          </TabsContent>
+
+</Tabs>
       </div>
       <ModuleInsights moduleCode="CD-T2A" moduleTitle="Communications & Change Part 1" />
     </div>
