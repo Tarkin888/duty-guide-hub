@@ -107,9 +107,11 @@ export default function MaturityAssessmentSnapshot() {
                     <Radar
                       name={`Target (${TARGET_SCORE}.0)`}
                       dataKey="target"
-                      stroke="#d1d5db"
-                      strokeDasharray="4 4"
+                      stroke="#6b7280"
+                      strokeWidth={2}
+                      strokeDasharray="5 4"
                       fill="none"
+
                     />
                     <Legend />
                   </RadarChart>
