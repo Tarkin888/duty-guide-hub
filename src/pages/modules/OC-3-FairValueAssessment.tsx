@@ -20,7 +20,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { toast } from "sonner";
 import { NotesTab } from "@/components/notes/NotesTab";
 
-const NOTES_MODULE_ID = "oc-3";
+const NOTES_KEY = "oc-3";
 
 const cycleSteps = [
   {
@@ -474,7 +474,7 @@ export default function OC3FairValueAssessment() {
         </TabsContent>
               {/* TAB: NOTES */}
         <TabsContent value="notes" className="space-y-6">
-          <NotesTab moduleId={NOTES_MODULE_ID} />
+          <NotesTab moduleId={NOTES_KEY} />
         </TabsContent>
 
 </Tabs>

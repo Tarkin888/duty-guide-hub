@@ -21,7 +21,7 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { toast } from "sonner";
 import { NotesTab } from "@/components/notes/NotesTab";
 
-const NOTES_MODULE_ID = "oc-4";
+const NOTES_KEY = "oc-4";
 
 const cycleSteps = [
   {
@@ -458,7 +458,7 @@ export default function OC4OutcomesTesting() {
         </TabsContent>
               {/* TAB: NOTES */}
         <TabsContent value="notes" className="space-y-6">
-          <NotesTab moduleId={NOTES_MODULE_ID} />
+          <NotesTab moduleId={NOTES_KEY} />
         </TabsContent>
 
 </Tabs>
