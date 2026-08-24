@@ -245,7 +245,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      note_owned_by_me: { Args: { _note_id: string }; Returns: boolean }
+      note_shared_with_me: { Args: { _note_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
