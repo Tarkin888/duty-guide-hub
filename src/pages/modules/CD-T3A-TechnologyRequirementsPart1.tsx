@@ -11,6 +11,7 @@ import { TemplateCard } from "@/components/modules/TemplateCard";
 import { PitfallCard } from "@/components/modules/PitfallCard";
 import { ModuleInsights } from "@/components/modules/ModuleInsights";
 import { useToast } from "@/hooks/use-toast";
+import { NotesTab } from "@/components/notes/NotesTab";
 import { 
   ArrowLeft, 
   Printer, 
@@ -171,7 +172,7 @@ const CDT3ATechnologyRequirementsPart1 = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 h-auto gap-2 bg-transparent p-0">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 h-auto gap-2 bg-transparent p-0">
             {[
               { value: "overview", label: "Overview" },
               { value: "regulatory", label: "Regulatory" },
@@ -179,6 +180,7 @@ const CDT3ATechnologyRequirementsPart1 = () => {
               { value: "templates", label: "Templates" },
               { value: "success", label: "Success Criteria" },
               { value: "pitfalls", label: "Pitfalls" },
+              { value: "notes", label: "Notes" },
             ].map((tab) => (
               <TabsTrigger
                 key={tab.value}
@@ -1415,6 +1417,10 @@ const CDT3ATechnologyRequirementsPart1 = () => {
               impact="Delays at go-live, potential data breaches"
               prevention="Define security requirements in Phase 1. Involve InfoSec team from start. Test security throughout. Conduct threat modeling and DPIA if processing vulnerable customer data."
             />
+          </TabsContent>
+          {/* TAB: NOTES */}
+          <TabsContent value="notes" className="space-y-6">
+            <NotesTab moduleId="cd-t3a-part1" />
           </TabsContent>
         </Tabs>
       </main>
