@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Printer, CheckCircle2, Clock, Users, Target, AlertCircle, Lightbulb, RotateCcw } from "lucide-react";
@@ -142,6 +143,20 @@ export default function CDf1ReadinessAssessment() {
 
         {/* TAB 1: OVERVIEW */}
         <TrackedTabsContent value="overview" className="space-y-6">
+          <Card className="border-primary/30">
+            <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6">
+              <div>
+                <h3 className="font-semibold text-base mb-1">Maturity Assessment</h3>
+                <p className="text-sm text-muted-foreground">
+                  Score your maturity across six categories and compare it with the target benchmark.
+                </p>
+              </div>
+              <Button asChild>
+                <Link to="/modules/cd-f1/assessment">View Maturity Assessment</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

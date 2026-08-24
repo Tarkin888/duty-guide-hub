@@ -49,7 +49,7 @@ export default function MaturityAssessmentSnapshot() {
   return (
     <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
       <Button variant="ghost" asChild className="-ml-4">
-        <Link to="/modules/cd-f1">
+        <Link to="/foundation/readiness">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to CD-F1 Readiness Assessment
         </Link>
