@@ -160,7 +160,8 @@ function getChecklistProgress(moduleId: string): number {
  * Validate module completion readiness
  */
 export function validateModuleCompletion(moduleId: string): ValidationResult {
-  const tabsViewed = getTabsViewed(moduleId);
+  // Only the six core content tabs count towards completion (Notes is additive)
+  const tabsViewed = getTabsViewed(moduleId).filter((tab) => EXPECTED_TABS.includes(tab));
   const checklistPercentage = getChecklistProgress(moduleId);
   const templatesDownloaded = getTemplateDownloads(moduleId);
   const minutesSpent = getModuleTimeSpent(moduleId);
