@@ -169,6 +169,7 @@ const App = () => (
 
                               {/* Tools */}
                               <Route path="/maturity-assessment" element={<MaturityAssessment />} />
+                              <Route path="/modules/cd-f1/assessment" element={<MaturityAssessmentSnapshot />} />
                               <Route path="/regulatory-updates" element={<RegulatoryUpdates />} />
                               <Route path="/consumer-duty-primer" element={<ConsumerDutyPrimer />} />
 
