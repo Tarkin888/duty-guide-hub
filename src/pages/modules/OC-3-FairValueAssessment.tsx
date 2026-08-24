@@ -20,6 +20,8 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { toast } from "sonner";
 import { NotesTab } from "@/components/notes/NotesTab";
 
+const NOTES_MODULE_ID = "oc-3";
+
 const cycleSteps = [
   {
     t: "Define the target market granularly for each product",
@@ -472,7 +474,7 @@ export default function OC3FairValueAssessment() {
         </TabsContent>
               {/* TAB: NOTES */}
         <TabsContent value="notes" className="space-y-6">
-          <NotesTab moduleId="oc-3" />
+          <NotesTab moduleId={NOTES_MODULE_ID} />
         </TabsContent>
 
 </Tabs>

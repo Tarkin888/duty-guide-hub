@@ -21,6 +21,8 @@ import { PitfallCard } from "@/components/modules/PitfallCard";
 import { toast } from "sonner";
 import { NotesTab } from "@/components/notes/NotesTab";
 
+const NOTES_MODULE_ID = "oc-4";
+
 const cycleSteps = [
   {
     t: "Identify high-impact communications to prioritise for testing",
@@ -456,7 +458,7 @@ export default function OC4OutcomesTesting() {
         </TabsContent>
               {/* TAB: NOTES */}
         <TabsContent value="notes" className="space-y-6">
-          <NotesTab moduleId="oc-4" />
+          <NotesTab moduleId={NOTES_MODULE_ID} />
         </TabsContent>
 
 </Tabs>
