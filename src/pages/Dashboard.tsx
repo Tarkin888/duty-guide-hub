@@ -961,7 +961,7 @@ export default function Dashboard() {
       <RegulatoryUpdatesDialog
         open={regulatoryUpdatesOpen}
         onOpenChange={setRegulatoryUpdatesOpen}
-        onUnreadCountChange={() => refreshRegulatoryUpdates()}
+        onUnreadCountChange={refreshRegulatoryUpdates}
       />
     </div>
     </>
