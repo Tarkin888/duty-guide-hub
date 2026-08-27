@@ -14,6 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
+      board_summary_ratings: {
+        Row: {
+          created_at: string
+          id: string
+          is_demo: boolean
+          rating: string
+          rationale: string
+          row_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          rating: string
+          rationale?: string
+          row_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          rating?: string
+          rationale?: string
+          row_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      board_summary_reports: {
+        Row: {
+          actions: Json
+          approver_name: string
+          approver_role: string
+          created_at: string
+          differential_outcomes: string
+          forward_look: string
+          id: string
+          is_demo: boolean
+          signoff_date: string | null
+          updated_at: string
+          user_id: string
+          verdict: string
+          verdict_narrative: string
+        }
+        Insert: {
+          actions?: Json
+          approver_name?: string
+          approver_role?: string
+          created_at?: string
+          differential_outcomes?: string
+          forward_look?: string
+          id?: string
+          is_demo?: boolean
+          signoff_date?: string | null
+          updated_at?: string
+          user_id: string
+          verdict?: string
+          verdict_narrative?: string
+        }
+        Update: {
+          actions?: Json
+          approver_name?: string
+          approver_role?: string
+          created_at?: string
+          differential_outcomes?: string
+          forward_look?: string
+          id?: string
+          is_demo?: boolean
+          signoff_date?: string | null
+          updated_at?: string
+          user_id?: string
+          verdict?: string
+          verdict_narrative?: string
+        }
+        Relationships: []
+      }
+      board_summary_snapshots: {
+        Row: {
+          created_at: string
+          id: string
+          is_demo: boolean
+          issued_at: string
+          payload: Json
+          user_id: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          issued_at?: string
+          payload: Json
+          user_id: string
+          version: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_demo?: boolean
+          issued_at?: string
+          payload?: Json
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
       maturity_assessments: {
         Row: {
           answers: Json

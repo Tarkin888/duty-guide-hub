@@ -1,4 +1,4 @@
-import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon, Activity, Building2, Layers, Compass, MonitorCheck, CalendarClock } from "lucide-react";
+import { Home, ClipboardCheck, Map, AlertTriangle, Shield, FileText, Target, ListChecks, DollarSign, MessageSquare, HeadphonesIcon, Users, Link2, Database, GraduationCap, RefreshCw, Settings, BarChart3, TestTube, PresentationIcon, TrendingUp, FolderOpen, BookOpen, Scale, ChevronLeft, ChevronRight, X, LucideIcon, Activity, Building2, Layers, Compass, MonitorCheck, CalendarClock, ClipboardList } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -118,6 +118,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
     group: true,
     icon: FolderOpen,
     items: [
+      { title: "Board Summary", url: "/board-summary", icon: ClipboardList },
       { title: "Templates Library", url: "/resources/templates", icon: FolderOpen },
       { title: "Regulatory Updates", url: "/regulatory-updates", icon: CalendarClock },
       { title: "Consumer Duty Primer", url: "/consumer-duty-primer", icon: Compass },
