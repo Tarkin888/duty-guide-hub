@@ -32,12 +32,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let hydratedUserId: string | null = null;
+
+    // Module progress is account-level: load it when a user is present and
+    // clear the in-memory copy on sign-out.
+    const syncProgress = (nextSession: Session | null) => {
+      const userId = nextSession?.user?.id ?? null;
+      if (userId && userId !== hydratedUserId) {
+        hydratedUserId = userId;
+        void hydrateProgressForUser(userId);
+      } else if (!userId && hydratedUserId) {
+        hydratedUserId = null;
+        clearProgressSync();
+      }
+    };
+
     // Set up auth state listener BEFORE checking for existing session
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        syncProgress(session);
       }
     );
 
@@ -46,9 +62,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      syncProgress(session);
     });
 
-    return () => subscription.unsubscribe();
+    const handleUnload = () => flushProgressNow();
+    window.addEventListener('beforeunload', handleUnload);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('beforeunload', handleUnload);
+    };
   }, []);
 
   const signUp = async (email: string, password: string) => {
