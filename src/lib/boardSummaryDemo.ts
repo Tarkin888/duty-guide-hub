@@ -97,7 +97,7 @@ export async function seedDemoBoardSummary(userId: string) {
       actions: DEMO_ACTIONS as unknown as never,
       approver_name: 'Alexandra Finch',
       approver_role: 'SMF1 Chief Executive',
-      signoff_date: '2026-07-15',
+      signoff_date: new Date().toISOString().slice(0, 10),
       is_demo: true,
     },
     { onConflict: 'user_id' },
