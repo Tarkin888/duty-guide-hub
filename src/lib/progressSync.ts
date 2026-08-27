@@ -224,3 +224,33 @@ export function flushProgressNow(): void {
   }
   void flush();
 }
+
+/**
+ * Removes the pre-migration localStorage keys that are no longer read or written
+ * anywhere in the app. Safe to call repeatedly: localStorage.removeItem is a
+ * no-op when the key is absent. Does NOT touch unrelated, still-active UI-state
+ * keys (onboarding, sidebar, search, filter).
+ */
+const LEGACY_PROGRESS_KEYS = [
+  'consumer-duty-progress-v3',
+  'module-time-spent',
+  'module-template-downloads',
+];
+
+export function clearLegacyProgressStorage(): void {
+  try {
+    for (const key of LEGACY_PROGRESS_KEYS) {
+      localStorage.removeItem(key);
+    }
+    // Per-module tab-viewed keys use a shared prefix.
+    const tabPrefix = 'module-tabs-viewed-';
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(tabPrefix)) keysToRemove.push(k);
+    }
+    keysToRemove.forEach((k) => localStorage.removeItem(k));
+  } catch {
+    // localStorage may be unavailable (private mode / disabled) — ignore.
+  }
+}

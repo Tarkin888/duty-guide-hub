@@ -5,6 +5,7 @@ import {
   hydrateProgressForUser,
   clearProgressSync,
   flushProgressNow,
+  clearLegacyProgressStorage,
 } from '@/lib/progressSync';
 
 interface AuthContextType {
@@ -33,6 +34,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     let hydratedUserId: string | null = null;
+
+    // One-time cleanup of the pre-migration localStorage keys that are no
+    // longer read anywhere in the app. Safe to run on every load.
+    clearLegacyProgressStorage();
 
     // Module progress is account-level: load it when a user is present and
     // clear the in-memory copy on sign-out.
