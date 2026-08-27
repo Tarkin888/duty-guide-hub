@@ -536,7 +536,9 @@ export const useProgressStore = create<ProgressState>()(
           });
           const moduleMeta = { ...state.moduleMeta };
           delete moduleMeta[canonicalId];
-          return { checkedItems, moduleMeta };
+          const moduleActivity = { ...state.moduleActivity };
+          delete moduleActivity[canonicalId];
+          return { checkedItems, moduleMeta, moduleActivity };
         });
 
         window.dispatchEvent(new Event('module-progress-updated'));
