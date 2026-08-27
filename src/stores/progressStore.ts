@@ -1,5 +1,4 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create, type StateCreator } from 'zustand';
 import { toast } from 'sonner';
 import {
   MODULE_REGISTRY,
@@ -380,13 +379,13 @@ export const useProgressStore = create<ProgressState>()(
           hydrated: true,
           hydrationError: null,
           activities: Object.entries(moduleMeta)
-            .filter(([, meta]) => Boolean(meta.completedAt))
+            .filter(([, meta]) => Boolean((meta as ModuleMeta).completedAt))
             .map(([moduleId, meta]) =>
               newActivity(
                 'module_completed',
                 moduleId,
                 getModuleDisplayName(moduleId),
-                meta.completedAt as string
+                (meta as ModuleMeta).completedAt as string
               )
             )
             .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
@@ -946,12 +945,4 @@ export function useModuleProgressSummary(moduleCode: string): ModuleProgressSumm
   return toSummary(useModuleProgress(moduleCode));
 }
 
-// Cross-tab sync: another tab writing progress rehydrates this one, so open
-// pages update without a manual refresh.
-if (typeof window !== 'undefined') {
-  window.addEventListener('storage', (event) => {
-    if (event.key === STORAGE_KEY) {
-      void useProgressStore.persist?.rehydrate();
-    }
-  });
-}
+
