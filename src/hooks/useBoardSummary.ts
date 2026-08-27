@@ -105,7 +105,11 @@ export const useBoardSummary = () => {
       if (reportRes.error) throw reportRes.error;
       setReport(
         reportRes.data
-          ? ({ ...EMPTY_REPORT, ...reportRes.data, actions: (reportRes.data.actions as unknown as BoardAction[]) ?? [] })
+          ? ({
+              ...EMPTY_REPORT,
+              ...(reportRes.data as unknown as BoardReport),
+              actions: ((reportRes.data.actions as unknown as BoardAction[]) ?? []),
+            } as BoardReport)
           : EMPTY_REPORT,
       );
 
@@ -186,7 +190,7 @@ export const useBoardSummary = () => {
         setReport({
           ...EMPTY_REPORT,
           ...(data as unknown as BoardReport),
-          actions: ((data as { actions?: BoardAction[] }).actions ?? []) as BoardAction[],
+          actions: ((data as unknown as { actions?: BoardAction[] }).actions ?? []) as BoardAction[],
         });
         if (!options?.silent) toast.success('Board report saved');
       } catch (error) {
