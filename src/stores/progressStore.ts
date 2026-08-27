@@ -68,7 +68,7 @@ export interface AggregateProgress {
   percentage: number;
 }
 
-interface ModuleMeta {
+export interface ModuleMeta {
   completedAt?: string;
   lastAccessedAt?: string;
   /** Explicitly marked complete by the user: forces this module to 100% */
@@ -77,14 +77,29 @@ interface ModuleMeta {
   manualInProgress?: boolean;
 }
 
+/** Engagement signals used by completion validation (tabs, templates, time) */
+export interface ModuleActivityRecord {
+  tabsViewed: string[];
+  templateDownloads: string[];
+  timeSpentSeconds: number;
+}
+
+const EMPTY_ACTIVITY: ModuleActivityRecord = {
+  tabsViewed: [],
+  templateDownloads: [],
+  timeSpentSeconds: 0,
+};
 
 interface ProgressState {
   /** THE single source of truth: which checklist items are ticked */
   checkedItems: Record<string, boolean>;
   moduleMeta: Record<string, ModuleMeta>;
+  moduleActivity: Record<string, ModuleActivityRecord>;
   activities: Activity[];
   startDate: string | null;
-  migratedLegacy: boolean;
+  /** True once the signed-in user's rows have been loaded from the backend */
+  hydrated: boolean;
+  hydrationError: string | null;
 
   // Actions
   setChecklistItem: (storageId: string, stepNumber: number, itemId: string, checked: boolean) => void;
@@ -100,6 +115,23 @@ interface ProgressState {
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
   clearActivities: () => void;
   validateAndRepairState: () => { valid: boolean; repaired: boolean; errors: string[] };
+
+  // Engagement tracking (account-level, stored in module_progress)
+  markTabViewed: (moduleId: string, tab: string) => void;
+  resetTabsViewed: (moduleId: string) => void;
+  addTemplateDownload: (moduleId: string, templateId: string) => void;
+  addTimeSpentSeconds: (moduleId: string, seconds: number) => void;
+  getModuleActivity: (moduleId: string) => ModuleActivityRecord;
+
+  // Sync plumbing
+  hydrateFromRemote: (payload: {
+    checkedItems: Record<string, boolean>;
+    moduleMeta: Record<string, ModuleMeta>;
+    moduleActivity: Record<string, ModuleActivityRecord>;
+    startDate: string | null;
+  }) => void;
+  setHydrated: (hydrated: boolean, error?: string | null) => void;
+  clearLocalState: () => void;
 
   // Getters (derived - never stored)
   isItemChecked: (storageId: string, stepNumber: number, itemId: string) => boolean;
