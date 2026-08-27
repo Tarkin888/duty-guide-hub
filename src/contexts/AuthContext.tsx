@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import {
+  hydrateProgressForUser,
+  clearProgressSync,
+  flushProgressNow,
+} from '@/lib/progressSync';
 
 interface AuthContextType {
   user: User | null;
