@@ -1,48 +1,38 @@
 import { useEffect, useRef, useCallback } from "react";
-import { startModuleSession, endModuleSession, trackModuleTime } from "@/lib/moduleCompletionValidation";
+import { trackModuleTimeSeconds } from "@/lib/moduleCompletionValidation";
 
 /**
- * Hook to track time spent on a module
- * Automatically starts tracking on mount and saves time on unmount
+ * Tracks time spent on a module. Elapsed seconds are added to the
+ * account-level progress store, which persists to the module_progress table.
  */
 export function useModuleTimeTracking(moduleId: string) {
-  const sessionStartRef = useRef<number | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sessionStartRef = useRef<number>(Date.now());
 
   useEffect(() => {
-    // Start session
-    sessionStartRef.current = startModuleSession(moduleId);
+    sessionStartRef.current = Date.now();
 
-    // Save time periodically (every minute)
-    intervalRef.current = setInterval(() => {
-      if (sessionStartRef.current) {
-        // Calculate and save current session time
-        const currentTime = Date.now();
-        const minutesElapsed = (currentTime - sessionStartRef.current) / (1000 * 60);
-        
-        // Only save if more than 30 seconds elapsed
-        if (minutesElapsed >= 0.5) {
-          trackModuleTime(moduleId, sessionStartRef.current);
-          // Reset session start to now to avoid double-counting
-          sessionStartRef.current = currentTime;
-        }
+    const interval = setInterval(() => {
+      const elapsedSeconds = (Date.now() - sessionStartRef.current) / 1000;
+      if (elapsedSeconds >= 30) {
+        trackModuleTimeSeconds(moduleId, elapsedSeconds);
+        sessionStartRef.current = Date.now();
       }
-    }, 60000); // Every minute
+    }, 60000);
 
-    // Cleanup on unmount
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      clearInterval(interval);
+      const elapsedSeconds = (Date.now() - sessionStartRef.current) / 1000;
+      if (elapsedSeconds >= 1) {
+        trackModuleTimeSeconds(moduleId, elapsedSeconds);
       }
-      // Save final time
-      endModuleSession(moduleId);
     };
   }, [moduleId]);
 
-  // Force save current session (useful before validation)
+  /** Force-save the current session (used before completion validation) */
   const saveCurrentSession = useCallback(() => {
-    if (sessionStartRef.current) {
-      trackModuleTime(moduleId, sessionStartRef.current);
+    const elapsedSeconds = (Date.now() - sessionStartRef.current) / 1000;
+    if (elapsedSeconds >= 1) {
+      trackModuleTimeSeconds(moduleId, elapsedSeconds);
       sessionStartRef.current = Date.now();
     }
   }, [moduleId]);

@@ -1,5 +1,4 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create, type StateCreator } from 'zustand';
 import { toast } from 'sonner';
 import {
   MODULE_REGISTRY,
@@ -68,7 +67,7 @@ export interface AggregateProgress {
   percentage: number;
 }
 
-interface ModuleMeta {
+export interface ModuleMeta {
   completedAt?: string;
   lastAccessedAt?: string;
   /** Explicitly marked complete by the user: forces this module to 100% */
@@ -77,14 +76,29 @@ interface ModuleMeta {
   manualInProgress?: boolean;
 }
 
+/** Engagement signals used by completion validation (tabs, templates, time) */
+export interface ModuleActivityRecord {
+  tabsViewed: string[];
+  templateDownloads: string[];
+  timeSpentSeconds: number;
+}
+
+const EMPTY_ACTIVITY: ModuleActivityRecord = {
+  tabsViewed: [],
+  templateDownloads: [],
+  timeSpentSeconds: 0,
+};
 
 interface ProgressState {
   /** THE single source of truth: which checklist items are ticked */
   checkedItems: Record<string, boolean>;
   moduleMeta: Record<string, ModuleMeta>;
+  moduleActivity: Record<string, ModuleActivityRecord>;
   activities: Activity[];
   startDate: string | null;
-  migratedLegacy: boolean;
+  /** True once the signed-in user's rows have been loaded from the backend */
+  hydrated: boolean;
+  hydrationError: string | null;
 
   // Actions
   setChecklistItem: (storageId: string, stepNumber: number, itemId: string, checked: boolean) => void;
@@ -100,6 +114,23 @@ interface ProgressState {
   addActivity: (type: Activity['type'], moduleId: string, moduleName: string) => void;
   clearActivities: () => void;
   validateAndRepairState: () => { valid: boolean; repaired: boolean; errors: string[] };
+
+  // Engagement tracking (account-level, stored in module_progress)
+  markTabViewed: (moduleId: string, tab: string) => void;
+  resetTabsViewed: (moduleId: string) => void;
+  addTemplateDownload: (moduleId: string, templateId: string) => void;
+  addTimeSpentSeconds: (moduleId: string, seconds: number) => void;
+  getModuleActivity: (moduleId: string) => ModuleActivityRecord;
+
+  // Sync plumbing
+  hydrateFromRemote: (payload: {
+    checkedItems: Record<string, boolean>;
+    moduleMeta: Record<string, ModuleMeta>;
+    moduleActivity: Record<string, ModuleActivityRecord>;
+    startDate: string | null;
+  }) => void;
+  setHydrated: (hydrated: boolean, error?: string | null) => void;
+  clearLocalState: () => void;
 
   // Getters (derived - never stored)
   isItemChecked: (storageId: string, stepNumber: number, itemId: string) => boolean;
@@ -195,125 +226,6 @@ export function deriveCheckedItemsCount(checkedItems: Record<string, boolean>): 
   return ALL_ITEM_KEYS.reduce((sum, key) => sum + (checkedItems[key] === true ? 1 : 0), 0);
 }
 
-// ---------------------------------------------------------------------------
-// One-off migration from the previous storage layout
-// ---------------------------------------------------------------------------
-
-const STORAGE_KEY = 'consumer-duty-progress-v3';
-
-interface LegacyResult {
-  checkedItems: Record<string, boolean>;
-  moduleMeta: Record<string, ModuleMeta>;
-  startDate: string | null;
-  activities: Activity[];
-}
-
-export function migrateLegacyProgress(): LegacyResult {
-  const checkedItems: Record<string, boolean> = {};
-  const moduleMeta: Record<string, ModuleMeta> = {};
-  let startDate: string | null = null;
-  let activities: Activity[] = [];
-
-  // 1. Per-step checklist keys: checklist-<storageId>-step<n> => { itemId: boolean }
-  try {
-    for (const module of MODULE_REGISTRY) {
-      for (const key of module.items) {
-        const [storageId, step, itemId] = key.split('::');
-        const legacyKey = `checklist-${storageId}-${step}`;
-        const raw = localStorage.getItem(legacyKey);
-        if (!raw) continue;
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed[itemId] === true) {
-          checkedItems[key] = true;
-        }
-      }
-    }
-  } catch (error) {
-    console.error('[ProgressStore] Legacy checklist migration failed:', error);
-  }
-
-  // 2. Previous Zustand store (v2) - module statuses, activities and start date
-  try {
-    const rawV2 = localStorage.getItem('consumer-duty-progress-v2');
-    if (rawV2) {
-      const parsed = JSON.parse(rawV2);
-      const state = parsed?.state || {};
-      startDate = state.startDate || null;
-      if (Array.isArray(state.activities)) activities = state.activities.slice(0, 50);
-
-      Object.entries(state.modules || {}).forEach(([id, value]) => {
-        const legacyModule = value as {
-          status?: string;
-          completedAt?: string;
-          lastAccessedAt?: string;
-          checklistItems?: Record<string, boolean>;
-        };
-        const canonicalId = normalizeModuleId(id);
-        const definition = getModuleDefinition(canonicalId);
-        if (!definition) return;
-
-        moduleMeta[canonicalId] = {
-          completedAt: legacyModule.completedAt,
-          lastAccessedAt: legacyModule.lastAccessedAt,
-          manualComplete:
-            definition.items.length === 0 && legacyModule.status === 'complete' ? true : undefined,
-        };
-
-        // A module previously marked complete keeps its completion by ticking
-        // every registered item, so the new rule holds without losing progress.
-        if (legacyModule.status === 'complete') {
-          definition.items.forEach((key) => {
-            checkedItems[key] = true;
-          });
-        }
-
-        // Item-level flags stored on the old module record
-        Object.entries(legacyModule.checklistItems || {}).forEach(([itemId, checked]) => {
-          if (checked !== true) return;
-          const match = definition.items.find((key) => key.endsWith(`::${itemId}`));
-          if (match) checkedItems[match] = true;
-        });
-      });
-    }
-  } catch (error) {
-    console.error('[ProgressStore] Legacy store migration failed:', error);
-  }
-
-  // 3. Oldest format: consumer-duty-progress
-  try {
-    const rawV1 = localStorage.getItem('consumer-duty-progress');
-    if (rawV1) {
-      const parsed = JSON.parse(rawV1);
-      Object.entries(parsed || {}).forEach(([id, value]) => {
-        const data = value as { status?: string; lastUpdated?: string };
-        const definition = getModuleDefinition(normalizeModuleId(id));
-        if (!definition) return;
-        const canonicalId = definition.id;
-        if (data?.status === 'completed' || data?.status === 'complete') {
-          definition.items.forEach((key) => {
-            checkedItems[key] = true;
-          });
-          moduleMeta[canonicalId] = {
-            ...moduleMeta[canonicalId],
-            completedAt: moduleMeta[canonicalId]?.completedAt || data.lastUpdated,
-            manualComplete:
-              definition.items.length === 0 ? true : moduleMeta[canonicalId]?.manualComplete,
-          };
-        } else if (data?.status === 'in-progress') {
-          moduleMeta[canonicalId] = {
-            ...moduleMeta[canonicalId],
-            lastAccessedAt: moduleMeta[canonicalId]?.lastAccessedAt || data.lastUpdated,
-          };
-        }
-      });
-    }
-  } catch (error) {
-    console.error('[ProgressStore] V1 migration failed:', error);
-  }
-
-  return { checkedItems, moduleMeta, startDate, activities };
-}
-
 function newActivity(
   type: Activity['type'],
   moduleId: string,
@@ -330,13 +242,114 @@ function newActivity(
 }
 
 export const useProgressStore = create<ProgressState>()(
-  persist(
-    (set, get) => ({
+  ((set, get) => ({
       checkedItems: {},
       moduleMeta: {},
+      moduleActivity: {},
       activities: [],
       startDate: null,
-      migratedLegacy: false,
+      hydrated: false,
+      hydrationError: null,
+
+      hydrateFromRemote: ({ checkedItems, moduleMeta, moduleActivity, startDate }) =>
+        set({
+          checkedItems,
+          moduleMeta,
+          moduleActivity,
+          startDate,
+          hydrated: true,
+          hydrationError: null,
+          activities: Object.entries(moduleMeta)
+            .filter(([, meta]) => Boolean((meta as ModuleMeta).completedAt))
+            .map(([moduleId, meta]) =>
+              newActivity(
+                'module_completed',
+                moduleId,
+                getModuleDisplayName(moduleId),
+                (meta as ModuleMeta).completedAt as string
+              )
+            )
+            .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+            .slice(0, 50),
+        }),
+
+      setHydrated: (hydrated, error = null) => set({ hydrated, hydrationError: error }),
+
+      clearLocalState: () =>
+        set({
+          checkedItems: {},
+          moduleMeta: {},
+          moduleActivity: {},
+          activities: [],
+          startDate: null,
+          hydrated: false,
+          hydrationError: null,
+        }),
+
+      markTabViewed: (moduleId, tab) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          if (current.tabsViewed.includes(tab)) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: { ...current, tabsViewed: [...current.tabsViewed, tab] },
+            },
+          };
+        });
+      },
+
+      resetTabsViewed: (moduleId) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId];
+          if (!current) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: { ...current, tabsViewed: [] },
+            },
+          };
+        });
+      },
+
+      addTemplateDownload: (moduleId, templateId) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          if (current.templateDownloads.includes(templateId)) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: {
+                ...current,
+                templateDownloads: [...current.templateDownloads, templateId],
+              },
+            },
+          };
+        });
+      },
+
+      addTimeSpentSeconds: (moduleId, seconds) => {
+        if (!Number.isFinite(seconds) || seconds <= 0) return;
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: {
+                ...current,
+                timeSpentSeconds: current.timeSpentSeconds + Math.round(seconds),
+              },
+            },
+          };
+        });
+      },
+
+      getModuleActivity: (moduleId) =>
+        get().moduleActivity[normalizeModuleId(moduleId)] || EMPTY_ACTIVITY,
 
       setChecklistItem: (storageId, stepNumber, itemId, checked) => {
         const key = makeItemKey(storageId, stepNumber, itemId);
@@ -523,7 +536,9 @@ export const useProgressStore = create<ProgressState>()(
           });
           const moduleMeta = { ...state.moduleMeta };
           delete moduleMeta[canonicalId];
-          return { checkedItems, moduleMeta };
+          const moduleActivity = { ...state.moduleActivity };
+          delete moduleActivity[canonicalId];
+          return { checkedItems, moduleMeta, moduleActivity };
         });
 
         window.dispatchEvent(new Event('module-progress-updated'));
@@ -552,25 +567,14 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       resetAllProgress: () => {
-        set({ checkedItems: {}, moduleMeta: {}, activities: [], startDate: null });
-
-        try {
-          localStorage.removeItem('consumer-duty-progress');
-          localStorage.removeItem('consumer-duty-progress-v2');
-          localStorage.removeItem('consumer-duty-checklists');
-          localStorage.removeItem('consumer-duty-activity');
-          localStorage.removeItem('consumer-duty-user-data');
-          localStorage.removeItem('implementation-start-date');
-
-          const keysToRemove: string[] = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key?.startsWith('checklist-')) keysToRemove.push(key);
-          }
-          keysToRemove.forEach((key) => localStorage.removeItem(key));
-        } catch (error) {
-          console.error('Error clearing legacy data:', error);
-        }
+        // The sync layer picks this up and removes the account's rows
+        set({
+          checkedItems: {},
+          moduleMeta: {},
+          moduleActivity: {},
+          activities: [],
+          startDate: null,
+        });
 
         window.dispatchEvent(new Event('module-progress-updated'));
         toast.success('All progress has been reset');
@@ -712,58 +716,7 @@ export const useProgressStore = create<ProgressState>()(
         date.setDate(date.getDate() + Math.ceil(remaining * avgDays));
         return date;
       },
-    }),
-    {
-      name: STORAGE_KEY,
-      version: 4,
-      storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({
-        checkedItems: state.checkedItems,
-        moduleMeta: state.moduleMeta,
-        activities: state.activities,
-        startDate: state.startDate,
-        migratedLegacy: state.migratedLegacy,
-      }),
-      /**
-       * v3 -> v4 (proportional calculation model). No data is lost: ticked
-       * items and module meta carry over untouched. Modules previously marked
-       * complete had every item ticked, so they keep their explicit 100% via
-       * the manualComplete flag. Runs once, guarded by the persisted version.
-       */
-      migrate: (persisted, fromVersion) => {
-        const state = (persisted || {}) as Partial<ProgressState>;
-        if (fromVersion >= 4) return state as ProgressState;
-
-        const checkedItems = state.checkedItems || {};
-        const moduleMeta: Record<string, ModuleMeta> = { ...(state.moduleMeta || {}) };
-
-        for (const moduleId of ALL_MODULE_IDS) {
-          const itemKeys = getModuleItemKeys(moduleId);
-          const meta = moduleMeta[moduleId];
-          if (!meta) continue;
-          const allTicked =
-            itemKeys.length > 0 && itemKeys.every((key) => checkedItems[key] === true);
-          if (allTicked || meta.manualComplete) {
-            moduleMeta[moduleId] = { ...meta, manualComplete: true };
-          }
-        }
-
-        return { ...state, moduleMeta } as ProgressState;
-      },
-      onRehydrateStorage: () => (state) => {
-        if (!state || state.migratedLegacy) return;
-
-        // One-off migration so existing progress is not lost
-        const legacy = migrateLegacyProgress();
-        state.checkedItems = { ...legacy.checkedItems, ...state.checkedItems };
-        state.moduleMeta = { ...legacy.moduleMeta, ...state.moduleMeta };
-        state.startDate = state.startDate || legacy.startDate;
-        state.activities = state.activities?.length ? state.activities : legacy.activities;
-        state.migratedLegacy = true;
-      },
-    }
-
-  )
+    })) as StateCreator<ProgressState, [], []>
 );
 
 // ---------------------------------------------------------------------------
@@ -864,12 +817,4 @@ export function useModuleProgressSummary(moduleCode: string): ModuleProgressSumm
   return toSummary(useModuleProgress(moduleCode));
 }
 
-// Cross-tab sync: another tab writing progress rehydrates this one, so open
-// pages update without a manual refresh.
-if (typeof window !== 'undefined') {
-  window.addEventListener('storage', (event) => {
-    if (event.key === STORAGE_KEY) {
-      void useProgressStore.persist?.rehydrate();
-    }
-  });
-}
+

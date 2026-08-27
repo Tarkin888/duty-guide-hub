@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -138,6 +138,57 @@ export type Database = {
           id?: string
           module_id?: string
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      module_progress: {
+        Row: {
+          checked_items: Json
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_accessed_at: string | null
+          manual_complete: boolean
+          manual_in_progress: boolean
+          module_code: string
+          status: string
+          tabs_viewed: Json
+          template_downloads: Json
+          time_spent_seconds: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checked_items?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          manual_complete?: boolean
+          manual_in_progress?: boolean
+          module_code: string
+          status?: string
+          tabs_viewed?: Json
+          template_downloads?: Json
+          time_spent_seconds?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checked_items?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          manual_complete?: boolean
+          manual_in_progress?: boolean
+          module_code?: string
+          status?: string
+          tabs_viewed?: Json
+          template_downloads?: Json
+          time_spent_seconds?: number
           updated_at?: string
           user_id?: string
         }
