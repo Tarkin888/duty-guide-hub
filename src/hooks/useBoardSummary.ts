@@ -162,8 +162,8 @@ export const useBoardSummary = () => {
   );
 
   const saveReport = useCallback(
-    async (patch: Partial<BoardReport>, options?: { silent?: boolean }) => {
-      if (!userId) return;
+    async (patch: Partial<BoardReport>, options?: { silent?: boolean }): Promise<BoardReport | null> => {
+      if (!userId) return null;
       setSaving(true);
       const next = { ...report, ...patch, is_demo: false };
       try {
@@ -187,15 +187,18 @@ export const useBoardSummary = () => {
           .select()
           .single();
         if (error) throw error;
-        setReport({
+        const saved: BoardReport = {
           ...EMPTY_REPORT,
           ...(data as unknown as BoardReport),
           actions: ((data as unknown as { actions?: BoardAction[] }).actions ?? []) as BoardAction[],
-        });
+        };
+        setReport(saved);
         if (!options?.silent) toast.success('Board report saved');
+        return saved;
       } catch (error) {
         console.error('Error saving board report:', error);
         toast.error('Could not save the board report');
+        return null;
       } finally {
         setSaving(false);
       }
@@ -203,35 +206,40 @@ export const useBoardSummary = () => {
     [userId, report],
   );
 
-  const issueToBoard = useCallback(async () => {
-    if (!userId) return;
-    setSaving(true);
-    try {
-      const version = (snapshots[0]?.version ?? 0) + 1;
-      const payload = {
-        ratings: Object.values(ratings),
-        report,
-      };
-      const { data, error } = await supabase
-        .from('board_summary_snapshots')
-        .insert({
-          user_id: userId,
-          version,
-          payload: payload as unknown as never,
-          is_demo: report.is_demo,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setSnapshots((prev) => [data as unknown as BoardSnapshot, ...prev]);
-      toast.success(`Version ${version} issued to the board`);
-    } catch (error) {
-      console.error('Error issuing board report:', error);
-      toast.error('Could not issue the report');
-    } finally {
-      setSaving(false);
-    }
-  }, [userId, snapshots, ratings, report]);
+  const issueToBoard = useCallback(
+    async (overrideReport?: BoardReport) => {
+      if (!userId) return;
+      setSaving(true);
+      try {
+        const reportToIssue = overrideReport ?? report;
+        const version = (snapshots[0]?.version ?? 0) + 1;
+        const payload = {
+          ratings: Object.values(ratings),
+          report: reportToIssue,
+        };
+        const { data, error } = await supabase
+          .from('board_summary_snapshots')
+          .insert({
+            user_id: userId,
+            version,
+            payload: payload as unknown as never,
+            is_demo: reportToIssue.is_demo,
+          })
+          .select()
+          .single();
+        if (error) throw error;
+        setSnapshots((prev) => [data as unknown as BoardSnapshot, ...prev]);
+        toast.success(`Version ${version} issued to the board`);
+      } catch (error) {
+        console.error('Error issuing board report:', error);
+        toast.error('Could not issue the report');
+      } finally {
+        setSaving(false);
+      }
+    },
+    [userId, snapshots, ratings, report],
+  );
+
 
   const notesForPrefixes = useCallback(
     (prefixes: string[]) =>

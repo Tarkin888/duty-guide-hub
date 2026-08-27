@@ -64,7 +64,8 @@ const BoardSummary = () => {
   const [actions, setActions] = useState<BoardAction[]>(report.actions);
   const [approverName, setApproverName] = useState(report.approver_name);
   const [approverRole, setApproverRole] = useState(report.approver_role);
-  const [signoffDate, setSignoffDate] = useState(report.signoff_date ?? '');
+  const todayIso = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const [signoffDate, setSignoffDate] = useState(report.signoff_date ?? todayIso);
   const [demoBusy, setDemoBusy] = useState(false);
 
   useEffect(() => {
@@ -75,8 +76,8 @@ const BoardSummary = () => {
     setActions(report.actions);
     setApproverName(report.approver_name);
     setApproverRole(report.approver_role);
-    setSignoffDate(report.signoff_date ?? '');
-  }, [report]);
+    setSignoffDate(report.signoff_date ?? todayIso);
+  }, [report, todayIso]);
 
   const draftVerdictSentence = useMemo(() => {
     const { red, amber, green, unrated } = rollUp;
@@ -135,7 +136,7 @@ const BoardSummary = () => {
       toast.error('Complete the approver name, role and date before issuing to the board');
       return;
     }
-    await saveReport(
+    const saved = await saveReport(
       {
         verdict,
         verdict_narrative: narrative,
@@ -148,7 +149,8 @@ const BoardSummary = () => {
       },
       { silent: true },
     );
-    await issueToBoard();
+    if (!saved) return;
+    await issueToBoard(saved);
   }, [
     approverName,
     approverRole,
