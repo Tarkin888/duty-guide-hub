@@ -143,6 +143,57 @@ export type Database = {
         }
         Relationships: []
       }
+      module_progress: {
+        Row: {
+          checked_items: Json
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_accessed_at: string | null
+          manual_complete: boolean
+          manual_in_progress: boolean
+          module_code: string
+          status: string
+          tabs_viewed: Json
+          template_downloads: Json
+          time_spent_seconds: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checked_items?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          manual_complete?: boolean
+          manual_in_progress?: boolean
+          module_code: string
+          status?: string
+          tabs_viewed?: Json
+          template_downloads?: Json
+          time_spent_seconds?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checked_items?: Json
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          manual_complete?: boolean
+          manual_in_progress?: boolean
+          module_code?: string
+          status?: string
+          tabs_viewed?: Json
+          template_downloads?: Json
+          time_spent_seconds?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       note_shares: {
         Row: {
           created_at: string
