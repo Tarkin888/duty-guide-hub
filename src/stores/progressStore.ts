@@ -362,13 +362,114 @@ function newActivity(
 }
 
 export const useProgressStore = create<ProgressState>()(
-  persist(
-    (set, get) => ({
+  ((set, get) => ({
       checkedItems: {},
       moduleMeta: {},
+      moduleActivity: {},
       activities: [],
       startDate: null,
-      migratedLegacy: false,
+      hydrated: false,
+      hydrationError: null,
+
+      hydrateFromRemote: ({ checkedItems, moduleMeta, moduleActivity, startDate }) =>
+        set({
+          checkedItems,
+          moduleMeta,
+          moduleActivity,
+          startDate,
+          hydrated: true,
+          hydrationError: null,
+          activities: Object.entries(moduleMeta)
+            .filter(([, meta]) => Boolean(meta.completedAt))
+            .map(([moduleId, meta]) =>
+              newActivity(
+                'module_completed',
+                moduleId,
+                getModuleDisplayName(moduleId),
+                meta.completedAt as string
+              )
+            )
+            .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+            .slice(0, 50),
+        }),
+
+      setHydrated: (hydrated, error = null) => set({ hydrated, hydrationError: error }),
+
+      clearLocalState: () =>
+        set({
+          checkedItems: {},
+          moduleMeta: {},
+          moduleActivity: {},
+          activities: [],
+          startDate: null,
+          hydrated: false,
+          hydrationError: null,
+        }),
+
+      markTabViewed: (moduleId, tab) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          if (current.tabsViewed.includes(tab)) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: { ...current, tabsViewed: [...current.tabsViewed, tab] },
+            },
+          };
+        });
+      },
+
+      resetTabsViewed: (moduleId) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId];
+          if (!current) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: { ...current, tabsViewed: [] },
+            },
+          };
+        });
+      },
+
+      addTemplateDownload: (moduleId, templateId) => {
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          if (current.templateDownloads.includes(templateId)) return state;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: {
+                ...current,
+                templateDownloads: [...current.templateDownloads, templateId],
+              },
+            },
+          };
+        });
+      },
+
+      addTimeSpentSeconds: (moduleId, seconds) => {
+        if (!Number.isFinite(seconds) || seconds <= 0) return;
+        const canonicalId = normalizeModuleId(moduleId);
+        set((state) => {
+          const current = state.moduleActivity[canonicalId] || EMPTY_ACTIVITY;
+          return {
+            moduleActivity: {
+              ...state.moduleActivity,
+              [canonicalId]: {
+                ...current,
+                timeSpentSeconds: current.timeSpentSeconds + Math.round(seconds),
+              },
+            },
+          };
+        });
+      },
+
+      getModuleActivity: (moduleId) =>
+        get().moduleActivity[normalizeModuleId(moduleId)] || EMPTY_ACTIVITY,
 
       setChecklistItem: (storageId, stepNumber, itemId, checked) => {
         const key = makeItemKey(storageId, stepNumber, itemId);
