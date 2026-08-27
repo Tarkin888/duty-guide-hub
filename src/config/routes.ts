@@ -93,6 +93,7 @@ export const RESOURCE_ROUTE_CONFIG: ResourceRouteConfig[] = [
   { path: '/ongoing/outcomes-testing', title: 'Outcomes Testing & Consumer Understanding', description: 'Recurring communication testing cycle (OC-4)' },
   { path: '/ongoing/mi-monitoring', title: 'Ongoing Monitoring & MI Framework', description: 'Ongoing compliance view of CD-M1 (OC-1)' },
   { path: '/ongoing/board-attestation', title: 'Annual Board Attestation & Reporting', description: 'Ongoing compliance view of CD-M3 (OC-2)' },
+  { path: '/board-summary', title: 'Board Summary', description: 'Board-facing Consumer Duty maturity scorecard and annual board report' },
   { path: '/resources/templates', title: 'Templates Library', description: 'Implementation templates and documents' },
   { path: '/resources/glossary', title: 'Glossary', description: 'Consumer Duty terminology' },
   { path: '/resources/regulatory-references', title: 'Regulatory References', description: 'FCA guidance and regulations' },

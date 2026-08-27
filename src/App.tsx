@@ -52,6 +52,7 @@ import OC3FairValueAssessment from "./pages/modules/OC-3-FairValueAssessment";
 import OC4OutcomesTesting from "./pages/modules/OC-4-OutcomesTesting";
 import SiteHealth from "./pages/SiteHealth";
 import SettingsPage from "./pages/Settings";
+import BoardSummary from "./pages/BoardSummary";
 import ConsumerDutyPrimer from "./components/ConsumerDutyPrimer";
 import { FileText } from "lucide-react";
 
@@ -171,6 +172,7 @@ const App = () => (
                               {/* Tools */}
                               <Route path="/maturity-assessment" element={<MaturityAssessment />} />
                               <Route path="/modules/cd-f1/assessment" element={<MaturityAssessmentSnapshot />} />
+                              <Route path="/board-summary" element={<BoardSummary />} />
                               <Route path="/regulatory-updates" element={<RegulatoryUpdates />} />
                               <Route path="/consumer-duty-primer" element={<ConsumerDutyPrimer />} />
 
