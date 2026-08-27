@@ -565,25 +565,14 @@ export const useProgressStore = create<ProgressState>()(
       },
 
       resetAllProgress: () => {
-        set({ checkedItems: {}, moduleMeta: {}, activities: [], startDate: null });
-
-        try {
-          localStorage.removeItem('consumer-duty-progress');
-          localStorage.removeItem('consumer-duty-progress-v2');
-          localStorage.removeItem('consumer-duty-checklists');
-          localStorage.removeItem('consumer-duty-activity');
-          localStorage.removeItem('consumer-duty-user-data');
-          localStorage.removeItem('implementation-start-date');
-
-          const keysToRemove: string[] = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key?.startsWith('checklist-')) keysToRemove.push(key);
-          }
-          keysToRemove.forEach((key) => localStorage.removeItem(key));
-        } catch (error) {
-          console.error('Error clearing legacy data:', error);
-        }
+        // The sync layer picks this up and removes the account's rows
+        set({
+          checkedItems: {},
+          moduleMeta: {},
+          moduleActivity: {},
+          activities: [],
+          startDate: null,
+        });
 
         window.dispatchEvent(new Event('module-progress-updated'));
         toast.success('All progress has been reset');
