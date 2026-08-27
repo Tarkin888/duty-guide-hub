@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-
-const STORAGE_KEY_PREFIX = "module-tabs-viewed-";
+import { useCallback, useMemo } from "react";
+import { useProgressStore } from "@/stores/progressStore";
+import { normalizeModuleId } from "@/config/moduleRegistry";
 
 export interface TabViewState {
   viewedTabs: Set<string>;
@@ -9,56 +9,32 @@ export interface TabViewState {
   resetViewedTabs: () => void;
 }
 
+/**
+ * Tracks which module tabs the signed-in user has visited. State lives in the
+ * account-level progress store (backed by the module_progress table), so it
+ * follows the user across browsers and devices.
+ */
 export function useTabViewTracking(moduleId: string): TabViewState {
-  const storageKey = `${STORAGE_KEY_PREFIX}${moduleId}`;
-  
-  const [viewedTabs, setViewedTabs] = useState<Set<string>>(() => {
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        return new Set(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error("Error loading tab view state:", error);
-    }
-    return new Set();
-  });
+  const canonicalId = normalizeModuleId(moduleId);
+  const tabs = useProgressStore(
+    (state) => state.moduleActivity[canonicalId]?.tabsViewed
+  );
+  const markTabViewedAction = useProgressStore((state) => state.markTabViewed);
+  const resetTabsViewedAction = useProgressStore((state) => state.resetTabsViewed);
 
-  // Save to localStorage when viewedTabs changes
-  useEffect(() => {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(Array.from(viewedTabs)));
-    } catch (error) {
-      console.error("Error saving tab view state:", error);
-    }
-  }, [viewedTabs, storageKey]);
+  const viewedTabs = useMemo(() => new Set(tabs ?? []), [tabs]);
 
-  const markTabViewed = useCallback((tabValue: string) => {
-    setViewedTabs(prev => {
-      if (prev.has(tabValue)) return prev;
-      const newSet = new Set(prev);
-      newSet.add(tabValue);
-      return newSet;
-    });
-  }, []);
+  const markTabViewed = useCallback(
+    (tabValue: string) => markTabViewedAction(canonicalId, tabValue),
+    [canonicalId, markTabViewedAction]
+  );
 
-  const isTabViewed = useCallback((tabValue: string) => {
-    return viewedTabs.has(tabValue);
-  }, [viewedTabs]);
+  const isTabViewed = useCallback((tabValue: string) => viewedTabs.has(tabValue), [viewedTabs]);
 
-  const resetViewedTabs = useCallback(() => {
-    setViewedTabs(new Set());
-    try {
-      localStorage.removeItem(storageKey);
-    } catch (error) {
-      console.error("Error resetting tab view state:", error);
-    }
-  }, [storageKey]);
+  const resetViewedTabs = useCallback(
+    () => resetTabsViewedAction(canonicalId),
+    [canonicalId, resetTabsViewedAction]
+  );
 
-  return {
-    viewedTabs,
-    markTabViewed,
-    isTabViewed,
-    resetViewedTabs,
-  };
+  return { viewedTabs, markTabViewed, isTabViewed, resetViewedTabs };
 }
