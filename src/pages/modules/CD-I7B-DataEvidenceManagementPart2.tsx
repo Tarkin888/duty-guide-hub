@@ -74,7 +74,7 @@ export default function CDI7BDataEvidenceManagementPart2() {
             <Button 
               variant="ghost" 
               className="text-primary-foreground hover:bg-primary/80 print:hidden"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/")}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
