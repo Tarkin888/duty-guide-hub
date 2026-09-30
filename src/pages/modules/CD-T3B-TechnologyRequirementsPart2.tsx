@@ -79,7 +79,7 @@ const CDT3BTechnologyRequirementsPart2 = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/")}
                 className="gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -1165,7 +1165,7 @@ const CDT3BTechnologyRequirementsPart2 = () => {
           <Button variant="outline" onClick={() => navigate("/enablement/technology")}>
             ← Part 1: Foundation & Selection
           </Button>
-          <Button onClick={() => navigate("/dashboard")}>
+          <Button onClick={() => navigate("/")}>
             Return to Dashboard
           </Button>
         </div>
