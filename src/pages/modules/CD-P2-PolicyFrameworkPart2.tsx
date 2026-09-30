@@ -37,7 +37,7 @@ export default function CDP2PolicyFrameworkPart2() {
       <div className="bg-primary/5 border-b border-border">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Link to="/dashboard" className="hover:text-primary">Dashboard</Link>
+            <Link to="/" className="hover:text-primary">Dashboard</Link>
             <span>/</span>
             <span>Governance & Planning</span>
             <span>/</span>
