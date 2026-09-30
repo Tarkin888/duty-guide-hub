@@ -63,7 +63,7 @@ export default function ConsumerDutyPrimer() {
             title="Consumer Duty Primer"
             srcDoc={primerHtml}
             onLoad={handleLoad}
-            sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
             className="w-full block"
             style={{ height: 800, border: 'none' }}
           />
