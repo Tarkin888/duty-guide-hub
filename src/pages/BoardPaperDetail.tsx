@@ -259,7 +259,7 @@ const BoardPaperDetail = () => {
   const previewDoc = (
     <article className="mx-auto max-w-3xl space-y-6 rounded-lg border bg-card p-6 md:p-10">
       <header className="space-y-2 border-b pb-6 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: CONTENT_GOLD }}>Board paper</p>
+        <p className="text-sm font-semibold uppercase tracking-widest text-foreground">Board paper</p>
         <h1 className="text-3xl font-bold">{cover.title || "Untitled board paper"}</h1>
         <p className="text-base text-muted-foreground">{[cover.firm_name, cover.reporting_period, cover.committee].filter(Boolean).join(" · ")}</p>
         <p className="text-base text-muted-foreground">{[cover.author && `Author: ${cover.author}`, content.paper_date && fmtDate(content.paper_date)].filter(Boolean).join(" · ")}</p>
