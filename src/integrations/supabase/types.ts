@@ -14,6 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      board_paper_snapshots: {
+        Row: {
+          board_paper_id: string
+          frozen_content: Json
+          id: string
+          issued_at: string
+          issued_by: string | null
+          user_id: string
+          version: number
+        }
+        Insert: {
+          board_paper_id: string
+          frozen_content: Json
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          user_id?: string
+          version: number
+        }
+        Update: {
+          board_paper_id?: string
+          frozen_content?: Json
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          user_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "board_paper_snapshots_board_paper_id_fkey"
+            columns: ["board_paper_id"]
+            isOneToOne: false
+            referencedRelation: "board_papers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      board_papers: {
+        Row: {
+          author: string | null
+          committee: string | null
+          content: Json
+          created_at: string
+          firm_name: string | null
+          id: string
+          reporting_period: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          author?: string | null
+          committee?: string | null
+          content?: Json
+          created_at?: string
+          firm_name?: string | null
+          id?: string
+          reporting_period?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          author?: string | null
+          committee?: string | null
+          content?: Json
+          created_at?: string
+          firm_name?: string | null
+          id?: string
+          reporting_period?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       board_summary_ratings: {
         Row: {
           created_at: string
