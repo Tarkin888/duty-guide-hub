@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BOARD_SCORECARD_ROWS, RATING_BY_VALUE, BoardRating } from "@/config/boardSummaryConfig";
 import { MODULE_REGISTRY } from "@/config/moduleRegistry";
-import { normalizeModuleId } from "@/config/moduleRegistry";
 import { regulatoryUpdates } from "@/data/regulatoryUpdatesData";
 import {
   BoardPaperContent, MiRow, RiskRow, RiskRag, emptyContent, normaliseContent, newId,
@@ -170,7 +169,6 @@ const BoardPaperDetail = () => {
     const outstanding = withItems.filter((m) => !complete.includes(m));
     return { total: withItems.length, complete, outstanding };
   }, [checked]);
-  void normalizeModuleId;
 
   const includedUpdates = regulatoryUpdates.filter((u) => content.regulatory.included_ids.includes(u.id));
 
