@@ -111,6 +111,7 @@ const navigationItems: (NavigationEntry | { title: string; url: string; icon: Lu
       { title: "Testing & Assurance", url: "/monitoring/testing-assurance", icon: TestTube, moduleId: "cd-m2-testing-assurance" },
       { title: "Board Reporting", url: "/monitoring/board-reporting", icon: PresentationIcon, moduleId: "cd-m3-board-reporting", parts: 2, partUrls: ["/monitoring/board-reporting-part2"] },
       { title: "Continuous Improvement", url: "/monitoring/continuous-improvement", icon: TrendingUp, moduleId: "cd-m4-continuous-improvement", parts: 2, partUrls: ["/monitoring/continuous-improvement-part2"] },
+      { title: "Board Papers", url: "/board-papers", icon: FileText },
     ],
   },
   {
