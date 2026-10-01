@@ -317,7 +317,7 @@ const BoardPaperDetail = () => {
           <nav aria-label="Board paper sections" className="lg:sticky lg:top-6 lg:self-start">
             <ol className="space-y-1 text-base">
               {SECTIONS.map((s, i) => (
-                <li key={s.id}><a href={`#${s.id}`} className="block rounded px-2 py-2 hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">{i + 1}. {s.label}</a></li>
+                <li key={s.id}><a href={`#${s.id}`} className="block rounded px-2 py-2 hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">{i + 1}. {s.label}</a></li>
               ))}
             </ol>
           </nav>
