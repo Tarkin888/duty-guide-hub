@@ -11,6 +11,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { seedDemoBoardPaper, DEMO_FIRM } from "@/lib/boardPaperDemo";
 
 interface BoardPaperRow {
   id: string;
@@ -90,6 +91,21 @@ const BoardPapers = () => {
     navigate(`/board-papers/${data.id}`);
   };
 
+  const [seeding, setSeeding] = useState(false);
+  const addDemo = async () => {
+    if (!user) return;
+    setSeeding(true);
+    try {
+      const pid = await seedDemoBoardPaper(user.id);
+      toast.success("Demo board paper added (fictional firm)");
+      navigate(`/board-papers/${pid}`);
+    } catch {
+      toast.error("The demo board paper could not be added");
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   const newButton = (
     <Button onClick={() => setOpen(true)} className="min-h-[44px]">
       <Plus className="mr-2 h-4 w-4" aria-hidden /> New board paper
@@ -105,7 +121,14 @@ const BoardPapers = () => {
             Assemble Consumer Duty board packs for your governing committee.
           </p>
         </div>
-        {papers.length > 0 && newButton}
+        <div className="flex flex-wrap gap-3">
+          {!loading && !papers.some((p) => p.firm_name === DEMO_FIRM) && (
+            <Button variant="outline" onClick={addDemo} disabled={seeding} className="min-h-[44px]">
+              {seeding && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />}Add demo paper (fictional)
+            </Button>
+          )}
+          {papers.length > 0 && newButton}
+        </div>
       </div>
 
       {loading ? (
