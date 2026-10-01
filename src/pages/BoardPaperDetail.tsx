@@ -247,72 +247,33 @@ const BoardPaperDetail = () => {
     )
   );
 
-  // ---------- PREVIEW ----------
-  const P = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <section className="space-y-3 border-b pb-6">
-      <h2 className="text-xl font-bold text-foreground" style={{ borderLeft: `4px solid ${CONTENT_GOLD}`, paddingLeft: 12 }}>{title}</h2>
-      {children}
-    </section>
-  );
-  const Txt = ({ v }: { v: string }) => v.trim() ? <p className="whitespace-pre-wrap text-base leading-relaxed">{v}</p> : <p className="text-base italic text-muted-foreground">Not provided.</p>;
-
-  const previewDoc = (
-    <article className="mx-auto max-w-3xl space-y-6 rounded-lg border bg-card p-6 md:p-10">
-      <header className="space-y-2 border-b pb-6 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-foreground">Board paper</p>
-        <h1 className="text-3xl font-bold">{cover.title || "Untitled board paper"}</h1>
-        <p className="text-base text-muted-foreground">{[cover.firm_name, cover.reporting_period, cover.committee].filter(Boolean).join(" · ")}</p>
-        <p className="text-base text-muted-foreground">{[cover.author && `Author: ${cover.author}`, content.paper_date && fmtDate(content.paper_date)].filter(Boolean).join(" · ")}</p>
-      </header>
-      <P title="Executive summary"><Txt v={content.executive_summary} /></P>
-      <P title="Consumer Duty outcomes scorecard">{scorecardTable}<Txt v={content.scorecard_commentary} /></P>
-      <P title="Four outcomes commentary">{OUTCOME_FIELDS.map((f) => <div key={f.key}><h3 className="font-semibold">{f.label}</h3><Txt v={content.outcomes[f.key]} /></div>)}</P>
-      <P title="Cross-cutting rule"><Txt v={content.cross_cutting} /></P>
-      <P title="Vulnerable customers"><Txt v={content.vulnerable_customers} /></P>
-      <P title="Distribution chain"><Txt v={content.distribution_chain} /></P>
-      <P title="Management information & KPIs">
-        {content.mi_rows.length ? (
-          <table className="w-full border-collapse text-base"><thead><tr className="border-b text-left"><th className="py-2 pr-2">Metric</th><th className="pr-2">Value</th><th className="pr-2">Trend</th><th>Commentary</th></tr></thead>
-            <tbody>{content.mi_rows.map((r) => <tr key={r.id} className="border-b align-top"><td className="py-2 pr-2">{r.metric}</td><td className="pr-2">{r.value}</td><td className="pr-2">{r.trend}</td><td className="whitespace-pre-wrap">{r.commentary}</td></tr>)}</tbody></table>
-        ) : <Txt v="" />}
-      </P>
-      <P title="Programme status (factual)">{programmeBlock}<Txt v={content.programme_commentary} /></P>
-      <P title="Regulatory developments in period">
-        {includedUpdates.length ? <ul className="space-y-2">{includedUpdates.map((u) => <li key={u.id}><strong>{u.title}</strong> <span className="text-muted-foreground">({u.date}, {u.status})</span></li>)}</ul> : <p className="italic text-muted-foreground">No developments selected.</p>}
-        <Txt v={content.regulatory.commentary} />
-      </P>
-      <P title="Key risks & actions">
-        {content.risks.length ? (
-          <table className="w-full border-collapse text-base"><thead><tr className="border-b text-left"><th className="py-2 pr-2">Risk</th><th className="pr-2">Owner</th><th className="pr-2">RAG</th><th className="pr-2">Due</th><th>Status</th></tr></thead>
-            <tbody>{content.risks.map((r) => <tr key={r.id} className="border-b align-top"><td className="py-2 pr-2">{r.risk}</td><td className="pr-2">{r.owner}</td><td className="pr-2">{r.rag ? <span className={`rounded border px-2 py-0.5 text-sm font-semibold ${RAG_META[r.rag].cls}`}>{RAG_META[r.rag].label}</span> : "—"}</td><td className="pr-2">{fmtDate(r.due_date)}</td><td>{r.status}</td></tr>)}</tbody></table>
-        ) : <Txt v="" />}
-      </P>
-      <P title="Attestation & sign-off">
-        <Txt v={content.attestation.statement} />
-        <p className="text-base">{[content.attestation.approver_name, content.attestation.approver_role, fmtDate(content.attestation.date)].filter(Boolean).join(" · ") || <span className="italic text-muted-foreground">Approver not recorded.</span>}</p>
-      </P>
-    </article>
-  );
-
   // ---------- EDITOR ----------
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Button asChild variant="outline" className="min-h-[44px]"><Link to="/board-papers"><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />Back to Board Papers</Link></Button>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full border px-3 py-1 text-sm font-semibold">
+            {status === "issued" ? `Issued — version ${maxVersion}` : maxVersion ? `Draft (edited since version ${maxVersion})` : "Draft"}
+          </span>
           <span className="flex items-center gap-1 text-sm text-muted-foreground" aria-live="polite">
             {saveState === "saving" && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
             {saveState === "saved" && <CheckCircle2 className="h-4 w-4" aria-hidden />}
             {saveState === "error" && <AlertCircle className="h-4 w-4 text-destructive" aria-hidden />}
             <span className={saveState === "error" ? "text-destructive" : ""}>{saveLabel}</span>
           </span>
-          <Button onClick={() => setPreview((p) => !p)} className="min-h-[44px]" aria-pressed={preview}>
+          <Button variant="outline" onClick={() => setPreview((p) => !p)} className="min-h-[44px]" aria-pressed={preview}>
             {preview ? <><Pencil className="mr-2 h-4 w-4" aria-hidden />Back to editing</> : <><Eye className="mr-2 h-4 w-4" aria-hidden />Preview</>}
+          </Button>
+          <Button asChild variant="outline" className="min-h-[44px]"><Link to={`/board-papers/${id}/print`}><Printer className="mr-2 h-4 w-4" aria-hidden />Print draft</Link></Button>
+          <Button onClick={() => setConfirmIssue(true)} disabled={!evidenceReady || issuing || status === "issued"} className="min-h-[44px]">
+            {issuing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden /> : <Send className="mr-2 h-4 w-4" aria-hidden />}
+            {status === "issued" ? "Issued — edit to re-issue" : "Issue board paper"}
           </Button>
         </div>
       </div>
 
-      {preview ? previewDoc : (
+      {preview ? <BoardPackDocument pack={buildPack(cover, content, { ratings: ratingsError ? null : ratings ?? [], checked: progressError ? null : checked ?? new Set() })} stateLabel="Draft preview" /> : (
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <nav aria-label="Board paper sections" className="lg:sticky lg:top-6 lg:self-start">
             <ol className="space-y-1 text-base">
@@ -421,6 +382,62 @@ const BoardPaperDetail = () => {
           </div>
         </div>
       )}
+
+      <Card id="versions">
+        <CardHeader className="border-b" style={{ borderBottomColor: CONTENT_GOLD }}>
+          <CardTitle className="flex items-center gap-2 text-xl"><History className="h-5 w-5" aria-hidden />Issued versions</CardTitle>
+        </CardHeader>
+        <CardContent className="pt-6">
+          {versions === null ? <Loader2 className="h-6 w-6 animate-spin" aria-label="Loading versions" />
+            : versions.length === 0 ? <p className="text-base text-muted-foreground">Not issued yet. Issuing freezes the pack exactly as it stands as version 1.</p>
+            : (
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-base">
+                  <thead><tr className="border-b text-left"><th className="py-2 pr-4">Version</th><th className="pr-4">Issued by</th><th className="pr-4">Issued</th><th><span className="sr-only">Actions</span></th></tr></thead>
+                  <tbody>
+                    {versions.map((v) => (
+                      <tr key={v.id} className="border-b">
+                        <td className="py-2 pr-4 font-semibold">Version {v.version}</td>
+                        <td className="pr-4">{v.issued_by || "—"}</td>
+                        <td className="pr-4">{fmtDate(v.issued_at)} {new Date(v.issued_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</td>
+                        <td className="flex flex-wrap justify-end gap-2 py-2">
+                          <Button variant="outline" className="min-h-[44px]" onClick={() => setViewing(v)}><Eye className="mr-2 h-4 w-4" aria-hidden />View</Button>
+                          <Button asChild variant="outline" className="min-h-[44px]"><Link to={`/board-papers/${id}/print?version=${v.version}`}><Printer className="mr-2 h-4 w-4" aria-hidden />Print view</Link></Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="mt-3 text-sm text-muted-foreground">Issued versions are permanent and cannot be edited or deleted. Re-issuing creates a new version.</p>
+              </div>
+            )}
+        </CardContent>
+      </Card>
+
+      <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
+        <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Version {viewing?.version} — read-only</DialogTitle>
+            <DialogDescription>Issued {viewing && fmtDate(viewing.issued_at)}{viewing?.issued_by ? ` by ${viewing.issued_by}` : ""}. This is the pack exactly as frozen at issue.</DialogDescription>
+          </DialogHeader>
+          {viewing && <BoardPackDocument pack={readPack(viewing.frozen_content)} stateLabel={`Issued — version ${viewing.version}`} />}
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={confirmIssue} onOpenChange={setConfirmIssue}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Issue version {nextVersion}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              The full pack — your narrative plus the scorecard, programme status and selected regulatory entries as they stand now — will be frozen permanently as version {nextVersion}. You can keep editing afterwards and issue a new version.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={issue}>Issue version {nextVersion}</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
