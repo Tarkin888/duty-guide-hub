@@ -328,7 +328,7 @@ const BoardPaperDetail = () => {
             {saveState === "error" && <AlertCircle className="h-4 w-4 text-destructive" aria-hidden />}
             <span className={saveState === "error" ? "text-destructive" : ""}>{saveLabel}</span>
           </span>
-          <Button variant="outline" onClick={() => setPreview((p) => !p)} className="min-h-[44px]" aria-pressed={preview}>
+          <Button variant="outline" onClick={() => setPreview((p) => !p)} className="min-h-[44px] hover:bg-muted hover:text-foreground" aria-pressed={preview}>
             {preview ? <><Pencil className="mr-2 h-4 w-4" aria-hidden />Back to editing</> : <><Eye className="mr-2 h-4 w-4" aria-hidden />Preview</>}
           </Button>
           <Button asChild variant="outline" className="min-h-[44px]"><Link to={`/board-papers/${id}/print`}><Printer className="mr-2 h-4 w-4" aria-hidden />Print draft</Link></Button>
