@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Loader2, Eye, Pencil, Plus, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Loader2, Eye, Pencil, Plus, Trash2, CheckCircle2, AlertCircle, History, Printer, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -9,18 +9,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
+  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 import { BOARD_SCORECARD_ROWS, RATING_BY_VALUE, BoardRating } from "@/config/boardSummaryConfig";
 import { MODULE_REGISTRY } from "@/config/moduleRegistry";
 import { regulatoryUpdates } from "@/data/regulatoryUpdatesData";
 import {
   BoardPaperContent, MiRow, RiskRow, RiskRag, emptyContent, normaliseContent, newId,
 } from "@/lib/boardPaperContent";
+import { buildPack, readPack } from "@/lib/boardPaperPack";
+import BoardPackDocument from "@/components/board-papers/BoardPackDocument";
 
 const CONTENT_GOLD = "#d4af37";
 const SAVE_DELAY_MS = 1200;
 
 interface Cover { title: string; firm_name: string; reporting_period: string; committee: string; author: string }
 interface RatingRow { row_key: string; rating: BoardRating; is_demo: boolean }
+interface SnapshotRow { id: string; version: number; issued_by: string | null; issued_at: string; frozen_content: unknown }
 
 const SECTIONS = [
   { id: "cover", label: "Cover" },
@@ -92,14 +101,31 @@ const BoardPaperDetail = () => {
   const [checked, setChecked] = useState<Set<string> | null>(null);
   const [progressError, setProgressError] = useState(false);
 
+  // Issue + versions
+  const [status, setStatus] = useState<"draft" | "issued">("draft");
+  const statusRef = useRef<"draft" | "issued">("draft");
+  const [versions, setVersions] = useState<SnapshotRow[] | null>(null);
+  const [viewing, setViewing] = useState<SnapshotRow | null>(null);
+  const [confirmIssue, setConfirmIssue] = useState(false);
+  const [issuing, setIssuing] = useState(false);
+
   const dirty = useRef(false);
   const timer = useRef<number | null>(null);
   const latest = useRef({ cover, content });
   latest.current = { cover, content };
 
+  const loadVersions = useCallback(async () => {
+    if (!id) return;
+    const { data } = await supabase.from("board_paper_snapshots")
+      .select("id,version,issued_by,issued_at,frozen_content").eq("board_paper_id", id).order("version", { ascending: false });
+    setVersions((data ?? []) as SnapshotRow[]);
+  }, [id]);
+
+  useEffect(() => { void loadVersions(); }, [loadVersions]);
+
   useEffect(() => {
     if (!id || !user) return;
-    supabase.from("board_papers").select("title,firm_name,reporting_period,committee,author,content,updated_at")
+    supabase.from("board_papers").select("title,firm_name,reporting_period,committee,author,content,updated_at,status")
       .eq("id", id).maybeSingle().then(({ data }) => {
         if (!data) { setState("missing"); return; }
         setCover({
@@ -108,6 +134,8 @@ const BoardPaperDetail = () => {
         });
         setContent(normaliseContent(data.content));
         setLastSaved(new Date(data.updated_at));
+        const st = data.status === "issued" ? "issued" : "draft";
+        statusRef.current = st; setStatus(st);
         setState("ok");
       });
     supabase.from("board_summary_ratings").select("row_key,rating,is_demo").eq("user_id", user.id)
@@ -127,13 +155,16 @@ const BoardPaperDetail = () => {
     dirty.current = false;
     setSaveState("saving");
     const { cover: c, content: ct } = latest.current;
+    // Editing an issued paper returns it to draft; prior snapshots are untouched.
     const { error } = await supabase.from("board_papers").update({
       title: c.title.trim() || "Untitled board paper",
       firm_name: c.firm_name || null, reporting_period: c.reporting_period || null,
       committee: c.committee || null, author: c.author || null,
-      content: ct as unknown as never, updated_at: new Date().toISOString(),
+      content: ct as unknown as never, updated_at: new Date().toISOString(), status: "draft",
     }).eq("id", id);
     if (error) { setSaveState("error"); dirty.current = true; return; }
+    statusRef.current = "draft";
+    setStatus("draft");
     setSaveState("saved");
     setLastSaved(new Date());
   }, [id]);
@@ -171,6 +202,41 @@ const BoardPaperDetail = () => {
   }, [checked]);
 
   const includedUpdates = regulatoryUpdates.filter((u) => content.regulatory.included_ids.includes(u.id));
+  void includedUpdates;
+
+  // ---------- issue + versioning ----------
+  const evidenceReady = (ratings !== null || ratingsError) && (checked !== null || progressError);
+  const maxVersion = versions && versions.length ? Math.max(...versions.map((v) => v.version)) : 0;
+  const nextVersion = maxVersion + 1;
+
+  const issue = async () => {
+    if (!id || !user) return;
+    setIssuing(true);
+    try {
+      if (dirty.current) { if (timer.current) window.clearTimeout(timer.current); await save(); }
+      const { data: top, error: vErr } = await supabase.from("board_paper_snapshots").select("version")
+        .eq("board_paper_id", id).order("version", { ascending: false }).limit(1);
+      if (vErr) throw vErr;
+      const version = (top?.[0]?.version ?? 0) + 1;
+      const { cover: c, content: ct } = latest.current;
+      const pack = buildPack(c, ct, { ratings: ratingsError ? null : ratings ?? [], checked: progressError ? null : checked });
+      const { error: sErr } = await supabase.from("board_paper_snapshots").insert({
+        board_paper_id: id, user_id: user.id, version,
+        issued_by: c.author.trim() || user.email || null, frozen_content: pack as unknown as never,
+      });
+      if (sErr) throw sErr;
+      const { error: uErr } = await supabase.from("board_papers").update({ status: "issued" }).eq("id", id);
+      if (uErr) throw uErr;
+      statusRef.current = "issued";
+      setStatus("issued");
+      await loadVersions();
+      toast.success(`Version ${version} issued`);
+    } catch {
+      toast.error("The board paper could not be issued. Nothing was frozen; please try again.");
+    } finally {
+      setIssuing(false);
+    }
+  };
 
   // ---------- table helpers ----------
   const updMi = (rid: string, patch: Partial<MiRow>) => set({ mi_rows: content.mi_rows.map((r) => (r.id === rid ? { ...r, ...patch } : r)) });
