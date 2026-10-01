@@ -55,6 +55,7 @@ import SettingsPage from "./pages/Settings";
 import BoardSummary from "./pages/BoardSummary";
 import BoardPapers from "./pages/BoardPapers";
 import BoardPaperDetail from "./pages/BoardPaperDetail";
+import BoardPaperPrint from "./pages/BoardPaperPrint";
 import ConsumerDutyPrimer from "./components/ConsumerDutyPrimer";
 import { FileText } from "lucide-react";
 
@@ -71,6 +72,8 @@ const App = () => (
             <Routes>
               {/* Public auth route */}
               <Route path="/auth" element={<Auth />} />
+              {/* Board paper print view: protected, without app chrome */}
+              <Route path="/board-papers/:id/print" element={<ProtectedRoute><BoardPaperPrint /></ProtectedRoute>} />
               
               {/* Protected routes */}
               <Route
