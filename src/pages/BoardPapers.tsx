@@ -151,7 +151,7 @@ const BoardPapers = () => {
             <li key={p.id}>
               <Link
                 to={`/board-papers/${p.id}`}
-                className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="block rounded-lg border bg-card p-4 transition-colors hover:bg-[rgb(238,242,246)] hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
