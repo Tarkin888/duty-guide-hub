@@ -222,7 +222,7 @@ const BoardPaperDetail = () => {
       const pack = buildPack(c, ct, { ratings: ratingsError ? null : ratings ?? [], checked: progressError ? null : checked });
       const { error: sErr } = await supabase.from("board_paper_snapshots").insert({
         board_paper_id: id, user_id: user.id, version,
-        issued_by: c.author.trim() || user.email || null, frozen_content: pack as unknown as never,
+        issued_by: user.email || null, frozen_content: pack as unknown as never,
       });
       if (sErr) throw sErr;
       const { error: uErr } = await supabase.from("board_papers").update({ status: "issued" }).eq("id", id);
