@@ -428,6 +428,7 @@ html, body {
 /* Board Papers print view: page breaks and high-contrast body text */
 @media print {
   .bp-print-root .bp-doc { border: none !important; padding: 0 !important; max-width: none !important; }
+  .bp-print-root .bp-doc > header { break-after: page; page-break-after: always; }
   .bp-print-root .bp-doc,
   .bp-print-root .bp-doc .text-muted-foreground { color: #111827 !important; }
   .bp-print-root .bp-page-break { break-before: page; page-break-before: always; }
