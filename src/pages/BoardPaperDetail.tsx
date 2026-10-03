@@ -334,7 +334,7 @@ const BoardPaperDetail = () => {
           <Button asChild variant="outline" className="min-h-[44px]"><Link to={`/board-papers/${id}/print`}><Printer className="mr-2 h-4 w-4" aria-hidden />Print draft</Link></Button>
           <Button onClick={() => setConfirmIssue(true)} disabled={!evidenceReady || issuing || status === "issued"} className="min-h-[44px]">
             {issuing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden /> : <Send className="mr-2 h-4 w-4" aria-hidden />}
-            {status === "issued" ? "Issued — edit to re-issue" : "Issue board paper"}
+            {status === "issued" ? "Issued — any edit starts a new draft" : "Issue board paper"}
           </Button>
         </div>
       </div>
