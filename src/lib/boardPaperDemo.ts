@@ -10,7 +10,7 @@ import { buildPack, loadEvidence, PackCover, RatingRow } from "@/lib/boardPaperP
 export const DEMO_FIRM = "Northbridge Building Society (fictional)";
 
 const cover: PackCover = {
-  title: "Consumer Duty annual board report 2025/26 (DEMO — fictional firm)",
+  title: "Consumer Duty annual board report 2025/26 ( fictional firm)",
   firm_name: DEMO_FIRM,
   reporting_period: "1 August 2025 to 31 July 2026",
   committee: "Board Risk Committee",
