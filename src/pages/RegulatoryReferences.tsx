@@ -496,7 +496,7 @@ const RegulatoryReferences = () => {
           <nav className="text-sm mb-4 text-primary-foreground/80">
             <Link to="/" className="hover:text-primary-foreground">Home</Link>
             <span className="mx-2">/</span>
-            <Link to="/resources" className="hover:text-primary-foreground">Resources</Link>
+            <Link to="/resources/templates" className="hover:text-primary-foreground">Resources</Link>
             <span className="mx-2">/</span>
             <span>Regulatory References</span>
           </nav>
