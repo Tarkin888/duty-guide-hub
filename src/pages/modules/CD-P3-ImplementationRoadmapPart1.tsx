@@ -1541,7 +1541,7 @@ export default function CDP3ImplementationRoadmapPart1() {
                     detailed delivery planning, workstream-level plans, execution monitoring and change control.
                     The next step is to embed ongoing monitoring through the MI framework.
                   </p>
-                  <Button onClick={() => navigate("/monitoring/mi-framework")}>
+                  <Button onClick={() => navigate("/monitoring/mi-monitoring")}>
                     Next: CD-M1 MI Framework
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>

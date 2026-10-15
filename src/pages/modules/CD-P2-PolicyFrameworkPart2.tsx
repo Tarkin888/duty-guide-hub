@@ -1255,7 +1255,7 @@ export default function CDP2PolicyFrameworkPart2() {
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/outcomes/products">
+            <Link to="/outcomes/products-services">
               Next: CD-I1 Products & Services
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>

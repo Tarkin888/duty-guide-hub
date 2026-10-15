@@ -599,7 +599,7 @@ export default function CDT1TrainingProgrammePart2() {
                   </Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/monitoring/mi-framework">
+                  <Link to="/monitoring/mi-monitoring">
                     Next: MI & Outcome Monitoring
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
