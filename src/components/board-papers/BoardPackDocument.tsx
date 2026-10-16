@@ -1,6 +1,7 @@
 import { RATING_BY_VALUE } from "@/config/boardSummaryConfig";
 import { BoardPack, fmtLongDate } from "@/lib/boardPaperPack";
 import { BoardPaperContent, RiskRag } from "@/lib/boardPaperContent";
+import AtAGlancePanel from "@/components/board-papers/AtAGlancePanel";
 
 const CONTENT_GOLD = "#d4af37";
 
@@ -44,7 +45,7 @@ const BoardPackDocument = ({ pack, stateLabel }: Props) => {
         <p className="text-base text-muted-foreground">{[cover.author && `Author: ${cover.author}`, content.paper_date && fmtLongDate(content.paper_date)].filter(Boolean).join(" · ")}</p>
       </header>
 
-      <P title="Executive summary" breakBefore={false}><Txt v={content.executive_summary} /></P>
+      <P title="Executive summary" breakBefore={false}><AtAGlancePanel value={content.at_a_glance} /><Txt v={content.executive_summary} /></P>
 
       <P title="Consumer Duty outcomes scorecard">
         {scorecard.state === "unavailable" ? (

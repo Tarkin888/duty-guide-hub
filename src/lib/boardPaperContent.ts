@@ -5,8 +5,16 @@
 export interface MiRow { id: string; metric: string; value: string; trend: string; commentary: string }
 export type RiskRag = '' | 'red' | 'amber' | 'green';
 export interface RiskRow { id: string; risk: string; owner: string; rag: RiskRag; due_date: string; status: string }
+export interface AtAGlance { conclusion: string; key_messages: string[]; board_asks: string[] }
+
+export const normaliseAtAGlance = (raw?: Partial<AtAGlance>): AtAGlance => ({
+  conclusion: typeof raw?.conclusion === 'string' ? raw.conclusion : '',
+  key_messages: Array.isArray(raw?.key_messages) ? raw.key_messages.filter((v): v is string => typeof v === 'string').slice(0, 3).map((v) => v.slice(0, 220)) : [],
+  board_asks: Array.isArray(raw?.board_asks) ? raw.board_asks.filter((v): v is string => typeof v === 'string').slice(0, 3).map((v) => v.slice(0, 160)) : [],
+});
 
 export interface BoardPaperContent {
+  at_a_glance?: AtAGlance;
   paper_date: string;
   executive_summary: string;
   scorecard_commentary: string;
@@ -48,6 +56,7 @@ export const normaliseContent = (raw: unknown): BoardPaperContent => {
   return {
     ...base,
     ...r,
+    ...(r.at_a_glance ? { at_a_glance: normaliseAtAGlance(r.at_a_glance) } : {}),
     outcomes: { ...base.outcomes, ...(r.outcomes ?? {}) },
     regulatory: { ...base.regulatory, ...(r.regulatory ?? {}) },
     attestation: { ...base.attestation, ...(r.attestation ?? {}) },
