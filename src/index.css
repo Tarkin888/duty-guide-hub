@@ -59,6 +59,9 @@ All colors MUST be HSL.
     --warning-foreground: 222 47% 11%;
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
+    --board-glance-background: 214 32% 95%;
+    --board-glance-foreground: 222 47% 11%;
+    --board-glance-heading: 221 83% 33%;
   }
 
   .dark {
@@ -426,7 +429,20 @@ html, body {
 }
 
 /* Board Papers print view: page breaks and high-contrast body text */
+.bp-at-a-glance {
+  background: hsl(var(--board-glance-background));
+  color: hsl(var(--board-glance-foreground));
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.bp-at-a-glance-heading { color: hsl(var(--board-glance-heading)); }
+
 @media print {
+  .bp-print-root .bp-at-a-glance {
+    background: hsl(var(--board-glance-background)) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   .bp-print-root .bp-doc { border: none !important; padding: 0 !important; max-width: none !important; }
   .bp-print-root .bp-doc > header { break-after: page; page-break-after: always; }
   .bp-print-root .bp-doc,

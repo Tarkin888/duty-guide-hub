@@ -23,6 +23,7 @@ import {
 } from "@/lib/boardPaperContent";
 import { buildPack, readPack } from "@/lib/boardPaperPack";
 import BoardPackDocument from "@/components/board-papers/BoardPackDocument";
+import AtAGlancePanel from "@/components/board-papers/AtAGlancePanel";
 
 const CONTENT_GOLD = "#d4af37";
 const SAVE_DELAY_MS = 1200;
@@ -360,6 +361,7 @@ const BoardPaperDetail = () => {
             </Section>
 
             <Section id="executive-summary" title="2. Executive summary">
+              <AtAGlancePanel value={content.at_a_glance} onChange={(v) => set({ at_a_glance: v })} />
               <Narrative id="exec" label="Executive summary" rows={8} value={content.executive_summary} onChange={(v) => set({ executive_summary: v })} placeholder="The board's key messages for this period, in your own words." />
             </Section>
 
