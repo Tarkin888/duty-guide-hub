@@ -2,6 +2,7 @@ import { RATING_BY_VALUE } from "@/config/boardSummaryConfig";
 import { BoardPack, fmtLongDate } from "@/lib/boardPaperPack";
 import { BoardPaperContent, RiskRag } from "@/lib/boardPaperContent";
 import AtAGlancePanel from "@/components/board-papers/AtAGlancePanel";
+import ChallengeQuestionsPanel from "@/components/board-papers/ChallengeQuestionsPanel";
 
 const CONTENT_GOLD = "#d4af37";
 
@@ -77,11 +78,11 @@ const BoardPackDocument = ({ pack, stateLabel }: Props) => {
       </P>
 
       <P title="Four outcomes commentary">
-        {OUTCOME_FIELDS.map((f) => <div key={f.key} className="bp-avoid-break"><h3 className="font-semibold">{f.label}</h3><Txt v={content.outcomes[f.key]} /></div>)}
+        {OUTCOME_FIELDS.map((f) => <div key={f.key} className="bp-avoid-break space-y-3"><h3 className="font-semibold">{f.label}</h3><Txt v={content.outcomes[f.key]} /><ChallengeQuestionsPanel area={f.label} value={content.challenge_questions?.[f.key]} /></div>)}
       </P>
-      <P title="Cross-cutting rule"><Txt v={content.cross_cutting} /></P>
-      <P title="Vulnerable customers" breakBefore={false}><Txt v={content.vulnerable_customers} /></P>
-      <P title="Distribution chain" breakBefore={false}><Txt v={content.distribution_chain} /></P>
+      <P title="Cross-cutting rule"><Txt v={content.cross_cutting} /><ChallengeQuestionsPanel area="Cross-cutting rule" value={content.challenge_questions?.cross_cutting} /></P>
+      <P title="Vulnerable customers" breakBefore={false}><Txt v={content.vulnerable_customers} /><ChallengeQuestionsPanel area="Vulnerable customers" value={content.challenge_questions?.vulnerable_customers} /></P>
+      <P title="Distribution chain" breakBefore={false}><Txt v={content.distribution_chain} /><ChallengeQuestionsPanel area="Distribution chain" value={content.challenge_questions?.distribution_chain} /></P>
 
       <P title="Management information & KPIs">
         {content.mi_rows.length ? (
