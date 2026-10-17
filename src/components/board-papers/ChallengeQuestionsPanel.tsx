@@ -19,7 +19,7 @@ const ChallengeQuestionsPanel = ({ value, area, onChange }: Props) => {
   if (!onChange && !visible.length) return null;
 
   return (
-    <div className="bp-at-a-glance space-y-3 rounded-md border p-4 text-base" role="group" aria-labelledby={`${id}-heading`}>
+    <div className="bp-at-a-glance mt-3 space-y-3 rounded-md border p-4 text-base" role="group" aria-labelledby={`${id}-heading`}>
       <h3 id={`${id}-heading`} className="bp-at-a-glance-heading text-base font-bold">
         {onChange ? 'Suggested questions for Board challenge' : 'Questions for the Board to consider'}
       </h3>
