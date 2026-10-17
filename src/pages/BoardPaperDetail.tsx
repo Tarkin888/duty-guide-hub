@@ -19,11 +19,12 @@ import { BOARD_SCORECARD_ROWS, RATING_BY_VALUE, BoardRating } from "@/config/boa
 import { MODULE_REGISTRY } from "@/config/moduleRegistry";
 import { regulatoryUpdates } from "@/data/regulatoryUpdatesData";
 import {
-  BoardPaperContent, MiRow, RiskRow, RiskRag, emptyContent, normaliseContent, newId,
+  BoardPaperContent, MiRow, RiskRow, RiskRag, emptyContent, normaliseContent, newId, normaliseChallengeQuestions, ChallengeQuestionKey,
 } from "@/lib/boardPaperContent";
 import { buildPack, readPack } from "@/lib/boardPaperPack";
 import BoardPackDocument from "@/components/board-papers/BoardPackDocument";
 import AtAGlancePanel from "@/components/board-papers/AtAGlancePanel";
+import ChallengeQuestionsPanel from "@/components/board-papers/ChallengeQuestionsPanel";
 
 const CONTENT_GOLD = "#d4af37";
 const SAVE_DELAY_MS = 1200;
@@ -186,6 +187,9 @@ const BoardPaperDetail = () => {
 
   const setC = (patch: Partial<Cover>) => { setCover((p) => ({ ...p, ...patch })); schedule(); };
   const set = (patch: Partial<BoardPaperContent>) => { setContent((p) => ({ ...p, ...patch })); schedule(); };
+  const setQuestions = (key: ChallengeQuestionKey, questions: string[]) => set({
+    challenge_questions: { ...normaliseChallengeQuestions(content.challenge_questions), [key]: questions },
+  });
 
   const ratingByKey = useMemo(() => {
     const m: Record<string, RatingRow> = {};
@@ -372,20 +376,26 @@ const BoardPaperDetail = () => {
 
             <Section id="four-outcomes" title="4. Four outcomes commentary">
               {OUTCOME_FIELDS.map((f) => (
-                <Narrative key={f.key} id={`oc-${f.key}`} label={f.label} value={content.outcomes[f.key]} onChange={(v) => set({ outcomes: { ...content.outcomes, [f.key]: v } })} />
+                <div key={f.key} className="space-y-3">
+                  <Narrative id={`oc-${f.key}`} label={f.label} value={content.outcomes[f.key]} onChange={(v) => set({ outcomes: { ...content.outcomes, [f.key]: v } })} />
+                  <ChallengeQuestionsPanel area={f.label} value={content.challenge_questions?.[f.key]} onChange={(v) => setQuestions(f.key, v)} />
+                </div>
               ))}
             </Section>
 
             <Section id="cross-cutting" title="5. Cross-cutting rule">
               <Narrative id="cc" label="Commentary" value={content.cross_cutting} onChange={(v) => set({ cross_cutting: v })} placeholder="Acting in good faith, avoiding foreseeable harm, enabling customers to pursue their financial objectives." />
+              <ChallengeQuestionsPanel area="Cross-cutting rule" value={content.challenge_questions?.cross_cutting} onChange={(v) => setQuestions('cross_cutting', v)} />
             </Section>
 
             <Section id="vulnerable" title="6. Vulnerable customers">
               <Narrative id="vc" label="Commentary" value={content.vulnerable_customers} onChange={(v) => set({ vulnerable_customers: v })} placeholder="Analysis of outcomes for vulnerable cohorts compared with other customers — not grouped averages." />
+              <ChallengeQuestionsPanel area="Vulnerable customers" value={content.challenge_questions?.vulnerable_customers} onChange={(v) => setQuestions('vulnerable_customers', v)} />
             </Section>
 
             <Section id="distribution" title="7. Distribution chain">
               <Narrative id="dc" label="Commentary" value={content.distribution_chain} onChange={(v) => set({ distribution_chain: v })} placeholder="How manufacturers and distributors are overseen, and what outcomes evidence is shared along the chain." />
+              <ChallengeQuestionsPanel area="Distribution chain" value={content.challenge_questions?.distribution_chain} onChange={(v) => setQuestions('distribution_chain', v)} />
             </Section>
 
             <Section id="mi" title="8. Management information & KPIs">
