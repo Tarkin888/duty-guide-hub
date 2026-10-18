@@ -40,13 +40,13 @@ const BoardPaperPrint = () => {
     })();
   }, [id, user, version]);
 
-  const stateLabel = version ? `Issued — version ${version}` : "Draft (not issued)";
+  const stateLabel = version ? `Issued - version ${version}` : "Draft (not issued)";
   const header = pack ? [pack.cover.firm_name, pack.cover.reporting_period].filter(Boolean).join(" · ") : "";
-  const footer = pack ? [version ? `Version ${version}` : "Draft — no version", version ? "Issued" : "Draft",
+  const footer = pack ? [version ? `Version ${version}` : "Draft - no version", version ? "Issued" : "Draft",
     pack.content.paper_date ? `Paper date ${fmtLongDate(pack.content.paper_date)}` : "Paper date not set"].join(" · ") : "";
 
   useEffect(() => {
-    if (pack) document.title = `${pack.cover.title || "Board paper"} — ${stateLabel}`;
+    if (pack) document.title = `${pack.cover.title || "Board paper"} - ${stateLabel}`;
   }, [pack, stateLabel]);
 
   return (

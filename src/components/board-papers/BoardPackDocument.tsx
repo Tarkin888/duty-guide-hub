@@ -55,7 +55,7 @@ const BoardPackDocument = ({ pack, stateLabel }: Props) => {
           <p className="text-base italic text-muted-foreground">No Board Summary ratings had been set.</p>
         ) : (
           <div className="space-y-2">
-            {scorecard.illustrative && <p className="text-sm font-semibold text-muted-foreground">Illustrative — these ratings come from demo data.</p>}
+            {scorecard.illustrative && <p className="text-sm font-semibold text-muted-foreground">Illustrative - these ratings come from demo data.</p>}
             <table className="w-full border-collapse text-base">
               <thead><tr className="border-b text-left"><th className="py-2 pr-4">Area</th><th className="py-2">Board rating</th></tr></thead>
               <tbody>
@@ -96,7 +96,7 @@ const BoardPackDocument = ({ pack, stateLabel }: Props) => {
           <p role="alert" className="text-base text-destructive">Programme progress was not available when this pack was assembled.</p>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Factual count — not a maturity rating</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Factual count - not a maturity rating</p>
             <p className="text-lg"><strong>{programme.complete.length} of {programme.total}</strong> modules have every implementation checklist item ticked.</p>
             <div className="grid gap-4 md:grid-cols-2">
               <div><p className="mb-1 font-semibold">Checklist complete ({programme.complete.length})</p>
@@ -117,7 +117,7 @@ const BoardPackDocument = ({ pack, stateLabel }: Props) => {
       <P title="Key risks & actions">
         {content.risks.length ? (
           <table className="w-full border-collapse text-base"><thead><tr className="border-b text-left"><th className="py-2 pr-2">Risk</th><th className="pr-2">Owner</th><th className="pr-2">RAG</th><th className="pr-2">Due</th><th>Status</th></tr></thead>
-            <tbody>{content.risks.map((r) => <tr key={r.id} className="bp-avoid-break border-b align-top"><td className="py-2 pr-2">{r.risk}</td><td className="pr-2">{r.owner}</td><td className="pr-2">{r.rag ? <span className={`rounded border px-2 py-0.5 text-sm font-semibold ${RAG_META[r.rag].cls}`}>{RAG_META[r.rag].label}</span> : "—"}</td><td className="pr-2">{fmtLongDate(r.due_date)}</td><td>{r.status}</td></tr>)}</tbody></table>
+            <tbody>{content.risks.map((r) => <tr key={r.id} className="bp-avoid-break border-b align-top"><td className="py-2 pr-2">{r.risk}</td><td className="pr-2">{r.owner}</td><td className="pr-2">{r.rag ? <span className={`rounded border px-2 py-0.5 text-sm font-semibold ${RAG_META[r.rag].cls}`}>{RAG_META[r.rag].label}</span> : "-"}</td><td className="pr-2">{fmtLongDate(r.due_date)}</td><td>{r.status}</td></tr>)}</tbody></table>
         ) : <Txt v="" />}
       </P>
 

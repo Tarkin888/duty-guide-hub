@@ -67,7 +67,7 @@ function mountPrintFurniture() {
 
   const dateEl = document.createElement("span");
   dateEl.className = "print-furniture__meta";
-  dateEl.textContent = `Consumer Duty Playbook — printed ${date}`;
+  dateEl.textContent = `Consumer Duty Playbook - printed ${date}`;
 
   header.append(titleEl, dateEl);
 
@@ -75,7 +75,7 @@ function mountPrintFurniture() {
   footer.innerHTML = "";
   const footerText = document.createElement("span");
   footerText.className = "print-furniture__meta";
-  footerText.textContent = `${title} — ${date}`;
+  footerText.textContent = `${title} - ${date}`;
   const pageNo = document.createElement("span");
   pageNo.className = "print-furniture__page";
   footer.append(footerText, pageNo);

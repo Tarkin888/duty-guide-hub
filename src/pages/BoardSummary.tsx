@@ -209,7 +209,7 @@ const BoardSummary = () => {
           <h1 className="text-2xl font-bold text-[#1e3a8a] md:text-3xl">Board Summary</h1>
           {isDemo && (
             <Badge variant="outline" className="border-[#f59e0b] bg-amber-50 text-[#b45309]">
-              Demo data — illustrative only
+              Demo data - illustrative only
             </Badge>
           )}
         </div>
@@ -594,7 +594,7 @@ const BoardSummary = () => {
                   <li key={snapshot.id} className="rounded-md border border-border p-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="text-base font-semibold">
-                        Version {snapshot.version} — issued {formatDate(snapshot.issued_at)}
+                        Version {snapshot.version} - issued {formatDate(snapshot.issued_at)}
                       </span>
                       <Badge variant="outline">Read-only</Badge>
                     </div>

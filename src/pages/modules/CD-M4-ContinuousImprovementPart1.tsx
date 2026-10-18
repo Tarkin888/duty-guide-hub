@@ -106,7 +106,7 @@ export default function CDM4ContinuousImprovementPart1() {
               <div>
                 <p className="font-semibold text-destructive">Critical Principle</p>
                 <p className="text-sm text-muted-foreground">
-                  Consumer Duty is NOT "set and forget" — it requires perpetual monitoring, learning, and evolution.
+                  Consumer Duty is NOT "set and forget" - it requires perpetual monitoring, learning, and evolution.
                 </p>
               </div>
             </div>

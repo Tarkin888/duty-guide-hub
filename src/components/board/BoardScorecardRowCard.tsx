@@ -51,7 +51,7 @@ const ModuleEvidence = ({ code }: { code: string }) => {
     <div className="rounded-md border border-border bg-background p-3">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium text-foreground">
-          {code} — {getModuleDisplayName(code)}
+          {code} - {getModuleDisplayName(code)}
         </span>
         {known ? (
           <span className="text-sm text-muted-foreground">
@@ -163,7 +163,7 @@ export const BoardScorecardRowCard = ({
             </div>
             <div>
               <Label htmlFor={`rationale-${row.key}`} className="text-sm font-semibold">
-                Rationale — why you can stand behind this rating
+                Rationale - why you can stand behind this rating
               </Label>
               <Textarea
                 id={`rationale-${row.key}`}

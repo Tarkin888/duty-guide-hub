@@ -138,9 +138,9 @@ export const BOARD_SCORECARD_ROWS: BoardScorecardRow[] = [
 export type BoardVerdict = 'yes' | 'broadly' | 'not_yet';
 
 export const VERDICT_OPTIONS: { value: BoardVerdict; label: string }[] = [
-  { value: 'yes', label: 'Yes — we are delivering good outcomes' },
-  { value: 'broadly', label: 'Broadly — good outcomes with identified gaps' },
-  { value: 'not_yet', label: 'Not yet — material gaps remain' },
+  { value: 'yes', label: 'Yes - we are delivering good outcomes' },
+  { value: 'broadly', label: 'Broadly - good outcomes with identified gaps' },
+  { value: 'not_yet', label: 'Not yet - material gaps remain' },
 ];
 
 export interface BoardAction {

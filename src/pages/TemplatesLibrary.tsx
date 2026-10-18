@@ -385,7 +385,7 @@ export default function TemplatesLibrary() {
                           variant="outline"
                           className="flex-1 cursor-not-allowed"
                           disabled
-                          aria-label={`${template.name} — coming soon, not yet available to download`}
+                          aria-label={`${template.name} - coming soon, not yet available to download`}
                         >
                           <Clock className="h-4 w-4 mr-1" /> Coming soon
                         </Button>
