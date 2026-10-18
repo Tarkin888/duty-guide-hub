@@ -262,7 +262,7 @@ const BoardPaperDetail = () => {
     pending: "Unsaved changes",
     saving: "Saving…",
     saved: `Saved ${lastSaved?.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) ?? ""}`,
-    error: "Save failed — your changes are kept here and will retry on next edit",
+    error: "Save failed - your changes are kept here and will retry on next edit",
   }[saveState];
 
   const scorecardTable = (
@@ -275,7 +275,7 @@ const BoardPaperDetail = () => {
       </div>
     ) : (
       <div className="space-y-2">
-        {ratingsDemo && <p className="text-sm font-semibold text-muted-foreground">Illustrative — these ratings come from demo data.</p>}
+        {ratingsDemo && <p className="text-sm font-semibold text-muted-foreground">Illustrative - these ratings come from demo data.</p>}
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-base">
             <thead><tr className="border-b text-left"><th className="py-2 pr-4">Area</th><th className="py-2">Board rating</th></tr></thead>
@@ -302,7 +302,7 @@ const BoardPaperDetail = () => {
       <p role="alert" className="flex items-center gap-2 text-base text-destructive"><AlertCircle className="h-5 w-5" aria-hidden />Programme progress could not be loaded.</p>
     ) : !programme ? <Loader2 className="h-6 w-6 animate-spin" aria-label="Loading progress" /> : (
       <div className="space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Factual count — not a maturity rating</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Factual count - not a maturity rating</p>
         <p className="text-lg"><strong>{programme.complete.length} of {programme.total}</strong> modules have every implementation checklist item ticked.</p>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
@@ -325,7 +325,7 @@ const BoardPaperDetail = () => {
         <Button asChild variant="outline" className="min-h-[44px]"><Link to="/board-papers"><ArrowLeft className="mr-2 h-4 w-4" aria-hidden />Back to Board Papers</Link></Button>
         <div className="flex flex-wrap items-center gap-3">
           <span className="rounded-full border px-3 py-1 text-sm font-semibold">
-            {status === "issued" ? `Issued — version ${maxVersion}` : maxVersion ? `Draft (edited since version ${maxVersion})` : "Draft"}
+            {status === "issued" ? `Issued - version ${maxVersion}` : maxVersion ? `Draft (edited since version ${maxVersion})` : "Draft"}
           </span>
           <span className="flex items-center gap-1 text-sm text-muted-foreground" aria-live="polite">
             {saveState === "saving" && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
@@ -339,7 +339,7 @@ const BoardPaperDetail = () => {
           <Button asChild variant="outline" className="min-h-[44px]"><Link to={`/board-papers/${id}/print`}><Printer className="mr-2 h-4 w-4" aria-hidden />Print draft</Link></Button>
           <Button onClick={() => setConfirmIssue(true)} disabled={!evidenceReady || issuing || status === "issued"} className="min-h-[44px]">
             {issuing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden /> : <Send className="mr-2 h-4 w-4" aria-hidden />}
-            {status === "issued" ? "Issued — any edit starts a new draft" : "Issue board paper"}
+            {status === "issued" ? "Issued - any edit starts a new draft" : "Issue board paper"}
           </Button>
         </div>
       </div>
@@ -389,7 +389,7 @@ const BoardPaperDetail = () => {
             </Section>
 
             <Section id="vulnerable" title="6. Vulnerable customers">
-              <Narrative id="vc" label="Commentary" value={content.vulnerable_customers} onChange={(v) => set({ vulnerable_customers: v })} placeholder="Analysis of outcomes for vulnerable cohorts compared with other customers — not grouped averages." />
+              <Narrative id="vc" label="Commentary" value={content.vulnerable_customers} onChange={(v) => set({ vulnerable_customers: v })} placeholder="Analysis of outcomes for vulnerable cohorts compared with other customers - not grouped averages." />
               <ChallengeQuestionsPanel area="Vulnerable customers" value={content.challenge_questions?.vulnerable_customers} onChange={(v) => setQuestions('vulnerable_customers', v)} />
             </Section>
 
@@ -476,7 +476,7 @@ const BoardPaperDetail = () => {
                     {versions.map((v) => (
                       <tr key={v.id} className="border-b">
                         <td className="py-2 pr-4 font-semibold">Version {v.version}</td>
-                        <td className="pr-4">{v.issued_by || "—"}</td>
+                        <td className="pr-4">{v.issued_by || "-"}</td>
                         <td className="pr-4">{fmtDate(v.issued_at)} {new Date(v.issued_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</td>
                         <td className="flex flex-wrap justify-end gap-2 py-2">
                           <Button variant="outline" className="min-h-[44px]" onClick={() => setViewing(v)}><Eye className="mr-2 h-4 w-4" aria-hidden />View</Button>
@@ -495,10 +495,10 @@ const BoardPaperDetail = () => {
       <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
         <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Version {viewing?.version} — read-only</DialogTitle>
+            <DialogTitle>Version {viewing?.version} - read-only</DialogTitle>
             <DialogDescription>Issued {viewing && fmtDate(viewing.issued_at)}{viewing?.issued_by ? ` by ${viewing.issued_by}` : ""}. This is the pack exactly as frozen at issue.</DialogDescription>
           </DialogHeader>
-          {viewing && <BoardPackDocument pack={readPack(viewing.frozen_content)} stateLabel={`Issued — version ${viewing.version}`} />}
+          {viewing && <BoardPackDocument pack={readPack(viewing.frozen_content)} stateLabel={`Issued - version ${viewing.version}`} />}
         </DialogContent>
       </Dialog>
 
@@ -507,7 +507,7 @@ const BoardPaperDetail = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Issue version {nextVersion}?</AlertDialogTitle>
             <AlertDialogDescription>
-              The full pack — your narrative plus the scorecard, programme status and selected regulatory entries as they stand now — will be frozen permanently as version {nextVersion}. You can keep editing afterwards and issue a new version.
+              The full pack - your narrative plus the scorecard, programme status and selected regulatory entries as they stand now - will be frozen permanently as version {nextVersion}. You can keep editing afterwards and issue a new version.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

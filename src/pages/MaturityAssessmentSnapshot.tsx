@@ -144,7 +144,7 @@ export default function MaturityAssessmentSnapshot() {
                         <TableCell className="font-medium">{label}</TableCell>
                         <TableCell>{String(row[`score_${key}`])} / 5</TableCell>
                         <TableCell className="text-muted-foreground">
-                          {(row[`comments_${key}`] as string | null) || "—"}
+                          {(row[`comments_${key}`] as string | null) || "-"}
                         </TableCell>
                       </TableRow>
                     );

@@ -155,7 +155,7 @@ export default function CDM4ContinuousImprovementPart2() {
                   <Filter className="h-5 w-5 text-primary" />
                   Phase 3: Develop Improvement Prioritisation & Execution
                 </CardTitle>
-                <CardDescription>Weeks 6-12 — Structured approach to prioritising and delivering improvements</CardDescription>
+                <CardDescription>Weeks 6-12 - Structured approach to prioritising and delivering improvements</CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
@@ -182,7 +182,7 @@ export default function CDM4ContinuousImprovementPart2() {
                               <Users className="h-4 w-4 text-primary" />
                               Customer Impact
                             </h5>
-                            <p className="text-sm text-muted-foreground">Scale of benefit to customers — how many affected and how significantly</p>
+                            <p className="text-sm text-muted-foreground">Scale of benefit to customers - how many affected and how significantly</p>
                           </div>
                           <div className="p-4 bg-muted/50 rounded-lg">
                             <h5 className="font-medium text-foreground mb-2 flex items-center gap-2">
@@ -252,19 +252,19 @@ export default function CDM4ContinuousImprovementPart2() {
                         <div className="grid md:grid-cols-2 gap-4">
                           <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/30">
                             <h5 className="font-medium text-destructive mb-2">CRITICAL (Score 32-40)</h5>
-                            <p className="text-sm text-muted-foreground">Regulatory compliance gaps, high customer harm — immediate action required</p>
+                            <p className="text-sm text-muted-foreground">Regulatory compliance gaps, high customer harm - immediate action required</p>
                           </div>
                           <div className="p-4 bg-warning/10 rounded-lg border border-warning/30">
                             <h5 className="font-medium text-warning mb-2">HIGH (Score 24-31)</h5>
-                            <p className="text-sm text-muted-foreground">Significant customer benefit or risk reduction — prioritise this quarter</p>
+                            <p className="text-sm text-muted-foreground">Significant customer benefit or risk reduction - prioritise this quarter</p>
                           </div>
                           <div className="p-4 bg-primary/10 rounded-lg border border-primary/30">
                             <h5 className="font-medium text-primary mb-2">MEDIUM (Score 16-23)</h5>
-                            <p className="text-sm text-muted-foreground">Valuable improvements — plan for next 2-3 quarters</p>
+                            <p className="text-sm text-muted-foreground">Valuable improvements - plan for next 2-3 quarters</p>
                           </div>
                           <div className="p-4 bg-muted rounded-lg border">
                             <h5 className="font-medium text-muted-foreground mb-2">LOW (Score 8-15)</h5>
-                            <p className="text-sm text-muted-foreground">Nice-to-have enhancements — consider when capacity allows</p>
+                            <p className="text-sm text-muted-foreground">Nice-to-have enhancements - consider when capacity allows</p>
                           </div>
                         </div>
                       </div>
@@ -461,7 +461,7 @@ export default function CDM4ContinuousImprovementPart2() {
                       <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
                         <p className="font-medium text-foreground mb-2">Cultural Message</p>
                         <p className="text-sm text-muted-foreground italic">
-                          "Don't wait for perfection — deliver incremental improvements constantly"
+                          "Don't wait for perfection - deliver incremental improvements constantly"
                         </p>
                       </div>
 
@@ -491,7 +491,7 @@ export default function CDM4ContinuousImprovementPart2() {
                   <TrendingUp className="h-5 w-5 text-primary" />
                   Phase 4: Build Maturity Progression Framework
                 </CardTitle>
-                <CardDescription>Weeks 8-16 — Track progression from compliance to embedded excellence</CardDescription>
+                <CardDescription>Weeks 8-16 - Track progression from compliance to embedded excellence</CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
@@ -863,7 +863,7 @@ export default function CDM4ContinuousImprovementPart2() {
                       <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
                         <p className="font-medium text-foreground mb-2">Balance Principle</p>
                         <p className="text-sm text-muted-foreground">
-                          Don't reinvent the wheel if good practice exists. But don't copy blindly — adapt to your context. 
+                          Don't reinvent the wheel if good practice exists. But don't copy blindly - adapt to your context. 
                           Test and validate before full rollout. Build on good practice to create better practice.
                         </p>
                       </div>

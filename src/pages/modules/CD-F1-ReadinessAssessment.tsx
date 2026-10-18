@@ -260,7 +260,7 @@ export default function CDf1ReadinessAssessment() {
             <CardContent className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
                 Under Consumer Duty, firms must have <strong>reasonable grounds</strong> to believe they are 
-                delivering good customer outcomes. This is not about perfection – it's about demonstrating 
+                delivering good customer outcomes. This is not about perfection - it's about demonstrating 
                 that you have taken reasonable steps to understand your customers' needs and assess whether 
                 your products, services, and support are meeting those needs.
               </p>
@@ -305,9 +305,9 @@ export default function CDf1ReadinessAssessment() {
                 <div className="border-l-4 border-l-accent pl-4 py-2">
                   <h4 className="font-semibold mb-2">Tier 2: Cross-Cutting Rules</h4>
                   <ul className="text-sm text-muted-foreground space-y-2">
-                    <li><strong>Act in good faith</strong> – Be honest, fair and act with integrity</li>
-                    <li><strong>Avoid foreseeable harm</strong> – Proactively identify and prevent harm</li>
-                    <li><strong>Enable and support</strong> – Help customers pursue their financial objectives</li>
+                    <li><strong>Act in good faith</strong> - Be honest, fair and act with integrity</li>
+                    <li><strong>Avoid foreseeable harm</strong> - Proactively identify and prevent harm</li>
+                    <li><strong>Enable and support</strong> - Help customers pursue their financial objectives</li>
                   </ul>
                 </div>
 
