@@ -143,7 +143,7 @@ export default function CDP1GovernanceFrameworkPart2() {
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Critical Principle</h3>
                     <p className="text-foreground">
-                      "Governance is not just structure-it's about decision-making, accountability, 
+                      "Governance is not just structure - it's about decision-making, accountability, 
                       and continuous improvement"
                     </p>
                   </div>
@@ -485,7 +485,7 @@ export default function CDP1GovernanceFrameworkPart2() {
                   <Card className="p-3 bg-warning/5 border-warning/20">
                     <p className="text-sm font-medium">
                       <AlertTriangle className="h-4 w-4 inline mr-2 text-warning" />
-                      CRITICAL: Must avoid governance silos-committees must coordinate on Consumer Duty
+                      CRITICAL: Must avoid governance silos - committees must coordinate on Consumer Duty
                     </p>
                   </Card>
                 </AccordionContent>
@@ -540,7 +540,7 @@ export default function CDP1GovernanceFrameworkPart2() {
 
                   <Card className="p-3 bg-primary/5 border-primary/20">
                     <p className="text-sm font-medium">
-                      Key point: Culture cannot be delegated-Board and CEO must actively shape it
+                      Key point: Culture cannot be delegated - Board and CEO must actively shape it
                     </p>
                   </Card>
                 </AccordionContent>
@@ -778,7 +778,7 @@ export default function CDP1GovernanceFrameworkPart2() {
 
               <Card className="p-3 bg-primary/5 border-primary/20">
                 <p className="text-sm font-medium">
-                  Key principle: RAS should be STRETCHING but ACHIEVABLE-not so lenient it's meaningless, 
+                  Key principle: RAS should be STRETCHING but ACHIEVABLE - not so lenient it's meaningless, 
                   not so strict it's impossible
                 </p>
               </Card>
