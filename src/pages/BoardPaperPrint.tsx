@@ -51,6 +51,11 @@ const BoardPaperPrint = () => {
 
   return (
     <div className="bp-print-root min-h-screen bg-background">
+      <style>{`@media print {
+        body:has(.bp-print-root) > #print-header,
+        body:has(.bp-print-root) > #print-footer { display: none !important; }
+        .bp-print-root .bp-doc > header h1 { word-spacing: 0.08em; }
+      }`}</style>
       {pack && (
         <style>{`@page { size: A4 portrait; margin: 22mm 16mm 22mm 16mm;
           @top-left { content: ${cssStr(header)}; font-size: 9pt; color: #111827; }
